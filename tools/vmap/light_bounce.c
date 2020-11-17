@@ -603,7 +603,7 @@ static void RadSubdivideDiffuseLight( int lightmapNum, bspDrawSurface_t *ds, raw
 	else
 	{
 		/* handle bounced light (radiosity) a little differently */
-		value = RADIOSITY_VALUE * si->bounceScale;
+		value = RADIOSITY_VALUE * si->bounceScale * 0.375f; /* we'll absorb too much ambient light */
 		light->photons = value * area * bounceScale;
 		light->add = value * formFactorValueScale * bounceScale;
 		VectorCopy( color, light->color );
