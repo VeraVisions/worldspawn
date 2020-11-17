@@ -1,0 +1,26 @@
+/* XPM */
+static char *show_entities[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 5 1 ",
+"  c None",
+". c black",
+"X c red",
+"o c #888888",
+"O c white",
+/* pixels */
+"                ",
+" OOOOOOOO       ",
+" OXXXXXXOO      ",
+" OXXXXXXOXO     ",
+" OXXXXXXOXXO    ",
+" OXXXXXXOXXO    ",
+" OXXXXXXOXXO    ",
+" OXXXXXXOXXO    ",
+" OXXXXXXOXXO    ",
+" OOOOOOOOXXO    ",
+"  OXXXXXXOXO    ",
+"   OXXXXXXOO    ",
+"    OOOOOOOO ...",
+"             .oo",
+"             .oo"
+};

@@ -1,0 +1,33 @@
+/* XPM */
+static char *cap_bevel[] = {
+/* columns rows colors chars-per-pixel */
+"24 24 3 1 ",
+"  c None",
+". c black",
+"X c #FF017F",
+/* pixels */
+"                        ",
+"                        ",
+"                        ",
+"                        ",
+"               .....    ",
+"            ...XXXXX    ",
+"          ..XXXXXXXX    ",
+"         .XXXXXXXXXX    ",
+"        .XXXXXXXXXXX    ",
+"       .XXXXXXXXXXXX    ",
+"      .XXXXXXXXXXXXX    ",
+"      .XXXXXXXXXXXXX    ",
+"     .XXXXXXXXXXXXXX    ",
+"     .XXXXXXXXXXXXXX    ",
+"     .XXXXXXXXXXXXXX    ",
+"    .XXXXXXXXXXXXXXX    ",
+"    .XXXXXXXXXXXXXXX    ",
+"    .XXXXXXXXXXXXXXX    ",
+"    .XXXXXXXXXXXXXXX    ",
+"    .XXXXXXXXXXXXXXX    ",
+"                        ",
+"                        ",
+"                        ",
+"                        "
+};

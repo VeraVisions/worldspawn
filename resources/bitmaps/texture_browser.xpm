@@ -1,0 +1,26 @@
+/* XPM */
+static char *texture_browser[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 4 1 ",
+"  c None",
+". c black",
+"X c #C0C0C0",
+"o c white",
+/* pixels */
+"                ",
+" .............. ",
+" .ooooooXXXXXX. ",
+" .ooooooXXXXXX. ",
+" .ooooooXXXXXX. ",
+" .ooooooXXXXXX. ",
+" .ooooooXXXXXX. ",
+" .ooooooXXXXXX. ",
+" .XXXXXXoooooo. ",
+" .XXXXXXoooooo. ",
+" .XXXXXXoooooo. ",
+" .XXXXXXoooooo. ",
+" .XXXXXXoooooo. ",
+" .XXXXXXoooooo. ",
+" .............. ",
+"                "
+};

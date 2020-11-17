@@ -1,0 +1,33 @@
+/* XPM */
+static char *cap_iendcap[] = {
+/* columns rows colors chars-per-pixel */
+"24 24 3 1 ",
+"  c None",
+". c black",
+"X c #FF017F",
+/* pixels */
+"                        ",
+"                        ",
+"  XXXXXXXXXXXXXXXXXXXX  ",
+"  XXXXXXXXXXXXXXXXXXXX  ",
+"  XXXXXXXXXXXXXXXXXXXX  ",
+"  XXXXXXXXXXXXXXXXXXXX  ",
+"  XXXXXXX......XXXXXXX  ",
+"  XXXXX..      ..XXXXX  ",
+"  XXXX.          .XXXX  ",
+"  XXX.            .XXX  ",
+"  XXX.            .XXX  ",
+"  XX.              .XX  ",
+"  XX.              .XX  ",
+"  XX.              .XX  ",
+"  XX.              .XX  ",
+"  XX.              .XX  ",
+"  XX.              .XX  ",
+"  XX.              .XX  ",
+"  XX.              .XX  ",
+"  XX.              .XX  ",
+"  XX.              .XX  ",
+"  XX.              .XX  ",
+"                        ",
+"                        "
+};

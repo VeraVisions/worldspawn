@@ -1,0 +1,25 @@
+/* XPM */
+static char *selection_selectinside[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c #C00000",
+/* pixels */
+"                ",
+" XX XX XX  .... ",
+"         X .  . ",
+" X XXXXX X .  . ",
+" X X   X   .  . ",
+"   X   X X .  . ",
+" X X   X X .  . ",
+" X XXXXX   .  . ",
+"         X .  . ",
+" X XXXX  X .  . ",
+" X X  X    .  . ",
+"   X  X  X .  . ",
+" X XXXX  X .  . ",
+" X         .  . ",
+"  XX XX XX .... ",
+"                "
+};

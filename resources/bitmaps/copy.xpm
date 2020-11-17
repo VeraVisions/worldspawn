@@ -1,0 +1,29 @@
+/* XPM */
+static char *copy[] = {
+/* columns rows colors chars-per-pixel */
+"20 19 4 1 ",
+"  c None",
+". c black",
+"X c navy",
+"o c white",
+/* pixels */
+"                    ",
+"                    ",
+"                    ",
+"   ......           ",
+"   .oooo..          ",
+"   .oooo.o.         ",
+"   .o..o.XXXXXX     ",
+"   .oooooXooooXX    ",
+"   .o....XooooXoX   ",
+"   .oooooXo..oXXXX  ",
+"   .o....XoooooooX  ",
+"   .oooooXo.....oX  ",
+"   ......XoooooooX  ",
+"         Xo.....oX  ",
+"         XoooooooX  ",
+"         XXXXXXXXX  ",
+"                    ",
+"                    ",
+"                    "
+};

@@ -1,0 +1,15 @@
+/* XPM */
+static char *noFalloff[] = {
+/* columns rows colors chars-per-pixel */
+"64 8 1 1 ",
+"  c white",
+/* pixels */
+"                                                                ",
+"                                                                ",
+"                                                                ",
+"                                                                ",
+"                                                                ",
+"                                                                ",
+"                                                                ",
+"                                                                "
+};

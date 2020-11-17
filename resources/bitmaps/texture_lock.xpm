@@ -1,0 +1,27 @@
+/* XPM */
+static char *texture_lock[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 5 1 ",
+"  c None",
+". c black",
+"X c yellow",
+"o c #C0C0C0",
+"O c white",
+/* pixels */
+"                ",
+" .............. ",
+" .OOOOOOoooooo. ",
+" .OOOO....oooo. ",
+" .OOO......ooo. ",
+" .OOO..Oo..ooo. ",
+" .OOO..Oo..ooo. ",
+" .OO........oo. ",
+" .oo.XXXXXX.OO. ",
+" .oo.XX..XX.OO. ",
+" .oo.XX..XX.OO. ",
+" .oo.XXXXXX.OO. ",
+" .oo........OO. ",
+" .ooooooOOOOOO. ",
+" .............. ",
+"                "
+};

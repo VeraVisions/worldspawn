@@ -1,0 +1,25 @@
+/* XPM */
+static char *cap_curve[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c #FF017F",
+/* pixels */
+"                ",
+"     ......     ",
+"   ..XXXXXX..   ",
+"  .XXXXXXXXXX.  ",
+" .XXXXXXXXXXXX. ",
+" .XXXXXXXXXXXX. ",
+" ..XXXXXXXXXX.. ",
+" . ..XXXXXX.. . ",
+" .   ......   . ",
+" .            . ",
+" .            . ",
+" .            . ",
+"  .          .  ",
+"   ..      ..   ",
+"     ......     ",
+"                "
+};

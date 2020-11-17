@@ -1,0 +1,16 @@
+{
+	NSIcon = "icon.tiff";
+	NSPrincipalClass = NSApplication;
+	NSRole = Editor;
+    
+	NSTypes = (
+		{
+		NSName = "Map";
+		NSHumanReadableName = "Map/Level Source";
+		NSIcon = "FileIcon_.map.tiff";
+		NSUnixExtensions = ( map );
+		NSDOSExtensions = ( map );
+		NSRole = Editor;
+		}
+    	}
+}

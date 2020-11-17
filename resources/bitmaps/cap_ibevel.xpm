@@ -1,0 +1,33 @@
+/* XPM */
+static char *cap_ibevel[] = {
+/* columns rows colors chars-per-pixel */
+"24 24 3 1 ",
+"  c None",
+". c black",
+"X c #FF017F",
+/* pixels */
+"                        ",
+"                        ",
+"  XXXXXXXXXXXXXXXXXXXX  ",
+"  XXXXXXXXXXXXXXXXXXXX  ",
+"  XXXXXXXXXXXXXXXXXXXX  ",
+"  XXXXXXXXXXXXXX......  ",
+"  XXXXXXXXXXX...        ",
+"  XXXXXXXXX..           ",
+"  XXXXXXXX.             ",
+"  XXXXXXX.              ",
+"  XXXXXX.               ",
+"  XXXXX.                ",
+"  XXXXX.                ",
+"  XXXX.                 ",
+"  XXXX.                 ",
+"  XXXX.                 ",
+"  XXX.                  ",
+"  XXX.                  ",
+"  XXX.                  ",
+"  XXX.                  ",
+"  XXX.                  ",
+"  XXX.                  ",
+"                        ",
+"                        "
+};

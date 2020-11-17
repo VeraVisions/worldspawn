@@ -1,0 +1,25 @@
+/* XPM */
+static char *entities[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c white",
+/* pixels */
+"                ",
+" .............. ",
+" .XXXXXXXXXXXX. ",
+" .X...XX.....X. ",
+" .XXXXXXXXXXXX. ",
+" .X...XX..XXXX. ",
+" .XXXXXXXXXXXX. ",
+" .X...XX...XXX. ",
+" .XXXXXXXXXXXX. ",
+" .X...XX.....X. ",
+" .XXXXXXXXXXXX. ",
+" .X...XX..XXXX. ",
+" .XXXXXXXXXXXX. ",
+" .XXXXXXXXXXXX. ",
+" .............. ",
+"                "
+};

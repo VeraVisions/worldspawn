@@ -1,0 +1,15 @@
+/* XPM */
+static char *white[] = {
+/* columns rows colors chars-per-pixel */
+"8 8 1 1 ",
+"  c white",
+/* pixels */
+"        ",
+"        ",
+"        ",
+"        ",
+"        ",
+"        ",
+"        ",
+"        "
+};

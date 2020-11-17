@@ -1,0 +1,25 @@
+/* XPM */
+static char *scalelockz[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 4 1 ",
+"  c None",
+". c black",
+"X c blue",
+"o c white",
+/* pixels */
+"                ",
+" .............. ",
+" .oooooooooooo. ",
+" .oooooooooooo. ",
+" .oooXXXXXoooo. ",
+" .ooooooXXoooo. ",
+" .oooooXXooooo. ",
+" .ooooXXoooooo. ",
+" .ooooXXoooooo. ",
+" .oooXXooooooo. ",
+" .oooXXXXXoooo. ",
+" .oooooooooooo. ",
+" .oooooooooooo. ",
+" .............. ",
+"                "
+};

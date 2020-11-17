@@ -1,0 +1,25 @@
+/* XPM */
+static char *selection_makehollow[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c #00C0FF",
+/* pixels */
+"                ",
+" .............. ",
+" .            . ",
+" . XX XX XX X . ",
+" .          X . ",
+" . X          . ",
+" . X        X . ",
+" .          X . ",
+" . X          . ",
+" . X        X . ",
+" .          X . ",
+" . X          . ",
+" . X XX XX XX . ",
+" .            . ",
+" .............. ",
+"                "
+};

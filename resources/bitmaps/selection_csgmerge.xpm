@@ -1,0 +1,25 @@
+/* XPM */
+static char *selection_csgmerge[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c #00C0FF",
+/* pixels */
+"                ",
+".....      XXXXX",
+".   .      X   X",
+".   .      X   X",
+".   . X    X   X",
+".   . XX   X   X",
+".   . XXX  X   X",
+"..... XXXX X   X",
+".   . XXX  X   X",
+".   . XX   X   X",
+".   . X    X   X",
+".   .      X   X",
+".   .      X   X",
+".   .      X   X",
+".....      XXXXX",
+"                "
+};

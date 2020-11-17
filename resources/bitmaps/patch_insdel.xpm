@@ -1,0 +1,25 @@
+/* XPM */
+static char *patch_insdel[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 4 1 ",
+"  c None",
+". c black",
+"X c #880000",
+"o c #000088",
+/* pixels */
+"                ",
+"                ",
+"                ",
+"  oooooooo      ",
+"         o      ",
+"         o      ",
+"       ooooo    ",
+"        ooo     ",
+"   ooo   o  ooo ",
+"  XoooXXXXXXoooX",
+"   ooo      ooo ",
+"             o  ",
+"     . .   o o  ",
+"      .   oooo  ",
+"     . .   o    "
+};

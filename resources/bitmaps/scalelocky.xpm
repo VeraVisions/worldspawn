@@ -1,0 +1,25 @@
+/* XPM */
+static char *scalelocky[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 4 1 ",
+"  c None",
+". c black",
+"X c blue",
+"o c white",
+/* pixels */
+"                ",
+" .............. ",
+" .oooooooooooo. ",
+" .oooooooooooo. ",
+" .ooXXooooXXoo. ",
+" .ooXXooooXXoo. ",
+" .oooXXooXXooo. ",
+" .ooooXXXXoooo. ",
+" .oooooXXooooo. ",
+" .oooooXXooooo. ",
+" .oooooXXooooo. ",
+" .oooooXXooooo. ",
+" .oooooooooooo. ",
+" .............. ",
+"                "
+};

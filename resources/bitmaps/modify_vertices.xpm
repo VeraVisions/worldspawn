@@ -1,0 +1,25 @@
+/* XPM */
+static char *modify_vertices[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c #00C000",
+/* pixels */
+"                ",
+"    ........... ",
+"   .         .. ",
+"  .       XXX . ",
+" .........XXX . ",
+" .        XXX . ",
+" .         .  . ",
+" .         .  . ",
+" .         .  . ",
+" .         .  . ",
+" .         .  . ",
+" .         .  . ",
+" .         . .  ",
+" .         ..   ",
+" ...........    ",
+"                "
+};

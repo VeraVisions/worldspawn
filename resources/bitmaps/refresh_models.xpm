@@ -1,0 +1,25 @@
+/* XPM */
+static char *refresh_models[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c #C00000",
+"X c #FFC000",
+/* pixels */
+"    ......     .",
+"  ..XXXXXX..  ..",
+" .XXXXXXXXXX..X.",
+" .X.....XXXXXXX.",
+".X.     ..XXXXX.",
+"..        .XXXX.",
+".         .XXXX.",
+"........ .XXXXX.",
+".XXXXX. ........",
+".XXXX.         .",
+".XXXX.        ..",
+".XXXXX..     .X.",
+".XXXXXXX.....X. ",
+".X..XXXXXXXXXX. ",
+"..  ..XXXXXX..  ",
+".     ......    "
+};

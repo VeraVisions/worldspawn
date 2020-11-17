@@ -1,0 +1,28 @@
+/* XPM */
+static char *cut[] = {
+/* columns rows colors chars-per-pixel */
+"20 19 3 1 ",
+"  c None",
+". c black",
+"X c navy",
+/* pixels */
+"                    ",
+"                    ",
+"                    ",
+"        .   .       ",
+"        .   .       ",
+"        .   .       ",
+"        .. ..       ",
+"         . .        ",
+"         ...        ",
+"          .         ",
+"         X.X        ",
+"         X XXX      ",
+"       XXX X  X     ",
+"      X  X X  X     ",
+"      X  X X  X     ",
+"      X  X  XX      ",
+"       XX           ",
+"                    ",
+"                    "
+};

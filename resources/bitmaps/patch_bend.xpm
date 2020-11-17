@@ -1,0 +1,25 @@
+/* XPM */
+static char *patch_bend[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 4 1 ",
+"  c None",
+". c black",
+"X c #000088",
+"o c gray80",
+/* pixels */
+"    .....       ",
+"   .oooo...     ",
+"  .ooo..ooo.    ",
+"  ....oooo...   ",
+"     ..oo.ooo.  ",
+"       ..oooo.  ",
+"   X    .ooo... ",
+"  XXX    .o.oo. ",
+"   X     ..ooo. ",
+"   X      .ooo. ",
+"   X   X  .ooo. ",
+"  XXXXXXX .oo.  ",
+"  XX   X  ...   ",
+"                ",
+"                "
+};

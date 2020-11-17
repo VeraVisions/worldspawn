@@ -1,0 +1,29 @@
+/* XPM */
+static char *view_cameraupdate[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 8 1 ",
+"  c None",
+". c black",
+"X c yellow",
+"o c #000088",
+"O c blue",
+"+ c #888888",
+"@ c gray80",
+"# c white",
+/* pixels */
+"@OO+            ",
+"oOOoOOOO+       ",
+"oOoOOOOOoo      ",
+"+ooOOOOOO#      ",
+" oooOOOO##      ",
+" oooOO#X##      ",
+" oooo#XX#+      ",
+" ..OXX##        ",
+" +.O###+   .    ",
+"   ##      .+   ",
+"           .+   ",
+"        ....... ",
+"         ++.++++",
+"           .+   ",
+"           .+   "
+};

@@ -1,0 +1,25 @@
+/* XPM */
+static char *patch_showboundingbox[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 4 1 ",
+"  c None",
+". c #880000",
+"X c red",
+"o c gray80",
+/* pixels */
+"                ",
+" .............. ",
+" .XoXoXoXoXoXo. ",
+" .oooooooooooX. ",
+" .Xoooooo..ooo. ",
+" .ooooo..ooooX. ",
+" .Xooo.ooooooo. ",
+" .ooo.oooooooX. ",
+" .Xoo.oooooooo. ",
+" .ooo.oooooooX. ",
+" .Xooo..oooooo. ",
+" .oooooo..oooX. ",
+" .XoXoXoXoXoXo. ",
+" .............. ",
+"                "
+};

@@ -1,0 +1,25 @@
+/* XPM */
+static char *brush_rotatey[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c #00C000",
+/* pixels */
+"                ",
+" XXXXX          ",
+"      XXX       ",
+"         X      ",
+"          X     ",
+"           X    ",
+"   .   .    X   ",
+"   .   .    X   ",
+"    . .     X   ",
+"    . .      X  ",
+"     .       X  ",
+"     .       X  ",
+"     .     XXXXX",
+"     .      XXX ",
+"     .       X  ",
+"                "
+};

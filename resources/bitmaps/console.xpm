@@ -1,0 +1,25 @@
+/* XPM */
+static char *console[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c white",
+/* pixels */
+"                ",
+" .............. ",
+" .XXXXXXXXXXXX. ",
+" .X....XXXXXXX. ",
+" .XXXXXXXXXXXX. ",
+" .X........XXX. ",
+" .XXXXXXXXXXXX. ",
+" .X..........X. ",
+" .XXXXXXXXXXXX. ",
+" .X...XXXXXXXX. ",
+" .XXXXXXXXXXXX. ",
+" .X........XXX. ",
+" .XXXXXXXXXXXX. ",
+" .XXXXXXXXXXXX. ",
+" .............. ",
+"                "
+};

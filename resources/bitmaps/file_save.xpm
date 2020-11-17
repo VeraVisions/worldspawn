@@ -1,0 +1,26 @@
+/* XPM */
+static char *file_save[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 4 1 ",
+"  c None",
+". c black",
+"X c #808000",
+"o c #D7D0C8",
+/* pixels */
+"                ",
+" .............. ",
+" .X.oooooooo.o. ",
+" .X.oooooooo... ",
+" .X.oooooooo.X. ",
+" .X.oooooooo.X. ",
+" .X.oooooooo.X. ",
+" .X.oooooooo.X. ",
+" .XX........XX. ",
+" .XXXXXXXXXXXX. ",
+" .XX.........X. ",
+" .XX......oo.X. ",
+" .XX......oo.X. ",
+" .XX......oo.X. ",
+"  ............. ",
+"                "
+};

@@ -1,0 +1,25 @@
+/* XPM */
+static char *file_new[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c white",
+/* pixels */
+"                ",
+"                ",
+"  ........      ",
+"  .XXXXXX..     ",
+"  .XXXXXX.X.    ",
+"  .XXXXXX....   ",
+"  .XXXXXXXXX.   ",
+"  .XXXXXXXXX.   ",
+"  .XXXXXXXXX.   ",
+"  .XXXXXXXXX.   ",
+"  .XXXXXXXXX.   ",
+"  .XXXXXXXXX.   ",
+"  .XXXXXXXXX.   ",
+"  .XXXXXXXXX.   ",
+"  ...........   ",
+"                "
+};

@@ -1,0 +1,713 @@
+/*QUAKED item_ammo (1 0 0) (-8 -8 -8) (8 8 8)
+Real beta entity, do not use, left for historical purposes
+*/
+/*QUAKED item_health (1 0 0) (-8 -8 0) (8 8 16)
+"targetname"	Name
+
+Health pickup item for players that replenishes 25 health points and stops
+any potential bleeding.
+
+model="models/game_objects/obj_health_kit.vvm"
+*/
+/*QUAKED ammo_container (1 0 0) (-17 -17 0) (17 17 30)
+"targetname"	Name
+
+An ammunitions container, which fills up all weapons when used.
+
+model="models/ammo/ammo_crate.vvm"
+*/
+/*QUAKED item_weapon (1 0 0) (-16 -16 0) (16 16 16)
+"weapon"	Weapon to give the player.
+"delay"		How big the magazine/clip is. Default is '-1'.
+
+Weapon pickup item.
+When the magazine size is set to '-1', the weapon will be filled up.
+*/
+/*QUAKED info_player_spectate (1 1 1) (-16 -16 -36) (16 16 36)
+
+Random spectator starting spot.
+*/
+/*QUAKED info_player_start (1 0.5 0) (-16 -16 -36) (16 16 36)
+
+Singleplayer starting spot for players.
+*/
+/*QUAKED info_player_deathmatch (1 1 0) (-16 -16 -36) (16 16 36)
+
+Random multiplayer starting spot for players.
+*/
+/*QUAKED info_vehicle_start (0 1 1) (-50 -50 0) (-50 -50 70)
+
+Random vehicle starting spot for players in the Vehicular Carnage mode.
+*/
+/*QUAKED info_player_team1 (1 0 0) (-16 -16 -36) (16 16 36)
+
+Random multiplayer starting spot for players of team 1.
+*/
+/*QUAKED info_player_team2 (0 1 0) (-16 -16 -36) (16 16 36)
+
+Random multiplayer starting spot for players of team 2.
+*/
+/*QUAKED sky_camera (1 0.3 1) (-8 -8 -8) (8 8 8)
+"scale"		Scale modifier. Default is '16'.
+
+Defines the position of a skyroom camera.
+You want to put this into a dedicated room that contains a 3D skybox.
+The scale modifier is more like a divider. You want to keep these
+divisable by 2 to avoid any precision funky-ness.
+*/
+/*QUAKED prop_dynamic (1 0 0) (-8 -8 -8) (8 8 8)
+"model"			Model file that will be displayed by the entity.
+"modelscale"	Scale modifier of the model. Default is '1'.
+"angles"		Sets the pitch, yaw and roll angles of the model.
+"_cs"			Toggles if the prop casts a shadow or not.
+
+Client-side decorative model entity.
+*/
+/*QUAKED worldspawn (0 0 0) ?
+"message"	Level title.
+"sounds"	Music track to play on the level.
+"_fog"		Global fog defined in normalized distance, red, green blue, alpha
+			values. Use the fog console command to test before comitting.
+"team1"		Team 1 on this level.
+"team2"		Team 2 on this level.
+
+This is the main world entity definition.
+Any structural brush belongs to it.
+
+Team numbers:
+	0 = Killshots
+	1 = Regulators
+	2 = Ronin
+	3 = Tribals
+	4 = USMC
+	5 = Vagrants
+*/
+/*QUAKED env_glow (0 0.5 1) (-8 -8 -8) (8 8 8)
+"shader"		Material to use for the glare/glow effect.
+"model"			Sprite model to use for the glare/glow (idTech 2 only)
+"scale"			Scale multiplier.
+"rendercolor"	Material color override in RGB8.
+"renderamt"		Material alpha override in A8.
+
+Client-side glare/glow orb effect like the flares in Unreal.
+*/
+/*QUAKED env_sound (0 1 0) (-8 -8 -8) (8 8 8)
+"radius"	Radius in units.
+"roomtype"	Roomtype value:
+				0 = DEFAULT
+				1 = PADDEDCELL
+				2 = ROOM
+				3 = BATHROOM
+				4 = LIVINGROOM
+				5 = STONEROOM
+				6 = AUDITORIUM
+				7 = CONCERTHALL
+				8 = CAVE
+				9 = ARENA
+				10 = HANGAR
+				11 = CARPETEDHALLWAY
+				12 = HALLWAY
+				13 = STONECORRIDOR
+				14 = ALLEY
+				15 = FOREST
+				16 = CITY
+				17 = MOUNTAINS
+				18 = QUARRY
+				19 = PLAIN
+				20 = PARKINGLOT
+				21 = SEWERPIPE
+				22 = UNDERWATER
+				23 = DRUGGED
+				24 = DIZZY
+				25 = PSYCHOTIC
+				26 = CITYSTREETS
+				27 = SUBWAY
+				28 = MUSEUM
+				29 = LIBRARY
+				30 = UNDERPASS
+				31 = ABANDONED
+				32 = DUSTYROOM
+				33 = CHAPEL
+				34 = SMALLWATERROOM
+
+Client-side environmental reverb modifier.
+This works only with the OpenAL sound backend.
+*/
+/*QUAKED point_message (0.2 1 0.2) (-8 -8 -8) (8 8 8)
+"message"	The message to display.
+"radius"	The radius in which it will appear.
+
+Client-side overlay/message that is projected in relation to its position
+in 3D space.
+Used for zoo and test maps in which less interactive overlays are desired.
+*/
+/*QUAKED env_cubemap (0 0 1) (-8 -8 -8) (8 8 8)
+"scale"		Texture dimension at which to render the cubemap. Default is '32'.
+
+Specifies a location for which a cubemap will be generated when the 
+dev_buildcubemaps console command is executed.
+*/
+/*QUAKED env_fade (0 0 0) (-8 -8 -8) (8 8 8) EVF_FADEDROM EVF_MODULATE EVF_ONLYUSER
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"rendercolor"	RGB8 Color of the fade effect.
+"renderamt"		A8 alpha value we'll hit at max.
+"duration"		Duration of the effect in seconds.
+"holdtime"		How long we'll hold on the max color/alpha.
+
+When triggered, creates a colored overlay that blinds all players, or just
+the one who triggered it if EVF_ONLYUSER is set.
+*/
+/*QUAKED env_shake (1 0.5 0) (-8 -8 -8) (8 8 8) EVS_GLOBAL
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"radius"		Radius of the quake/shake effect.
+"amplitude"		Amplitude of the effect.
+"duration"		Duration of the effect in seconds.
+"frequency"		The frequency of the shake.
+
+Causes an earthquake/shaking effect when triggered.
+Affects all clients (radius ignored) when EVS_GLOBAL is set.
+*/
+/*QUAKED func_conveyor (0 .5 .8) ?
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+STUB!
+*/
+/*QUAKED func_lod (0 .5 .8) ?
+"targetname"		Name
+"DisappearDist" = Unit distance at which stuff disappears
+"solid"				0 = Be solid (wtf volvo), 1 = non-solid
+
+Disappearing entity for non VISable maps (ex. Valley)
+*/
+/*QUAKED trigger_once (0 .5 .8) ? TO_MONSTERS TO_NOCLIENTS TO_PUSHABLES
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"delay"				Delay until target is triggered.
+
+A trigger volume which works only once.
+
+None of the spawnflags are implemented yet.
+*/
+/*QUAKED trigger_teleport (0 .5 .8) ?
+"targetname"		Name
+"target"			Which target to teleport to.
+
+Teleportation volume. Teleports anything it touches to the position of
+any entity set as the "target". Works best with info_teleport_destination.
+*/
+/*QUAKED func_wall (0 .5 .8) ?
+"targetname"		Name
+
+Brush that lets light to pass through it.
+On idTech 2 based levels, it will change texture variants when triggered.
+*/
+/*QUAKED path_track (1 0 1) (-8 -8 -8) (8 8 8)
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+STUB!
+*/
+/*QUAKED trigger_changelevel (0 .5 .8) ? LC_NOINTERMISSION LC_USEONLY
+"targetname"		Name
+"map"				Next .bsp file name to transition to.
+"landmark"			Landmark name to target.
+"changedelay"		Time in seconds until the transition happens.
+
+When a Landmark is specified, you will have to position two info_landmark
+entities across your two levels with the same name. They'll mark a translation
+point for the coordinates in your levels.
+
+When LC_NOINTERMISSION is set, there'll be no stats screen at the end of the
+level.
+
+When LC_USEONLY is set, it will not act as a trigger volume people can step in.
+It'll have to be triggered by another entity.
+*/
+/*QUAKED func_tracktrain (0 .5 .8) ?
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+Moving platform following along path_* entities that's fully user controlled.
+Very unfinished.
+*/
+/*QUAKED env_message (1 0 0) (-8 -8 -8) (8 8 8) EMF_ONCE EMF_ALLPLAYERS
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"message"				Message to send to players
+"messagesound"			PCM sample to play when triggered
+"messagevolume"			PCM sample volume
+"messageattenuation"	PCM sample attenuation
+
+Sends a message to either one or all players, depending on if EMF_ALLPLAYERS
+is set. An optional sound effect can be supplied as well.
+*/
+/*QUAKED item_food (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"	Name
+"angles"		Sets the pitch, yaw and roll angles of the model.
+"model"			Model file that will be displayed by the entity.
+
+This is a food item that will give the user 1 health when touched.
+*/
+/*QUAKED func_door (0 .5 .8) ?
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+STUB!
+*/
+/*QUAKED func_pushable (0 .5 .8) ? SF_TRIGGER SF_TOUCH SF_PRESSURE
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+STUB!
+*/
+/*QUAKED trigger_relay (0 .5 .8) ?
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+See trigger_once.
+*/
+/*QUAKED game_text (1 0 0) (-8 -8 -8) (8 8 8) GTF_ALLPLAYERS
+"targetname"	Name
+"x"				Horizontal position of text. 
+				(0 - 1.0 = left to right, -1 = center)
+"y"				Vertical position of text.
+				(0 - 1.0 = top to bottom, -1 = center)
+"effect"		Effect to apply to the text.
+				Valid values:
+					0 = Fade In/Out
+					1 = Credits
+					2 = Scan Out
+"color"			The main colour in RGB8.
+"color2"		The highlight colour in RGB8.
+"fadein"		Time taken to fade in each character.
+"fadeout"		Time taken to fade out message.
+"holdtime"		Length of time to hold message on screen after fading in.
+"fxtime"		Time the highlight lags behind the leading edge of the text in
+				seconds.
+"channel"		Message channel to use. Meant for overriding messages.
+
+This entity displays a message of your choice on-screen.
+Line breaks can be added with a \n character.
+
+If GTF_ALLPLAYERS is set, it'll display the message to not just the activator,
+but all players on the level.
+*/
+/*QUAKED multi_manager (0.5 1 0.7) (-8 -8 -8) (8 8 8) MM_MULTITHREADED
+"targetname"		Name
+
+Triggers a maximum of 16 user defined entities with additonal timers.
+Add a target's name as an entity key, with the value set to the time in seconds
+that'll pass before the entity will be triggered.
+
+If MM_MULTITHREADED is set, it'll allow the multi_manager to be triggered
+again before it has finished triggering it's previous list of entities.
+*/
+/*QUAKED env_spark (1 0 0) (-8 -8 -8) (8 8 8) x x x x x EVSPARK_TOGGLE EVSPARK_STARTON
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"angles"		Sets the pitch, yaw and roll angles of the spark.
+"MaxDelay"		Delay between sparks when start-on (or toggle) is set
+
+Creates a series (or just one) spark effect with sound when triggered.
+*/
+/*QUAKED multisource (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+STUB!
+*/
+/*QUAKED trigger_cdaudio (0 .5 .8) ?
+"targetname"		Name
+"health"			Music track to play.
+
+Switches the background music track when triggered.
+*/
+/*QUAKED trigger_multiple (0 .5 .8) ? TM_MONSTERS TM_NOCLIENTS TM_PUSHABLES
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"delay"				Delay until target is triggered.
+"wait"				Time until this entity can trigger again
+
+A trigger volume which works more than once. 
+
+None of the spawnflags are implemented yet.
+*/
+/*QUAKED func_recharge (0 .5 .8) ?
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+STUB!
+*/
+/*QUAKED trigger_endsection (0 .5 .8) ?
+"targetname"		Name
+
+This trigger shuts down the server.
+Useful for when a singleplayer game ends, as it takes you to the main menu.
+*/
+/*QUAKED func_door_rotating (0 .5 .8) ?
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+STUB!
+*/
+/*QUAKED env_sprite (1 0 0) (-8 -8 -8) (8 8 8) ENVS_STARTON ENVS_PLAYONCE
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"angles"		Sets the pitch, yaw and roll angles of the sprite.
+"model"			Path to the sprite in question.
+"rendercolor"	Color modifier of the sprite.
+"renderamt"		Alpha modifier of the sprite.
+"rendermode"	Render mode of the sprite.
+"framerate"		Rate between frames in seconds.
+"scale"			Scale modifier of the sprite.
+
+A sprite entity manager with fancy overrides.
+Only used with an external sprite format, like SPR, SPRHL and SPR32.
+*/
+/*QUAKED func_wall_toggle (0 .5 .8) ? FTW_STARTHIDDEN
+"targetname"		Name
+
+Brush that can be hidden and reappear when triggered.
+
+If FTW_STARTHIDDEN is set, it'll start hidden.
+*/
+/*QUAKED env_explosion (1 0 0) (-8 -8 -8) (8 8 8) ENVEXPLO_NODAMAGE ENVEXPLO_REPEATABLE ENVEXPLO_NOBALL ENVEXPLO_NOSMOKE ENVEXPLO_NODECAL ENVEXPLO_NOSPARKS
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"iMagnitude"	Magnitude of the explosion.
+
+When triggered, creates an explosion at its location.
+*/
+/*QUAKED env_beverage (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"health"	Amount of soda-cans that can be dispensed at maximum
+"angles"	Sets the pitch, yaw and roll angles of the soda
+
+Upon triggered, the entity will spawn item_food in its place in
+the shape of a soda can.
+*/
+/*QUAKED cycler_sprite (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"angles"		Sets the pitch, yaw and roll angles of the model.
+"model"			Model file that will be displayed by the entity.
+
+Decorative, does nothing yet.
+*/
+/*QUAKED light (1 0 0) (-8 -8 -8) (8 8 8) OFF_OR_LINEAR
+"targetname"	Name
+
+Infinitely small point of light illuminating the scene.
+
+idTech3 relevant keys:
+"light"		Light intensity value. Default is '300'.
+"_color"	Normalized RGB color value. Default is '1 1 1'.
+"radius"	Sets the light cone radius. Default is '64'.
+"target"	When set, targets an enity instead, becoming a spotlight.
+
+If OFF_OR_LINEAR is set, the light will be cast with a linear falloff instead
+of inverse square. This is useful for bright lights that'll travel long
+distances.
+
+idTech2 relevant keys:
+"light"		Defines the brightness of the light.
+"style"		Light style ID. 0-11 are defined, 12-32 are reserved for switched
+			lights. List of pre-defined styles:
+				0 = Normal
+				1 = Flicker A
+				2 = Slow strong pulse
+				3 = Candle A
+				4 = Fast strobe
+				5 = Gentle pulse
+				6 = Flicker B
+				7 = Candle B
+				8 = Candle C
+				9 = Slow strobe
+				10 = Fluorescent flicker
+				11 = Slow pulse, no black
+"pattern"	Custom light style pattern. Needs unique light style ID.
+			Patterns are defined with letters of the alphabet.
+			'a' being dark. 'z' being fully lit. Can be a string of characters
+			that'll interpolate between at 10 FPS ingame.
+
+If OFF_OR_LINEAR is set, it starts off/disabled.
+*/
+/*QUAKED trigger_auto (1 0 0) (-8 -8 -8) (8 8 8) TA_USEONCE
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"delay"				Time in seconds until it triggers its target.
+
+Will automatically start working when the level has spawned.
+If TA_USEONCE is set, it'll remove itself from the level permanently.
+It will not survive round respawns, etc.
+*/
+/*QUAKED func_train (0 .5 .8) ?
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+Moving platform following along path_* entities.
+Very unfinished.
+*/
+/*QUAKED trigger_camera (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"		Name
+"angles"			Sets the pitch, yaw and roll angles of the camera
+"target"			Which entity we're aiming at. Overrides angles.
+"wait"				How long to hold onto the target.
+
+Causes the activators first-person camera to switch to the view of this entity.
+*/
+/*QUAKED ambient_generic (1 0 0) (-8 -8 -8) (8 8 8) AS_SRADIUS AS_MRADIUS AS_LRADIUS AS_SILENT AS_NOTTOGGLED
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"message"	pcm file to play
+"volume"	0.0 to 1.0
+"pitch"		0.0 to 2.0
+
+Plays a PCM sample of whatever format the engine is configured to support.
+If you want it to loop, you have to give the file itself a loop flag.
+
+TODO: Add a forced loop flag for non .wav samples?
+*/
+/*QUAKED func_ladder (0 .5 .8) ?
+"targetname"	Name
+
+Ladder volume. Only useful in idTech 2 based levels.
+Use brushes with the common/climb texture instead.
+*/
+/*QUAKED func_illusionary (0 .5 .8) ?
+"targetname"	Name
+
+Brush that lets light to pass through it and is non-solid.
+On idTech 2 based levels, it will change texture variants when triggered.
+*/
+/*QUAKED trigger_push (0 .5 .8) ? TP_ONCE TP_STARTOFF
+"targetname"		Name
+"speed"				The speed (units per second) it'll apply to touchers.
+"angles"			Sets the direction of the push.
+
+Pushes anything in its volume into a direction of your choosing.
+
+If TP_ONCE is set, It'll only emit a single push once before disabling itself.
+If TP_STARTOFF is set, it needs to be triggered first in order to function.
+*/
+/*QUAKED info_null (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"	Name
+
+Entity that does nothing and gets deleted upon level load.
+This is used for map compiling stages only.
+*/
+/*QUAKED info_notnull (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"	Name
+
+It's like an info_null, it just does not got deleted upon level load.
+Useful for any entities/triggers that need to target something.
+*/
+/*QUAKED func_group (.5 .5 .5) ?
+"_lightmapscale"	Floating point value scaling the resolution of 
+		lightmaps on brushes/patches in this entity. Default is '1.0'.
+"_cs"		Cast shadows. Can either be 1 or 0. Default is '1'.
+"_rs"		Receive shadows. Can either be 1 or 0. Default is '1'.
+
+These structural groups will simply result in static world geometry once the
+map is compiled. It's not a true entity in itself and only needed at the
+compile stage.
+*/
+/*QUAKED monster_furniture (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"	Name
+"angles"		Sets the pitch, yaw and roll angles of the model.
+"model"			Model file that will be displayed by the entity.
+
+Decorative, does nothing yet.
+*/
+/*QUAKED func_button (0 .5 .8) ?
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+STUB!
+*/
+/*QUAKED func_dustmotes (0 .5 .8) ?
+AHHHHHHHHHHHHHHHHHHH
+*/
+/*QUAKED env_render (1 0 0) (-8 -8 -8) (8 8 8) SF_NORENDERFX SF_NORENDERAMT SF_NORENDERMODE SF_NORENDERCOLOR
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"rendermode"	Render-Mode the target changes to
+"renderamt"		Render-Alpha the target changes to
+"rendercolor"	Render-Color the target changes to
+
+Changes the visual appearance of a target.
+*/
+/*QUAKED monster_generic (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"	Name
+"angles"		Sets the pitch, yaw and roll angles of the model.
+"model"			Model file that will be displayed by the entity.
+
+Decorative, does nothing yet.
+*/
+/*QUAKED cycler (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"angles"			Sets the pitch, yaw and roll angles of the model.
+"sequence"			Sets the animation the model should start in. 
+"model"				Model file that will be displayed by the entity.
+
+Upon damage, the cycler will switch between all available animation
+sequences. This is really for test-maps and showroom entities.
+*/
+/*QUAKED env_shooter (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"angles"		Sets the pitch, yaw and roll direction of the shooter.
+"shootmodel"	Model file to shoot.
+"shootsounds"	PCM sample to play whenever a piece shoots out.
+"m_iGibs"		Amount of models shot in total.
+"m_flDelay"		Delay before being able to be fired again.
+"m_flVelocity"	Speed of the models in units per second.
+"m_flVariance"	Delay between shots.
+"m_flGibLife"	Life of the individual model piece.
+"scale"			Scale modifier of the model pieces.
+
+Shoots model entities from its location.
+*/
+/*QUAKED scripted_sequence (1 0 0) (-8 -8 -8) (8 8 8) x x SSFL_REPEATABLE SSFL_LEAVECORPSE x SSFL_NOINTERRUPT SSFL_OVERRIDEAI SSFL_NOSCRIPTMOVE
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"m_iszEntity"		Entity targetname OR classname description to target
+"m_iszPlay"			After the monster has moved to the action point, play this animation
+"m_iszIdle"			Animation to play until the scripted_sequence is triggered
+"m_flRadius"		Search radius for m_targetMonster if a classname is specified
+"m_flRepeat"		Loop? Unused.
+"m_fMoveTo"			How we move to perform m_iActionAnim
+
+f_fMoveTo values:
+0 = Don't move or turn
+1 = Walk to the scripted_sequence
+2 = Run to the scripted_sequence
+3 = Unused/Not defined. Do not use this.
+4 = Warp to the location of the scripted_sequence and perform the animation.
+5 = Turn to the scripted_sequence's angle before performing the animation.
+
+Allow a monster to be selected and given an action to perform.
+This is done in the form of olaying an animation.
+*/
+/*QUAKED func_healthcharger (0 .5 .8) ?
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+STUB!
+*/
+/*QUAKED func_breakable (0 .5 .8) ? SF_TRIGGER SF_TOUCH SF_PRESSURE
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"material"			Material it's made of.
+"delay"				Delay in seconds of when it breaks under pressure.
+"explodemagnitude"	Strength of the explosion.
+
+Brush volume that can break into lots of little pieces.
+
+When SF_TOUCH is set, it'll break when an entity runs into it at high
+velocities (damage is speed in units * 0.01).
+
+When SF_PRESSURE is set, it'll collapse once someone is standing on top of it.
+At that point the "delay" key will decide after how many seconds the object
+breaks.
+
+The strength of the explosion decides the radius (magnitude * 2.5) and the
+maximum damage the explosion will do (you have to stand in the center for that).
+*/
+/*QUAKED infodecal (1 0 0) (-8 -8 -8) (8 8 8)
+"texture"	Name of the texture inside decals.wad it projects onto a surface.
+
+This entity only works on BSP version 30 levels.
+Projects a decals.wad texture onto the nearest surface.
+It'll automatically figure out the surface based on distance.
+The texture will be aligned along the surface texture normals.
+*/
+/*QUAKED trigger_hurt (0 .5 .8) ? SF_HURT_ONCE SF_HURT_OFF x SF_HURT_NOPLAYERS SF_HURT_FIREONPLAYER SF_HURT_TOUCHPLAYER
+"targetname"		Name
+"target"			Target when triggered.
+"delay"				Delay until target is triggered.
+"killtarget"		Target to kill when triggered.
+"dmg"				Damage inflicted.
+
+Trigger volume that damages everything it touches.
+
+If SF_HURT_ONCE is set, it'll stop once it's been triggered the first time.
+If SF_HURT_OFF is set, it needs to be triggered in order to work again.
+If SF_HURT_NOPLAYERS is set, it will only NPCs.
+If SF_HURT_TOUCHPLAYER is set, it'll only hurt players.
+If SF_HURT_FIREONPLAYER is set, it'll only trigger a target if a player
+activates it.
+*/
+/*QUAKED path_corner (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+
+STUB!
+*/
+/*QUAKED env_global (1 0 0) (-8 -8 -8) (8 8 8) GLOBAL_SETSPAWN
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"globalstate"	The variable name in which we hold information in.
+"initialstate"	Initial mode: 0 = off, 1 = on, 2 = dead
+"triggermode"	Mode when triggered: 0 = off, 1 = on, 2 = dead
+
+Sets/kills a global variable that carries across levels.
+Without GLOBAL_SETSPAWN set, it'll only modify existing values when
+triggered.
+*/
+/*QUAKED env_beam (1 0 0) (-8 -8 -8) (8 8 8)
+"targetname"	Name
+
+This entity is incomplete. Purely stub.
+*/
+/*QUAKED trigger_transition (0 .5 .8) ?
+"targetname"		Name
+
+Currently unused. This is meant for defining level transition regions.
+All entities touching this volume would carry across to the next level.
+*/
+/*QUAKED func_rotating (0 .5 .8) ? FR_STARTON FR_REVERSE FR_ZAXIS FR_XAXIS FR_ACCDCC FR_FANPAIN FR_NOTSOLID FR_SMALLRADIUS FR_MRADIUS FR_LRADIUS
+"targetname"		Name
+"target"			Target when triggered.
+"killtarget"		Target to kill when triggered.
+"speed"				Speed in units per second.
+"dmg"				Damage applied to entity blocking its rotational path.
+
+Rotating brush object. Useful for fans, etc.
+*/

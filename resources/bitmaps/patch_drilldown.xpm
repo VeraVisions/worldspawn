@@ -1,0 +1,25 @@
+/* XPM */
+static char *patch_drilldown[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 4 1 ",
+"  c None",
+". c #880000",
+"X c #000088",
+"o c blue",
+/* pixels */
+"                ",
+"  oXo           ",
+"  XXX           ",
+"  oXo           ",
+"     .          ",
+"      .         ",
+"       oXo      ",
+"       XXX      ",
+"       oXo      ",
+"          .     ",
+"           oXo  ",
+"           XXX  ",
+"           oXo  ",
+"              . ",
+"                "
+};

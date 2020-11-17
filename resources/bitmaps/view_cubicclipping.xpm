@@ -1,0 +1,25 @@
+/* XPM */
+static char *view_cubicclipping[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c #C0C0C0",
+/* pixels */
+"                ",
+"              . ",
+"          XXX.  ",
+"      XXXXXX.X  ",
+"  XXXXXXXXX.XX  ",
+" ..........XXX  ",
+"  XXXXXXXX.XX   ",
+"   XXXXXXX.XX   ",
+"    XXXXXX.XX   ",
+"     XXXXX.XX   ",
+"      XXXX.X    ",
+"       XXX.X    ",
+"        XX.X    ",
+"         X.X    ",
+"          .     ",
+"                "
+};

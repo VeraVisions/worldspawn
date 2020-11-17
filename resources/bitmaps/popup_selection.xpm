@@ -1,0 +1,28 @@
+/* XPM */
+static char *popup_selection[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 7 1 ",
+"  c None",
+". c black",
+"X c #880000",
+"o c red",
+"O c cyan",
+"+ c #888888",
+"@ c white",
+/* pixels */
+"                ",
+" oo  oo  oo  oo ",
+"      O         ",
+"        @       ",
+" o   @    O   o ",
+" o       @    o ",
+"    O O XXXX    ",
+"     @  XXX     ",
+" o      XX    o ",
+" o     @X     o ",
+"                ",
+"                ",
+" oo  oo  oo  ...",
+"             .++",
+"             .++"
+};

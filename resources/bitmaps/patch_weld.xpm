@@ -1,0 +1,26 @@
+/* XPM */
+static char *patch_weld[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 5 1 ",
+"  c None",
+". c black",
+"X c #880000",
+"o c #000088",
+"O c blue",
+/* pixels */
+" X              ",
+"   X            ",
+"    X           ",
+"    XX O  O     ",
+"   X  X o       ",
+" XX    ooo      ",
+"  X  O ooo O    ",
+"   X   Xo       ",
+"    X X   ..... ",
+"     X O  ....  ",
+"    X     ...   ",
+" X X      .. .  ",
+"  X       .   . ",
+" X              ",
+"                "
+};

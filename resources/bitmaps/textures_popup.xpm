@@ -1,0 +1,27 @@
+/* XPM */
+static char *textures_popup[] = {
+/* columns rows colors chars-per-pixel */
+"16 15 6 1 ",
+"  c None",
+". c black",
+"X c yellow",
+"o c #888888",
+"O c gray80",
+"+ c white",
+/* pixels */
+" oX  .Ooo       ",
+" o+o.XOOOooo    ",
+"XoXoXOOOOOOOo.  ",
+"oX+ooo.OOOOOo.  ",
+"o+XXOOOOOOOoo.  ",
+"+o+OOoOOOOooo.  ",
+"Xo+O+O+OOoooo.  ",
+"o+.+O+OOooooo.  ",
+"OO+O+O+Oooooo.  ",
+"o+O+O+OOoooo.   ",
+"oO+O+O+Oooo.    ",
+" oooO+OOoo.     ",
+"    oooOo.   ...",
+"       o.    .oo",
+"             .oo"
+};

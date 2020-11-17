@@ -1,0 +1,25 @@
+/* XPM */
+static char *brush_flipz[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c blue",
+/* pixels */
+"                ",
+"                ",
+"       X        ",
+"       X        ",
+"       X        ",
+" ..... X .....  ",
+"     . X .      ",
+"    .  X  .     ",
+"   .   X   .    ",
+"  .    X    .   ",
+" .     X     .  ",
+" ..... X .....  ",
+"       X        ",
+"       X        ",
+"                ",
+"                "
+};
