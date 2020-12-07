@@ -2210,7 +2210,6 @@ Q_EXTERN qboolean noGridLighting Q_ASSIGN( qfalse );
 Q_EXTERN qboolean noTrace Q_ASSIGN( qfalse );
 Q_EXTERN qboolean noSurfaces Q_ASSIGN( qfalse );
 Q_EXTERN qboolean patchShadows Q_ASSIGN( qfalse );
-Q_EXTERN qboolean cpmaHack Q_ASSIGN( qfalse );
 
 Q_EXTERN qboolean deluxemap Q_ASSIGN( qfalse );
 Q_EXTERN qboolean debugDeluxemap Q_ASSIGN( qfalse );

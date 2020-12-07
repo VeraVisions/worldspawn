@@ -2250,6 +2250,10 @@ int LightMain( int argc, char **argv ){
 	qboolean lightSamplesInsist = qfalse;
 	qboolean fastAllocate = qfalse;
 
+	fast = qtrue;
+	fastgrid = qtrue;
+	fastbounce = qtrue;
+
 	/* note it */
 	Sys_Printf( "--- Light ---\n" );
 	Sys_Printf( "--- ProcessGameSpecific ---\n" );
@@ -2749,21 +2753,26 @@ int LightMain( int argc, char **argv ){
 			}
 		}
 
-		else if ( !strcmp( argv[ i ], "-smooth" ) ) {
-			lightSamples = EXTRA_SCALE;
-			Sys_Printf( "The -smooth argument is deprecated, use \"-samples 2\" instead\n" );
-		}
-
 		else if ( !strcmp( argv[ i ], "-nofastpoint" ) ) {
 			fastpoint = qfalse;
 			Sys_Printf( "Automatic fast mode for point lights disabled\n" );
 		}
 
-		else if ( !strcmp( argv[ i ], "-fast" ) ) {
-			fast = qtrue;
-			fastgrid = qtrue;
-			fastbounce = qtrue;
-			Sys_Printf( "Fast mode enabled for all area lights\n" );
+		else if ( !strcmp( argv[ i ], "-slow" ) ) {
+			fast = qfalse;
+			fastgrid = qfalse;
+			fastbounce = qfalse;
+			Sys_Printf( "Fast envelope/distance calculation disabled.\n" );
+		}
+
+		else if ( !strcmp( argv[ i ], "-slowgrid" ) ) {
+			fastgrid = qfalse;
+			Sys_Printf( "Fast grid lighting disabled\n" );
+		}
+
+		else if ( !strcmp( argv[ i ], "-slowbounce" ) ) {
+			fastbounce = qfalse;
+			Sys_Printf( "Fast bounce mode disabled\n" );
 		}
 
 		else if ( !strcmp( argv[ i ], "-faster" ) ) {
@@ -2777,16 +2786,6 @@ int LightMain( int argc, char **argv ){
 		else if ( !strcmp( argv[ i ], "-fastallocate" ) ) {
 			fastAllocate = qtrue;
 			Sys_Printf( "Fast allocation mode enabled\n" );
-		}
-
-		else if ( !strcmp( argv[ i ], "-fastgrid" ) ) {
-			fastgrid = qtrue;
-			Sys_Printf( "Fast grid lighting enabled\n" );
-		}
-
-		else if ( !strcmp( argv[ i ], "-fastbounce" ) ) {
-			fastbounce = qtrue;
-			Sys_Printf( "Fast bounce mode enabled\n" );
 		}
 
 		else if ( !strcmp( argv[ i ], "-cheap" ) ) {
@@ -2858,15 +2857,6 @@ int LightMain( int argc, char **argv ){
 		else if ( !strcmp( argv[ i ], "-patchshadows" ) ) {
 			patchShadows = qtrue;
 			Sys_Printf( "Patch shadow casting enabled\n" );
-		}
-		else if ( !strcmp( argv[ i ], "-extra" ) ) {
-			superSample = EXTRA_SCALE;      /* ydnar */
-			Sys_Printf( "The -extra argument is deprecated, use \"-super 2\" instead\n" );
-		}
-		else if ( !strcmp( argv[ i ], "-extrawide" ) ) {
-			superSample = EXTRAWIDE_SCALE;  /* ydnar */
-			filter = qtrue;                 /* ydnar */
-			Sys_Printf( "The -extrawide argument is deprecated, use \"-filter [-super 2]\" instead\n" );
 		}
 		else if ( !strcmp( argv[ i ], "-samplesize" ) ) {
 			sampleSize = atoi( argv[ i + 1 ] );
@@ -2942,10 +2932,6 @@ int LightMain( int argc, char **argv ){
 		else if ( !strcmp( argv[ i ], "-style" ) || !strcmp( argv[ i ], "-styles" ) ) {
 			noStyles = qfalse;
 			Sys_Printf( "Enabling lightstyles\n" );
-		}
-		else if ( !strcmp( argv[ i ], "-cpma" ) ) {
-			cpmaHack = qtrue;
-			Sys_Printf( "Enabling Challenge Pro Mode Asstacular Vertex Lighting Mode (tm)\n" );
 		}
 		else if ( !strcmp( argv[ i ], "-floodlight" ) ) {
 			floodlighty = qtrue;

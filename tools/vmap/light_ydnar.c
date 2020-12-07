@@ -2849,9 +2849,9 @@ void IlluminateVertexes( int num ){
 	   ----------------------------------------------------------------- */
 
 	/* calculate vertex lighting for surfaces without lightmaps */
-	if ( lm == NULL || cpmaHack ) {
+	if ( lm == NULL ) {
 		/* setup trace */
-		trace.testOcclusion = ( cpmaHack && lm != NULL ) ? qfalse : !noTrace;
+		trace.testOcclusion = ( lm != NULL ) ? qfalse : !noTrace;
 		trace.forceSunlight = info->si->forceSunlight;
 		trace.recvShadows = info->recvShadows;
 		trace.numSurfaces = 1;
