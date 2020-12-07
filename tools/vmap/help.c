@@ -153,7 +153,6 @@ void HelpLight()
 {
 	struct HelpOption light[] = {
 		{"-light <filename.map>", "Switch that enters this stage"},
-		{"-vlight <filename.map>", "Deprecated alias for `-light -fast` ... filename.map"},
 		{"-approx <N>", "Vertex light approximation tolerance (never use in conjunction with deluxemapping)"},
 		{"-areascale <F, `-area` F>", "Scaling factor for area lights (surfacelight)"},
 		{"-border", "Add a red border to lightmaps for debugging"},
@@ -220,7 +219,6 @@ void HelpLight()
 		{"-novertex", "Disable vertex lighting"},
 		{"-patchshadows", "Cast shadows from patches"},
 		{"-pointscale <F, `-point` F>", "Scaling factor for point lights (light entities)"},
-		{"-q3", "Use nonlinear falloff curve by default (like Q3A)"},
 		{"-samplescale <F>", "Scales all lightmap resolutions"},
 		{"-samplesize <N>", "Sets default lightmap resolution in luxels/qu"},
 		{"-samples <N>", "Adaptive supersampling quality"},
@@ -228,7 +226,6 @@ void HelpLight()
 		{"-shadeangle <A>", "Angle for phong shading"},
 		{"-shade", "Enable phong shading at default shade angle"},
 		{"-skyscale <F, `-sky` F>", "Scaling factor for sky and sun light"},
-		{"-smooth", "Deprecated alias for `-samples 2`"},
 		{"-srffile <filename.srf>", "Surface file to read"},
 		{"-style, -styles", "Enable support for light styles"},
 		{"-sunonly", "Only compute sun light"},
@@ -236,7 +233,6 @@ void HelpLight()
 		{"-thresh <F>", "Triangle subdivision threshold"},
 		{"-trianglecheck", "Broken check that should ensure luxels apply to the right triangle"},
 		{"-trisoup", "Convert brush faces to triangle soup"},
-		{"-wolf", "Use linear falloff curve by default (like W:ET)"},
 	};
 
 	HelpOptions("Light Stage", 0, 80, light, sizeof(light)/sizeof(struct HelpOption));

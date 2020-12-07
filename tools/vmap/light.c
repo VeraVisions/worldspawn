@@ -357,43 +357,21 @@ void CreateEntityLights( void ){
 		/* handle spawnflags */
 		spawnflags = IntForKey( e, "spawnflags" );
 
-		/* ydnar: quake 3+ light behavior */
-		if ( wolfLight == qfalse ) {
-			/* set default flags */
-			flags = LIGHT_Q3A_DEFAULT;
+		flags = LIGHT_Q3A_DEFAULT;
 
-			/* linear attenuation? */
-			/*if ( spawnflags & 1 ) {
-				flags |= LIGHT_ATTEN_LINEAR;
-				flags &= ~LIGHT_ATTEN_ANGLE;
-			}*/
-
-			/* no angle attenuate? */
-			/*if ( spawnflags & 2 ) {
-				flags &= ~LIGHT_ATTEN_ANGLE;
-			}*/
+		/* linear attenuation? */
+		if ( spawnflags & 1 ) {
+			flags |= LIGHT_ATTEN_LINEAR;
+			flags &= ~LIGHT_ATTEN_ANGLE;
 		}
 
-		/* ydnar: wolf light behavior */
-		else
-		{
-			/* set default flags */
-			flags = LIGHT_WOLF_DEFAULT;
-
-			/* inverse distance squared attenuation? */
-			/*if ( spawnflags & 1 ) {
-				flags &= ~LIGHT_ATTEN_LINEAR;
-				flags |= LIGHT_ATTEN_ANGLE;
-			}*/
-
-			/* angle attenuate? */
-			/*if ( spawnflags & 2 ) {
-				flags |= LIGHT_ATTEN_ANGLE;
-			}*/
+		/* no angle attenuate? */
+		if ( spawnflags & 2 ) {
+			flags &= ~LIGHT_ATTEN_ANGLE;
 		}
+	
 
 		/* other flags (borrowed from wolf) */
-
 		/* wolf dark light? */
 		if ( ( spawnflags & 4 ) || ( spawnflags & 8 ) ) {
 			flags |= LIGHT_DARK;
@@ -2258,15 +2236,6 @@ int LightMain( int argc, char **argv ){
 	Sys_Printf( "--- Light ---\n" );
 	Sys_Printf( "--- ProcessGameSpecific ---\n" );
 
-	/* set standard game flags */
-	wolfLight = game->wolfLight;
-	if ( wolfLight == qtrue ) {
-		Sys_Printf( " lighting model: wolf\n" );
-	}
-	else{
-		Sys_Printf( " lighting model: quake3\n" );
-	}
-
 	lmCustomSize = game->lightmapSize;
 	Sys_Printf( " lightmap size: %d x %d pixels\n", lmCustomSize, lmCustomSize );
 
@@ -2686,18 +2655,6 @@ int LightMain( int argc, char **argv ){
 		else if ( !strcmp( argv[ i ],  "-custinfoparms" ) ) {
 			Sys_Printf( "Custom info parms enabled\n" );
 			useCustomInfoParms = qtrue;
-		}
-
-		else if ( !strcmp( argv[ i ], "-wolf" ) ) {
-			/* -game should already be set */
-			wolfLight = qtrue;
-			Sys_Printf( "Enabling Wolf lighting model (linear default)\n" );
-		}
-
-		else if ( !strcmp( argv[ i ], "-q3" ) ) {
-			/* -game should already be set */
-			wolfLight = qfalse;
-			Sys_Printf( "Enabling Quake 3 lighting model (nonlinear default)\n" );
 		}
 
 		else if ( !strcmp( argv[ i ], "-extradist" ) ) {

@@ -242,9 +242,8 @@
 #define LIGHT_UNNORMALIZED      2048    /* vortex: do not normalize _color */
 
 #define LIGHT_SUN_DEFAULT       ( LIGHT_ATTEN_ANGLE | LIGHT_GRID | LIGHT_SURFACES )
-#define LIGHT_AREA_DEFAULT      ( LIGHT_ATTEN_ANGLE | LIGHT_ATTEN_DISTANCE | LIGHT_GRID | LIGHT_SURFACES )    /* q3a and wolf are the same */
+#define LIGHT_AREA_DEFAULT      ( LIGHT_ATTEN_ANGLE | LIGHT_ATTEN_DISTANCE | LIGHT_GRID | LIGHT_SURFACES )
 #define LIGHT_Q3A_DEFAULT       ( LIGHT_ATTEN_ANGLE | LIGHT_ATTEN_DISTANCE | LIGHT_GRID | LIGHT_SURFACES | LIGHT_FAST )
-#define LIGHT_WOLF_DEFAULT      ( LIGHT_ATTEN_LINEAR | LIGHT_ATTEN_DISTANCE | LIGHT_GRID | LIGHT_SURFACES | LIGHT_FAST )
 
 #define MAX_TRACE_TEST_NODES    256
 #define DEFAULT_INHIBIT_RADIUS  1.5f
@@ -537,12 +536,11 @@ typedef struct game_s
 	int maxLMSurfaceVerts;                              /* default maximum meta surface verts */
 	int maxSurfaceVerts;                                /* default maximum surface verts */
 	int maxSurfaceIndexes;                              /* default maximum surface indexes (tris * 3) */
-	qboolean wolfLight;                                 /* when true, lights work like wolf q3map  */
 	int lightmapSize;                                   /* bsp lightmap width/height */
 	float lightmapGamma;                                /* default lightmap gamma */
 	qboolean lightmapsRGB;                              /* default lightmap sRGB mode */
 	qboolean texturesRGB;                               /* default texture sRGB mode */
-	qboolean colorsRGB;                             /* default color sRGB mode */
+	qboolean colorsRGB;                                 /* default color sRGB mode */
 	float lightmapExposure;                             /* default lightmap exposure */
 	float lightmapCompensate;                           /* default lightmap compensate value */
 	float gridScale;                                    /* vortex: default lightgrid scale (affects both directional and ambient spectres) */
@@ -2196,7 +2194,6 @@ Q_EXTERN vportal_t          *sorted_portals[ MAX_MAP_PORTALS * 2 ];
    ------------------------------------------------------------------------------- */
 
 /* commandline arguments */
-Q_EXTERN qboolean wolfLight Q_ASSIGN( qfalse );
 Q_EXTERN float extraDist Q_ASSIGN( 0.0f );
 Q_EXTERN qboolean loMem Q_ASSIGN( qfalse );
 Q_EXTERN qboolean noStyles Q_ASSIGN( qfalse );
