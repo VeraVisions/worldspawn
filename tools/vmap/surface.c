@@ -504,7 +504,7 @@ void ClassifySurfaces( int numSurfs, mapDrawSurface_t *ds ){
 	/* walk the list of surfaces */
 	for ( ; numSurfs > 0; numSurfs--, ds++ )
 	{
-		/* ignore bogus (or flare) surfaces */
+		/* ignore bogus surfaces */
 		if ( ds->type == SURFACE_BAD || ds->numVerts <= 0 ) {
 			continue;
 		}
@@ -1251,57 +1251,6 @@ mapDrawSurface_t *DrawSurfaceForMesh( entity_t *e, parseMesh_t *p, mesh_t *mesh 
 	return ds;
 }
 
-
-
-/*
-   DrawSurfaceForFlare() - ydnar
-   creates a flare draw surface
- */
-
-mapDrawSurface_t *DrawSurfaceForFlare( int entNum, vec3_t origin, vec3_t normal, vec3_t color, const char *flareShader, int lightStyle ){
-	mapDrawSurface_t    *ds;
-
-
-	/* emit flares? */
-	if ( emitFlares == qfalse ) {
-		return NULL;
-	}
-
-	/* allocate drawsurface */
-	ds = AllocDrawSurface( SURFACE_FLARE );
-	ds->entityNum = entNum;
-
-	/* set it up */
-	if ( flareShader != NULL && flareShader[ 0 ] != '\0' ) {
-		ds->shaderInfo = ShaderInfoForShader( flareShader );
-	}
-	else{
-		ds->shaderInfo = ShaderInfoForShader( game->flareShader );
-	}
-	if ( origin != NULL ) {
-		VectorCopy( origin, ds->lightmapOrigin );
-	}
-	if ( normal != NULL ) {
-		VectorCopy( normal, ds->lightmapVecs[ 2 ] );
-	}
-	if ( color != NULL ) {
-		VectorCopy( color, ds->lightmapVecs[ 0 ] );
-	}
-
-	/* store light style */
-	ds->lightStyle = lightStyle;
-	if ( ds->lightStyle < 0 || ds->lightStyle >= LS_NONE ) {
-		ds->lightStyle = LS_NORMAL;
-	}
-
-	/* fixme: fog */
-
-	/* return to sender */
-	return ds;
-}
-
-
-
 /*
    DrawSurfaceForShader() - ydnar
    creates a bogus surface to forcing the game to load a shader
@@ -1336,35 +1285,6 @@ mapDrawSurface_t *DrawSurfaceForShader( char *shader ){
 	/* return to sender */
 	return ds;
 }
-
-
-
-/*
-   AddSurfaceFlare() - ydnar
-   creates flares (coronas) centered on surfaces
- */
-
-static void AddSurfaceFlare( mapDrawSurface_t *ds, vec3_t entityOrigin ){
-	vec3_t origin;
-	int i;
-
-
-	/* find centroid */
-	VectorClear( origin );
-	for ( i = 0; i < ds->numVerts; i++ )
-		VectorAdd( origin, ds->verts[ i ].xyz, origin );
-	VectorScale( origin, ( 1.0f / ds->numVerts ), origin );
-	if ( entityOrigin != NULL ) {
-		VectorAdd( origin, entityOrigin, origin );
-	}
-
-	/* push origin off surface a bit */
-	VectorMA( origin, 2.0f,  ds->lightmapVecs[ 2 ], origin );
-
-	/* create the drawsurface */
-	DrawSurfaceForFlare( ds->entityNum, origin, ds->lightmapVecs[ 2 ], ds->shaderInfo->color, ds->shaderInfo->flareShader, ds->shaderInfo->lightStyle );
-}
-
 
 
 /*
@@ -2384,18 +2304,6 @@ static int FilterFoliageIntoTree( mapDrawSurface_t *ds, tree_t *tree ){
 	return refs;
 }
 
-
-
-/*
-   FilterFlareIntoTree()
-   simple point filtering for flare surfaces
- */
-static int FilterFlareSurfIntoTree( mapDrawSurface_t *ds, tree_t *tree ){
-	return FilterPointIntoTree_r( ds->lightmapOrigin, ds, tree->headnode );
-}
-
-
-
 /*
    EmitDrawVerts() - ydnar
    emits bsp drawverts from a map drawsurface
@@ -2557,17 +2465,17 @@ void EmitDrawIndexes( mapDrawSurface_t *ds, bspDrawSurface_t *out ){
 
 
 /*
-   EmitFlareSurface()
-   emits a bsp flare drawsurface
+   EmitSurface()
+   emits a bsp drawsurface
  */
 
-void EmitFlareSurface( mapDrawSurface_t *ds ){
+void EmitSurface( mapDrawSurface_t *ds ){
 	int i;
 	bspDrawSurface_t        *out;
 
 
-	/* ydnar: nuking useless flare drawsurfaces */
-	if ( emitFlares == qfalse && ds->type != SURFACE_SHADER ) {
+	/* ydnar: nuking useless drawsurfaces */
+	if ( ds->type != SURFACE_SHADER ) {
 		return;
 	}
 
@@ -3503,7 +3411,7 @@ int AddSurfaceModels( mapDrawSurface_t *ds ){
 			}
 			break;
 
-		/* no support for flares, foghull, etc */
+		/* no support for foghull, etc */
 		default:
 			break;
 		}
@@ -3658,11 +3566,6 @@ void FilterDrawsurfsIntoTree( entity_t *e, tree_t *tree ){
 				Foliage( ds );
 			}
 
-			/* create a flare surface if necessary */
-			if ( si->flareShader != NULL && si->flareShader[ 0 ] ) {
-				AddSurfaceFlare( ds, e->origin );
-			}
-
 			/* ydnar: don't emit nodraw surfaces (like nodraw fog) */
 			if ( ( si->compileFlags & C_NODRAW ) && ds->type != SURFACE_PATCH ) {
 				continue;
@@ -3750,20 +3653,10 @@ void FilterDrawsurfsIntoTree( entity_t *e, tree_t *tree ){
 			}
 			break;
 
-		/* handle flares */
-		case SURFACE_FLARE:
-			if ( refs == 0 ) {
-				refs = FilterFlareSurfIntoTree( ds, tree );
-			}
-			if ( refs > 0 ) {
-				EmitFlareSurface( ds );
-			}
-			break;
-
 		/* handle shader-only surfaces */
 		case SURFACE_SHADER:
 			refs = 1;
-			EmitFlareSurface( ds );
+			EmitSurface( ds );
 			break;
 
 		/* no references */

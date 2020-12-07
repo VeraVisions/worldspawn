@@ -1064,16 +1064,6 @@ static void ParseShaderFile( const char *filename ){
 							if ( !Q_stricmp( token, "animMap" ) || !Q_stricmp( token, "clampAnimMap" ) ) {
 								GetTokenAppend( shaderText, qfalse );
 							}
-
-							/* get an image */
-							GetTokenAppend( shaderText, qfalse );
-							if ( token[ 0 ] != '*' && token[ 0 ] != '$' ) {
-								strcpy( si->lightImagePath, token );
-								DefaultExtension( si->lightImagePath, ".tga" );
-
-								/* debug code */
-								//%	Sys_FPrintf( SYS_VRB, "Deduced shader image: %s\n", si->lightImagePath );
-							}
 						}
 					}
 				}
@@ -1164,12 +1154,6 @@ static void ParseShaderFile( const char *filename ){
 				}
 			}
 
-			/* light <value> (old-style flare specification) */
-			else if ( !Q_stricmp( token, "light" ) ) {
-				GetTokenAppend( shaderText, qfalse );
-				si->flareShader = game->flareShader;
-			}
-
 			/* ydnar: damageShader <shader> <health> (sof2 mods) */
 			else if ( !Q_stricmp( token, "damageShader" ) ) {
 				GetTokenAppend( shaderText, qfalse );
@@ -1255,11 +1239,6 @@ static void ParseShaderFile( const char *filename ){
 				/* ignore bogus paths */
 				if ( Q_stricmp( token, "-" ) && Q_stricmp( token, "full" ) ) {
 					strcpy( si->skyParmsImageBase, token );
-
-					/* use top image as sky light image */
-					if ( si->lightImagePath[ 0 ] == '\0' ) {
-						sprintf( si->lightImagePath, "%s_up.tga", si->skyParmsImageBase );
-					}
 				}
 
 				/* skip rest of line */
@@ -1615,15 +1594,6 @@ static void ParseShaderFile( const char *filename ){
 				/* q3map_noVertexLight */
 				else if ( !Q_stricmp( token, "q3map_noVertexLight" ) || !Q_stricmp( token, "vmap_noVertexLight" ) ) {
 					si->noVertexLight = qtrue;
-				}
-
-				/* q3map_flare[Shader] <shader> */
-				else if ( !Q_stricmp( token, "q3map_flare" ) || !Q_stricmp( token, "vmap_flare" ) ) {
-					GetTokenAppend( shaderText, qfalse );
-					if ( token[ 0 ] != '\0' ) {
-						si->flareShader = safe_malloc( strlen( token ) + 1 );
-						strcpy( si->flareShader, token );
-					}
 				}
 
 				/* q3map_backShader <shader> */

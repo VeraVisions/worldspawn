@@ -366,59 +366,6 @@ void ProcessWorldModel( const char *portalFilePath, const char *lineFilePath ){
 		MakeFogHullSurfs( e, tree, shader );
 	}
 
-	/* ydnar: bug 645: do flares for lights */
-	for ( i = 0; i < numEntities && emitFlares; i++ )
-	{
-		entity_t    *light, *target;
-		const char  *value, *flareShader;
-		vec3_t origin, targetOrigin, normal, color;
-		int lightStyle;
-
-
-		/* get light */
-		light = &entities[ i ];
-		value = ValueForKey( light, "classname" );
-		if ( !strcmp( value, "light" ) ) {
-			/* get flare shader */
-			flareShader = ValueForKey( light, "_flareshader" );
-			value = ValueForKey( light, "_flare" );
-			if ( flareShader[ 0 ] != '\0' || value[ 0 ] != '\0' ) {
-				/* get specifics */
-				GetVectorForKey( light, "origin", origin );
-				GetVectorForKey( light, "_color", color );
-				lightStyle = IntForKey( light, "_style" );
-				if ( lightStyle == 0 ) {
-					lightStyle = IntForKey( light, "style" );
-				}
-
-				/* handle directional spotlights */
-				value = ValueForKey( light, "target" );
-				if ( value[ 0 ] != '\0' ) {
-					/* get target light */
-					target = FindTargetEntity( value );
-					if ( target != NULL ) {
-						GetVectorForKey( target, "origin", targetOrigin );
-						VectorSubtract( targetOrigin, origin, normal );
-						VectorNormalize( normal, normal );
-					}
-				}
-				else{
-					//%	VectorClear( normal );
-					VectorSet( normal, 0, 0, -1 );
-				}
-
-				if ( colorsRGB ) {
-					color[0] = Image_LinearFloatFromsRGBFloat( color[0] );
-					color[1] = Image_LinearFloatFromsRGBFloat( color[1] );
-					color[2] = Image_LinearFloatFromsRGBFloat( color[2] );
-				}
-
-				/* create the flare surface (note shader defaults automatically) */
-				DrawSurfaceForFlare( mapEntityNum, origin, normal, color, flareShader, lightStyle );
-			}
-		}
-	}
-
 	/* add references to the final drawsurfs in the apropriate clusters */
 	FilterDrawsurfsIntoTree( e, tree );
 
@@ -587,11 +534,6 @@ void OnlyEnts( const char *BSPFilePath ){
 	LoadBSPFile( BSPFilePath );
 
 	ParseEntities();
-	p = ValueForKey( &entities[0], "_q3map2_cmdline" );
-	strncpy( save_cmdline, p, sizeof( save_cmdline ) );
-	save_cmdline[sizeof( save_cmdline ) - 1] = 0;
-	p = ValueForKey( &entities[0], "_q3map2_version" );
-	strncpy( save_version, p, sizeof( save_version ) );
 	save_version[sizeof( save_version ) - 1] = 0;
 	p = ValueForKey( &entities[0], "gridsize" );
 	strncpy( save_gridsize, p, sizeof( save_gridsize ) );
@@ -604,12 +546,6 @@ void OnlyEnts( const char *BSPFilePath ){
 	SetModelNumbers();
 	SetLightStyles();
 
-	if ( *save_cmdline ) {
-		SetKeyValue( &entities[0], "_q3map2_cmdline", save_cmdline );
-	}
-	if ( *save_version ) {
-		SetKeyValue( &entities[0], "_q3map2_version", save_version );
-	}
 	if ( *save_gridsize ) {
 		SetKeyValue( &entities[0], "gridsize", save_gridsize );
 	}
@@ -655,7 +591,6 @@ int BSPMain( int argc, char **argv ){
 	/* set standard game flags */
 	maxSurfaceVerts = game->maxSurfaceVerts;
 	maxSurfaceIndexes = game->maxSurfaceIndexes;
-	emitFlares = game->emitFlares;
 	texturesRGB = game->texturesRGB;
 	colorsRGB = game->colorsRGB;
 
@@ -856,14 +791,6 @@ int BSPMain( int argc, char **argv ){
 		else if ( !strcmp( argv[ i ], "-patchmeta" ) ) {
 			Sys_Printf( "Creating meta surfaces from patches\n" );
 			patchMeta = qtrue;
-		}
-		else if ( !strcmp( argv[ i ], "-flares" ) ) {
-			Sys_Printf( "Flare surfaces enabled\n" );
-			emitFlares = qtrue;
-		}
-		else if ( !strcmp( argv[ i ], "-noflares" ) ) {
-			Sys_Printf( "Flare surfaces disabled\n" );
-			emitFlares = qfalse;
 		}
 		else if ( !strcmp( argv[ i ], "-skyfix" ) ) {
 			Sys_Printf( "GL_CLAMP sky fix/hack/workaround enabled\n" );

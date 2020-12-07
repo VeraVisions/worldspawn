@@ -537,8 +537,6 @@ typedef struct game_s
 	int maxLMSurfaceVerts;                              /* default maximum meta surface verts */
 	int maxSurfaceVerts;                                /* default maximum surface verts */
 	int maxSurfaceIndexes;                              /* default maximum surface indexes (tris * 3) */
-	qboolean emitFlares;                                /* when true, emit flare surfaces */
-	char                *flareShader;                   /* default flare shader (MUST BE SET) */
 	qboolean wolfLight;                                 /* when true, lights work like wolf q3map  */
 	int lightmapSize;                                   /* bsp lightmap width/height */
 	float lightmapGamma;                                /* default lightmap gamma */
@@ -681,7 +679,6 @@ typedef struct shaderInfo_s
 	int compileFlags;
 	float value;                                        /* light value */
 
-	char                *flareShader;                   /* for light flares */
 	char                *damageShader;                  /* ydnar: sof2 damage shader name */
 	char                *backShader;                    /* for surfaces that generate different front and back passes */
 	char                *cloneShader;                   /* ydnar: for cloning of a surface */
@@ -1043,9 +1040,9 @@ typedef struct mapDrawSurface_s
 	int                 *indexes;
 
 	int planeNum;
-	vec3_t lightmapOrigin;                  /* also used for flares */
-	vec3_t lightmapVecs[ 3 ];               /* also used for flares */
-	int lightStyle;                         /* used for flares */
+	vec3_t lightmapOrigin;
+	vec3_t lightmapVecs[ 3 ];
+	int lightStyle;
 
 	/* ydnar: per-surface (per-entity, actually) lightmap sample size scaling */
 	float lightmapScale;
@@ -1709,7 +1706,6 @@ void                        ClearSurface( mapDrawSurface_t *ds );
 void                        AddEntitySurfaceModels( entity_t *e );
 mapDrawSurface_t            *DrawSurfaceForSide( entity_t *e, brush_t *b, side_t *s, winding_t *w );
 mapDrawSurface_t            *DrawSurfaceForMesh( entity_t *e, parseMesh_t *p, mesh_t *mesh );
-mapDrawSurface_t            *DrawSurfaceForFlare( int entNum, vec3_t origin, vec3_t normal, vec3_t color, const char *flareShader, int lightStyle );
 mapDrawSurface_t            *DrawSurfaceForShader( char *shader );
 void                        ClipSidesIntoTree( entity_t *e, tree_t *tree );
 void                        MakeDebugPortalSurfs( tree_t *tree );
@@ -2025,7 +2021,6 @@ Q_EXTERN int texRange Q_ASSIGN( 0 );
 Q_EXTERN qboolean flat Q_ASSIGN( qfalse );
 Q_EXTERN qboolean meta Q_ASSIGN( qfalse );
 Q_EXTERN qboolean patchMeta Q_ASSIGN( qfalse );
-Q_EXTERN qboolean emitFlares Q_ASSIGN( qfalse );
 Q_EXTERN qboolean debugSurfaces Q_ASSIGN( qfalse );
 Q_EXTERN qboolean debugInset Q_ASSIGN( qfalse );
 Q_EXTERN qboolean debugPortals Q_ASSIGN( qfalse );

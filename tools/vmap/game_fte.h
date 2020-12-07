@@ -103,8 +103,6 @@
 	65535, /* max lightmapped surface verts */
 	65535, /* max surface verts */
 	1048575, /* max surface indexes */
-	qfalse, /* flares */
-	"flareshader", /* default flare shader */
 	qfalse, /* wolf lighting model? */
 	512, /* lightmap width/height */
 	1.0f, /* lightmap gamma */

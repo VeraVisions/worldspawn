@@ -58,8 +58,6 @@
 	0,              /* max lightmapped surface verts */
 	0,              /* max surface verts */
 	0,              /* max surface indexes */
-	qfalse,         /* flares */
-	NULL,           /* default flare shader */
 	qfalse,         /* wolf lighting model? */
 	0,              /* lightmap width/height */
 	0,              /* lightmap gamma */
