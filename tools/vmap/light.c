@@ -1811,7 +1811,7 @@ void TraceGrid( int num ){
 			}
 
 			/* fallback */
-			else{
+			else {
 				j = 0;
 			}
 		}

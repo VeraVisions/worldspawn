@@ -316,28 +316,6 @@ void HelpImport()
 	HelpOptions("Importing lightmaps", 0, 80, import, sizeof(import)/sizeof(struct HelpOption));
 }
 
-void HelpMinimap()
-{
-	struct HelpOption minimap[] = {
-		{"-minimap <filename.bsp>", "Creates a minimap of the BSP, by default writes to `../gfx/filename_mini.tga`"},
-		{"-black", "Write the minimap as a black-on-transparency RGBA32 image"},
-		{"-boost <F>", "Sets the contrast boost value (higher values make a brighter image); contrast boost is somewhat similar to gamma, but continuous even at zero"},
-		{"-border <F>", "Sets the amount of border pixels relative to the total image size"},
-		{"-gray", "Write the minimap as a white-on-black GRAY8 image"},
-		{"-keepaspect", "Ensure the aspect ratio is kept (the minimap is then letterboxed to keep aspect)"},
-		{"-minmax <xmin ymin zmin xmax ymax zmax>", "Forces specific map dimensions (note: the minimap actually uses these dimensions, scaled to the target size while keeping aspect with centering, and 1/64 of border appended to all sides)"},
-		{"-nokeepaspect", "Do not ensure the aspect ratio is kept (makes it easier to use the image in your code, but looks bad together with sharpening)"},
-		{"-o <filename.tga>", "Sets the output file name"},
-		{"-random <N>", "Sets the randomized supersampling count (cannot be combined with `-samples`)"},
-		{"-samples <N>", "Sets the ordered supersampling count (cannot be combined with `-random`)"},
-		{"-sharpen <F>", "Sets the sharpening coefficient"},
-		{"-size <N>", "Sets the width and height of the output image"},
-		{"-white", "Write the minimap as a white-on-transparency RGBA32 image"},
-	};
-
-	HelpOptions("MiniMap", 0, 80, minimap, sizeof(minimap)/sizeof(struct HelpOption));
-}
-
 void HelpCommon()
 {
 	struct HelpOption common[] = {
@@ -380,7 +358,6 @@ void HelpMain(const char* arg)
 		{"-fixaas", "Fixing AAS checksum"},
 		{"-info", "Get info about BSP file"},
 		{"-import", "Importing lightmaps"},
-		{"-minimap", "MiniMap"},
 	};
 	void(*help_funcs[])() = {
 		HelpBsp,
@@ -394,7 +371,6 @@ void HelpMain(const char* arg)
 		HelpFixaas,
 		HelpInfo,
 		HelpImport,
-		HelpMinimap,
 	};
 
 	if ( arg && strlen(arg) > 0 )
