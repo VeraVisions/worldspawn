@@ -349,7 +349,7 @@ void SetLightStyles( void ){
 		}
 
 		/* set explicit style */
-		sprintf( value, "%d", 32 + j );
+		sprintf( value, "%d", 12 + j );
 		SetKeyValue( e, "style", value );
 
 		/* set old style */
