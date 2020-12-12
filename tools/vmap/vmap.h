@@ -73,6 +73,7 @@
 #include "picomodel.h"
 
 #include "scriplib.h"
+#include "matlib.h"
 #include "polylib.h"
 #include "imagelib.h"
 #include "qthreads.h"

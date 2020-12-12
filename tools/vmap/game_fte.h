@@ -96,7 +96,7 @@
 
 {
 	"fte", /* -game x */
-	"wastes", /* default base game data dir */
+	"platform", /* default base game data dir */
 	".fte", /* unix home sub-dir */
 	"quake", /* magic path word */
 	"scripts", /* shader directory */

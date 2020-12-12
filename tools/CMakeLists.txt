@@ -48,6 +48,7 @@ radiant_tool(vmap
         common/qfiles.h
         common/qthreads.h
         common/scriplib.c common/scriplib.h
+        common/matlib.c common/matlib.h
         common/surfaceflags.h
         common/threads.c
         common/vfs.c common/vfs.h
