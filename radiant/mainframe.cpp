@@ -897,6 +897,18 @@ void Copy()
     }
 }
 
+
+
+enum ENudgeDirection {
+    eNudgeUp = 1,
+    eNudgeDown = 3,
+    eNudgeLeft = 0,
+    eNudgeRight = 2,
+};
+
+
+void NudgeSelection(ENudgeDirection direction, float fAmount, VIEWTYPE viewtype);
+
 void Paste()
 {
     if (SelectedFaces_empty()) {
@@ -904,6 +916,9 @@ void Paste()
 
         GlobalSelectionSystem().setSelectedAll(false);
         Selection_Paste();
+
+		NudgeSelection(eNudgeRight, GetGridSize(), GlobalXYWnd_getCurrentViewType());
+		NudgeSelection(eNudgeDown, GetGridSize(), GlobalXYWnd_getCurrentViewType());
     } else {
         SelectedFaces_pasteTexture();
     }
@@ -1454,13 +1469,6 @@ void Scene_Clone_Selected(scene::Graph &graph, bool doMakeUnique)
     Map_mergeClonedNames();
 }
 
-enum ENudgeDirection {
-    eNudgeUp = 1,
-    eNudgeDown = 3,
-    eNudgeLeft = 0,
-    eNudgeRight = 2,
-};
-
 struct AxisBase {
     Vector3 x;
     Vector3 y;
@@ -1519,8 +1527,8 @@ void Selection_Clone()
 
         Scene_Clone_Selected(GlobalSceneGraph(), false);
 
-        //NudgeSelection(eNudgeRight, GetGridSize(), GlobalXYWnd_getCurrentViewType());
-        //NudgeSelection(eNudgeDown, GetGridSize(), GlobalXYWnd_getCurrentViewType());
+        NudgeSelection(eNudgeRight, GetGridSize(), GlobalXYWnd_getCurrentViewType());
+        NudgeSelection(eNudgeDown, GetGridSize(), GlobalXYWnd_getCurrentViewType());
     }
 }
 
@@ -1531,8 +1539,8 @@ void Selection_Clone_MakeUnique()
 
         Scene_Clone_Selected(GlobalSceneGraph(), true);
 
-        //NudgeSelection(eNudgeRight, GetGridSize(), GlobalXYWnd_getCurrentViewType());
-        //NudgeSelection(eNudgeDown, GetGridSize(), GlobalXYWnd_getCurrentViewType());
+        NudgeSelection(eNudgeRight, GetGridSize(), GlobalXYWnd_getCurrentViewType());
+        NudgeSelection(eNudgeDown, GetGridSize(), GlobalXYWnd_getCurrentViewType());
     }
 }
 
