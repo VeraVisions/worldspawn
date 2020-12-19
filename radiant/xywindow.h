@@ -231,6 +231,8 @@ private:
     void OriginalButtonDown(guint32 nFlags, int point, int pointy);
 
     void OnContextMenu();
+    void OnBrushMenu();
+    void OnPointMenu();
 
     void PaintSizeInfo(int nDim1, int nDim2, Vector3 &vMinBounds, Vector3 &vMaxBounds);
 
@@ -254,10 +256,16 @@ public:
     }
 
     void EntityCreate_MouseDown(int x, int y);
-
     void EntityCreate_MouseMove(int x, int y);
-
     void EntityCreate_MouseUp(int x, int y);
+
+    void BrushCreate_MouseDown(int x, int y);
+    void BrushCreate_MouseMove(int x, int y);
+    void BrushCreate_MouseUp(int x, int y);
+
+    void PointCreate_MouseDown(int x, int y);
+    void PointCreate_MouseMove(int x, int y);
+    void PointCreate_MouseUp(int x, int y);
 
     void OnEntityCreate(const char *item);
 

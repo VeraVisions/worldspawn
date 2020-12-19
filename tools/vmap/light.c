@@ -1273,6 +1273,7 @@ int LightContributionToSample( trace_t *trace ){
 	   to the surface normal the bigger is the amount of radiosity received.
 	   So, for preserving the directional lights contributions, we scale down the radiosity
 	   contribution. It's a hack, but there's a reason behind it */
+#if 1
 	if ( bouncing ) {
 		addDeluxe *= addDeluxeBounceScale;
 		/* better NOT increase it beyond the original value
@@ -1280,7 +1281,8 @@ int LightContributionToSample( trace_t *trace ){
 		    addDeluxe = 0.00390625f;
 		 */
 	}
-
+#endif
+	
 	if ( doAddDeluxe ) {
 		VectorScale( trace->direction, addDeluxe, trace->directionContribution );
 	}
@@ -3013,6 +3015,8 @@ int LightMain( int argc, char **argv ){
 			}
 		}
 	}
+	
+	lightAngleHL = qfalse;
 
 	/* fix up lightmap search power */
 	if ( lightmapMergeSize ) {

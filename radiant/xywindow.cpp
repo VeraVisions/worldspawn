@@ -324,6 +324,16 @@ bool ClipMode()
 	return GlobalSelectionSystem().ManipulatorMode() == SelectionSystem::eClip;
 }
 
+bool IsCreateMode()
+{
+	return GlobalSelectionSystem().ManipulatorMode() == SelectionSystem::eCreate;
+}
+
+bool IsCreateEMode()
+{
+	return GlobalSelectionSystem().ManipulatorMode() == SelectionSystem::eEntSpawn;
+}
+
 void NewClipPoint(const Vector3 &point)
 {
 	if (g_Clip1.Set() == false) {
@@ -1235,16 +1245,9 @@ public:
 
 void XYWnd::OnContextMenu()
 {
-	if (g_xywindow_globals.m_bRightClick == false) {
+	if (g_xywindow_globals.m_bRightClick == false)
 		return;
-	}
 
-	/* first time, init */
-	if (!m_mnuDrop) { 
-		auto menu1 = m_mnuDrop = ui::Menu(ui::New);
-		EntityClassMenuInserter inserter(menu1);
-		GlobalEntityClassManager().forEachPoint(inserter);
-	}
 	if (!m_mnuDropSingle) {
 		auto menu2 = m_mnuDropSingle = ui::Menu(ui::New);
 		create_menu_item_with_mnemonic(menu2, "Make detail", "MakeDetail");
@@ -1275,13 +1278,27 @@ void XYWnd::OnContextMenu()
 		create_menu_item_with_mnemonic(menu3, "_Normalize Color...", "NormalizeColor");
 	}
 
-	if (GlobalSelectionSystem().countSelected() == 0) {
-		gtk_menu_popup(m_mnuDrop, 0, 0, 0, 0, 1, GDK_CURRENT_TIME);
-	} else if (GlobalSelectionSystem().countSelected() == 1) {
+	if (GlobalSelectionSystem().countSelected() == 1) {
 		gtk_menu_popup(m_mnuDropSingle, 0, 0, 0, 0, 1, GDK_CURRENT_TIME);
 	} else {
 		gtk_menu_popup(m_mnuDropMultiple, 0, 0, 0, 0, 1, GDK_CURRENT_TIME);
 	}
+}
+
+void Selection_Deselect();
+void XYWnd::OnPointMenu()
+{
+	/* first time, init */
+	if (!m_mnuDrop) { 
+		auto menu1 = m_mnuDrop = ui::Menu(ui::New);
+		EntityClassMenuInserter inserter(menu1);
+		GlobalEntityClassManager().forEachPoint(inserter);
+	}
+
+	if (GlobalSelectionSystem().countSelected() != 0)
+		Selection_Deselect();
+
+	gtk_menu_popup(m_mnuDrop, 0, 0, 0, 0, 1, GDK_CURRENT_TIME);
 }
 
 FreezePointer g_xywnd_freezePointer;
@@ -1294,6 +1311,8 @@ unsigned int Move_buttons()
 void XYWnd_moveDelta(int x, int y, unsigned int state, void *data)
 {
 	reinterpret_cast<XYWnd *>( data )->EntityCreate_MouseMove(x, y);
+	reinterpret_cast<XYWnd *>( data )->PointCreate_MouseMove(x, y);
+	reinterpret_cast<XYWnd *>( data )->BrushCreate_MouseMove(x, y);
 	reinterpret_cast<XYWnd *>( data )->Scroll(-x, y);
 }
 
@@ -1405,21 +1424,24 @@ void XYWnd::mouseDown(const WindowVector &position, ButtonIdentifier button, Mod
 }
 
 void CamWnd_DisableMovement();
-
 void XYWnd::XY_MouseDown(int x, int y, unsigned int buttons)
 {
-	if (buttons == Move_buttons()) {
-		Move_Begin();
-		EntityCreate_MouseDown(x, y);
+#if 0
+	if (IsCreateEMode()) {
+		PointCreate_MouseDown(x, y);
 	} else if (buttons == Zoom_buttons()) {
 		Zoom_Begin();
 	} else if (ClipMode() && buttons == Clipper_buttons()) {
 		Clipper_OnLButtonDown(x, y);
-	} else if (buttons == NewBrushDrag_buttons() && GlobalSelectionSystem().countSelected() == 0) {
+	} else if (IsCreateMode() && buttons == NewBrushDrag_buttons() && GlobalSelectionSystem().countSelected() == 0) {
+		/* Only do it in eCreate mode */
 		NewBrushDrag_Begin(x, y);
-	}
+	} if (IsCreateMode()) {
+		BrushCreate_MouseDown(x, y);
+	} else if (buttons == Move_buttons()) {
+		Move_Begin();
+	} else if (buttons == MoveCamera_buttons()) {
 		// control mbutton = move camera
-	else if (buttons == MoveCamera_buttons()) {
 		XYWnd_PositionCamera(this, x, y, *g_pParentWnd->GetCamWnd());
 	}
 		// mbutton = angle camera
@@ -1429,25 +1451,184 @@ void XYWnd::XY_MouseDown(int x, int y, unsigned int buttons)
 		m_window_observer->onMouseDown(WindowVector_forInteger(x, y), button_for_flags(buttons),
 					modifiers_for_flags(buttons));
 	}
+#else
+	switch (GlobalSelectionSystem().ManipulatorMode()) {
+		case SelectionSystem::eScale:
+		case SelectionSystem::eRotate:
+		case SelectionSystem::eDrag:
+		case SelectionSystem::eTranslate:
+			if (buttons == Zoom_buttons()) {
+				Zoom_Begin();
+			} else if (buttons == Move_buttons()) {
+				Move_Begin();
+			} else if (buttons == MoveCamera_buttons()) {
+				// control mbutton = move camera
+				XYWnd_PositionCamera(this, x, y, *g_pParentWnd->GetCamWnd());
+			} else if (buttons == OrientCamera_buttons()) {
+				// mbutton = angle camera
+				XYWnd_OrientCamera(this, x, y, *g_pParentWnd->GetCamWnd());
+			} else {
+				m_window_observer->onMouseDown(WindowVector_forInteger(x, y), button_for_flags(buttons),
+							modifiers_for_flags(buttons));
+			}
+			break;
+		case SelectionSystem::eClip:
+			if (buttons == Clipper_buttons()) {
+				Clipper_OnLButtonDown(x, y);
+			} else if (buttons == Move_buttons()) {
+				Move_Begin();
+			} else if (buttons == MoveCamera_buttons()) {
+				// control mbutton = move camera
+				XYWnd_PositionCamera(this, x, y, *g_pParentWnd->GetCamWnd());
+			} else if (buttons == OrientCamera_buttons()) {
+				// mbutton = angle camera
+				XYWnd_OrientCamera(this, x, y, *g_pParentWnd->GetCamWnd());
+			} else {
+				m_window_observer->onMouseDown(WindowVector_forInteger(x, y), button_for_flags(buttons),
+							modifiers_for_flags(buttons));
+			}
+			break;
+		case SelectionSystem::ePatchSpawn:
+		case SelectionSystem::eCreate:
+			if (buttons == NewBrushDrag_buttons() && GlobalSelectionSystem().countSelected() == 0)
+				NewBrushDrag_Begin(x, y);
+			else if (buttons == Move_buttons() && GlobalSelectionSystem().countSelected() == 0) {
+				Move_Begin();
+			} else if (buttons == MoveCamera_buttons()) {
+				// control mbutton = move camera
+				XYWnd_PositionCamera(this, x, y, *g_pParentWnd->GetCamWnd());
+			} else if (buttons == OrientCamera_buttons()) {
+				// mbutton = angle camera
+				XYWnd_OrientCamera(this, x, y, *g_pParentWnd->GetCamWnd());
+			} else {
+				m_window_observer->onMouseDown(WindowVector_forInteger(x, y), button_for_flags(buttons),
+							modifiers_for_flags(buttons));
+			}
+			break;
+		case SelectionSystem::eEntSpawn:
+			if (buttons == NewBrushDrag_buttons()) 
+				PointCreate_MouseDown(x, y);
+			else if (buttons == Move_buttons() && GlobalSelectionSystem().countSelected() == 0) {
+				Move_Begin();
+			} else if (buttons == MoveCamera_buttons()) {
+				// control mbutton = move camera
+				XYWnd_PositionCamera(this, x, y, *g_pParentWnd->GetCamWnd());
+			} else if (buttons == OrientCamera_buttons()) {
+				// mbutton = angle camera
+				XYWnd_OrientCamera(this, x, y, *g_pParentWnd->GetCamWnd());
+			} else {
+				m_window_observer->onMouseDown(WindowVector_forInteger(x, y), button_for_flags(buttons),
+							modifiers_for_flags(buttons));
+			}
+			break;
+	}
+#endif
+
 	CamWnd_DisableMovement();
 }
 
+void Patch_Plane();
 void XYWnd::XY_MouseUp(int x, int y, unsigned int buttons)
 {
-	if (m_move_started) {
+#if 0
+	if (IsCreateEMode()) {
+		PointCreate_MouseUp(x, y);
+	} else if (IsCreateMode() && buttons == Move_buttons()) {
+		BrushCreate_MouseUp(x, y);
+	} else if (m_move_started) {
 		Move_End();
 		EntityCreate_MouseUp(x, y);
 	} else if (m_zoom_started) {
 		Zoom_End();
 	} else if (ClipMode() && buttons == Clipper_buttons()) {
 		Clipper_OnLButtonUp(x, y);
-	} else if (m_bNewBrushDrag) {
+	}else if (m_bNewBrushDrag) {
 		m_bNewBrushDrag = false;
 		NewBrushDrag_End(x, y);
-	} else {
+	}else {
 		m_window_observer->onMouseUp(WindowVector_forInteger(x, y), button_for_flags(buttons),
 					modifiers_for_flags(buttons));
 	}
+#else
+	switch (GlobalSelectionSystem().ManipulatorMode()) {
+		case SelectionSystem::eScale:
+		case SelectionSystem::eRotate:
+		case SelectionSystem::eDrag:
+		case SelectionSystem::eTranslate:
+			if (m_move_started) {
+				Move_End();
+				EntityCreate_MouseUp(x, y);
+			} else if (m_zoom_started) {
+				Zoom_End();
+			} else {
+				m_window_observer->onMouseUp(WindowVector_forInteger(x, y), button_for_flags(buttons),
+							modifiers_for_flags(buttons));
+			}
+			break;
+		case SelectionSystem::eClip:
+			if (buttons == Clipper_buttons())
+				Clipper_OnLButtonUp(x, y);
+			 else if (m_move_started) {
+				Move_End();
+				EntityCreate_MouseUp(x, y);
+			} else if (m_zoom_started) {
+				Zoom_End();
+			} else {
+				m_window_observer->onMouseUp(WindowVector_forInteger(x, y), button_for_flags(buttons),
+							modifiers_for_flags(buttons));
+			}
+			break;
+		case SelectionSystem::eCreate:
+			if (buttons == Move_buttons() && GlobalSelectionSystem().countSelected() != 0) {
+				BrushCreate_MouseUp(x, y);
+				Selection_Deselect();
+			} else if (m_move_started) {
+				Move_End();
+				EntityCreate_MouseUp(x, y);
+			} else if (m_zoom_started) {
+				Zoom_End();
+			} else if (m_bNewBrushDrag) {
+				m_bNewBrushDrag = false;
+				NewBrushDrag_End(x, y);
+			} else {
+				m_window_observer->onMouseUp(WindowVector_forInteger(x, y), button_for_flags(buttons),
+							modifiers_for_flags(buttons));
+			}
+			break;
+		case SelectionSystem::eEntSpawn:
+			if (buttons == Move_buttons() && GlobalSelectionSystem().countSelected() != 0) {
+				Selection_Deselect();
+			} else if (buttons == NewBrushDrag_buttons()) 
+				PointCreate_MouseUp(x, y);
+			 else if (m_move_started) {
+				Move_End();
+				EntityCreate_MouseUp(x, y);
+			} else if (m_zoom_started) {
+				Zoom_End();
+			} else {
+				m_window_observer->onMouseUp(WindowVector_forInteger(x, y), button_for_flags(buttons),
+							modifiers_for_flags(buttons));
+			}
+			break;
+		case SelectionSystem::ePatchSpawn:
+			if (buttons == Move_buttons() && GlobalSelectionSystem().countSelected() != 0) {
+				BrushCreate_MouseUp(x, y);
+				Patch_Plane();
+			} else if (m_move_started) {
+				Move_End();
+				EntityCreate_MouseUp(x, y);
+			} else if (m_zoom_started) {
+				Zoom_End();
+			} else if (m_bNewBrushDrag) {
+				m_bNewBrushDrag = false;
+				NewBrushDrag_End(x, y);
+			} else {
+				m_window_observer->onMouseUp(WindowVector_forInteger(x, y), button_for_flags(buttons),
+							modifiers_for_flags(buttons));
+			}
+			break;
+	}
+#endif
 }
 
 void XYWnd::XY_MouseMoved(int x, int y, unsigned int buttons)
@@ -1513,6 +1694,51 @@ void XYWnd::EntityCreate_MouseUp(int x, int y)
 	if (m_entityCreate) {
 		m_entityCreate = false;
 		OnContextMenu();
+	}
+}
+
+void XYWnd::BrushCreate_MouseDown(int x, int y)
+{
+	m_entityCreate = true;
+	m_entityCreate_x = x;
+	m_entityCreate_y = y;
+}
+
+void XYWnd::BrushCreate_MouseMove(int x, int y)
+{
+	if (m_entityCreate && (m_entityCreate_x != x || m_entityCreate_y != y)) {
+		m_entityCreate = false;
+	}
+}
+
+void XYWnd::BrushCreate_MouseUp(int x, int y)
+{
+	if (m_entityCreate) {
+		m_entityCreate = false;
+		m_bNewBrushDrag = false;
+		NewBrushDrag_End(x, y);
+	}
+}
+
+void XYWnd::PointCreate_MouseDown(int x, int y)
+{
+	m_entityCreate = true;
+	m_entityCreate_x = x;
+	m_entityCreate_y = y;
+}
+
+void XYWnd::PointCreate_MouseMove(int x, int y)
+{
+	if (m_entityCreate && (m_entityCreate_x != x || m_entityCreate_y != y)) {
+		m_entityCreate = false;
+	}
+}
+
+void XYWnd::PointCreate_MouseUp(int x, int y)
+{
+	if (m_entityCreate) {
+		m_entityCreate = false;
+		OnPointMenu();
 	}
 }
 
