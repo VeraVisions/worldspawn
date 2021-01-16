@@ -186,7 +186,7 @@
 		{ "dust",           0,                          0,                          Q_SURF_DUST,                0,                          0,                          0 },
 
 		/* nodraw2 is seen by the engine but NOT handled by the compiler tools, and thus never stripped */
-		{ "nodraw2",        0,                          0,                          Q_SURF_NODRAW,              0,                          0,                          0 },
+		{ "nodraw2",        Q_CONT_STRUCTURAL,          0,                          0,                          0,                          C_STRUCTURAL,               0 },
 		/* q2/hlish-style ladder volumes */
 		{ "laddervolume",   FTE_CONT_LADDER,            Q_CONT_SOLID,               0,                          0,                          0,                          0 },
 		/* trisoup uses mesh collisions, instead of being non-solid */

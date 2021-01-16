@@ -14,7 +14,7 @@ endif ()
 
 # CMake 3.0+ would allow this in project()
 set(WorldSpawn_VERSION_MAJOR 1)
-set(WorldSpawn_VERSION_MINOR 0)
+set(WorldSpawn_VERSION_MINOR 1)
 set(WorldSpawn_VERSION_PATCH 0)
 set(WorldSpawn_VERSION "${WorldSpawn_VERSION_MAJOR}.${WorldSpawn_VERSION_MINOR}.${WorldSpawn_VERSION_PATCH}")
 

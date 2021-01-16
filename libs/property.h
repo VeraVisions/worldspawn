@@ -102,6 +102,23 @@ Property<T> make_property(Self &self) {
 
 // chain
 
+template<typename DST, typename SRC, typename X, typename A>
+struct make_property_chain_I_1 {
+    static void ExportThunk(const Callback<void(DST)> &self, SRC value) {
+        PropertyImpl<SRC, DST>::Export(value, self);
+    }
+
+    static void Export(const X &self, const Callback<void(DST)> &returnz) {
+        A::Get::thunk_(self, ConstReferenceCaller<Callback<void(DST)>, void(SRC), ExportThunk>(returnz));
+    }
+
+    static void Import(X &self, DST value) {
+        SRC out;
+        PropertyImpl<SRC, DST>::Import(out, value);
+        A::Set::thunk_(self, out);
+    }
+};
+
 template<class I_Outer, class I_Inner>
 Property<detail::propertyimpl_other<I_Outer>> make_property_chain(detail::propertyimpl_self<I_Inner> &it) {
     using DST = detail::propertyimpl_other<I_Outer>;
@@ -109,23 +126,26 @@ Property<detail::propertyimpl_other<I_Outer>> make_property_chain(detail::proper
     using X = detail::propertyimpl_self<I_Inner>;
 
     using A = property_impl<I_Inner>;
-    struct I {
-        static void ExportThunk(const Callback<void(DST)> &self, SRC value) {
-            PropertyImpl<SRC, DST>::Export(value, self);
-        }
-
-        static void Export(const X &self, const Callback<void(DST)> &returnz) {
-            A::Get::thunk_(self, ConstReferenceCaller<Callback<void(DST)>, void(SRC), ExportThunk>(returnz));
-        }
-
-        static void Import(X &self, DST value) {
-            SRC out;
-            PropertyImpl<SRC, DST>::Import(out, value);
-            A::Set::thunk_(self, out);
-        }
-    };
+    using I = make_property_chain_I_1<DST, SRC, X, A>;
     return make_property<PropertyAdaptor<X, DST, I>>(it);
 }
+
+template<typename DST, typename SRC, typename A>
+struct make_property_chain_I_2 {
+    static void ExportThunk(const Callback<void(DST)> &self, SRC value) {
+        PropertyImpl<SRC, DST>::Export(value, self);
+    }
+
+    static void Export(const Callback<void(DST)> &returnz) {
+        A::Get::thunk_(nullptr, ConstReferenceCaller<Callback<void(DST)>, void(SRC), ExportThunk>(returnz));
+    }
+
+    static void Import(DST value) {
+        SRC out;
+        PropertyImpl<SRC, DST>::Import(out, value);
+        A::Set::thunk_(nullptr, out);
+    }
+};
 
 template<class I_Outer, class I_Inner>
 Property<detail::propertyimpl_other<I_Outer>> make_property_chain() {
@@ -133,21 +153,7 @@ Property<detail::propertyimpl_other<I_Outer>> make_property_chain() {
     using SRC = detail::propertyimpl_self<I_Outer>;
 
     using A = property_impl_free<I_Inner>;
-    struct I {
-        static void ExportThunk(const Callback<void(DST)> &self, SRC value) {
-            PropertyImpl<SRC, DST>::Export(value, self);
-        }
-
-        static void Export(const Callback<void(DST)> &returnz) {
-            A::Get::thunk_(nullptr, ConstReferenceCaller<Callback<void(DST)>, void(SRC), ExportThunk>(returnz));
-        }
-
-        static void Import(DST value) {
-            SRC out;
-            PropertyImpl<SRC, DST>::Import(out, value);
-            A::Set::thunk_(nullptr, out);
-        }
-    };
+    using I = make_property_chain_I_2<DST, SRC, A>;
     return make_property<PropertyAdaptorFree<DST, I>>();
 }
 

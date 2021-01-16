@@ -101,7 +101,7 @@ namespace detail {
 
 	// pointer
 
-	template<class T>
+	template<class T, class U = typename std::enable_if<!std::is_function<T>::value>::type>
 	inline const void *convertToOpaque(const T *t) {
 		return t;
 	}
@@ -113,7 +113,7 @@ namespace detail {
 		}
 	};
 
-	template<class T>
+	template<class T, class U = typename std::enable_if<!std::is_function<T>::value>::type>
 	inline void *convertToOpaque(T *t) {
 		return t;
 	}

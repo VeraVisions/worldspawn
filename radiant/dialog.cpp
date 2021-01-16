@@ -284,27 +284,28 @@ public:
     }
 };
 
+template<class Widget, class Self, class T, class native>
+struct AddDataCustom_Wrapper {
+    static void Export(const native &self, const Callback<void(T)> &returnz) {
+        native *p = &const_cast<native &>(self);
+        auto widget = Self::from(p);
+        Widget::Get::thunk_(widget, returnz);
+    }
+
+    static void Import(native &self, T value) {
+        native *p = &self;
+        auto widget = Self::from(p);
+        Widget::Set::thunk_(widget, value);
+    }
+};
+
 template<class Widget>
 void AddDataCustom(DialogDataList &self, typename Widget::Type widget, Property<typename Widget::Other> const &property)
 {
     using Self = typename Widget::Type;
     using T = typename Widget::Other;
     using native = typename std::remove_pointer<typename Self::native>::type;
-    struct Wrapper {
-        static void Export(const native &self, const Callback<void(T)> &returnz)
-        {
-            native *p = &const_cast<native &>(self);
-            auto widget = Self::from(p);
-            Widget::Get::thunk_(widget, returnz);
-        }
-
-        static void Import(native &self, T value)
-        {
-            native *p = &self;
-            auto widget = Self::from(p);
-            Widget::Set::thunk_(widget, value);
-        }
-    };
+    using Wrapper = AddDataCustom_Wrapper<Widget, Self, T, native>;
     self.push_back(new CallbackDialogData<typename Widget::Other>(
             make_property<PropertyAdaptor<native, T, Wrapper>>(*static_cast<native *>(widget)),
             property
