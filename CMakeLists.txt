@@ -3,6 +3,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 project(WorldSpawn C CXX)
 
 option(BUILD_RADIANT "Build the GUI" ON)
+option(BUILD_VMAP "Build the Compiler" ON)
 
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/install" CACHE PATH "..." FORCE)
@@ -18,8 +19,8 @@ set(WorldSpawn_VERSION_MINOR 1)
 set(WorldSpawn_VERSION_PATCH 0)
 set(WorldSpawn_VERSION "${WorldSpawn_VERSION_MAJOR}.${WorldSpawn_VERSION_MINOR}.${WorldSpawn_VERSION_PATCH}")
 
-SET(CMAKE_C_COMPILER gcc-9)
-SET(CMAKE_CXX_COMPILER g++-9)
+#SET(CMAKE_C_COMPILER gcc-9)
+#SET(CMAKE_CXX_COMPILER g++-9)
 
 file(WRITE "${PROJECT_BINARY_DIR}/WorldSpawn_MAJOR" ${WorldSpawn_VERSION_MAJOR})
 file(WRITE "${PROJECT_BINARY_DIR}/WorldSpawn_MINOR" ${WorldSpawn_VERSION_MINOR})
@@ -156,6 +157,12 @@ endif ()
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/libs")
 
+# For our OpenBSD friends, because CMake isn't smart enough to figure that out?
+include_directories("/usr/local/include")
+link_directories("/usr/local/lib")
+include_directories("/usr/X11R6/include")
+link_directories("/usr/X11R6/lib")
+
 if (WIN32 AND NOT CMAKE_CROSSCOMPILING)
     set(BUNDLE_LIBRARIES_DEFAULT ON)
 else ()
@@ -238,7 +245,9 @@ endif ()
 # Tools
 #-----------------------------------------------------------------------
 
-add_subdirectory(tools)
+if (BUILD_VMAP)
+	add_subdirectory(tools)
+endif ()
 
 file(GLOB DATA_FILES "${PROJECT_SOURCE_DIR}/resources/*")
 
