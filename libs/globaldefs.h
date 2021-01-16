@@ -31,7 +31,7 @@
 #define GDEF_OS_POSIX 0
 #endif
 
-#if defined(WIN32) || defined(_WIN32) || defined(_WIN64)
+#if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
 #define GDEF_OS_WINDOWS 1
 #else
 #define GDEF_OS_WINDOWS 0
