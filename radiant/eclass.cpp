@@ -221,10 +221,10 @@ void EntityClassQuake3_Construct()
         void visit(const char *name, const EntityClassScanner &table) const
         {
             Paths paths;
-            EntityClassQuake3_constructDirectory(baseDirectory, table.getExtension(), paths);
-            if (!string_equal(baseDirectory, gameDirectory)) {
-                EntityClassQuake3_constructDirectory(gameDirectory, table.getExtension(), paths);
-            }
+            if (!string_equal(baseDirectory, gameDirectory))
+		EntityClassQuake3_constructDirectory(gameDirectory, table.getExtension(), paths);
+	    else 
+		EntityClassQuake3_constructDirectory(baseDirectory, table.getExtension(), paths);
 
             for (Paths::iterator i = paths.begin(); i != paths.end(); ++i) {
                 EntityClassesLoadFile(table, (*i).second)((*i).first.c_str());
