@@ -447,11 +447,6 @@ void create_global_pid()
 
             ui::alert(ui::root, msg.c_str(), "Radiant - Console Log", ui::alert_type::OK);
         }
-
-        // set without saving, the class is not in a coherent state yet
-        // just do the value change and call to start logging, CGamesDialog will pickup when relevant
-        g_GamesDialog.m_bForceLogConsole = true;
-        Sys_LogFile(true);
     }
 
     // create a primary .pid for global init run
@@ -510,10 +505,6 @@ void create_local_pid()
 
             ui::alert(ui::root, msg.c_str(), "Radiant - Console Log", ui::alert_type::OK);
         }
-
-        // force console logging on! (will go in prefs too)
-        g_GamesDialog.m_bForceLogConsole = true;
-        Sys_LogFile(true);
     } else {
         // create one, will remove right after entering message loop
         pid = fopen(g_pidGameFile.c_str(), "w");
@@ -640,16 +631,6 @@ int main(int argc, char *argv[])
 
     create_local_pid();
 
-    // in a very particular post-.pid startup
-    // we may have the console turned on and want to keep it that way
-    // so we use a latching system
-    if (g_GamesDialog.m_bForceLogConsole) {
-        Sys_LogFile(true);
-        g_Console_enableLogging = true;
-        g_GamesDialog.m_bForceLogConsole = false;
-    }
-
-
     Radiant_Initialise();
 
     user_shortcuts_init();
@@ -693,9 +674,6 @@ int main(int argc, char *argv[])
     user_shortcuts_save();
 
     Radiant_Shutdown();
-
-    // close the log file if any
-    Sys_LogFile(false);
 
     return EXIT_SUCCESS;
 }

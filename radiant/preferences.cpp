@@ -52,12 +52,6 @@
 #include "qe3.h"
 #include "gtkdlgs.h"
 
-
-void Global_constructPreferences(PreferencesPage &page)
-{
-    page.appendCheckBox("Console", "Enable Logging", g_Console_enableLogging);
-}
-
 void Interface_constructPreferences(PreferencesPage &page)
 {
 #if GDEF_OS_WINDOWS
@@ -225,26 +219,10 @@ bool Preferences_Save_Safe(PreferenceDictionary &preferences, const char *filena
            && file_move(tmpName.data(), filename);
 }
 
-
-struct LogConsole {
-    static void Export(const Callback<void(bool)> &returnz)
-    {
-        returnz(g_Console_enableLogging);
-    }
-
-    static void Import(bool value)
-    {
-        g_Console_enableLogging = value;
-        Sys_LogFile(g_Console_enableLogging);
-    }
-};
-
-
 void RegisterGlobalPreferences(PreferenceSystem &preferences)
 {
     preferences.registerPreference("gamefile", make_property_string(g_GamesDialog.m_sGameFile));
     preferences.registerPreference("gamePrompt", make_property_string(g_GamesDialog.m_bGamePrompt));
-    preferences.registerPreference("log console", make_property_string<LogConsole>());
 }
 
 
@@ -357,7 +335,6 @@ ui::Window CGameDialog::BuildDialog()
 	vbox.pack_start(frame, FALSE, FALSE, 0);
 
 	PreferencesPage preferencesPage(*this, vbox2);
-	Global_constructPreferences(preferencesPage);
 	CreateGlobalFrame(preferencesPage);
 
 	return create_simple_modal_dialog_window("Global Preferences", m_modal, vbox);
@@ -816,7 +793,6 @@ ui::Window PrefsDlg::BuildDialog()
                             auto global = PreferencePages_addPage(m_notebook, "Global Preferences");
                             {
                                 PreferencesPage preferencesPage(*this, getVBox(global));
-                                Global_constructPreferences(preferencesPage);
                             }
                             auto group = PreferenceTree_appendPage(store, 0, "Global", global);
                             {

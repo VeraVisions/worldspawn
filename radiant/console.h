@@ -39,12 +39,4 @@ TextOutputStream &getSysPrintOutputStream();
 
 TextOutputStream &getSysPrintErrorStream();
 
-ui::Widget Console_constructWindow(ui::Window toplevel);
-
-// will open/close the log file based on the parameter
-void Sys_LogFile(bool enable);
-
-extern bool g_Console_enableLogging;
-
-
 #endif

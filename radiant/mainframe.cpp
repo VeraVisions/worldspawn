@@ -65,7 +65,6 @@
 #include "camwindow.h"
 #include "csg.h"
 #include "commands.h"
-#include "console.h"
 #include "entity.h"
 #include "entityinspector.h"
 #include "entitylist.h"
@@ -1240,13 +1239,6 @@ void OpenBugReportURL()
 }
 
 
-ui::Widget g_page_console{ui::null};
-
-void Console_ToggleShow()
-{
-    GroupDialog_showPage(g_page_console);
-}
-
 ui::Widget g_page_entity{ui::null};
 
 void EntityInspector_ToggleShow()
@@ -2297,7 +2289,6 @@ void fill_view_xz_front_menu(ui::Menu menu)
 
 
 ui::Widget g_toggle_z_item{ui::null};
-ui::Widget g_toggle_console_item{ui::null};
 ui::Widget g_toggle_entity_item{ui::null};
 ui::Widget g_toggle_entitylist_item{ui::null};
 
@@ -2314,7 +2305,6 @@ ui::MenuItem create_view_menu()
 		fill_view_xz_front_menu(menu);*/
 
 		create_menu_item_with_mnemonic(menu, "Map Info", "MapInfo");
-		create_menu_item_with_mnemonic(menu, "Console View", "ToggleConsole");
 		create_menu_item_with_mnemonic(menu, "Texture Browser", "ToggleTextures");
 		create_menu_item_with_mnemonic(menu, "Entity Inspector", "ToggleEntityInspector");
 
@@ -2779,8 +2769,6 @@ ui::Toolbar create_main_toolbar()
     space();
     toolbar_append_toggle_button(toolbar, "Texture Lock (SHIFT +T)", "texture_lock.xpm", "TogTexLock");
     space();
-    toolbar_append_button(toolbar, "Console (O)", "console.xpm", "ToggleConsole");
-    space();
     toolbar_append_button(toolbar, "Refresh Assets", "refresh_models.xpm",
                                                              "RefreshReferences");
 
@@ -3207,11 +3195,6 @@ void MainFrame::Create()
 	g_page_entity = GroupDialog_addPage("Entities", EntityInspector_constructWindow(GroupDialog_getWindow()),
 						RawStringExportCaller("Entities"));
 
-	/*if (FloatingGroupDialog()) {*/
-		g_page_console = GroupDialog_addPage("Console", Console_constructWindow(GroupDialog_getWindow()),
-						RawStringExportCaller("Console"));
-	/*}
-*/
 	m_window = window;
 
 	window.show();
@@ -3493,7 +3476,6 @@ void MainFrame_Construct()
                           Accelerator('E', (GdkModifierType) (GDK_MOD1_MASK | GDK_CONTROL_MASK)));
     GlobalCommands_insert("Preferences", makeCallbackF(PreferencesDialog_showDialog));
 
-    GlobalCommands_insert("ToggleConsole", makeCallbackF(Console_ToggleShow), Accelerator('O'));
     GlobalCommands_insert("ToggleEntityInspector", makeCallbackF(EntityInspector_ToggleShow), Accelerator('N'));
     GlobalCommands_insert("EntityList", makeCallbackF(EntityList_toggleShown), Accelerator('L'));
 
