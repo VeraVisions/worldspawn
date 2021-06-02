@@ -438,7 +438,7 @@ void DoAbout()
             }
 
             {
-                char const *label_text = "WorldSpawn " WorldSpawn_VERSION "\n"
+                char const *label_text = "WorldSpawn\n"
                         __DATE__ "\n\n"
                         "QER taken to the space age.\n\n"
                         "Developed by Vera Visions LLC.\n"

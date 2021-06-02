@@ -1647,8 +1647,7 @@ bool Map_ImportFile(const char *filename)
               extension_equal(path_get_extension(filename), "map"))) {
         StringBuffer output;
         output.push_string(AppPath_get());
-        output.push_string("q3map2.");
-        output.push_string(WorldSpawn_EXECUTABLE);
+        output.push_string("vmap");
         output.push_string(" -v -game ");
         output.push_string((type && *type) ? type : "quake3");
         output.push_string(" -fs_basepath \"");

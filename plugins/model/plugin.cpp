@@ -168,8 +168,13 @@ typedef SingletonModule<ModelPicoAPI, ModelPicoDependencies, PicoModelAPIConstru
 typedef std::list<PicoModelModule> PicoModelModules;
 PicoModelModules g_PicoModelModules;
 
-
-extern "C" void RADIANT_DLLEXPORT Radiant_RegisterModules(ModuleServer &server)
+extern "C" void
+#ifdef _WIN32
+__declspec(dllexport)
+#else
+__attribute__((visibility("default")))
+#endif
+Radiant_RegisterModules(ModuleServer &server)
 {
     initialiseModule(server);
 

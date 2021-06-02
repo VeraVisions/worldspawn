@@ -228,7 +228,7 @@ void WriteHDR( char *filename, float *data, int width, int height, qboolean flip
 								1,
 								1,
 								0};
-		flip = !flip;	//opengl technically defines textures as bottom-up, but screw that.
+		flip = (qboolean)(!flip);	//opengl technically defines textures as bottom-up, but screw that.
 		fwrite( &header, 1, sizeof(header), file );
 
 		rowbytes = width*4; //FIXME: align

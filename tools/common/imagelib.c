@@ -1444,7 +1444,7 @@ void LoadKTXBufferFirstImage( const byte *buffer, size_t bufSize, byte **pic, in
 		Error( "LoadKTX: Image has the wrong identifier" );
 	}
 
-	qboolean bigEndian = ( buffer[4] == 4 );
+	qboolean bigEndian = (qboolean)( buffer[4] == 4 );
 
 	type = KTX_HEADER_UINT32( buffer + 16 );
 	if ( type ) {

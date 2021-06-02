@@ -373,6 +373,8 @@ bool check_version_file(const char *filename, const char *version)
 
 bool check_version()
 {
+	return true;
+#if 0
     // a safe check to avoid people running broken installations
     // (otherwise, they run it, crash it, and blame us for not forcing them hard enough to pay attention while installing)
     // make something idiot proof and someone will make better idiots, this may be overkill
@@ -403,6 +405,7 @@ bool check_version()
         ui::alert(ui::root, msg.c_str(), "Radiant", ui::alert_type::OK, ui::alert_icon::Default);
     }
     return bVerIsGood;
+#endif
 }
 
 void create_global_pid()

@@ -239,10 +239,10 @@ int ConvertBSPMain( int argc, char **argv ){
 		StripExtension( source );
 		DefaultExtension( source, ".map" );
 		Sys_Printf( "Loading %s\n", source );
-		LoadMapFile( source, qfalse, convertGame == NULL );
+		LoadMapFile( source, qfalse, (qboolean)(convertGame == NULL));
 		sprintf( BSPFilePath, "%s.bsp", source );
 		sprintf( surfaceFilePath, "%s.srf", source );
-		PseudoCompileBSP( convertGame != NULL, BSPFilePath, surfaceFilePath );
+		PseudoCompileBSP( (qboolean)(convertGame != NULL), BSPFilePath, surfaceFilePath );
 	}
 	else
 	{

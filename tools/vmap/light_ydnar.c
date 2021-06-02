@@ -2106,7 +2106,7 @@ void IlluminateRawLightmap( int rawLightmapNum ){
 	lm = &rawLightmaps[ rawLightmapNum ];
 
 	/* setup trace */
-	trace.testOcclusion = !noTrace;
+	trace.testOcclusion = (qboolean)(!noTrace);
 	trace.forceSunlight = qfalse;
 	trace.recvShadows = lm->recvShadows;
 	trace.numSurfaces = lm->numLightSurfaces;

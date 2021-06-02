@@ -79,7 +79,13 @@ public:
 typedef SingletonModule<MaterialAPI, ShadersDependencies, DependenciesAPIConstructor<MaterialAPI, ShadersDependencies> > MaterialModule;
 MaterialModule g_MaterialModule;
 
-extern "C" void RADIANT_DLLEXPORT Radiant_RegisterModules(ModuleServer &server)
+extern "C" void
+#ifdef _WIN32
+__declspec(dllexport)
+#else
+__attribute__((visibility("default")))
+#endif
+Radiant_RegisterModules(ModuleServer &server)
 {
 	initialiseModule(server);
 	g_MaterialModule.selfRegister();

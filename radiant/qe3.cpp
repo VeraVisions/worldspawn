@@ -174,7 +174,6 @@ bool ConfirmModified(const char *title)
 void bsp_init()
 {
     build_set_variable("RadiantPath", AppPath_get());
-    build_set_variable("ExecutableType", WorldSpawn_EXECUTABLE);
     build_set_variable("EnginePath", EnginePath_get());
     build_set_variable("UserEnginePath", g_qeglobals.m_userEnginePath.c_str());
     build_set_variable("MonitorAddress", (g_WatchBSP_Enabled) ? "127.0.0.1:39000" : "");

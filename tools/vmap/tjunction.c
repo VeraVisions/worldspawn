@@ -578,7 +578,7 @@ qboolean FixBrokenSurface( mapDrawSurface_t *ds ){
 	}
 
 	/* one last check and return */
-	return ds->numVerts >= 3;
+	return (qboolean)(ds->numVerts >= 3);
 }
 
 

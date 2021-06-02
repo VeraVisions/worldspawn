@@ -51,7 +51,6 @@
 #define BASEDIRNAME "quake"     // assumed to have a 2 or 3 following
 #define PATHSEPERATOR   '/'
 
-#ifdef SAFE_MALLOC
 void *safe_malloc( size_t size ){
 	void *p;
 
@@ -73,7 +72,6 @@ void *safe_malloc_info( size_t size, const char* info ){
 
 	return p;
 }
-#endif
 
 // set these before calling CheckParm
 int myargc;
@@ -255,7 +253,7 @@ char *ExpandPath( const char *path ){
 
 char *copystring( const char *s ){
 	char    *b;
-	b = safe_malloc( strlen( s ) + 1 );
+	b = (char *)safe_malloc( strlen( s ) + 1 );
 	strcpy( b, s );
 	return b;
 }

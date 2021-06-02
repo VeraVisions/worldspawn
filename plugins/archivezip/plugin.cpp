@@ -96,7 +96,13 @@ typedef SingletonModule<ArchiveDPKAPI> ArchiveDPKModule;
 ArchiveDPKModule g_ArchiveDPKModule;
 
 
-extern "C" void RADIANT_DLLEXPORT Radiant_RegisterModules(ModuleServer &server)
+extern "C" void 
+#ifdef _WIN32
+__declspec(dllexport)
+#else
+__attribute__((visibility("default")))
+#endif
+Radiant_RegisterModules(ModuleServer &server)
 {
     initialiseModule(server);
 

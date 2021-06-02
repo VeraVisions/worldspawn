@@ -845,7 +845,7 @@ int ConvertBSPToMap_Ext( char *bspName, qboolean brushPrimitives ){
 		}
 
 		/* export keys */
-		ConvertEPairs( f, e, modelNum >= 0 );
+		ConvertEPairs( f, e, (qboolean)(modelNum >= 0) );
 		fprintf( f, "\n" );
 
 		/* only handle bsp models */

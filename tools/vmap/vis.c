@@ -1003,8 +1003,8 @@ void LoadPortals( char *name ){
 		l->numportals++;
 
 		p->num = i + 1;
-		p->hint = ((flags & 1) != 0);
-		p->sky = ((flags & 2) != 0);
+		p->hint = (qboolean)(((flags & 1) != 0));
+		p->sky = (qboolean)(((flags & 2) != 0));
 		p->winding = w;
 		VectorSubtract( vec3_origin, plane.normal, p->plane.normal );
 		p->plane.dist = -plane.dist;

@@ -34,7 +34,7 @@
 
 /* dependencies */
 #include "picointernal.h"
-#include "lwo/lwo2.h"
+#include "lwo2.h"
 
 /* uncomment when debugging this module */
 /*#define DEBUG_PM_LWO*/

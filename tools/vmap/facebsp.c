@@ -246,7 +246,7 @@ void BuildFaceTree_r( node_t *node, face_t *list ){
 	/* partition the list */
 	node->planenum = splitPlaneNum;
 	node->compileFlags = compileFlags;
-	node->has_structural_children = !( compileFlags & C_DETAIL ) && !node->opaque;
+	node->has_structural_children = (qboolean)(!( compileFlags & C_DETAIL ) && !node->opaque);
 	plane = &mapplanes[ splitPlaneNum ];
 	childLists[0] = NULL;
 	childLists[1] = NULL;

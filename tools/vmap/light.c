@@ -1672,7 +1672,7 @@ void TraceGrid( int num ){
 	}
 
 	/* setup trace */
-	trace.testOcclusion = !noTrace;
+	trace.testOcclusion = (qboolean)(!noTrace);
 	trace.forceSunlight = qfalse;
 	trace.recvShadows = WORLDSPAWN_RECV_SHADOWS;
 	trace.numSurfaces = 0;
@@ -2874,7 +2874,7 @@ int LightMain( int argc, char **argv ){
 		}
 		else if ( !strcmp( argv[ i ], "-lightanglehl" ) ) {
 			if ( ( atoi( argv[ i + 1 ] ) != 0 ) != lightAngleHL ) {
-				lightAngleHL = ( atoi( argv[ i + 1 ] ) != 0 );
+				lightAngleHL = (qboolean)( atoi( argv[ i + 1 ] ) != 0 );
 				if ( lightAngleHL ) {
 					Sys_Printf( "Enabling half lambert light angle attenuation\n" );
 				}
