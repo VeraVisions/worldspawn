@@ -33,15 +33,9 @@
 
 std::size_t Sys_Print(int level, const char *buf, std::size_t length)
 {
-	bool contains_newline = std::find(buf, buf + length, '\n') != buf + length;
-
-	if (SYS_STD) {
-		if (contains_newline)
-			printf("%s", buf);
-		else
-			printf("%s\n", buf);
-	}
-
+	StringOutputStream name(256);
+	name << StringRange(buf, buf + length);
+	printf(name.c_str());
 	return length;
 }
 
