@@ -4,7 +4,6 @@ all:
 	cd radiant && $(MAKE)
 	cd plugins && $(MAKE)
 	cd tools && $(MAKE)
-	cd contrib && $(MAKE)
 
 clean:
 	-rm -rf ./build
@@ -12,4 +11,3 @@ clean:
 	cd radiant && $(MAKE) clean
 	cd plugins && $(MAKE) clean
 	cd tools && $(MAKE) clean
-	cd contrib && $(MAKE) clean
