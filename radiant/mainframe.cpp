@@ -2167,6 +2167,13 @@ void XY_UpdateAllWindows()
     }
 }
 
+void XYZ_SetOrigin(const Vector3 &origin)
+{
+    g_pParentWnd->GetXYWnd()->SetOrigin(origin);
+    g_pParentWnd->GetXZWnd()->SetOrigin(origin);
+    g_pParentWnd->GetYZWnd()->SetOrigin(origin);
+}
+
 void UpdateAllWindows()
 {
     GlobalCamera_UpdateWindow();

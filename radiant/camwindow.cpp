@@ -1973,21 +1973,6 @@ void CamWnd_LookThroughCamera(CamWnd &camwnd)
     }
 }
 
-void GlobalCamera_GoToZero(void)
-{
-	CamWnd &camwnd = *g_camwnd;
-	Vector3 zero;
-	zero[0] = 0;
-	zero[1] = 0;
-	zero[2] = 0;
-	Camera_setAngles(camwnd, zero);
-	Camera_setOrigin(camwnd, zero);
-	Camera_updateModelview(camwnd.getCamera());
-	Camera_updateProjection(camwnd.getCamera());
-	CamWnd_Update(camwnd);
-}
-
-
 inline CameraModel *Instance_getCameraModel(scene::Instance &instance)
 {
     return InstanceTypeCast<CameraModel>::cast(instance);
@@ -2019,6 +2004,23 @@ void GlobalCamera_LookThroughSelected()
 void GlobalCamera_LookThroughCamera()
 {
     CamWnd_LookThroughCamera(*g_camwnd);
+}
+
+/* sets origin and angle to 0,0,0 coords */
+void XYZ_SetOrigin(const Vector3 &origin);
+void GlobalCamera_GoToZero(void)
+{
+	CamWnd &camwnd = *g_camwnd;
+	Vector3 zero;
+	zero[0] = 0;
+	zero[1] = 0;
+	zero[2] = 0;
+	Camera_setAngles(camwnd, zero);
+	Camera_setOrigin(camwnd, zero);
+	Camera_updateModelview(camwnd.getCamera());
+	Camera_updateProjection(camwnd.getCamera());
+	CamWnd_Update(camwnd);
+	XYZ_SetOrigin(zero);
 }
 
 struct RenderMode {

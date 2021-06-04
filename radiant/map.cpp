@@ -538,6 +538,7 @@ void FocusViews(const Vector3 &point, float angle)
 
 #include "stringio.h"
 
+void GlobalCamera_GoToZero();
 void Map_StartPosition()
 {
     Entity *entity = Scene_FindPlayerStart();
@@ -547,7 +548,7 @@ void Map_StartPosition()
         string_parse_vector3(entity->getKeyValue("origin"), origin);
         FocusViews(origin, string_read_float(entity->getKeyValue("angle")));
     } else {
-        FocusViews(g_vector3_identity, 0);
+	GlobalCamera_GoToZero();
     }
 }
 
