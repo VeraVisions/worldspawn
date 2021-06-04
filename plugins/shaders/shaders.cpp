@@ -1180,7 +1180,8 @@ void LoadShaderFile(const char *filename)
 	ArchiveTextFile *file = GlobalFileSystem().openTextFile(filename);
 
 	if (file != 0) {
-		globalOutputStream() << "Parsing material " << filename << "\n";
+		// we probably only want to output when errors happen
+		//globalOutputStream() << "Parsing material " << filename << "\n";
 		Tokeniser &tokeniser = GlobalScriptLibrary().m_pfnNewScriptTokeniser(file->getInputStream());
 		ParseShaderFile(tokeniser, filename);
 		tokeniser.release();

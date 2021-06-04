@@ -497,6 +497,8 @@ Entity *Scene_FindEntityByClass(const char *name)
     return entity;
 }
 
+#if 0
+// TODO: We probably want to make this game-specific and put it into the game definitions!
 Entity *Scene_FindPlayerStart()
 {
     typedef const char *StaticString;
@@ -517,11 +519,7 @@ Entity *Scene_FindPlayerStart()
     }
     return 0;
 }
-
-//
-// move the view to a start position
-//
-
+#endif
 
 void FocusViews(const Vector3 &point, float angle)
 {
@@ -538,20 +536,14 @@ void FocusViews(const Vector3 &point, float angle)
 
 #include "stringio.h"
 
+//
+// move the view to a start position
+//
 void GlobalCamera_GoToZero();
 void Map_StartPosition()
 {
-    Entity *entity = Scene_FindPlayerStart();
-
-    if (entity) {
-        Vector3 origin;
-        string_parse_vector3(entity->getKeyValue("origin"), origin);
-        FocusViews(origin, string_read_float(entity->getKeyValue("angle")));
-    } else {
 	GlobalCamera_GoToZero();
-    }
 }
-
 
 inline bool node_is_worldspawn(scene::Node &node)
 {

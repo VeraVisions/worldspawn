@@ -190,21 +190,20 @@ NodeSmartReference ModelResource_load(ModelLoader *loader, const char *name)
 
     NodeSmartReference model(g_nullModel);
 
-    {
+
         ArchiveFile *file = GlobalFileSystem().openFile(name);
 
         if (file != 0) {
-            globalOutputStream() << "Loaded Model: \"" << name << "\"\n";
-            model = loader->loadModel(*file);
-            file->release();
-        } else {
-            globalErrorStream() << "Model load failed: \"" << name << "\"\n";
-        }
-    }
+		// Only output failures, we don't need to spam the console with successes
+		//globalOutputStream() << "Loaded Model: \"" << name << "\"\n";
+		model = loader->loadModel(*file);
+		file->release();
+	} else {
+		globalErrorStream() << "Model load failed: \"" << name << "\"\n";
+	}
 
-    model.get().m_isRoot = true;
-
-    return model;
+	model.get().m_isRoot = true;
+	return model;
 }
 
 

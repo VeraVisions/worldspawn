@@ -337,7 +337,8 @@ void qtexture_realise(qtexture_t &texture, const TextureKey &key)
             texture.contentFlags = image->getContentFlags();
             texture.value = image->getValue();
             image->release();
-            globalOutputStream() << "Loaded Texture: \"" << key.second.c_str() << "\"\n";
+	    // We only want to report when errors happen
+            //globalOutputStream() << "Loaded Texture: \"" << key.second.c_str() << "\"\n";
             GlobalOpenGL_debugAssertNoErrors();
         } else {
             globalErrorStream() << "Texture load failed: \"" << key.second.c_str() << "\"\n";
