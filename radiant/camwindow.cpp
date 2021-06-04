@@ -1973,6 +1973,21 @@ void CamWnd_LookThroughCamera(CamWnd &camwnd)
     }
 }
 
+void GlobalCamera_GoToZero(void)
+{
+	CamWnd &camwnd = *g_camwnd;
+	Vector3 zero;
+	zero[0] = 0;
+	zero[1] = 0;
+	zero[2] = 0;
+	Camera_setAngles(camwnd, zero);
+	Camera_setOrigin(camwnd, zero);
+	Camera_updateModelview(camwnd.getCamera());
+	Camera_updateProjection(camwnd.getCamera());
+	CamWnd_Update(camwnd);
+}
+
+
 inline CameraModel *Instance_getCameraModel(scene::Instance &instance)
 {
     return InstanceTypeCast<CameraModel>::cast(instance);
@@ -2118,6 +2133,7 @@ void CameraSpeed_decrease()
 void CamWnd_Construct()
 {
     GlobalCommands_insert("CenterView", makeCallbackF(GlobalCamera_ResetAngles), Accelerator(GDK_KEY_End));
+    GlobalCommands_insert("GoToZero", makeCallbackF(GlobalCamera_GoToZero));
 
     GlobalToggles_insert("ToggleCubicClip", makeCallbackF(Camera_ToggleFarClip),
                          ToggleItem::AddCallbackCaller(g_getfarclip_item),

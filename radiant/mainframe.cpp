@@ -2328,6 +2328,8 @@ ui::MenuItem create_view_menu()
 	menu_separator(camera_menu);
 	create_menu_item_with_mnemonic(camera_menu, "Look Through Selected", "LookThroughSelected");
 	create_menu_item_with_mnemonic(camera_menu, "Look Through Camera", "LookThroughCamera");
+	menu_separator(camera_menu);
+	create_menu_item_with_mnemonic(camera_menu, "Move to [0,0,0]", "GoToZero");
 	}
     
     {
