@@ -242,7 +242,6 @@ public:
         GlobalFiletypes().addType("sound", "wav", filetype_t("PCM sound files", "*.wav"));
 
         Selection_construct();
-        HomePaths_Construct();
         VFS_Construct();
         Grid_construct();
         MultiMon_Construct();
@@ -298,7 +297,6 @@ public:
         MultiMon_Destroy();
         Grid_destroy();
         VFS_Destroy();
-        HomePaths_Destroy();
         Selection_destroy();
     }
 };

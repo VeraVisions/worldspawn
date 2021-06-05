@@ -1645,17 +1645,11 @@ bool Map_ImportFile(const char *filename)
         output.push_string((type && *type) ? type : "quake3");
         output.push_string(" -fs_basepath \"");
         output.push_string(EnginePath_get());
-        output.push_string("\" -fs_homepath \"");
-        output.push_string(g_qeglobals.m_userEnginePath.c_str());
         output.push_string("\"");
 
         // extra switches
         if (g_disableEnginePath) {
             output.push_string(" -fs_nobasepath ");
-        }
-
-        if (g_disableHomePath) {
-            output.push_string(" -fs_nohomepath ");
         }
 
         output.push_string(" -fs_game ");
@@ -2353,11 +2347,9 @@ void Map_Construct()
     PreferencesDialog_addSettingsPreferences(makeCallbackF(Map_constructPreferences));
 
     GlobalEntityClassManager().attach(g_MapEntityClasses);
-    Radiant_attachHomePathsObserver(g_MapModuleObserver);
 }
 
 void Map_Destroy()
 {
-    Radiant_detachHomePathsObserver(g_MapModuleObserver);
     GlobalEntityClassManager().detach(g_MapEntityClasses);
 }

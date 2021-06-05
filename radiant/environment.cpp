@@ -143,13 +143,7 @@ void gamedetect()
 }
 
 namespace {
-    CopiedString home_path;
     CopiedString app_path;
-}
-
-const char *environment_get_home_path()
-{
-    return home_path.c_str();
 }
 
 const char *environment_get_app_path()
@@ -162,7 +156,6 @@ bool portable_app_setup()
     StringOutputStream confdir(256);
     confdir << app_path.c_str() << "settings/";
     if (file_exists(confdir.c_str())) {
-        home_path = confdir.c_str();
         return true;
     }
     return false;
@@ -234,12 +227,6 @@ void environment_init(int argc, char const *argv[])
         ASSERT_MESSAGE(!string_empty(app_path.c_str()), "failed to deduce app path");
     }
 
-    if (!portable_app_setup()) {
-        StringOutputStream home(256);
-        home << DirectoryCleaned(g_get_user_data_dir()) << "worldspawn/";
-        Q_mkdir(home.c_str());
-        home_path = home.c_str();
-    }
     gamedetect();
 }
 
@@ -263,21 +250,6 @@ void environment_init( int argc, char const* argv[] ){
 	StringOutputStream app( 256 );
 	app << PathCleaned( filename );
 	app_path = app.c_str();
-
-	if ( !portable_app_setup() ) {
-		char *appdata = getenv( "APPDATA" );
-		StringOutputStream home( 256 );
-		if ( !appdata || string_empty( appdata ) ) {
-				ERROR_MESSAGE( "Application Data folder not available.\n"
-							"WorldSpawn will use C:\\ for user preferences.\n" );
-				home << "C:";
-		} else {
-			home << PathCleaned( appdata );
-		}
-		home << "/WorldSpawnSettings/";
-		Q_mkdir( home.c_str() );
-		home_path = home.c_str();
-	}
 	gamedetect();
 }
 

@@ -165,10 +165,6 @@ void bsp_init()
         ExtraQ3map2Args.push_string(" -fs_nobasepath ");
     }
 
-    if (g_disableHomePath) {
-        ExtraQ3map2Args.push_string(" -fs_nohomepath ");
-    }
-
     build_set_variable("ExtraQ3map2Args", ExtraQ3map2Args.c_str());
 
     const char *mapname = Map_Name(g_map);

@@ -181,88 +181,11 @@ VFSModuleObserver g_VFSModuleObserver;
 
 void VFS_Construct()
 {
-    Radiant_attachHomePathsObserver(g_VFSModuleObserver);
 }
 
 void VFS_Destroy()
 {
-    Radiant_detachHomePathsObserver(g_VFSModuleObserver);
 }
-
-// Home Paths
-
-#if GDEF_OS_WINDOWS
-#include <shlobj.h>
-#include <objbase.h>
-const GUID qFOLDERID_SavedGames = {0x4C5C32FF, 0xBB9D, 0x43b0, {0xB5, 0xB4, 0x2D, 0x72, 0xE5, 0x4E, 0xAA, 0xA4}};
-#define qREFKNOWNFOLDERID GUID
-#define qKF_FLAG_CREATE 0x8000
-#define qKF_FLAG_NO_ALIAS 0x1000
-typedef HRESULT ( WINAPI qSHGetKnownFolderPath_t )( qREFKNOWNFOLDERID rfid, DWORD dwFlags, HANDLE hToken, PWSTR *ppszPath );
-static qSHGetKnownFolderPath_t *qSHGetKnownFolderPath;
-#endif
-
-void HomePaths_Realise()
-{
-    g_qeglobals.m_userEnginePath = EnginePath_get();
-    Q_mkdir(g_qeglobals.m_userEnginePath.c_str());
-
-    {
-        StringOutputStream path(256);
-        path << g_qeglobals.m_userEnginePath.c_str() << gamename_get() << '/';
-        g_qeglobals.m_userGamePath = path.c_str();
-    }
-    ASSERT_MESSAGE(!string_empty(g_qeglobals.m_userGamePath.c_str()), "HomePaths_Realise: user-game-path is empty");
-    Q_mkdir(g_qeglobals.m_userGamePath.c_str());
-}
-
-ModuleObservers g_homePathObservers;
-
-void Radiant_attachHomePathsObserver(ModuleObserver &observer)
-{
-    g_homePathObservers.attach(observer);
-}
-
-void Radiant_detachHomePathsObserver(ModuleObserver &observer)
-{
-    g_homePathObservers.detach(observer);
-}
-
-class HomePathsModuleObserver : public ModuleObserver {
-    std::size_t m_unrealised;
-public:
-    HomePathsModuleObserver() : m_unrealised(1)
-    {
-    }
-
-    void realise()
-    {
-        if (--m_unrealised == 0) {
-            HomePaths_Realise();
-            g_homePathObservers.realise();
-        }
-    }
-
-    void unrealise()
-    {
-        if (++m_unrealised == 1) {
-            g_homePathObservers.unrealise();
-        }
-    }
-};
-
-HomePathsModuleObserver g_HomePathsModuleObserver;
-
-void HomePaths_Construct()
-{
-    Radiant_attachEnginePathObserver(g_HomePathsModuleObserver);
-}
-
-void HomePaths_Destroy()
-{
-    Radiant_detachEnginePathObserver(g_HomePathsModuleObserver);
-}
-
 
 // Engine Path
 
@@ -390,7 +313,6 @@ struct EnginePath {
 };
 
 bool g_disableEnginePath = false;
-bool g_disableHomePath = false;
 
 void Paths_constructPreferences(PreferencesPage &page)
 {
@@ -399,11 +321,6 @@ void Paths_constructPreferences(PreferencesPage &page)
     page.appendCheckBox(
             "", "Do not use Engine Path",
             g_disableEnginePath
-    );
-
-    page.appendCheckBox(
-            "", "Do not use Home Path",
-            g_disableHomePath
     );
 }
 
@@ -3436,7 +3353,6 @@ void MainFrame_Construct()
     GlobalPreferenceSystem().registerPreference("EnginePath", make_property_string(g_strEnginePath));
 
     GlobalPreferenceSystem().registerPreference("DisableEnginePath", make_property_string(g_disableEnginePath));
-    GlobalPreferenceSystem().registerPreference("DisableHomePath", make_property_string(g_disableHomePath));
 
     g_Layout_enablePluginToolbar.useLatched();
 

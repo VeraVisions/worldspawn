@@ -229,7 +229,6 @@ const char *EnginePath_get();
 const char *QERApp_GetGamePath();
 
 extern bool g_disableEnginePath;
-extern bool g_disableHomePath;
 
 extern CopiedString g_strAppPath;
 
@@ -288,14 +287,6 @@ void VFS_Restart();
 void VFS_Construct();
 
 void VFS_Destroy();
-
-void HomePaths_Construct();
-
-void HomePaths_Destroy();
-
-void Radiant_attachHomePathsObserver(ModuleObserver &observer);
-
-void Radiant_detachHomePathsObserver(ModuleObserver &observer);
 
 
 void MainFrame_Construct();
