@@ -14,7 +14,7 @@ WS_OBJS = \
 	ar rcs $@ $(WS_OBJS)
 
 # object files
-etclib.o: etclib.c etclib.h
+etclib.o: etclib.c ../etclib.h
 
 clean:
 	-rm -f *.o ../libetclib.a

@@ -14,7 +14,7 @@ WS_OBJS = \
 	ar rcs $@ $(WS_OBJS)
 
 # object files
-filematch.o: filematch.c filematch.h
+filematch.o: filematch.c ../filematch.h
 
 clean:
 	-rm -f *.o ../libfilematch.a

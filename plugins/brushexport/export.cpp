@@ -10,7 +10,7 @@
 #include <map>
 
 // this is very evil, but right now there is no better way
-#include "../../radiant/brush.h"
+#include "../../src/brush.h"
 
 // for limNames
 const int MAX_MATERIAL_NAME = 20;
