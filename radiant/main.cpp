@@ -332,7 +332,8 @@ void streams_init()
 
 void paths_init()
 {
-    g_strSettingsPath = environment_get_home_path();
+    //g_strSettingsPath = environment_get_home_path();
+	g_strSettingsPath = environment_get_app_path();
 
     Q_mkdir(g_strSettingsPath.c_str());
 
