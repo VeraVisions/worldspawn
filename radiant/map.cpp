@@ -1649,15 +1649,6 @@ bool Map_ImportFile(const char *filename)
         output.push_string(g_qeglobals.m_userEnginePath.c_str());
         output.push_string("\"");
 
-        // extra pakpaths
-        for (int i = 0; i < g_pakPathCount; i++) {
-            if (g_strcmp0(g_strPakPath[i].c_str(), "")) {
-                output.push_string(" -fs_pakpath \"");
-                output.push_string(g_strPakPath[i].c_str());
-                output.push_string("\"");
-            }
-        }
-
         // extra switches
         if (g_disableEnginePath) {
             output.push_string(" -fs_nobasepath ");
