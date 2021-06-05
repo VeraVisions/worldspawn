@@ -39,7 +39,7 @@ static int g_numbrushtypes = 0;
 static int g_selectedbrushtype;
 static EBrushType g_brushTypes[8], g_brushType;
 //bool g_showAlternativeTextureProjectionOption = false;
-bool g_brush_always_caulk;
+bool g_brush_always_caulk = true;
 
 bool getTextureLockEnabled()
 {
