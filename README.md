@@ -2,9 +2,9 @@
 The worlds most opinionated fork of QER.
 
 The editor we use at Vera Visions to create BSP levels.
-It was forked from NetRaidiant and was a result of necessity originally.
+It was forked from NetRadiant in 2018 and was a result of necessity.
 
-We wanted to move away from a proprietary toolchain that assumed a different texture coordinate system and had technical issues the developer would not ever get back to us about, so we had to take matters into our own hands.
+We wanted to move away from a proprietary toolchain that had technical issues the developer would not ever get back to us about, so we ended up here.
 
 Use it if you actually want to use the features listed below - note that they require a modified engine as our BSP format is different from standard idTech 3 BSP.
 You will not be able to make levels compatible with other games and engines.
