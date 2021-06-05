@@ -8,10 +8,9 @@ LIBOBJS=../libs/libddslib.a \
         ../libs/libmathlib.a \
         ../libs/libpicomodel.a
 
-WS_VERSION= -DWorldSpawn_VERSION="1" -DWorldSpawn_MAJOR_VERSION="0" -DWorldSpawn_MINOR_VERSION="0" -DWorldSpawn_PATCH_VERSION="0" -DWorldSpawn_ABOUTMSG="" -DQ3MAP_VERSION=2.0
 GLIB_CFLAGS=$(shell pkg-config --cflags glib-2.0)
 GLIB_LDFLAGS=$(shell pkg-config --libs glib-2.0)
-VMAP_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) -I../include  -I./common -I../libs -DPOSIX -Wno-narrowing $(WS_VERSION)
+VMAP_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) -I../include  -I./common -I../libs -DPOSIX -Wno-narrowing
 VMAP_LDFLAGS=$(LDFLAGS) $(GLIB_LDFLAGS) -lm -lpthread -L../lib -lxml2 -ljpeg -lpng -lminizip $(LIBOBJS)
 
 DO_CC=$(CC) $(VMAP_CFLAGS) -o $@ -c $<

@@ -244,7 +244,7 @@ void setEnginePath(const char *path)
 		Map_RegionOff();
 #endif
 
-        ScopeDisableScreenUpdates disableScreenUpdates("Processing...", "Changing Engine Path");
+        ScopeDisableScreenUpdates disableScreenUpdates("Processing...", "Changing Nuclide Path");
 
         EnginePath_Unrealise();
 
@@ -316,12 +316,7 @@ bool g_disableEnginePath = false;
 
 void Paths_constructPreferences(PreferencesPage &page)
 {
-    page.appendPathEntry("Engine Path", true, make_property<EnginePath>(g_strEnginePath));
-
-    page.appendCheckBox(
-            "", "Do not use Engine Path",
-            g_disableEnginePath
-    );
+    page.appendPathEntry("Nuclide Path", true, make_property<EnginePath>(g_strEnginePath));
 }
 
 void Paths_constructPage(PreferenceGroup &group)
@@ -350,7 +345,7 @@ public:
             Paths_constructPreferences(preferencesPage);
         }
 
-        return ui::Window(create_simple_modal_dialog_window("Engine Path Not Found", m_modal, frame));
+        return ui::Window(create_simple_modal_dialog_window("Nuclide Path Not Found", m_modal, frame));
     }
 };
 

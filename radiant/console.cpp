@@ -27,8 +27,6 @@
 #include "stream/stringstream.h"
 #include "convert.h"
 
-#include "version.h"
-#include "aboutmsg.h"
 #include "mainframe.h"
 
 std::size_t Sys_Print(int level, const char *buf, std::size_t length)

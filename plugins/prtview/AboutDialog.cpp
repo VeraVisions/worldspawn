@@ -21,7 +21,6 @@
 #include <gtk/gtk.h>
 #include <gtkutil/pointer.h>
 #include <uilib/uilib.h>
-#include "version.h"
 #include "gtkutil/pointer.h"
 
 #include "prtview.h"

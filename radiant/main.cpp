@@ -64,8 +64,6 @@
 #include "main.h"
 #include "globaldefs.h"
 
-#include "version.h"
-
 #include "debugging/debugging.h"
 
 #include "iundo.h"

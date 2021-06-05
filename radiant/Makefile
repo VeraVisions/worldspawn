@@ -3,8 +3,6 @@
 GTK_CFLAGS=$(shell pkg-config --cflags gtk+-2.0)
 GTK_LDFLAGS=$(shell pkg-config --libs gtk+-2.0)
 
-WS_VERSION= -DWorldSpawn_VERSION="1" -DWorldSpawn_MAJOR_VERSION="0" -DWorldSpawn_MINOR_VERSION="0" -DWorldSpawn_PATCH_VERSION="0" -DWorldSpawn_ABOUTMSG=""
-
 WS_LIBS= ../libs/libcmdlib.a \
 ../libs/libcontainer.a \
 ../libs/libddslib.a \

@@ -34,12 +34,6 @@
 
 #include "globaldefs.h"
 
-/* version */
-#ifndef Q3MAP_VERSION
-#error no Q3MAP_VERSION defined
-#endif
-
-
 /* -------------------------------------------------------------------------------
 
    dependencies
@@ -63,8 +57,6 @@
 
 
 /* general */
-#include "version.h"            /* ttimo: might want to guard that if built outside of the GtkRadiant tree */
-
 #include "cmdlib.h"
 #include "mathlib.h"
 #include "md5lib.h"
