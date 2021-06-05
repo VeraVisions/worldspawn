@@ -474,10 +474,12 @@ void remove_local_pid()
 
 void user_shortcuts_init()
 {
-    StringOutputStream path(256);
-    path << SettingsPath_get() << g_pGameDescription->mGameFile.c_str() << '/';
-    LoadCommandMap(path.c_str());
-    SaveCommandMap(path.c_str());
+	StringOutputStream shortpath(256);
+	StringOutputStream path(256);
+	shortpath << SettingsPath_get() << g_pGameDescription->mGameFile.c_str() << '/';
+
+	LoadCommandMap(shortpath.c_str(), SettingsPath_get());
+	SaveCommandMap(shortpath.c_str());
 }
 
 void user_shortcuts_save()

@@ -256,7 +256,7 @@ void setEnginePath(const char *path)
 
 // App Path
 
-CopiedString g_strAppPath;                 ///< holds the full path of the executable
+CopiedString g_strAppPath; //< holds the full path of the executable
 
 const char *AppPath_get()
 {
@@ -529,9 +529,7 @@ void Radiant_Shutdown()
     g_gameToolsPathObservers.unrealise();
 
     if (!g_preferences_globals.disable_ini) {
-        globalOutputStream() << "Start writing prefs\n";
         Preferences_Save();
-        globalOutputStream() << "Done prefs\n";
     }
 
     Radiant_Destroy();
@@ -3226,7 +3224,7 @@ void MainFrame_Construct()
                          Accelerator('X'));
 
     GlobalToggles_insert("MouseTranslate", makeCallbackF(TranslateMode),
-                         ToggleItem::AddCallbackCaller(g_translatemode_button), Accelerator('W'));
+                         ToggleItem::AddCallbackCaller(g_translatemode_button));
     GlobalToggles_insert("MouseRotate", makeCallbackF(RotateMode), ToggleItem::AddCallbackCaller(g_rotatemode_button),
                          Accelerator('R'));
     GlobalToggles_insert("MouseSelect", makeCallbackF(ScaleMode), ToggleItem::AddCallbackCaller(g_scalemode_button));

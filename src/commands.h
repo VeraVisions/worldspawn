@@ -54,7 +54,7 @@ const KeyEvent &GlobalKeyEvents_find(const char *name);
 
 void DoCommandListDlg();
 
-void LoadCommandMap(const char *path);
+void LoadCommandMap(const char *path, const char* defaultpath);
 
 void SaveCommandMap(const char *path);
 

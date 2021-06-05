@@ -598,22 +598,16 @@ public:
     }
 };
 
-void LoadCommandMap(const char *path)
+void LoadCommandMap_ReadFile(const char *path)
 {
-    StringOutputStream strINI(256);
-    strINI << path << "shortcuts.ini";
-
-    FILE *f = fopen(strINI.c_str(), "r");
-    if (f != 0) {
-        fclose(f);
-        globalOutputStream() << "loading custom shortcuts list from " << makeQuoted(strINI.c_str()) << "\n";
+	globalOutputStream() << "loading custom shortcuts list from " << makeQuoted(path) << "\n";
 
         Version version = version_parse(COMMANDS_VERSION);
         Version dataVersion = {0, 0};
 
         {
             char value[1024];
-            if (read_var(strINI.c_str(), "Version", "number", value)) {
+            if (read_var(path, "Version", "number", value)) {
                 dataVersion = version_parse(value);
             }
         }
@@ -621,14 +615,34 @@ void LoadCommandMap(const char *path)
         if (version_compatible(version, dataVersion)) {
             globalOutputStream() << "commands import: data version " << dataVersion
                                  << " is compatible with code version " << version << "\n";
-            ReadCommandMap visitor(strINI.c_str());
+            ReadCommandMap visitor(path);
             GlobalShortcuts_foreach(visitor);
             globalOutputStream() << "parsed " << Unsigned(visitor.count()) << " custom shortcuts\n";
         } else {
             globalOutputStream() << "commands import: data version " << dataVersion
                                  << " is not compatible with code version " << version << "\n";
         }
-    } else {
-        globalOutputStream() << "failed to load custom shortcuts from " << makeQuoted(strINI.c_str()) << "\n";
-    }
+}
+
+void LoadCommandMap(const char *path, const char *defaultpath)
+{
+	StringOutputStream strINI(256);
+	StringOutputStream strDefault(256);
+	strDefault << defaultpath << "defaultkeys.ini";
+	strINI << path << "shortcuts.ini";
+
+	FILE *f = fopen(strINI.c_str(), "r");
+	if (f != 0) {
+		fclose(f);
+		LoadCommandMap_ReadFile(strINI.c_str());
+	} else {
+		/* load the default */
+		FILE *f = fopen(strDefault.c_str(), "r");
+		if (f != 0) {
+			fclose(f);
+			LoadCommandMap_ReadFile(strDefault.c_str());
+		} else {
+			globalOutputStream() << "failed to load custom shortcuts from " << makeQuoted(strDefault.c_str()) << "\n";
+		}
+	}
 }

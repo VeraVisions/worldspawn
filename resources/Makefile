@@ -3,6 +3,7 @@ all:
 	mkdir -p ../build/games
 	mkdir -p ../build/gl
 	mkdir -p ../build/platform.game
+	cp -vf ./defaultkeys.ini ../build/defaultkeys.ini
 	cp -vf ./platform.game/default_build_menu.xml ../build/platform.game/default_build_menu.xml
 	cp -vf ./games/platform.game ../build/games/platform.game
 	cp -vf ./gl/lighting_DBS_omni_fp.glp ../build/gl/lighting_DBS_omni_fp.glp
