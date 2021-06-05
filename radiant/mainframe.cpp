@@ -331,66 +331,6 @@ void setEnginePath(const char *path)
     }
 }
 
-// Pak Path
-
-CopiedString g_strPakPath[g_pakPathCount] = {"", "", "", "", ""};
-ModuleObservers g_pakPathObservers[g_pakPathCount];
-std::size_t g_pakpath_unrealised[g_pakPathCount] = {1, 1, 1, 1, 1};
-
-void Radiant_attachPakPathObserver(int num, ModuleObserver &observer)
-{
-    g_pakPathObservers[num].attach(observer);
-}
-
-void Radiant_detachPakPathObserver(int num, ModuleObserver &observer)
-{
-    g_pakPathObservers[num].detach(observer);
-}
-
-
-void PakPath_Realise(int num)
-{
-    if (--g_pakpath_unrealised[num] == 0) {
-        g_pakPathObservers[num].realise();
-    }
-}
-
-const char *PakPath_get(int num)
-{
-    std::string message = "PakPath_get: pak path " + std::to_string(num) + " not realised";
-    ASSERT_MESSAGE(g_pakpath_unrealised[num] == 0, message.c_str());
-    return g_strPakPath[num].c_str();
-}
-
-void PakPath_Unrealise(int num)
-{
-    if (++g_pakpath_unrealised[num] == 1) {
-        g_pakPathObservers[num].unrealise();
-    }
-}
-
-void setPakPath(int num, const char *path)
-{
-    if (!g_strcmp0(path, "")) {
-        g_strPakPath[num] = "";
-        return;
-    }
-
-    StringOutputStream buffer(256);
-    buffer << DirectoryCleaned(path);
-    if (!path_equal(buffer.c_str(), g_strPakPath[num].c_str())) {
-        std::string message = "Changing Pak Path " + std::to_string(num);
-        ScopeDisableScreenUpdates disableScreenUpdates("Processing...", message.c_str());
-
-        PakPath_Unrealise(num);
-
-        g_strPakPath[num] = buffer.c_str();
-
-        PakPath_Realise(num);
-    }
-}
-
-
 // App Path
 
 CopiedString g_strAppPath;                 ///< holds the full path of the executable
@@ -428,7 +368,6 @@ const char *SettingsPath_get()
    (or other games)
    this is one of the main variables that are configured by the game selection on startup
    [GameToolsPath]/plugins
-   [GameToolsPath]/modules
    and also q3map, bspc
  */
 CopiedString g_strGameToolsPath;           ///< this is set by g_GamesDialog
@@ -450,66 +389,6 @@ struct EnginePath {
     }
 };
 
-struct PakPath0 {
-    static void Export(const CopiedString &self, const Callback<void(const char *)> &returnz)
-    {
-        returnz(self.c_str());
-    }
-
-    static void Import(CopiedString &self, const char *value)
-    {
-        setPakPath(0, value);
-    }
-};
-
-struct PakPath1 {
-    static void Export(const CopiedString &self, const Callback<void(const char *)> &returnz)
-    {
-        returnz(self.c_str());
-    }
-
-    static void Import(CopiedString &self, const char *value)
-    {
-        setPakPath(1, value);
-    }
-};
-
-struct PakPath2 {
-    static void Export(const CopiedString &self, const Callback<void(const char *)> &returnz)
-    {
-        returnz(self.c_str());
-    }
-
-    static void Import(CopiedString &self, const char *value)
-    {
-        setPakPath(2, value);
-    }
-};
-
-struct PakPath3 {
-    static void Export(const CopiedString &self, const Callback<void(const char *)> &returnz)
-    {
-        returnz(self.c_str());
-    }
-
-    static void Import(CopiedString &self, const char *value)
-    {
-        setPakPath(3, value);
-    }
-};
-
-struct PakPath4 {
-    static void Export(const CopiedString &self, const Callback<void(const char *)> &returnz)
-    {
-        returnz(self.c_str());
-    }
-
-    static void Import(CopiedString &self, const char *value)
-    {
-        setPakPath(4, value);
-    }
-};
-
 bool g_disableEnginePath = false;
 bool g_disableHomePath = false;
 
@@ -526,27 +405,6 @@ void Paths_constructPreferences(PreferencesPage &page)
             "", "Do not use Home Path",
             g_disableHomePath
     );
-
-    for (int i = 0; i < g_pakPathCount; i++) {
-        std::string label = "Pak Path " + std::to_string(i);
-        switch (i) {
-            case 0:
-                page.appendPathEntry(label.c_str(), true, make_property<PakPath0>(g_strPakPath[i]));
-                break;
-            case 1:
-                page.appendPathEntry(label.c_str(), true, make_property<PakPath1>(g_strPakPath[i]));
-                break;
-            case 2:
-                page.appendPathEntry(label.c_str(), true, make_property<PakPath2>(g_strPakPath[i]));
-                break;
-            case 3:
-                page.appendPathEntry(label.c_str(), true, make_property<PakPath3>(g_strPakPath[i]));
-                break;
-            case 4:
-                page.appendPathEntry(label.c_str(), true, make_property<PakPath4>(g_strPakPath[i]));
-                break;
-        }
-    }
 }
 
 void Paths_constructPage(PreferenceGroup &group)
@@ -686,12 +544,6 @@ void Radiant_loadModulesFromRoot(const char *directory)
     {
         StringOutputStream path(256);
         path << directory << g_pluginsDir;
-        Radiant_loadModules(path.c_str());
-    }
-
-    if (!string_equal(g_pluginsDir, g_modulesDir)) {
-        StringOutputStream path(256);
-        path << directory << g_modulesDir;
         Radiant_loadModules(path.c_str());
     }
 }
@@ -3585,11 +3437,6 @@ void MainFrame_Construct()
 
     GlobalPreferenceSystem().registerPreference("DisableEnginePath", make_property_string(g_disableEnginePath));
     GlobalPreferenceSystem().registerPreference("DisableHomePath", make_property_string(g_disableHomePath));
-
-    for (int i = 0; i < g_pakPathCount; i++) {
-        std::string label = "PakPath" + std::to_string(i);
-        GlobalPreferenceSystem().registerPreference(label.c_str(), make_property_string(g_strPakPath[i]));
-    }
 
     g_Layout_enablePluginToolbar.useLatched();
 

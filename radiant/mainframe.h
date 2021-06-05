@@ -231,11 +231,6 @@ const char *QERApp_GetGamePath();
 extern bool g_disableEnginePath;
 extern bool g_disableHomePath;
 
-const int g_pakPathCount = 5;
-extern CopiedString g_strPakPath[g_pakPathCount];
-
-const char *PakPath_get(int num);
-
 extern CopiedString g_strAppPath;
 
 const char *AppPath_get();
@@ -247,7 +242,6 @@ const char *SettingsPath_get();
 const char *LocalRcPath_get(void);
 
 const char *const g_pluginsDir = "plugins/"; ///< name of plugins directory, always sub-directory of toolspath
-const char *const g_modulesDir = "modules/"; ///< name of modules directory, always sub-directory of toolspath
 
 extern CopiedString g_strGameToolsPath;
 
