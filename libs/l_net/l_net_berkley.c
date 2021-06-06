@@ -29,6 +29,7 @@
 // Notes:
 //===========================================================================
 
+#if defined(POSIX) || defined(__linux__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__FreeBSD__)
 //#include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -746,3 +747,4 @@ int WINS_SetSocketPort( struct sockaddr_s *addr, int port ){
 	( (struct sockaddr_in *)addr )->sin_port = htons( (u_short)port );
 	return 0;
 } //end of the function WINS_SetSocketPort
+#endif

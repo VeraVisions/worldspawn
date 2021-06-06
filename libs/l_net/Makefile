@@ -7,7 +7,7 @@ DO_CC=$(CC) -static -fPIC $(LIB_CFLAGS) -o $@ -c $<
 	$(DO_CC)
 
 WS_OBJS = \
-	l_net.o l_net_berkley.o
+	l_net.o l_net_berkley.o l_net_wins.o
 
 # binary target
 ../libl_net.a: $(WS_OBJS)
@@ -16,6 +16,7 @@ WS_OBJS = \
 # object files
 l_net.o: l_net.c l_net.h
 l_net_berkley.o: l_net_berkley.c
+l_net_wins.o: l_net_wins.c
 
 clean:
 	-rm -f *.o ../libl_net.a
