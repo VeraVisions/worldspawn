@@ -1204,7 +1204,7 @@ inline bool Patch_importMatrix(Patch &patch, Tokeniser &tokeniser)
                 RETURN_FALSE_IF_FAIL(Tokeniser_getFloat(tokeniser, patch.ctrlAt(r, c).m_texcoord[0]));
                 RETURN_FALSE_IF_FAIL(Tokeniser_getFloat(tokeniser, patch.ctrlAt(r, c).m_texcoord[1]));
 
-				patch.ctrlAt(r, c).m_color = Vector4(1,1,1,1);	//assume opaque white.
+		patch.ctrlAt(r, c).m_color = Vector4(1,1,1,1);	//assume opaque white.
 
                 if (patch.m_patchDefWS) {
 					//Temp Hack, to handle weird format...
@@ -1303,14 +1303,14 @@ inline void Patch_exportHeader(const Patch &patch, TokenWriter &writer)
 			}
 		}
 	}
-    if (hascolours) {
+	if (hascolours) {
 		writer.writeToken(patch.m_patchDef3 ? "patchDef3WS" : "patchDef2WS");
 	} else {
 		writer.writeToken(patch.m_patchDef3 ? "patchDef3" : "patchDef2");
 	}
-    writer.nextLine();
-    writer.writeToken("{");
-    writer.nextLine();
+	writer.nextLine();
+	writer.writeToken("{");
+	writer.nextLine();
 }
 
 inline void Patch_exportShader(const Patch &patch, TokenWriter &writer)

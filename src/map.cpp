@@ -1647,11 +1647,6 @@ bool Map_ImportFile(const char *filename)
         output.push_string(EnginePath_get());
         output.push_string("\"");
 
-        // extra switches
-        if (g_disableEnginePath) {
-            output.push_string(" -fs_nobasepath ");
-        }
-
         output.push_string(" -fs_game ");
         output.push_string(gamename_get());
         output.push_string(" -convert -format ");

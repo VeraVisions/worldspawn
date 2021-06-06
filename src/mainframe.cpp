@@ -312,8 +312,6 @@ struct EnginePath {
     }
 };
 
-bool g_disableEnginePath = false;
-
 void Paths_constructPreferences(PreferencesPage &page)
 {
     page.appendPathEntry("Nuclide Path", true, make_property<EnginePath>(g_strEnginePath));
@@ -3088,11 +3086,13 @@ void GlobalGL_sharedContextCreated()
     GLFont *g_font = NULL;
 
     // report OpenGL information
+#if 0
     globalOutputStream() << "GL_VENDOR: " << reinterpret_cast<const char *>( glGetString(GL_VENDOR)) << "\n";
     globalOutputStream() << "GL_RENDERER: " << reinterpret_cast<const char *>( glGetString(GL_RENDERER)) << "\n";
     globalOutputStream() << "GL_VERSION: " << reinterpret_cast<const char *>( glGetString(GL_VERSION)) << "\n";
     const auto extensions = reinterpret_cast<const char *>( glGetString(GL_EXTENSIONS));
     globalOutputStream() << "GL_EXTENSIONS: " << (extensions ? extensions : "") << "\n";
+#endif
 
     QGL_sharedContextCreated(GlobalOpenGL());
 
@@ -3344,8 +3344,6 @@ void MainFrame_Construct()
     }
 
     GlobalPreferenceSystem().registerPreference("EnginePath", make_property_string(g_strEnginePath));
-
-    GlobalPreferenceSystem().registerPreference("DisableEnginePath", make_property_string(g_disableEnginePath));
 
     g_Layout_enablePluginToolbar.useLatched();
 

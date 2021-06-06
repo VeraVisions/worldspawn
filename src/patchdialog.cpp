@@ -426,7 +426,9 @@ static void OnSelchangeComboColRow(ui::Widget widget, gpointer data)
 	g_PatchInspector.UpdateRowColInfo();
 	// now reflect our changes
 	g_PatchInspector.importData();
-	g_PatchInspector.m_Patch->controlPointsChanged();
+
+	if (g_PatchInspector.m_Patch)
+		g_PatchInspector.m_Patch->controlPointsChanged();
 }
 
 void Scene_PatchTileTexture_Selected(scene::Graph &graph, float s, float t)

@@ -442,7 +442,7 @@ void DoAbout()
                         "Developed by Vera Visions LLC.\n"
                         "Programming by Marco Hladik\n"
                         "Licensed by id software\n\n"
-                        "Copyright (C) 2015-2020";
+                        "Copyright (C) 2015-2021";
 
                 auto label = ui::Label(label_text);
 

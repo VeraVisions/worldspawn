@@ -74,32 +74,26 @@ QEGlobals_t g_qeglobals;
 
 void QE_InitVFS()
 {
-    // VFS initialization -----------------------
-    // we will call GlobalFileSystem().initDirectory, giving the directories to look in (for files in pk3's and for standalone files)
-    // we need to call in order, the mod ones first, then the base ones .. they will be searched in this order
-    // *nix systems have a dual filesystem in ~/.q3a, which is searched first .. so we need to add that too
+	// VFS initialization -----------------------
+	// we will call GlobalFileSystem().initDirectory, giving the directories to look in (for files in pk3's and for standalone files)
+	// we need to call in order, the mod ones first, then the base ones .. they will be searched in this order
+	// *nix systems have a dual filesystem in ~/.q3a, which is searched first .. so we need to add that too
 
-    const char *gamename = gamename_get();
-    const char *basegame = basegame_get();
-    const char *userRoot = g_qeglobals.m_userEnginePath.c_str();
-    const char *globalRoot = EnginePath_get();
+	const char *gamename = gamename_get();
+	const char *basegame = basegame_get();
+	const char *globalRoot = EnginePath_get();
 
-    // if we have a mod dir
-    if (!string_equal(gamename, basegame)) {
-        // <fs_basepath>/<fs_game>
-        if (!g_disableEnginePath) {
-            StringOutputStream globalGamePath(256);
-            globalGamePath << globalRoot << gamename << '/';
-            GlobalFileSystem().initDirectory(globalGamePath.c_str());
-        }
-    }
+	// if we have a mod dir
+	if (!string_equal(gamename, basegame)) {
+		// <fs_basepath>/<fs_game>
+		StringOutputStream globalGamePath(256);
+		globalGamePath << globalRoot << gamename << '/';
+		GlobalFileSystem().initDirectory(globalGamePath.c_str());
+	}
 
-    // <fs_basepath>/<fs_main>
-    if (!g_disableEnginePath) {
-        StringOutputStream globalBasePath(256);
-        globalBasePath << globalRoot << basegame << '/';
-        GlobalFileSystem().initDirectory(globalBasePath.c_str());
-    }
+	StringOutputStream globalBasePath(256);
+	globalBasePath << globalRoot << basegame << '/';
+	GlobalFileSystem().initDirectory(globalBasePath.c_str());
 }
 
 int g_numbrushes = 0;
@@ -157,15 +151,6 @@ void bsp_init()
     build_set_variable("UserEnginePath", g_qeglobals.m_userEnginePath.c_str());
     build_set_variable("MonitorAddress", (g_WatchBSP_Enabled) ? "127.0.0.1:39000" : "");
     build_set_variable("GameName", gamename_get());
-
-    StringBuffer ExtraQ3map2Args;
-
-    // extra switches
-    if (g_disableEnginePath) {
-        ExtraQ3map2Args.push_string(" -fs_nobasepath ");
-    }
-
-    build_set_variable("ExtraQ3map2Args", ExtraQ3map2Args.c_str());
 
     const char *mapname = Map_Name(g_map);
     StringOutputStream name(256);
