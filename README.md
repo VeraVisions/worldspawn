@@ -17,6 +17,7 @@ There's plenty of other editors for the first-party id Tech games.
 - All texture coordinates use the Valve 220 format for compatibility with WorldCraft exported .map files
 - Integration with our material system (goodbye .shader files)
 - Support for vertex-color/alpha editing of patches using our new fixed patch format, allowing technologies such as 4-way texture blending and whatever your designers can imagine.
+- Gracefully deals with duplicate entity attribute key/value pairs, to support features like Source Engine style Input/Output system for triggers
 - Lots of bug fixes, like the 'ghost-ent' bug, which places dummy ents at the center of your map which somehow had flown other peoples radar for 20+ years
 - Simplified build system, so less dependencies!
 - Support for VVM/IQM model format in the BSP compiler
