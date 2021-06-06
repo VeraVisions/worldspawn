@@ -34,7 +34,9 @@ gtkgtlext-1.0 is notorious for using both include and lib/gtkgtlext-1.0/include 
 
 Clang should also be supported, pass CC=clang and CXX=clang++ if you want to use it.
 
-We don't work on NT. You're on your own with that one.
+On NT you'll probably have a build command-line likes this:
+`CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ PKG_CONFIG_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig make -j 4`
+Not all works yet, but stay tuned.
 
 ## Dependencies
 * gcc-c++
