@@ -27,8 +27,10 @@
 
 #if defined(POSIX) || defined(__linux__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__FreeBSD__)
 #define GDEF_OS_POSIX 1
+#define XWINDOWS 1
 #else
 #define GDEF_OS_POSIX 0
+#define XWINDOWS 0
 #endif
 
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)

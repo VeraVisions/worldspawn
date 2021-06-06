@@ -25,7 +25,7 @@ WS_LIBS= ../libs/libcmdlib.a \
 ../libs/libuilib.a \
 ../libs/libxmllib.a
 
-WS_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) -I../include -I../libs -DGTK_TARGET=2 $(WS_VERSION) -DXWINDOWS
+WS_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) -I../include -I../libs -DGTK_TARGET=2 $(WS_VERSION) 
 WS_LDFLAGS=$(LDFLAGS) -lm $(GTK_LDFLAGS) -lX11 -lGL -lxml2 -lgdkglext-x11-1.0 -lgtkglext-x11-1.0 -L../lib $(WS_LIBS)
 
 DO_CXX=$(CXX) $(WS_CFLAGS) -o $@ -c $<
