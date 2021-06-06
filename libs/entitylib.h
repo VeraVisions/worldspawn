@@ -374,6 +374,7 @@ typedef MemberCaller<KeyValue, void(const CopiedString&), &KeyValue::importState
 /// - Notifies observers when a pair is inserted or removed.
 /// - Provides undo support through the global undo system.
 /// - New keys are appended to the end of the list.
+#include "stream/stringstream.h"
 class EntityKeyValues : public Entity
 {
 public:
@@ -441,15 +442,82 @@ private:
 		}
 	}
 
+	/* see if our key already exists in here */
 	void insert( const char* key, const char* value ){
+		int dupecheck = 0;
+
+		if (!strcmp(key, "classname"))
+			dupecheck = 1;
+		else if (!strcmp(key, "origin"))
+			dupecheck = 1;
+		else if (!strcmp(key, "model"))
+			dupecheck = 1;
+		else if (!strcmp(key, "angles"))
+			dupecheck = 1;
+		else if (!strcmp(key, "angle"))
+			dupecheck = 1;
+		else if (!strcmp(key, "alpha"))
+			dupecheck = 1;
+		else if (!strcmp(key, "rendermode"))
+			dupecheck = 1;
+		else if (!strcmp(key, "renderamt"))
+			dupecheck = 1;
+		else if (!strcmp(key, "rendercolor"))
+			dupecheck = 1;
+		else if (!strcmp(key, "velocity"))
+			dupecheck = 1;
+		else if (!strcmp(key, "solid"))
+			dupecheck = 1;
+		else if (!strcmp(key, "movetype"))
+			dupecheck = 1;
+		else if (!strcmp(key, "avelocity"))
+			dupecheck = 1;
+		else if (!strcmp(key, "skin"))
+			dupecheck = 1;
+		else if (!strcmp(key, "effects"))
+			dupecheck = 1;
+		else if (!strcmp(key, "target"))
+			dupecheck = 1;
+		else if (!strcmp(key, "targetname"))
+			dupecheck = 1;
+		else if (!strcmp(key, "killtarget"))
+			dupecheck = 1;
+		else if (!strcmp(key, "shadows"))
+			dupecheck = 1;
+
 		KeyValues::iterator i = m_keyValues.find( key );
-		if ( i != m_keyValues.end() ) {
-			( *i ).second->assign( value );
+
+		/* does the key already exist */
+		if (i != m_keyValues.end() ) {
+			/* re-assign only when we're a special field, else pick a new name */
+			if (dupecheck) {
+				( *i ).second->assign( value );
+				printf("[ENTLIB]: dupe found, setting %s to %s\n", key, value);
+			} else {
+				bool b = true;
+				unsigned int num = 0;
+				StringOutputStream new_key(64);
+
+				/* loop through and generate an enumerated variant */
+				do {
+					/* keep incrementing num until we find a free slot */
+					num++;
+					new_key.clear();
+					new_key << key << "#" << Unsigned(num);
+					i = m_keyValues.find(new_key.c_str());
+
+					if (i == m_keyValues.end()) {
+						insert(new_key.c_str(), value);
+						b = false;
+					}
+				} while (b != false);
+			}
 		}
 		else
 		{
 			m_undo.save();
 			insert( key, KeyValuePtr( new KeyValue( value, EntityClass_valueForKey( *m_eclass, key ) ) ) );
+			printf("[ENTLIB]: inserting key %s = %s\n", key, value);
 		}
 	}
 

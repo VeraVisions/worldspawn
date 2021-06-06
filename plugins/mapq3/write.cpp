@@ -49,9 +49,11 @@ void Entity_ExportTokens(const Entity &entity, TokenWriter &writer)
 
         void visit(const char *key, const char *value)
         {
-            m_writer.writeString(key);
-            m_writer.writeString(value);
-            m_writer.nextLine();
+		/* cut anything after # including the symbol itself */
+		StringTokeniser st(key, "#");
+		m_writer.writeString(st.getToken());
+		m_writer.writeString(value);
+		m_writer.nextLine();
         }
 
     } visitor(writer);
