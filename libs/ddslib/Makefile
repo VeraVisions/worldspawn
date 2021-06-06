@@ -1,6 +1,6 @@
 # WorldSpawn Makefile 
 
-LIB_CFLAGS=$(CFLAGS) -I../../include -I../../libs -DPOSIX
+LIB_CFLAGS=$(CFLAGS) -I../../include -I../../libs 
 DO_CC=$(CC) -static -fPIC $(LIB_CFLAGS) -o $@ -c $<
 
 .c.o:

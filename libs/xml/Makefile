@@ -1,7 +1,7 @@
 # WorldSpawn Makefile
 
 GTK_CFLAGS=$(shell pkg-config --cflags gtk+-2.0)
-LIB_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) -I../../include -I../../libs -DGTK_TARGET=2 -DPOSIX -DXWINDOWS
+LIB_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) -I../../include -I../../libs -DGTK_TARGET=2 -DXWINDOWS
 DO_CXX=$(CXX) -static -fPIC $(LIB_CFLAGS) -o $@ -c $<
 
 .cpp.o:

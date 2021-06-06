@@ -25,7 +25,7 @@
 
 // OS
 
-#if defined(POSIX)
+#if defined(POSIX) || defined(__linux__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__FreeBSD__)
 #define GDEF_OS_POSIX 1
 #else
 #define GDEF_OS_POSIX 0

@@ -1,6 +1,6 @@
 # WorldSpawn Plugin Makefile 
 
-PLUGIN_CFLAGS=$(CFLAGS) -I../../include -I../../libs -DPOSIX -fPIC -fvisibility=hidden
+PLUGIN_CFLAGS=$(CFLAGS) -I../../include -I../../libs -fPIC -fvisibility=hidden
 PLUGIN_LDFLAGS=$(LDFLAGS) -shared
 
 DO_CXX=$(CXX) $(PLUGIN_CFLAGS) -o $@ -c $<

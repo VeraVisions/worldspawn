@@ -14,16 +14,16 @@ There's plenty of other editors for the first-party id Tech games.
 ![Screenshot](docs/screen.jpg)
 
 ## Editor Changes
-- All texture coordinates use the Valve 220 format for compatibility with WorldCraft exported .map files
-- Integration with our material system (goodbye .shader files)
-- Support for vertex-color/alpha editing of patches using our new fixed patch format, allowing technologies such as 4-way texture blending and whatever your designers can imagine.
+- Valve 220 format is used top to bottom, imported & exported, with texture coords handled internally the same way
+- Integration with our material system (no more .shader files)
+- Support for vertex-color/alpha editing of patches using our new fixed patch format, allowing technologies such as 4-way texture blending and whatever your designers can imagine
 - Gracefully deals with duplicate entity attribute key/value pairs, to support features like Source Engine style Input/Output system for triggers
-- Lots of bug fixes, like the 'ghost-ent' bug, which places dummy ents at the center of your map which somehow had flown other peoples radar for 20+ years
-- Simplified build system, so less dependencies!
+- Simplified build system that doesn't suddenly break on its own, also less dependencies
 - Support for VVM/IQM model format in the BSP compiler
-- Support for High-Dynamic-Range lightmaps in the BSP compiler
-- Support for Cubemap aware surfaces in the BSP compiler
-- Support for our patchDef2WS and patchDef3WS curved surfaces in the compiler
+- Support for internal and external High-Dynamic-Range lightmaps in the BSP compiler
+- Support for cubemap aware surfaces in the BSP compiler
+- Support for our patchDef2WS and patchDef3WS curved surfaces in the BSP compiler
+- More bug-fixes than you could possibly imagine
 
 ## Compiling
 To compile on a standard GNU/Linux system:
