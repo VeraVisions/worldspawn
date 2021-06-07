@@ -763,7 +763,7 @@ void Patch_registerCommands()
 
 void Patch_constructToolbar(ui::Toolbar toolbar)
 {
-    toolbar_append_button(toolbar, "Put caps on the current patch (SHIFT + C)", "cap_curve.xpm", "CapCurrentCurve");
+    toolbar_append_button(toolbar, "Put caps on the current patch", "cap_curve.xpm", "CapCurrentCurve");
 }
 
 void Patch_constructMenu(ui::Menu menu)

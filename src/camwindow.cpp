@@ -1914,7 +1914,7 @@ void Camera_ToggleFarClip()
 
 void CamWnd_constructToolbar(ui::Toolbar toolbar)
 {
-    toolbar_append_toggle_button(toolbar, "Cubic clip the camera view (\\)", "view_cubicclipping.xpm",
+    toolbar_append_toggle_button(toolbar, "Cubic clip the camera view", "view_cubicclipping.xpm",
                                  "ToggleCubicClip");
 }
 

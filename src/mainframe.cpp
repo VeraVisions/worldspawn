@@ -2360,18 +2360,18 @@ void register_shortcuts()
 void File_constructToolbar(ui::Toolbar toolbar)
 {
     toolbar_append_button(toolbar, "New map", "file_new.xpm", "NewMap");
-    toolbar_append_button(toolbar, "Open an existing map (CTRL + O)", "file_open.xpm", "OpenMap");
-    toolbar_append_button(toolbar, "Save the active map (CTRL + S)", "file_save.xpm", "SaveMap");
+    toolbar_append_button(toolbar, "Open an existing map", "file_open.xpm", "OpenMap");
+    toolbar_append_button(toolbar, "Save the active map", "file_save.xpm", "SaveMap");
 }
 
 void UndoRedo_constructToolbar(ui::Toolbar toolbar)
 {
 	
-    toolbar_append_toggle_button(toolbar, "Select Vertices (V)", "side_vertices.xpm", "DragVertices");
-    toolbar_append_toggle_button(toolbar, "Select Edges (E)", "side_edges.xpm", "DragEdges");
-    toolbar_append_toggle_button(toolbar, "Select Faces (F)", "side_faces.xpm", "DragFaces");
-    toolbar_append_button(toolbar, "Undo (CTRL + Z)", "undo.xpm", "Undo");
-    toolbar_append_button(toolbar, "Redo (CTRL + Y)", "redo.xpm", "Redo");
+    toolbar_append_toggle_button(toolbar, "Select Vertices", "modify_vertices.xpm", "DragVertices");
+    toolbar_append_toggle_button(toolbar, "Select Edges", "modify_edges.xpm", "DragEdges");
+    toolbar_append_toggle_button(toolbar, "Select Faces", "modify_faces.xpm", "DragFaces");
+    toolbar_append_button(toolbar, "Undo", "undo.xpm", "Undo");
+    toolbar_append_button(toolbar, "Redo", "redo.xpm", "Redo");
 }
 
 void Rotate_constructToolbar(ui::Toolbar toolbar)
@@ -2396,23 +2396,23 @@ void Select_constructToolbar(ui::Toolbar toolbar)
 
 void CSG_constructToolbar(ui::Toolbar toolbar)
 {
-    toolbar_append_button(toolbar, "CSG Subtract (SHIFT + U)", "selection_csgsubtract.xpm", "CSGSubtract");
-    toolbar_append_button(toolbar, "CSG Merge (CTRL + U)", "selection_csgmerge.xpm", "CSGMerge");
+    toolbar_append_button(toolbar, "CSG Subtract", "selection_csgsubtract.xpm", "CSGSubtract");
+    toolbar_append_button(toolbar, "CSG Merge", "selection_csgmerge.xpm", "CSGMerge");
     toolbar_append_button(toolbar, "Make Hollow", "selection_makehollow.xpm", "CSGMakeHollow");
     toolbar_append_button(toolbar, "Make Room", "selection_makeroom.xpm", "CSGMakeRoom");
 }
 
 void ComponentModes_constructToolbar(ui::Toolbar toolbar)
 {
-    toolbar_append_toggle_button(toolbar, "Select Vertices (V)", "modify_vertices.xpm", "DragVertices");
-    toolbar_append_toggle_button(toolbar, "Select Edges (E)", "modify_edges.xpm", "DragEdges");
-    toolbar_append_toggle_button(toolbar, "Select Faces (F)", "modify_faces.xpm", "DragFaces");
+    toolbar_append_toggle_button(toolbar, "Select Vertices", "modify_vertices.xpm", "DragVertices");
+    toolbar_append_toggle_button(toolbar, "Select Edges", "modify_edges.xpm", "DragEdges");
+    toolbar_append_toggle_button(toolbar, "Select Faces", "modify_faces.xpm", "DragFaces");
 }
 
 void Clipper_constructToolbar(ui::Toolbar toolbar)
 {
 
-    toolbar_append_toggle_button(toolbar, "Clipper (X)", "view_clipper.xpm", "ToggleClipper");
+    toolbar_append_toggle_button(toolbar, "Clipper", "view_clipper.xpm", "ToggleClipper");
 }
 
 void XYWnd_constructToolbar(ui::Toolbar toolbar)
@@ -2470,7 +2470,7 @@ ui::Toolbar create_main_toolbar()
 	Patch_constructToolbar(toolbar);
 
     space();
-    toolbar_append_toggle_button(toolbar, "Texture Lock (SHIFT +T)", "texture_lock.xpm", "TogTexLock");
+    toolbar_append_toggle_button(toolbar, "Texture Lock", "texture_lock.xpm", "TogTexLock");
     space();
     toolbar_append_button(toolbar, "Refresh Assets", "refresh_models.xpm",
                                                              "RefreshReferences");

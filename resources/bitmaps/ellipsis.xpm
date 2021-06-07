@@ -1,12 +1,11 @@
 /* XPM */
-static char *ellipsis[] = {
-/* columns rows colors chars-per-pixel */
-"12 4 2 1 ",
-"  c None",
-". c black",
-/* pixels */
+static char * ellipsis_xpm[] = {
+"12 4 4 1",
+" 	c None",
+".	c #00B7FF",
+"+	c #00B3FF",
+"@	c #00B5FF",
 "            ",
 "  ..  ..  ..",
-"  ..  ..  ..",
-"            "
-};
+"  ++  +@  @+",
+"            "};
