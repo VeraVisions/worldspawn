@@ -126,7 +126,7 @@ void QE_entityCountChanged()
 std::size_t Scene_countHiddenBrushes(scene::Graph &graph);
 void QE_hiddenCountChanged()
 {
-	g_numhidden = Scene_countHiddenBrushes(GlobalSceneGraph());
+	g_numhidden = int(Scene_countHiddenBrushes(GlobalSceneGraph()));
 	QE_UpdateStatusBar();
 }
 

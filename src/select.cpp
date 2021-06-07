@@ -799,26 +799,29 @@ public:
 
 void Scene_Hide_Selected(bool hide)
 {
-    GlobalSceneGraph().traverse(HideSelectedWalker(hide));
+	GlobalSceneGraph().traverse(HideSelectedWalker(hide));
 }
 
 void Select_Hide()
 {
-    Scene_Hide_Selected(true);
-    SceneChangeNotify();
+	Scene_Hide_Selected(true);
+	SceneChangeNotify();
 }
 
+void QE_hiddenCountChanged();
 void HideSelected()
 {
-    Select_Hide();
-    GlobalSelectionSystem().setSelectedAll(false);
+	Select_Hide();
+	GlobalSelectionSystem().setSelectedAll(false);
+	QE_hiddenCountChanged();
 }
 
 void HideUnselected()
 {
 	Select_Invert();
-    Select_Hide();
-    GlobalSelectionSystem().setSelectedAll(false);
+	Select_Hide();
+	GlobalSelectionSystem().setSelectedAll(false);
+	QE_hiddenCountChanged();
 }
 
 
@@ -844,8 +847,9 @@ void Scene_Hide_All(bool hide)
 
 void Select_ShowAllHidden()
 {
-    Scene_Hide_All(false);
-    SceneChangeNotify();
+	Scene_Hide_All(false);
+	SceneChangeNotify();
+	QE_hiddenCountChanged();
 }
 
 
