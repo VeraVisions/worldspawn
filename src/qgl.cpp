@@ -561,7 +561,7 @@ int QGL_Init(OpenGLBinding &table)
     qwglGetProcAddress           = wglGetProcAddress;
 #elif defined( XWINDOWS )
     qglXGetProcAddressARB = (glXGetProcAddressARBProc) dlsym(RTLD_DEFAULT, "glXGetProcAddressARB");
-    if ((qglXQueryExtension == 0) || (qglXQueryExtension(XOpenDisplay(nullptr), 0, 0) != True)) {
+    if ((qglXQueryExtension == 0)) {
         return 0;
     }
 #elif GDEF_OS_MACOS

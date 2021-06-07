@@ -2,16 +2,29 @@
 
 # ws libs vmap uses
 LIBOBJS=../libs/libddslib.a \
-        ../libs/libetclib.a \
-        ../libs/libfilematch.a \
-        ../libs/libl_net.a \
-        ../libs/libmathlib.a \
-        ../libs/libpicomodel.a
+	../libs/libetclib.a \
+	../libs/libfilematch.a \
+	../libs/libl_net.a \
+	../libs/libmathlib.a \
+	../libs/libpicomodel.a
 
 GLIB_CFLAGS=$(shell pkg-config --cflags glib-2.0)
 GLIB_LDFLAGS=$(shell pkg-config --libs glib-2.0)
-VMAP_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) -I../include  -I./common -I../libs -Wno-narrowing
-VMAP_LDFLAGS=$(LDFLAGS) $(GLIB_LDFLAGS) -lm -lpthread -L../lib -lxml2 -ljpeg -lpng -lminizip $(LIBOBJS)
+
+XML_CFLAGS=$(shell pkg-config --cflags libxml-2.0)
+XML_LDFLAGS=$(shell pkg-config --libs libxml-2.0)
+
+MINIZIP_CFLAGS=$(shell pkg-config --cflags minizip)
+MINIZIP_LDFLAGS=$(shell pkg-config --libs minizip)
+
+JPEG_CFLAGS=$(shell pkg-config --cflags libjpeg)
+JPEG_LDFLAGS=$(shell pkg-config --libs libjpeg)
+
+PNG_CFLAGS=$(shell pkg-config --cflags libpng)
+PNG_LDFLAGS=$(shell pkg-config --libs libpng)
+
+VMAP_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) $(MINIZIP_CFLAGS) $(JPEG_CFLAGS) $(PNG_CFLAGS) -I../include  -I./common -I../libs
+VMAP_LDFLAGS=$(LDFLAGS) $(GLIB_LDFLAGS) $(XML_LDFLAGS) $(MINIZIP_LDFLAGS) $(JPEG_LDFLAGS) $(PNG_LDFLAGS) -lm -lpthread -L../lib $(LIBOBJS)
 
 DO_CC=$(CC) $(VMAP_CFLAGS) -o $@ -c $<
 

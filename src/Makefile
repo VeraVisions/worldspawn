@@ -3,30 +3,36 @@
 GTK_CFLAGS=$(shell pkg-config --cflags gtk+-2.0)
 GTK_LDFLAGS=$(shell pkg-config --libs gtk+-2.0)
 
-WS_LIBS= ../libs/libcmdlib.a \
-../libs/libcontainer.a \
-../libs/libddslib.a \
-../libs/libdebugging.a \
-../libs/libetclib.a \
-../libs/libgeneric.a \
-../libs/libgtkutil.a \
-../libs/libl_net.a \
-../libs/libmath.a \
-../libs/libmathlib.a \
-../libs/libmodulesystem.a \
-../libs/libos.a \
-../libs/libpicomodel.a \
-../libs/libprofile.a \
-../libs/libscript.a \
-../libs/libsignal.a \
-../libs/libsplines.a \
-../libs/libstream.a \
-../libs/libstring.a \
-../libs/libuilib.a \
-../libs/libxmllib.a
+XML_CFLAGS=$(shell pkg-config --cflags libxml-2.0)
+XML_LDFLAGS=$(shell pkg-config --libs libxml-2.0)
 
-WS_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) -I../include -I../libs -DGTK_TARGET=2 $(WS_VERSION) 
-WS_LDFLAGS=$(LDFLAGS) -lm $(GTK_LDFLAGS) -lX11 -lGL -lxml2 -lgdkglext-x11-1.0 -lgtkglext-x11-1.0 -L../lib $(WS_LIBS)
+GLEXT_CFLAGS=$(shell pkg-config --cflags gtkglext-1.0)
+GLEXT_LDFLAGS=$(shell pkg-config --libs gtkglext-1.0)
+
+WS_LIBS= ../libs/libcmdlib.a \
+	../libs/libcontainer.a \
+	../libs/libddslib.a \
+	../libs/libdebugging.a \
+	../libs/libetclib.a \
+	../libs/libgeneric.a \
+	../libs/libgtkutil.a \
+	../libs/libl_net.a \
+	../libs/libmath.a \
+	../libs/libmathlib.a \
+	../libs/libmodulesystem.a \
+	../libs/libos.a \
+	../libs/libpicomodel.a \
+	../libs/libprofile.a \
+	../libs/libscript.a \
+	../libs/libsignal.a \
+	../libs/libsplines.a \
+	../libs/libstream.a \
+	../libs/libstring.a \
+	../libs/libuilib.a \
+	../libs/libxmllib.a
+
+WS_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) $(XML_CFLAGS) $(GLEXT_CFLAGS) -I../include -I../libs -DGTK_TARGET=2 $(WS_VERSION)
+WS_LDFLAGS=$(LDFLAGS) -lm $(GTK_LDFLAGS) $(XML_LDFLAGS) $(GLEXT_LDFLAGS) -L../lib $(WS_LIBS)
 
 DO_CXX=$(CXX) $(WS_CFLAGS) -o $@ -c $<
 
