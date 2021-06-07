@@ -43,6 +43,7 @@ toolbar_append_button(ui::Toolbar toolbar, const char *description, const char *
 {
     auto button = ui::ToolButton::from(gtk_tool_button_new(new_local_image(icon), nullptr));
     button_connect_callback(button, callback);
+    gtk_tool_button_set_label(GTK_TOOL_BUTTON(button), description);
     toolbar_append(toolbar, button, description);
     return button;
 }
