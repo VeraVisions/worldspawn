@@ -98,11 +98,12 @@ void QE_InitVFS()
 
 int g_numbrushes = 0;
 int g_numentities = 0;
+int g_numhidden = 0;
 
 void QE_UpdateStatusBar()
 {
     char buffer[128];
-    sprintf(buffer, "Brushes: %d Entities: %d", g_numbrushes, g_numentities);
+    sprintf(buffer, "Brushes: %d Entities: %d Hidden: %d", g_numbrushes, g_numentities, g_numhidden);
     g_pParentWnd->SetStatusText(g_pParentWnd->m_brushcount_status, buffer);
 }
 
@@ -120,6 +121,13 @@ void QE_entityCountChanged()
 {
     g_numentities = int(g_entityCount.get());
     QE_UpdateStatusBar();
+}
+
+std::size_t Scene_countHiddenBrushes(scene::Graph &graph);
+void QE_hiddenCountChanged()
+{
+	g_numhidden = Scene_countHiddenBrushes(GlobalSceneGraph());
+	QE_UpdateStatusBar();
 }
 
 bool ConfirmModified(const char *title)

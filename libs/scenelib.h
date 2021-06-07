@@ -184,6 +184,9 @@ bool m_isRoot;
 bool isRoot(){
 	return m_isRoot;
 }
+bool isHidden(){
+	return (m_state == eHidden) ? 1 : 0;
+}
 
 Node( Symbiot* symbiot, void* node, NodeTypeCastTable& casts ) :
 	m_state( eVisible ),
@@ -379,6 +382,10 @@ inline bool Node_isPrimitive( scene::Node& node ){
 #else
 	return !node.isRoot();
 #endif
+}
+
+inline bool Node_isHidden( scene::Node& node ){
+	return node.isHidden();
 }
 
 class ParentBrushes : public scene::Traversable::Walker

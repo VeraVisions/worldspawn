@@ -1799,6 +1799,42 @@ std::size_t Scene_countSelectedBrushes(scene::Graph &graph)
     return count;
 }
 
+
+
+class CountHiddenBrushes : public scene::Graph::Walker {
+    std::size_t &m_count;
+    mutable std::size_t m_depth;
+public:
+    CountHiddenBrushes(std::size_t &count) : m_count(count), m_depth(0)
+    {
+        m_count = 0;
+    }
+
+    bool pre(const scene::Path &path, scene::Instance &instance) const
+    {
+        if (++m_depth != 1 && path.top().get().isRoot()) {
+            return false;
+        }
+
+        if (Node_isHidden(path.top())) {
+            ++m_count;
+        }
+        return true;
+    }
+
+    void post(const scene::Path &path, scene::Instance &instance) const
+    {
+        --m_depth;
+    }
+};
+
+std::size_t Scene_countHiddenBrushes(scene::Graph &graph)
+{
+    std::size_t count;
+    graph.traverse(CountHiddenBrushes(count));
+    return count;
+}
+
 enum ENodeType {
     eNodeUnknown,
     eNodeMap,
