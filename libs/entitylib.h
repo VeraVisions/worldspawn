@@ -484,6 +484,12 @@ private:
 			dupecheck = 1;
 		else if (!strcmp(key, "shadows"))
 			dupecheck = 1;
+		else if (!strcmp(key, "modelscale"))
+			dupecheck = 1;
+		else if (!strcmp(key, "scale"))
+			dupecheck = 1;
+		else if (!strcmp(key, "message"))
+			dupecheck = 1;
 
 		KeyValues::iterator i = m_keyValues.find( key );
 
