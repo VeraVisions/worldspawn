@@ -179,7 +179,7 @@ struct camera_t {
               color(0, 0, 0),
               movementflags(0),
               m_keymove_handler(0),
-              fieldOfView(100.0f),
+              fieldOfView(90.0f),
               m_mouseMove(motionDelta, this),
               m_view(view),
               m_update(update)
@@ -192,13 +192,13 @@ camera_draw_mode camera_t::draw_mode = cd_texture;
 inline Matrix4 projection_for_camera(float near_z, float far_z, float fieldOfView, int width, int height)
 {
     const float half_width = static_cast<float>( near_z * tan(degrees_to_radians(fieldOfView * 0.5)));
-    const float half_height = half_width * (static_cast<float>( height ) / static_cast<float>( width ));
+    const float half_height = half_width * (static_cast<float>( width ) / static_cast<float>( height ));
 
     return matrix4_frustum(
-            -half_width,
-            half_width,
             -half_height,
             half_height,
+            -half_width,
+            half_width,
             near_z,
             far_z
     );
