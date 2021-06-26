@@ -431,7 +431,7 @@ void InitPaths( int *argc, char **argv ){
 		}
 
 		/* -game */
-		if ( strcmp( argv[ i ], "-game" ) == 0 ) {
+		/*if ( strcmp( argv[ i ], "-game" ) == 0 ) {
 			if ( ++i >= *argc ) {
 				Error( "Out of arguments: No game specified after %s", argv[ i - 1 ] );
 			}
@@ -441,7 +441,7 @@ void InitPaths( int *argc, char **argv ){
 				game = &games[ 0 ];
 			}
 			argv[ i ] = NULL;
-		}
+		}*/
 
 		/* -fs_forbiddenpath */
 		else if ( strcmp( argv[ i ], "-fs_forbiddenpath" ) == 0 ) {
@@ -482,7 +482,7 @@ void InitPaths( int *argc, char **argv ){
 		}
 
 		/* -fs_game */
-		else if ( strcmp( argv[ i ], "-fs_game" ) == 0 ) {
+		else if ( strcmp( argv[ i ], "-fs_game" ) == 0 || strcmp( argv[ i ], "-game" ) == 0 ) {
 			if ( ++i >= *argc ) {
 				Error( "Out of arguments: No path specified after %s.", argv[ i - 1 ] );
 			}
