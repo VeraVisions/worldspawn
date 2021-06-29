@@ -319,17 +319,16 @@ void HelpImport()
 void HelpCommon()
 {
 	struct HelpOption common[] = {
+		{"-game <gamename>", "Sets a different game directory name (can be used more than once)"},
 		{"-connect <address>", "Talk to a WorldSpawn instance using a specific XML based protocol"},
 		{"-force", "Allow reading some broken/unsupported BSP files e.g. when decompiling, may also crash"},
 		{"-fs_basepath <path>", "Sets the given path as main directory of the game (can be used more than once to look in multiple paths)"},
-		{"-fs_game <gamename>", "Sets a different game directory name (default for Q3A: baseq3, can be used more than once)"},
 		{"-fs_homebase <dir>", "Specifies where the user home directory name is on Linux (default for Q3A: .q3a)"},
 		{"-fs_homepath <path>", "Sets the given path as home directory name"},
 		{"-fs_nobasepath", "Do not load base paths in VFS, imply -fs_nomagicpath"},
 		{"-fs_nomagicpath", "Do not try to guess base path magically"},
 		{"-fs_nohomepath", "Do not load home path in VFS"},
 		{"-fs_pakpath <path>", "Specify a package directory (can be used more than once to look in multiple paths)"},
-		{"-game <gamename>", "Load settings for the given game (default: quake3)"},
 		{"-subdivisions <F>", "multiplier for patch subdivisions quality"},
 		{"-threads <N>", "number of threads to use"},
 		{"-v", "Verbose mode"}
@@ -341,8 +340,8 @@ void HelpCommon()
 
 void HelpMain(const char* arg)
 {
-	printf("Usage: q3map2 [stage] [common options...] [stage options...] [stage source file]\n");
-	printf("       q3map2 -help [stage]\n\n");
+	printf("Usage: vmap [stage] [common options...] [stage options...] [stage source file]\n");
+	printf("       vmap -help [stage]\n\n");
 
 	HelpCommon();
 

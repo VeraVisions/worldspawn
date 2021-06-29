@@ -490,6 +490,26 @@ private:
 			dupecheck = 1;
 		else if (!strcmp(key, "message"))
 			dupecheck = 1;
+		else if (!strcmp(key, "fade")) /* light keys */
+			dupecheck = 1;
+		else if (!strcmp(key, "anglescale"))
+			dupecheck = 1;
+		else if (!strcmp(key, "style"))
+			dupecheck = 1;
+		else if (!strcmp(key, "light"))
+			dupecheck = 1;
+		else if (!strcmp(key, "deviance"))
+			dupecheck = 1;
+		else if (!strcmp(key, "samples"))
+			dupecheck = 1;
+		else if (!strcmp(key, "filter"))
+			dupecheck = 1;
+		else if (!strcmp(key, "color"))
+			dupecheck = 1;
+		else if (!strcmp(key, "color255"))
+			dupecheck = 1;
+		else if (!strcmp(key, "extradist"))
+			dupecheck = 1;
 
 		KeyValues::iterator i = m_keyValues.find( key );
 

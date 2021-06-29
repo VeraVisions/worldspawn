@@ -411,7 +411,11 @@ void CreateEntityLights( void ){
 		}
 
 		/* ydnar: set angle scaling (from vlight) */
-		light->angleScale = FloatForKey( e, "_anglescale" );
+		light->angleScale = FloatForKey( e, "anglescale" );
+		
+		if ( light->angleScale != 0.0f ) {
+			light->angleScale = FloatForKey( e, "_anglescale" );
+		}
 		if ( light->angleScale != 0.0f ) {
 			light->flags |= LIGHT_ATTEN_ANGLE;
 		}
@@ -447,14 +451,22 @@ void CreateEntityLights( void ){
 		intensity *= scale;
 
 		/* ydnar: get deviance and samples */
-		deviance = FloatForKey( e, "_deviance" );
+		deviance = FloatForKey( e, "deviance" );
+		if ( deviance == 0.0f ) {
+			deviance = FloatForKey( e, "_deviance" );
+		}
 		if ( deviance == 0.0f ) {
 			deviance = FloatForKey( e, "_deviation" );
 		}
 		if ( deviance == 0.0f ) {
 			deviance = FloatForKey( e, "_jitter" );
 		}
-		numSamples = IntForKey( e, "_samples" );
+
+		numSamples = IntForKey( e, "samples" );
+		if ( numSamples < 1 ) {
+			numSamples = IntForKey( e, "_samples" );
+		}
+
 		if ( deviance < 0.0f || numSamples < 1 ) {
 			deviance = 0.0f;
 			numSamples = 1;
@@ -462,7 +474,10 @@ void CreateEntityLights( void ){
 		intensity /= numSamples;
 
 		/* ydnar: get filter radius */
-		filterRadius = FloatForKey( e, "_filterradius" );
+		filterRadius = FloatForKey( e, "filter" );
+		if ( filterRadius == 0.0f ) {
+			filterRadius = FloatForKey( e, "_filterradius" );
+		}
 		if ( filterRadius == 0.0f ) {
 			filterRadius = FloatForKey( e, "_filteradius" );
 		}
@@ -475,7 +490,11 @@ void CreateEntityLights( void ){
 		light->filterRadius = filterRadius;
 
 		/* set light color */
-		_color = ValueForKey( e, "_color" );
+		_color = ValueForKey( e, "color" );
+		if ( !(_color && _color[ 0 ]) ) {
+			_color = ValueForKey( e, "_color" );
+		}
+
 		if ( _color && _color[ 0 ] ) {
 			sscanf( _color, "%f %f %f", &light->color[ 0 ], &light->color[ 1 ], &light->color[ 2 ] );
 			if ( colorsRGB ) {
@@ -488,7 +507,12 @@ void CreateEntityLights( void ){
 			}*/
 		} else {
 			/* alternative: read color in RGB8 values -eukara */
-			_color = ValueForKey( e, "_color255" );
+			_color = ValueForKey( e, "color255" );
+
+			if ( !(_color && _color[ 0 ]) ) {
+				_color = ValueForKey( e, "_color255" );
+			}
+
 			if ( _color && _color[ 0 ] ) {
 				sscanf( _color, "%f %f %f", &light->color[ 0 ], &light->color[ 1 ], &light->color[ 2 ] );
 				light->color[0] /= 255;
@@ -505,7 +529,11 @@ void CreateEntityLights( void ){
 			}
 		}
 
-		light->extraDist = FloatForKey( e, "_extradist" );
+		light->extraDist = FloatForKey( e, "extradist" );
+		if ( light->extraDist == 0.0f ) {
+			light->extraDist = FloatForKey( e, "_extradist" );
+		}
+
 		if ( light->extraDist == 0.0f ) {
 			light->extraDist = extraDist;
 		}
