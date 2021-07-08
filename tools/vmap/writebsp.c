@@ -455,7 +455,14 @@ void EmitBrushes( brush_t *brushes, int *firstBrush, int *numBrushes ){
 			( *numBrushes )++;
 		}
 
-		db->shaderNum = EmitShader( b->contentShader->shader, &b->contentShader->contentFlags, &b->contentShader->surfaceFlags );
+		int ns = 0x4000;
+		int nx = 0;
+
+		if (b->nosolid)
+			db->shaderNum = EmitShader( b->contentShader->shader, &nx, &ns );
+		else
+			db->shaderNum = EmitShader( b->contentShader->shader, &b->contentShader->contentFlags, &b->contentShader->surfaceFlags );
+
 		db->firstSide = numBSPBrushSides;
 
 		/* walk sides */
@@ -477,9 +484,12 @@ void EmitBrushes( brush_t *brushes, int *firstBrush, int *numBrushes ){
 
 			/* emit shader */
 			if ( b->sides[ j ].shaderInfo ) {
-				cp->shaderNum = EmitShader( b->sides[ j ].shaderInfo->shader, &b->sides[ j ].shaderInfo->contentFlags, &b->sides[ j ].shaderInfo->surfaceFlags );
-			}
-			else{
+				
+				if (b->nosolid)
+					cp->shaderNum = EmitShader( b->sides[ j ].shaderInfo->shader, &nx, &ns );
+				else
+					cp->shaderNum = EmitShader( b->sides[ j ].shaderInfo->shader, &b->sides[ j ].shaderInfo->contentFlags, &b->sides[ j ].shaderInfo->surfaceFlags );
+			} else {
 				cp->shaderNum = EmitShader( NULL, NULL, NULL );
 			}
 		}

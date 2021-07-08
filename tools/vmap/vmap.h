@@ -895,6 +895,7 @@ typedef struct brush_s
 
 	int contentFlags;
 	int compileFlags;                       /* ydnar */
+	qboolean nosolid;
 	qboolean detail;
 	qboolean opaque;
 

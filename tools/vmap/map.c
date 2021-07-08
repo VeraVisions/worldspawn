@@ -1298,7 +1298,8 @@ static void ForceBrushesToDetail(entity_t *ent, qboolean illusionary)
 	for ( b = ent->brushes; b != NULL; b = b->next )
 	{
 		if (illusionary)
-			b->contentFlags &= C_SOLID;
+			b->nosolid = qtrue;
+
 		if (!b->detail && !(b->compileFlags & (C_DETAIL|C_STRUCTURAL)))
 		{
 			c_structural--;
@@ -1769,7 +1770,7 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 	else if ( !Q_stricmp( "func_detail", classname ) || !Q_stricmp( "func_detail_wall", classname ) || !Q_stricmp( "func_detail_fence", classname ) ) {
 		funcGroupType = funcgroup_detail;
 	}
-	else if ( !Q_stricmp( "func_detail_illusionary ", classname ) ) {
+	else if ( !Q_stricmp( "func_detail_illusionary", classname ) ) {
 		funcGroupType = funcgroup_detail_illusionary;
 	}else{
 		funcGroupType = funcgroup_not;
