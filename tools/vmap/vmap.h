@@ -931,7 +931,7 @@ typedef struct
 }
 mesh_t;
 
-
+/* really should be patch_t, innit - eukara */
 typedef struct parseMesh_s
 {
 	struct parseMesh_s  *next;
@@ -957,6 +957,7 @@ typedef struct parseMesh_s
 	qboolean grouped;
 	float longestCurve;
 	int maxIterations;
+	qboolean nosolid;
 }
 parseMesh_t;
 

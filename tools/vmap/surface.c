@@ -2593,10 +2593,18 @@ void EmitPatchSurface( entity_t *e, mapDrawSurface_t *ds ){
 		ds->sampleSize = 0;
 
 		/* emit the new fake shader */
+		if (ds->mapMesh->nosolid)
+			surfaceFlags |= 0x4000;
+
 		out->shaderNum = EmitShader( ds->shaderInfo->shader, &contentFlags, &surfaceFlags );
 	}
 	else{
-		out->shaderNum = EmitShader( ds->shaderInfo->shader, &ds->shaderInfo->contentFlags, &ds->shaderInfo->surfaceFlags );
+		surfaceFlags = ds->shaderInfo->surfaceFlags;
+
+		if (ds->mapMesh->nosolid)
+			surfaceFlags |= 0x4000;
+
+		out->shaderNum = EmitShader( ds->shaderInfo->shader, &ds->shaderInfo->contentFlags, &surfaceFlags );
 	}
 	out->patchWidth = ds->patchWidth;
 	out->patchHeight = ds->patchHeight;

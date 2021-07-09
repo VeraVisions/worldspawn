@@ -1295,6 +1295,8 @@ static void ParseBrush( qboolean onlyLights, qboolean noCollapseGroups ){
 static void ForceBrushesToDetail(entity_t *ent, qboolean illusionary)
 {
 	brush_t     *b;
+	parseMesh_t *p;
+
 	for ( b = ent->brushes; b != NULL; b = b->next )
 	{
 		if (illusionary)
@@ -1308,6 +1310,12 @@ static void ForceBrushesToDetail(entity_t *ent, qboolean illusionary)
 			b->detail = qtrue;
 		}
 	}
+
+	if (!illusionary)
+		return;
+
+	for (p = ent->patches; p != NULL; p = p->next )
+		p->nosolid = qtrue;
 }
 
 /*
