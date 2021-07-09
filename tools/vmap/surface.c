@@ -2577,13 +2577,20 @@ void EmitPatchSurface( entity_t *e, mapDrawSurface_t *ds ){
 	else
 		out->surfaceType = MST_PATCH;
 
+	
+	surfaceFlags = ds->shaderInfo->surfaceFlags;
+	contentFlags = ds->shaderInfo->contentFlags;
+
+	if (ds->mapMesh->nosolid) {
+		contentFlags &= ~1;
+		surfaceFlags |= 0x4000;
+	}
+
 	if ( debugSurfaces ) {
 		out->shaderNum = EmitShader( "debugsurfaces", NULL, NULL );
 	}
 	else if ( out->surfaceType == MST_PATCH && (patchMeta || forcePatchMeta) ) {
 		/* patch meta requires that we have nodraw patches for collision */
-		surfaceFlags = ds->shaderInfo->surfaceFlags;
-		contentFlags = ds->shaderInfo->contentFlags;
 		ApplySurfaceParm( "nodraw", &contentFlags, &surfaceFlags, NULL );
 		ApplySurfaceParm( "pointlight", &contentFlags, &surfaceFlags, NULL );
 
@@ -2592,27 +2599,20 @@ void EmitPatchSurface( entity_t *e, mapDrawSurface_t *ds ){
 		VectorClear( ds->lightmapAxis );
 		ds->sampleSize = 0;
 
-		/* emit the new fake shader */
-		if (ds->mapMesh->nosolid)
-			surfaceFlags |= 0x4000;
-
+		out->shaderNum = EmitShader( ds->shaderInfo->shader, &contentFlags, &surfaceFlags );
+	} else{
 		out->shaderNum = EmitShader( ds->shaderInfo->shader, &contentFlags, &surfaceFlags );
 	}
-	else{
-		surfaceFlags = ds->shaderInfo->surfaceFlags;
 
-		if (ds->mapMesh->nosolid)
-			surfaceFlags |= 0x4000;
-
-		out->shaderNum = EmitShader( ds->shaderInfo->shader, &ds->shaderInfo->contentFlags, &surfaceFlags );
-	}
 	out->patchWidth = ds->patchWidth;
 	out->patchHeight = ds->patchHeight;
+
 	if (out->surfaceType == MST_PATCHFIXED)
-	{	//report subdivisions in the high bits
-		out->patchWidth |= ds->subdiv_x<<16;
-		out->patchHeight |= ds->subdiv_y<<16;
+	{	// report subdivisions in the high bits
+		out->patchWidth |= ds->subdiv_x << 16;
+		out->patchHeight |= ds->subdiv_y << 16;
 	}
+
 	out->fogNum = ds->fogNum;
 	bspDrawSurfaceCubemaps[ds->outputNum] = ds->cubemapNum;
 
@@ -2623,6 +2623,7 @@ void EmitPatchSurface( entity_t *e, mapDrawSurface_t *ds ){
 		out->lightmapStyles[ i ] = LS_NONE;
 		out->vertexStyles[ i ] = LS_NONE;
 	}
+
 	out->lightmapStyles[ 0 ] = LS_NORMAL;
 	out->vertexStyles[ 0 ] = LS_NORMAL;
 

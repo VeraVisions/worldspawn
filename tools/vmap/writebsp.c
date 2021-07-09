@@ -302,9 +302,10 @@ void SetLightStyles( void ){
 		e = &entities[ i ];
 
 		t = ValueForKey( e, "classname" );
-		if ( Q_strncasecmp( t, "light", 5 ) ) {
+
+		if (Q_stricmp( "light", t ) && Q_stricmp( "lightJunior", t ) && Q_stricmp( "light_environment", t ))
 			continue;
-		}
+
 		t = ValueForKey( e, "targetname" );
 		if ( t[ 0 ] == '\0' ) {
 			/* ydnar: strip the light from the BSP file */
@@ -492,7 +493,7 @@ void EmitBrushes( brush_t *brushes, int *firstBrush, int *numBrushes ){
 				if (b->nosolid)
 					surfaceFlags |= 0x4000;
 
-				cp->shaderNum = EmitShader( b->sides[ j ].shaderInfo->shader, &b->sides[ j ].shaderInfo->contentFlags, &surfaceFlags);
+				cp->shaderNum = EmitShader( b->sides[ j ].shaderInfo->shader, &contentFlags, &surfaceFlags);
 			} else {
 				cp->shaderNum = EmitShader( NULL, NULL, NULL );
 			}

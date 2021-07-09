@@ -235,7 +235,7 @@ void CreateEntityLights( void ){
 		e = &entities[ i ];
 		name = ValueForKey( e, "classname" );
 
-		if (Q_strncasecmp(name, "light_environment", 17) == 0) {
+		if ( !Q_stricmp( "light_environment", name ) ) {
 			sun_t  *sun;
 			float a, b;
 			sun = safe_malloc( sizeof( *sun ) );
@@ -328,16 +328,11 @@ void CreateEntityLights( void ){
 			/* store sun */
 			CreateSunLight(sun);
 			continue;
-		}
-
-		/* ydnar: check for lightJunior */
-		if ( Q_strncasecmp( name, "lightJunior", 11 ) == 0 ) {
+		} else if ( !Q_stricmp( "lightJunior", name ) ) {
 			junior = qtrue;
-		}
-		else if ( Q_strncasecmp( name, "light", 5 ) == 0 ) {
+		} else if ( !Q_stricmp( "light", name ) ) {
 			junior = qfalse;
-		}
-		else{
+		} else{
 			continue;
 		}
 

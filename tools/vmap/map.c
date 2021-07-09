@@ -1765,7 +1765,7 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 	classname = ValueForKey( mapEnt, "classname" );
 
 	/* ydnar: only lights? */
-	if ( onlyLights && Q_strncasecmp( classname, "light", 5 ) ) {
+	if ( onlyLights && (Q_stricmp( "light", classname ) && Q_stricmp( "lightJunior", classname ) && Q_stricmp( "light_environment", classname )) ) {
 		numEntities--;
 		return qtrue;
 	}
@@ -1777,10 +1777,9 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 	/* spike: q1 .maps have no way to set any detailbrush flags, so some workarounds exist... */
 	else if ( !Q_stricmp( "func_detail", classname ) || !Q_stricmp( "func_detail_wall", classname ) || !Q_stricmp( "func_detail_fence", classname ) ) {
 		funcGroupType = funcgroup_detail;
-	}
-	else if ( !Q_stricmp( "func_detail_illusionary", classname ) ) {
+	} else if ( !Q_stricmp( "func_detail_illusionary", classname ) ) {
 		funcGroupType = funcgroup_detail_illusionary;
-	}else{
+	} else {
 		funcGroupType = funcgroup_not;
 	}
 
