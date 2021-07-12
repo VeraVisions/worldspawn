@@ -328,6 +328,64 @@ void CreateEntityLights( void ){
 			/* store sun */
 			CreateSunLight(sun);
 			continue;
+		} else if ( !Q_stricmp( "light_surface", name ) ) {
+			/* walk the list of surfaces */
+			bspDrawSurface_t    *ds;
+			surfaceInfo_t       *info;
+			shaderInfo_t        *si;
+			
+			float subdivide;
+			vec3_t origin;
+			clipWork_t cw;
+			const char *surfacename;
+
+			surfacename = ValueForKey( e, "surfacename" );
+
+			/* loop through all surfaces -eukara */
+			for (int i = 0; i < numBSPDrawSurfaces; i++)
+			{
+				/* get surface and other bits */
+				ds = &bspDrawSurfaces[ i ];
+				info = &surfaceInfos[ i ];
+				si = info->si;
+
+				float lb;
+				int subd;
+
+				printf("shader test: %s\n", si->shader);
+
+				if (Q_stricmp(si->shader, surfacename))
+					continue;
+
+				lb = FloatForKey( e, "light" );
+				subd = IntForKey( e, "subdivisions" );
+
+				/* only apply when things are set. */
+				if (lb)
+					si->value = lb;
+				if (subd)
+					si->lightSubdivide = subd;
+
+				_color = ValueForKey( e, "color" );
+				if ( _color && _color[ 0 ] ) {
+					sscanf( _color, "%f %f %f", &si->color[ 0 ], &si->color[ 1 ], &si->color[ 2 ] );
+					if ( colorsRGB ) {
+						si->color[0] = Image_LinearFloatFromsRGBFloat( si->color[0] );
+						si->color[1] = Image_LinearFloatFromsRGBFloat( si->color[1] );
+						si->color[2] = Image_LinearFloatFromsRGBFloat( si->color[2] );
+					}
+				} else {
+					/* alternative: read color in RGB8 values -eukara */
+					_color = ValueForKey( e, "color255" );
+					if ( _color && _color[ 0 ] ) {
+						sscanf( _color, "%f %f %f", &si->color[ 0 ], &si->color[ 1 ], &si->color[ 2 ] );
+						si->color[0] /= 255;
+						si->color[1] /= 255;
+						si->color[2] /= 255;
+					}
+				}
+			}
+			continue;
 		} else if ( !Q_stricmp( "lightJunior", name ) ) {
 			junior = qtrue;
 		} else if ( !Q_stricmp( "light", name ) ) {
