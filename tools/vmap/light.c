@@ -351,20 +351,36 @@ void CreateEntityLights( void ){
 
 				float lb;
 				int subd;
-
-				printf("shader test: %s\n", si->shader);
+				int style;
+				float bscale, bsfrac, bsdist;
 
 				if (Q_stricmp(si->shader, surfacename))
 					continue;
 
 				lb = FloatForKey( e, "light" );
 				subd = IntForKey( e, "subdivisions" );
+				style = IntForKey( e, "style" );
+				bscale = FloatForKey( e, "bouncescale" );
+
+				/* 0.05 is a default */
+				bsfrac = FloatForKey( e, "backsplash_fraction" ) * 0.01f;
+
+				 /* 23 units apparently is the default */
+				bsdist = FloatForKey( e, "backsplash_distance" );
 
 				/* only apply when things are set. */
 				if (lb)
 					si->value = lb;
 				if (subd)
 					si->lightSubdivide = subd;
+				if (style)
+					si->lightStyle = style;
+				if (bscale)
+					si->bounceScale = bscale;
+				if (bsfrac)
+					si->backsplashFraction = bsfrac;
+				if (bsdist)
+					si->backsplashDistance = bsdist;
 
 				_color = ValueForKey( e, "color" );
 				if ( _color && _color[ 0 ] ) {
