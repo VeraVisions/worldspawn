@@ -1953,7 +1953,7 @@ const char *getLastFolderPath()
     if (g_strLastFolder.empty()) {
         GlobalPreferenceSystem().registerPreference("LastFolder", make_property_string(g_strLastFolder));
         if (g_strLastFolder.empty()) {
-            g_strLastFolder = g_qeglobals.m_userGamePath;
+            g_strLastFolder = EnginePath_get();
         }
     }
     return g_strLastFolder.c_str();

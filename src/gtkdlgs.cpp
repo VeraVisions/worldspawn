@@ -436,13 +436,12 @@ void DoAbout()
             }
 
             {
-                char const *label_text = "WorldSpawn\n"
-                        __DATE__ "\n\n"
-                        "QER taken to the space age.\n\n"
-                        "Developed by Vera Visions LLC.\n"
-                        "Programming by Marco Hladik\n"
-                        "Licensed by id software\n\n"
-                        "Copyright (C) 2015-2021";
+		char const *label_text = "WorldSpawn 1.0\n"
+		"Build " __DATE__ "\n\n"
+		"Copyright (c) Vera Visions, LLC.\n\n"
+		"This product contains software\n"
+		"technology from id Software, Inc.\n\n"
+		"id Technology (c) 2000 id Software, Inc.";
 
                 auto label = ui::Label(label_text);
 

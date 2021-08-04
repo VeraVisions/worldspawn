@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=WorldSpawn
+Comment=idTech BSP Level Editor
+Exec=worldspawn %f
+Icon=worldspawn
+Terminal=true
+Type=Application
+Categories=Development;
