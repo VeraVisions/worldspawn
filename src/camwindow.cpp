@@ -179,7 +179,7 @@ struct camera_t {
               color(0, 0, 0),
               movementflags(0),
               m_keymove_handler(0),
-              fieldOfView(90.0f),
+              fieldOfView(75.0f),
               m_mouseMove(motionDelta, this),
               m_view(view),
               m_update(update)
