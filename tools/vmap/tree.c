@@ -78,7 +78,7 @@ void FreeTreePortals_r( node_t *node ){
 	}
 
 	// free portals
-	for ( p = node->portals ; p ; p = nextp )
+	for ( p = node->portals; p; p = nextp )
 	{
 		s = ( p->nodes[1] == node );
 		nextp = p->next[s];
@@ -131,7 +131,7 @@ void PrintTree_r( node_t *node, int depth ){
 	plane_t *plane;
 	brush_t *bb;
 
-	for ( i = 0 ; i < depth ; i++ )
+	for ( i = 0; i < depth; i++ )
 		Sys_Printf( "  " );
 	if ( node->planenum == PLANENUM_LEAF ) {
 		if ( !node->brushlist ) {
@@ -139,7 +139,7 @@ void PrintTree_r( node_t *node, int depth ){
 		}
 		else
 		{
-			for ( bb = node->brushlist ; bb ; bb = bb->next )
+			for ( bb = node->brushlist; bb; bb = bb->next )
 				Sys_Printf( "%d ", bb->original->brushNum );
 			Sys_Printf( "\n" );
 		}
@@ -148,8 +148,8 @@ void PrintTree_r( node_t *node, int depth ){
 
 	plane = &mapplanes[node->planenum];
 	Sys_Printf( "#%d (%5.2f %5.2f %5.2f):%5.2f\n", node->planenum,
-				plane->normal[0], plane->normal[1], plane->normal[2],
-				plane->dist );
+	            plane->normal[0], plane->normal[1], plane->normal[2],
+	            plane->dist );
 	PrintTree_r( node->children[0], depth + 1 );
 	PrintTree_r( node->children[1], depth + 1 );
 }

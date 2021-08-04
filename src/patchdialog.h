@@ -33,7 +33,7 @@ void PatchInspector_constructWindow(ui::Window main_window);
 void PatchInspector_destroyWindow();
 
 namespace scene {
-    class Graph;
+class Graph;
 }
 
 void Scene_PatchTranslateTexture_Selected(scene::Graph &graph, float s, float t);

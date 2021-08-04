@@ -50,46 +50,47 @@ class ISAXHandler;
 //   the level for stopping the feed is stored in stop_depth
 // unkown nodes are ignored, we use ignore_depth to track the level we start ignoring from
 struct message_info_t {
-    int msg_level; // current message level (SYS_MSG, SYS_WRN, SYS_ERR)
-    int recurse; // current recursion depth (used to track various things)
-    int ignore_depth; // the ignore depth limit when we are jumping over unknown nodes (0 means we are not ignoring)
-    int stop_depth; // the depth we need to stop at the end
-    int geometry_depth; // are we parsing some geometry information (i.e. do we forward the SAX calls?)
-    ISAXHandler *pGeometry; // the handler
+	int msg_level; // current message level (SYS_MSG, SYS_WRN, SYS_ERR)
+	int recurse; // current recursion depth (used to track various things)
+	int ignore_depth; // the ignore depth limit when we are jumping over unknown nodes (0 means we are not ignoring)
+	int stop_depth; // the depth we need to stop at the end
+	int geometry_depth; // are we parsing some geometry information (i.e. do we forward the SAX calls?)
+	ISAXHandler *pGeometry; // the handler
 
-    enum unnamed0 { bufsize = 1024 };
-    char m_buffer[bufsize];
-    std::size_t m_length;
+	enum unnamed0 { bufsize = 1024 };
+	char m_buffer[bufsize];
+	std::size_t m_length;
 };
 
 class IGL2DWindow;
 
 class ISAXHandler {
 public:
-    virtual ~ISAXHandler() = default;
+virtual ~ISAXHandler() = default;
 
-    virtual void Release()
-    {}
+virtual void Release()
+{
+}
 
-    virtual void saxStartElement(message_info_t *ctx, const xmlChar *name, const xmlChar **attrs) = 0;
+virtual void saxStartElement(message_info_t *ctx, const xmlChar *name, const xmlChar **attrs) = 0;
 
-    virtual void saxEndElement(message_info_t *ctx, const xmlChar *name) = 0;
+virtual void saxEndElement(message_info_t *ctx, const xmlChar *name) = 0;
 
-    virtual void saxCharacters(message_info_t *ctx, const xmlChar *ch, int len) = 0;
+virtual void saxCharacters(message_info_t *ctx, const xmlChar *ch, int len) = 0;
 
-    virtual const char *getName()
-    {
-        return NULL;
-    }
+virtual const char *getName()
+{
+	return NULL;
+}
 
-    virtual IGL2DWindow *Highlight()
-    {
-        return 0;
-    }
+virtual IGL2DWindow *Highlight()
+{
+	return 0;
+}
 
-    virtual void DropHighlight()
-    {
-    }
+virtual void DropHighlight()
+{
+}
 };
 
 #endif

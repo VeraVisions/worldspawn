@@ -115,10 +115,10 @@ static void ConvertSurfaceToOBJ( FILE *f, bspModel_t *model, int modelNum, bspDr
 		c = bspDrawIndexes[ i + ds->firstIndex + 1 ];
 		b = bspDrawIndexes[ i + ds->firstIndex + 2 ];
 		fprintf( f, "f %d/%d/%d %d/%d/%d %d/%d/%d\r\n",
-				 a + objVertexCount + 1, a + objVertexCount + 1, a + objVertexCount + 1,
-				 b + objVertexCount + 1, b + objVertexCount + 1, b + objVertexCount + 1,
-				 c + objVertexCount + 1, c + objVertexCount + 1, c + objVertexCount + 1
-				 );
+		         a + objVertexCount + 1, a + objVertexCount + 1, a + objVertexCount + 1,
+		         b + objVertexCount + 1, b + objVertexCount + 1, b + objVertexCount + 1,
+		         c + objVertexCount + 1, c + objVertexCount + 1, c + objVertexCount + 1
+		         );
 	}
 
 	objVertexCount += ds->numVerts;
@@ -175,7 +175,7 @@ static void ConvertShaderToMTL( FILE *f, bspShader_t *shader, int shaderNum ){
 	/* blender hates this, so let's not do it
 	   for( c = filename; *c != '\0'; c++ )
 	    if( *c == '/' )
-	   *c = '\\';
+	 * c = '\\';
 	 */
 
 	/* print shader info */

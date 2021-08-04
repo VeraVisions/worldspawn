@@ -32,24 +32,24 @@
 
 Image *LoadDDSBuff(const byte *buffer)
 {
-    int width, height;
-    ddsPF_t pixelFormat;
-    if (DDSGetInfo(reinterpret_cast<ddsBuffer_t *>( const_cast<byte *>( buffer )), &width, &height, &pixelFormat) ==
-        -1) {
-        return 0;
-    }
+	int width, height;
+	ddsPF_t pixelFormat;
+	if (DDSGetInfo(reinterpret_cast<ddsBuffer_t *>( const_cast<byte *>( buffer )), &width, &height, &pixelFormat) ==
+	    -1) {
+		return 0;
+	}
 
-    RGBAImage *image = new RGBAImage(width, height);
+	RGBAImage *image = new RGBAImage(width, height);
 
-    if (DDSDecompress(reinterpret_cast<ddsBuffer_t *>( const_cast<byte *>( buffer )), image->getRGBAPixels()) == -1) {
-        image->release();
-        return 0;
-    }
-    return image;
+	if (DDSDecompress(reinterpret_cast<ddsBuffer_t *>( const_cast<byte *>( buffer )), image->getRGBAPixels()) == -1) {
+		image->release();
+		return 0;
+	}
+	return image;
 }
 
 Image *LoadDDS(ArchiveFile &file)
 {
-    ScopedArchiveBuffer buffer(file);
-    return LoadDDSBuff(buffer.buffer);
+	ScopedArchiveBuffer buffer(file);
+	return LoadDDSBuff(buffer.buffer);
 }

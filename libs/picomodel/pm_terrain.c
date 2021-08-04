@@ -265,7 +265,7 @@ void _terrain_load_tga_buffer( unsigned char *buffer, unsigned char **pic, int *
 					}
 				}
 			}
-breakOut:;
+breakOut:               ;
 		}
 	}
 
@@ -515,13 +515,13 @@ static picoModel_t *_terrain_load( PM_PARAMS_LOAD ) {
 			v = i + ( j * w );
 			heightPixel = heightmap + v * 4;
 			colorPixel = colormap
-						 ? colormap + v * 4
-						 : NULL;
+			                         ? colormap + v * 4
+			                         : NULL;
 
 			/* set xyz */
 			_pico_set_vec( xyz, origin[ 0 ] + scale[ 0 ] * i,
-						   origin[ 1 ] + scale[ 1 ] * j,
-						   origin[ 2 ] + scale[ 2 ] * heightPixel[ 0 ] );
+			               origin[ 1 ] + scale[ 1 ] * j,
+			               origin[ 2 ] + scale[ 2 ] * heightPixel[ 0 ] );
 			PicoSetSurfaceXYZ( picoSurface, v, xyz );
 
 			/* set normal */

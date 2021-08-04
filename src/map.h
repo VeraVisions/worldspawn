@@ -38,48 +38,48 @@ void Map_addValidCallback(Map &map, const SignalHandler &handler);
 bool Map_Valid(const Map &map);
 
 class DeferredDraw {
-    Callback<void()> m_draw;
-    bool m_defer;
-    bool m_deferred;
+Callback<void()> m_draw;
+bool m_defer;
+bool m_deferred;
 public:
-    DeferredDraw(const Callback<void()> &draw) : m_draw(draw), m_defer(false), m_deferred(false)
-    {
-    }
+DeferredDraw(const Callback<void()> &draw) : m_draw(draw), m_defer(false), m_deferred(false)
+{
+}
 
-    void defer()
-    {
-        m_defer = true;
-    }
+void defer()
+{
+	m_defer = true;
+}
 
-    void draw()
-    {
-        if (m_defer) {
-            m_deferred = true;
-        } else {
-            m_draw();
-        }
-    }
+void draw()
+{
+	if (m_defer) {
+		m_deferred = true;
+	} else {
+		m_draw();
+	}
+}
 
-    void flush()
-    {
-        if (m_defer && m_deferred) {
-            m_draw();
-        }
-        m_deferred = false;
-        m_defer = false;
-    }
+void flush()
+{
+	if (m_defer && m_deferred) {
+		m_draw();
+	}
+	m_deferred = false;
+	m_defer = false;
+}
 };
 
 inline void DeferredDraw_onMapValidChanged(DeferredDraw &self)
 {
-    if (Map_Valid(g_map)) {
-        self.flush();
-    } else {
-        self.defer();
-    }
+	if (Map_Valid(g_map)) {
+		self.flush();
+	} else {
+		self.defer();
+	}
 }
 
-typedef ReferenceCaller<DeferredDraw, void(), DeferredDraw_onMapValidChanged> DeferredDrawOnMapValidChangedCaller;
+typedef ReferenceCaller<DeferredDraw, void (), DeferredDraw_onMapValidChanged> DeferredDrawOnMapValidChangedCaller;
 
 
 const char *Map_Name(const Map &map);
@@ -90,9 +90,9 @@ bool Map_Unnamed(const Map &map);
 
 
 namespace scene {
-    class Node;
+class Node;
 
-    class Graph;
+class Graph;
 }
 
 scene::Node *Map_GetWorldspawn(const Map &map);

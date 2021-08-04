@@ -219,7 +219,7 @@ skipspace:
 
 	// ; # // comments
 	if ( *script->script_p == ';' || *script->script_p == '#'
-		 || ( script->script_p[0] == '/' && script->script_p[1] == '/' ) ) {
+	     || ( script->script_p[0] == '/' && script->script_p[1] == '/' ) ) {
 		if ( !crossline ) {
 			Error( "Line %i is incomplete\n",scriptline );
 		}
@@ -346,7 +346,7 @@ void Parse1DMatrix( int x, vec_t *m ) {
 
 	MatchToken( "(" );
 
-	for ( i = 0 ; i < x ; i++ ) {
+	for ( i = 0; i < x; i++ ) {
 		GetToken( qfalse );
 		m[i] = atof( token );
 	}
@@ -359,7 +359,7 @@ void Parse2DMatrix( int y, int x, vec_t *m ) {
 
 	MatchToken( "(" );
 
-	for ( i = 0 ; i < y ; i++ ) {
+	for ( i = 0; i < y; i++ ) {
 		Parse1DMatrix( x, m + i * x );
 	}
 
@@ -371,7 +371,7 @@ void Parse3DMatrix( int z, int y, int x, vec_t *m ) {
 
 	MatchToken( "(" );
 
-	for ( i = 0 ; i < z ; i++ ) {
+	for ( i = 0; i < z; i++ ) {
 		Parse2DMatrix( y, x, m + i * x * y );
 	}
 
@@ -383,7 +383,7 @@ void Write1DMatrix( FILE *f, int x, vec_t *m ) {
 	int i;
 
 	fprintf( f, "( " );
-	for ( i = 0 ; i < x ; i++ ) {
+	for ( i = 0; i < x; i++ ) {
 		if ( m[i] == (int)m[i] ) {
 			fprintf( f, "%i ", (int)m[i] );
 		}
@@ -398,7 +398,7 @@ void Write2DMatrix( FILE *f, int y, int x, vec_t *m ) {
 	int i;
 
 	fprintf( f, "( " );
-	for ( i = 0 ; i < y ; i++ ) {
+	for ( i = 0; i < y; i++ ) {
 		Write1DMatrix( f, x, m + i * x );
 		fprintf( f, " " );
 	}
@@ -410,7 +410,7 @@ void Write3DMatrix( FILE *f, int z, int y, int x, vec_t *m ) {
 	int i;
 
 	fprintf( f, "(\n" );
-	for ( i = 0 ; i < z ; i++ ) {
+	for ( i = 0; i < z; i++ ) {
 		Write2DMatrix( f, y, x, m + i * ( x * y ) );
 	}
 	fprintf( f, ")\n" );

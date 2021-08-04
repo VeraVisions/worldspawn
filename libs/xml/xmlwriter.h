@@ -99,7 +99,8 @@ enum EState
 };
 state_t()
 	: m_state( eStartElement )
-{}
+{
+}
 EState m_state;
 };
 

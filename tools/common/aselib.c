@@ -32,7 +32,7 @@
 #define MAX_ASE_ANIMATIONS          32
 #define MAX_ASE_ANIMATION_FRAMES    512
 
-#define VERBOSE( x ) { if ( ase.verbose ) { Sys_Printf x ; } }
+#define VERBOSE( x ) { if ( ase.verbose ) { Sys_Printf x; } }
 
 typedef struct
 {
@@ -336,7 +336,7 @@ static int ASE_GetToken( qboolean restOfLine ){
 
 	// skip over crap
 	while ( ( ( ase.curpos - ase.buffer ) < ase.len ) &&
-			( *ase.curpos <= 32 ) )
+	        ( *ase.curpos <= 32 ) )
 	{
 		ase.curpos++;
 	}
@@ -349,7 +349,7 @@ static int ASE_GetToken( qboolean restOfLine ){
 		i++;
 
 		if ( ( CharIsTokenDelimiter( s_token[i - 1] ) && !restOfLine ) ||
-			 ( ( s_token[i - 1] == '\n' ) || ( s_token[i - 1] == '\r' ) ) ) {
+		     ( ( s_token[i - 1] == '\n' ) || ( s_token[i - 1] == '\r' ) ) ) {
 			s_token[i - 1] = 0;
 			break;
 		}
@@ -745,7 +745,7 @@ static void ASE_KeyGEOMOBJECT( const char *token ){
 	}
 	// ignore unused data blocks
 	else if ( !strcmp( token, "*NODE_TM" ) ||
-			  !strcmp( token, "*TM_ANIMATION" ) ) {
+	          !strcmp( token, "*TM_ANIMATION" ) ) {
 		ASE_ParseBracedBlock( 0 );
 	}
 	// ignore regular meshes that aren't part of animation
@@ -798,8 +798,8 @@ static void ASE_KeyGEOMOBJECT( const char *token ){
 	}
 	// skip unused info
 	else if ( !strcmp( token, "*PROP_MOTIONBLUR" ) ||
-			  !strcmp( token, "*PROP_CASTSHADOW" ) ||
-			  !strcmp( token, "*PROP_RECVSHADOW" ) ) {
+	          !strcmp( token, "*PROP_CASTSHADOW" ) ||
+	          !strcmp( token, "*PROP_RECVSHADOW" ) ) {
 		ASE_SkipRestOfLine();
 	}
 }
@@ -845,7 +845,7 @@ static void ASE_Process( void ){
 	while ( ASE_GetToken( qfalse ) )
 	{
 		if ( !strcmp( s_token, "*3DSMAX_ASCIIEXPORT" ) ||
-			 !strcmp( s_token, "*COMMENT" ) ) {
+		     !strcmp( s_token, "*COMMENT" ) ) {
 			ASE_SkipRestOfLine();
 		}
 		else if ( !strcmp( s_token, "*SCENE" ) ) {
@@ -862,15 +862,15 @@ static void ASE_Process( void ){
 			ASE_ParseBracedBlock( ASE_KeyGEOMOBJECT );
 
 			if ( strstr( ase.objects[ase.currentObject].name, "Bip" ) ||
-				 strstr( ase.objects[ase.currentObject].name, "ignore_" ) ) {
+			     strstr( ase.objects[ase.currentObject].name, "ignore_" ) ) {
 				ASE_FreeGeomObject( ase.currentObject );
 				VERBOSE( ( "(discarding BIP/ignore object)\n" ) );
 			}
 			else if ( ( strstr( ase.objects[ase.currentObject].name, "h_" ) != ase.objects[ase.currentObject].name ) &&
-					  ( strstr( ase.objects[ase.currentObject].name, "l_" ) != ase.objects[ase.currentObject].name ) &&
-					  ( strstr( ase.objects[ase.currentObject].name, "u_" ) != ase.objects[ase.currentObject].name ) &&
-					  ( strstr( ase.objects[ase.currentObject].name, "tag" ) != ase.objects[ase.currentObject].name ) &&
-					  ase.grabAnims ) {
+			          ( strstr( ase.objects[ase.currentObject].name, "l_" ) != ase.objects[ase.currentObject].name ) &&
+			          ( strstr( ase.objects[ase.currentObject].name, "u_" ) != ase.objects[ase.currentObject].name ) &&
+			          ( strstr( ase.objects[ase.currentObject].name, "tag" ) != ase.objects[ase.currentObject].name ) &&
+			          ase.grabAnims ) {
 				VERBOSE( ( "(ignoring improperly labeled object '%s')\n", ase.objects[ase.currentObject].name ) );
 				ASE_FreeGeomObject( ase.currentObject );
 			}

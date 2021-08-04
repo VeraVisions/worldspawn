@@ -93,7 +93,7 @@ qboolean PortalPassable( portal_t *p ){
 
 	/* this should never happen */
 	if ( p->nodes[ 0 ]->planenum != PLANENUM_LEAF ||
-		 p->nodes[ 1 ]->planenum != PLANENUM_LEAF ) {
+	     p->nodes[ 1 ]->planenum != PLANENUM_LEAF ) {
 		Error( "Portal_EntityFlood: not a leaf" );
 	}
 
@@ -186,9 +186,9 @@ void PrintPortal( portal_t *p ){
 	winding_t   *w;
 
 	w = p->winding;
-	for ( i = 0 ; i < w->numpoints ; i++ )
+	for ( i = 0; i < w->numpoints; i++ )
 		Sys_Printf( "(%5.0f,%5.0f,%5.0f)\n",w->p[i][0]
-					, w->p[i][1], w->p[i][2] );
+		            , w->p[i][1], w->p[i][2] );
 }
 
 /*
@@ -209,7 +209,7 @@ void MakeHeadnodePortals( tree_t *tree ){
 	node = tree->headnode;
 
 // pad with some space so there will never be null volume leafs
-	for ( i = 0 ; i < 3 ; i++ )
+	for ( i = 0; i < 3; i++ )
 	{
 		bounds[0][i] = tree->mins[i] - SIDESPACE;
 		bounds[1][i] = tree->maxs[i] + SIDESPACE;
@@ -223,8 +223,8 @@ void MakeHeadnodePortals( tree_t *tree ){
 	tree->outside_node.portals = NULL;
 	tree->outside_node.opaque = qfalse;
 
-	for ( i = 0 ; i < 3 ; i++ )
-		for ( j = 0 ; j < 2 ; j++ )
+	for ( i = 0; i < 3; i++ )
+		for ( j = 0; j < 2; j++ )
 		{
 			n = j * 3 + i;
 
@@ -248,9 +248,9 @@ void MakeHeadnodePortals( tree_t *tree ){
 		}
 
 // clip the basewindings by all the other planes
-	for ( i = 0 ; i < 6 ; i++ )
+	for ( i = 0; i < 6; i++ )
 	{
-		for ( j = 0 ; j < 6 ; j++ )
+		for ( j = 0; j < 6; j++ )
 		{
 			if ( j == i ) {
 				continue;
@@ -279,10 +279,10 @@ winding_t   *BaseWindingForNode( node_t *node ){
 	vec_t dist;
 
 	w = BaseWindingForPlane( mapplanes[node->planenum].normal
-							 , mapplanes[node->planenum].dist );
+	                         , mapplanes[node->planenum].dist );
 
 	// clip by all the parents
-	for ( n = node->parent ; n && w ; )
+	for ( n = node->parent; n && w; )
 	{
 		plane = &mapplanes[n->planenum];
 
@@ -322,7 +322,7 @@ void MakeNodePortal( node_t *node ){
 	w = BaseWindingForNode( node );
 
 	// clip the portal by all the other portals in the node
-	for ( p = node->portals ; p && w; p = p->next[side] )
+	for ( p = node->portals; p && w; p = p->next[side] )
 	{
 		if ( p->nodes[0] == node ) {
 			side = 0;
@@ -389,7 +389,7 @@ void SplitNodePortals( node_t *node ){
 	f = node->children[0];
 	b = node->children[1];
 
-	for ( p = node->portals ; p ; p = next_portal )
+	for ( p = node->portals; p; p = next_portal )
 	{
 		if ( p->nodes[0] == node ) {
 			side = 0;
@@ -411,7 +411,7 @@ void SplitNodePortals( node_t *node ){
 //
 		/* not strict, we want to always keep one of them even if coplanar */
 		ClipWindingEpsilon( p->winding, plane->normal, plane->dist,
-							SPLIT_WINDING_EPSILON, &frontwinding, &backwinding );
+		                    SPLIT_WINDING_EPSILON, &frontwinding, &backwinding );
 
 		if ( frontwinding && WindingIsTiny( frontwinding ) ) {
 			if ( !f->tinyportals ) {
@@ -502,10 +502,10 @@ void CalcNodeBounds( node_t *node ){
 
 	// calc mins/maxs for both leafs and nodes
 	ClearBounds( node->mins, node->maxs );
-	for ( p = node->portals ; p ; p = p->next[s] )
+	for ( p = node->portals; p; p = p->next[s] )
 	{
 		s = ( p->nodes[1] == node );
-		for ( i = 0 ; i < p->winding->numpoints ; i++ )
+		for ( i = 0; i < p->winding->numpoints; i++ )
 			AddPointToBounds( p->winding->p[i], node->mins, node->maxs );
 	}
 }
@@ -523,11 +523,11 @@ void MakeTreePortals_r( node_t *node ){
 		Sys_FPrintf( SYS_WRN, "WARNING: node without a volume\n" );
 		Sys_Printf( "node has %d tiny portals\n", node->tinyportals );
 		Sys_Printf( "node reference point %1.2f %1.2f %1.2f\n", node->referencepoint[0],
-					node->referencepoint[1],
-					node->referencepoint[2] );
+		            node->referencepoint[1],
+		            node->referencepoint[2] );
 	}
 
-	for ( i = 0 ; i < 3 ; i++ )
+	for ( i = 0; i < 3; i++ )
 	{
 		if ( node->mins[i] < MIN_WORLD_COORD || node->maxs[i] > MAX_WORLD_COORD ) {
 			if ( node->portals && node->portals->winding ) {

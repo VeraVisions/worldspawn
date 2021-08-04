@@ -562,7 +562,7 @@ brush_t *BrushFromBounds( vec3_t mins, vec3_t maxs ){
 
 	b = AllocBrush( 6 );
 	b->numsides = 6;
-	for ( i = 0 ; i < 3 ; i++ )
+	for ( i = 0; i < 3; i++ )
 	{
 		VectorClear( normal );
 		normal[i] = 1;
@@ -599,7 +599,7 @@ vec_t BrushVolume( brush_t *brush ){
 	// grab the first valid point as the corner
 
 	w = NULL;
-	for ( i = 0 ; i < brush->numsides ; i++ )
+	for ( i = 0; i < brush->numsides; i++ )
 	{
 		w = brush->sides[i].winding;
 		if ( w ) {
@@ -614,7 +614,7 @@ vec_t BrushVolume( brush_t *brush ){
 	// make tetrahedrons to all other faces
 
 	volume = 0;
-	for ( ; i < brush->numsides ; i++ )
+	for ( ; i < brush->numsides; i++ )
 	{
 		w = brush->sides[i].winding;
 		if ( !w ) {
@@ -655,10 +655,10 @@ void WriteBSPBrushMap( char *name, brush_t *list ){
 
 	fprintf( f, "{\n\"classname\" \"worldspawn\"\n" );
 
-	for ( ; list ; list = list->next )
+	for ( ; list; list = list->next )
 	{
 		fprintf( f, "{\n" );
-		for ( i = 0,s = list->sides ; i < list->numsides ; i++,s++ )
+		for ( i = 0,s = list->sides; i < list->numsides; i++,s++ )
 		{
 			// TODO: See if we can use a smaller winding to prevent resolution loss.
 			// Is WriteBSPBrushMap() used only to decompile maps?
@@ -793,7 +793,7 @@ void FilterStructuralBrushesIntoTree( entity_t *e, tree_t *tree ) {
 
 	c_unique = 0;
 	c_clusters = 0;
-	for ( b = e->brushes ; b ; b = b->next ) {
+	for ( b = e->brushes; b; b = b->next ) {
 		if ( b->detail ) {
 			continue;
 		}
@@ -804,7 +804,7 @@ void FilterStructuralBrushesIntoTree( entity_t *e, tree_t *tree ) {
 
 		// mark all sides as visible so drawsurfs are created
 		if ( r ) {
-			for ( i = 0 ; i < b->numsides ; i++ ) {
+			for ( i = 0; i < b->numsides; i++ ) {
 				if ( b->sides[i].winding ) {
 					b->sides[i].visible = qtrue;
 				}
@@ -870,7 +870,7 @@ qboolean WindingIsTiny( winding_t *w ){
 	int edges;
 
 	edges = 0;
-	for ( i = 0 ; i < w->numpoints ; i++ )
+	for ( i = 0; i < w->numpoints; i++ )
 	{
 		j = i == w->numpoints - 1 ? 0 : i + 1;
 		VectorSubtract( w->p[j], w->p[i], delta );
@@ -895,9 +895,9 @@ qboolean WindingIsTiny( winding_t *w ){
 qboolean WindingIsHuge( winding_t *w ){
 	int i, j;
 
-	for ( i = 0 ; i < w->numpoints ; i++ )
+	for ( i = 0; i < w->numpoints; i++ )
 	{
-		for ( j = 0 ; j < 3 ; j++ )
+		for ( j = 0; j < 3; j++ )
 			if ( w->p[i][j] <= MIN_WORLD_COORD || w->p[i][j] >= MAX_WORLD_COORD ) {
 				return qtrue;
 			}
@@ -921,13 +921,13 @@ int BrushMostlyOnSide( brush_t *brush, plane_t *plane ){
 
 	max = 0;
 	side = PSIDE_FRONT;
-	for ( i = 0 ; i < brush->numsides ; i++ )
+	for ( i = 0; i < brush->numsides; i++ )
 	{
 		w = brush->sides[i].winding;
 		if ( !w ) {
 			continue;
 		}
-		for ( j = 0 ; j < w->numpoints ; j++ )
+		for ( j = 0; j < w->numpoints; j++ )
 		{
 			d = DotProduct( w->p[j], plane->normal ) - plane->dist;
 			if ( d > max ) {
@@ -965,13 +965,13 @@ void SplitBrush( brush_t *brush, int planenum, brush_t **front, brush_t **back )
 
 	// check all points
 	d_front = d_back = 0;
-	for ( i = 0 ; i < brush->numsides ; i++ )
+	for ( i = 0; i < brush->numsides; i++ )
 	{
 		w = brush->sides[i].winding;
 		if ( !w ) {
 			continue;
 		}
-		for ( j = 0 ; j < w->numpoints ; j++ )
+		for ( j = 0; j < w->numpoints; j++ )
 		{
 			d = DotProduct( w->p[j], plane->normal ) - plane->dist;
 			if ( d > 0 && d > d_front ) {
@@ -997,7 +997,7 @@ void SplitBrush( brush_t *brush, int planenum, brush_t **front, brush_t **back )
 
 	// create a new winding from the split plane
 	w = BaseWindingForPlane( plane->normal, plane->dist );
-	for ( i = 0 ; i < brush->numsides && w ; i++ )
+	for ( i = 0; i < brush->numsides && w; i++ )
 	{
 		plane2 = &mapplanes[brush->sides[i].planenum ^ 1];
 		ChopWindingInPlace( &w, plane2->normal, plane2->dist, 0 ); // PLANESIDE_EPSILON);
@@ -1024,7 +1024,7 @@ void SplitBrush( brush_t *brush, int planenum, brush_t **front, brush_t **back )
 
 	// split it for real
 
-	for ( i = 0 ; i < 2 ; i++ )
+	for ( i = 0; i < 2; i++ )
 	{
 		b[i] = AllocBrush( brush->numsides + 1 );
 		memcpy( b[i], brush, sizeof( brush_t ) - sizeof( brush->sides ) );
@@ -1035,7 +1035,7 @@ void SplitBrush( brush_t *brush, int planenum, brush_t **front, brush_t **back )
 
 	// split all the current windings
 
-	for ( i = 0 ; i < brush->numsides ; i++ )
+	for ( i = 0; i < brush->numsides; i++ )
 	{
 		s = &brush->sides[i];
 		w = s->winding;
@@ -1044,8 +1044,8 @@ void SplitBrush( brush_t *brush, int planenum, brush_t **front, brush_t **back )
 		}
 		/* strict, in parallel case we get the face back because it also is the midwinding */
 		ClipWindingEpsilonStrict( w, plane->normal, plane->dist,
-							0 /*PLANESIDE_EPSILON*/, &cw[0], &cw[1] );
-		for ( j = 0 ; j < 2 ; j++ )
+		                          0 /*PLANESIDE_EPSILON*/, &cw[0], &cw[1] );
+		for ( j = 0; j < 2; j++ )
 		{
 			if ( !cw[j] ) {
 				continue;
@@ -1059,7 +1059,7 @@ void SplitBrush( brush_t *brush, int planenum, brush_t **front, brush_t **back )
 
 
 	// see if we have valid polygons on both sides
-	for ( i = 0 ; i < 2 ; i++ )
+	for ( i = 0; i < 2; i++ )
 	{
 		if ( b[i]->numsides < 3 || !BoundBrush( b[i] ) ) {
 			if ( b[i]->numsides >= 3 ) {
@@ -1089,7 +1089,7 @@ void SplitBrush( brush_t *brush, int planenum, brush_t **front, brush_t **back )
 	}
 
 	// add the midwinding to both sides
-	for ( i = 0 ; i < 2 ; i++ )
+	for ( i = 0; i < 2; i++ )
 	{
 		cs = &b[i]->sides[b[i]->numsides];
 		b[i]->numsides++;
@@ -1109,7 +1109,7 @@ void SplitBrush( brush_t *brush, int planenum, brush_t **front, brush_t **back )
 		int i;
 
 
-		for ( i = 0 ; i < 2 ; i++ )
+		for ( i = 0; i < 2; i++ )
 		{
 			v1 = BrushVolume( b[i] );
 			if ( v1 < 1.0 ) {

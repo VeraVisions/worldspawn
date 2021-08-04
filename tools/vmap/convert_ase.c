@@ -129,7 +129,7 @@ static void ConvertSurface( FILE *f, bspModel_t *model, int modelNum, bspDrawSur
 		c = bspDrawIndexes[ i + ds->firstIndex + 1 ];
 		b = bspDrawIndexes[ i + ds->firstIndex + 2 ];
 		fprintf( f, "\t\t\t*MESH_FACE\t%d\tA:\t%d\tB:\t%d\tC:\t%d\tAB:\t1\tBC:\t1\tCA:\t1\t*MESH_SMOOTHING\t0\t*MESH_MTLID\t0\r\n",
-				 face, a, b, c );
+		         face, a, b, c );
 	}
 	fprintf( f, "\t\t}\r\n" );
 
@@ -207,40 +207,40 @@ static void ConvertModel( FILE *f, bspModel_t *model, int modelNum, vec3_t origi
  */
 
 /*
-   *MATERIAL 0 {
-   *MATERIAL_NAME "models/test/rock16l"
-   *MATERIAL_CLASS "Standard"
-   *MATERIAL_AMBIENT 0.5882	0.5882	0.5882
-   *MATERIAL_DIFFUSE 0.5882	0.5882	0.5882
-   *MATERIAL_SPECULAR 0.5882	0.5882	0.5882
-   *MATERIAL_SHINE 0.0000
-   *MATERIAL_SHINESTRENGTH 0.0000
-   *MATERIAL_TRANSPARENCY 0.0000
-   *MATERIAL_WIRESIZE 1.0000
-   *MATERIAL_SHADING Phong
-   *MATERIAL_XP_FALLOFF 0.0000
-   *MATERIAL_SELFILLUM 0.0000
-   *MATERIAL_FALLOFF In
-   *MATERIAL_XP_TYPE Filter
-   *MAP_DIFFUSE {
-   *MAP_NAME "Map #2"
-   *MAP_CLASS "Bitmap"
-   *MAP_SUBNO 1
-   *MAP_AMOUNT 1.0000
-   *BITMAP "models/test/rock16l"
-   *MAP_TYPE Screen
-   *UVW_U_OFFSET 0.0000
-   *UVW_V_OFFSET 0.0000
-   *UVW_U_TILING 1.0000
-   *UVW_V_TILING 1.0000
-   *UVW_ANGLE 0.0000
-   *UVW_BLUR 1.0000
-   *UVW_BLUR_OFFSET 0.0000
-   *UVW_NOUSE_AMT 1.0000
-   *UVW_NOISE_SIZE 1.0000
-   *UVW_NOISE_LEVEL 1
-   *UVW_NOISE_PHASE 0.0000
-   *BITMAP_FILTER Pyramidal
+ * MATERIAL 0 {
+ * MATERIAL_NAME "models/test/rock16l"
+ * MATERIAL_CLASS "Standard"
+ * MATERIAL_AMBIENT 0.5882	0.5882	0.5882
+ * MATERIAL_DIFFUSE 0.5882	0.5882	0.5882
+ * MATERIAL_SPECULAR 0.5882	0.5882	0.5882
+ * MATERIAL_SHINE 0.0000
+ * MATERIAL_SHINESTRENGTH 0.0000
+ * MATERIAL_TRANSPARENCY 0.0000
+ * MATERIAL_WIRESIZE 1.0000
+ * MATERIAL_SHADING Phong
+ * MATERIAL_XP_FALLOFF 0.0000
+ * MATERIAL_SELFILLUM 0.0000
+ * MATERIAL_FALLOFF In
+ * MATERIAL_XP_TYPE Filter
+ * MAP_DIFFUSE {
+ * MAP_NAME "Map #2"
+ * MAP_CLASS "Bitmap"
+ * MAP_SUBNO 1
+ * MAP_AMOUNT 1.0000
+ * BITMAP "models/test/rock16l"
+ * MAP_TYPE Screen
+ * UVW_U_OFFSET 0.0000
+ * UVW_V_OFFSET 0.0000
+ * UVW_U_TILING 1.0000
+ * UVW_V_TILING 1.0000
+ * UVW_ANGLE 0.0000
+ * UVW_BLUR 1.0000
+ * UVW_BLUR_OFFSET 0.0000
+ * UVW_NOUSE_AMT 1.0000
+ * UVW_NOISE_SIZE 1.0000
+ * UVW_NOISE_LEVEL 1
+ * UVW_NOISE_PHASE 0.0000
+ * BITMAP_FILTER Pyramidal
         }
     }
  */

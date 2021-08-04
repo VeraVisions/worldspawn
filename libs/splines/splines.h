@@ -45,16 +45,22 @@ public:
 idPointListInterface() {
 	selectedPoints.Clear();
 };
-virtual ~idPointListInterface() {};
+virtual ~idPointListInterface() {
+};
 
 virtual int numPoints() {
 	return 0;
 }
 
-virtual void addPoint( const float x, const float y, const float z ) {}
-virtual void addPoint( const idVec3 &v ) {}
-virtual void removePoint( int index ) {}
-virtual idVec3 *getPoint( int index ) { return NULL; }
+virtual void addPoint( const float x, const float y, const float z ) {
+}
+virtual void addPoint( const idVec3 &v ) {
+}
+virtual void removePoint( int index ) {
+}
+virtual idVec3 *getPoint( int index ) {
+	return NULL;
+}
 
 int selectPointByRay( float ox, float oy, float oz, float dx, float dy, float dz, bool single ) {
 	idVec3 origin( ox, oy, oz );
@@ -441,9 +447,11 @@ virtual const idVec3 *getPosition( long t ) {
 	return NULL;
 }
 
-virtual void draw( bool editMode ) {};
+virtual void draw( bool editMode ) {
+};
 
-virtual void parse( const char *( *text ) ) {};
+virtual void parse( const char *( *text ) ) {
+};
 virtual void write( fileHandle_t file, const char *name );
 virtual bool parseToken( const char *key, const char *( *text ) );
 
@@ -463,7 +471,8 @@ virtual void stopEdit() {
 	editMode = false;
 }
 
-virtual void draw() {};
+virtual void draw() {
+};
 
 const char *typeStr() {
 	return positionStr[static_cast<int>( type )];
@@ -723,7 +732,8 @@ idCameraFOV( int s, int e, long t ) {
 }
 
 
-~idCameraFOV(){}
+~idCameraFOV(){
+}
 
 void setFOV( float f ) {
 	fov = f;
@@ -809,7 +819,8 @@ idCameraEvent( eventType t, const char *param, long n ) {
 	time = n;
 }
 
-~idCameraEvent() {};
+~idCameraEvent() {
+};
 
 eventType getType() {
 	return type;

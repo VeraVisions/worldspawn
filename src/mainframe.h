@@ -46,107 +46,107 @@ const int c_count_status = 5;
 
 class MainFrame {
 public:
-    enum EViewStyle {
-        eRegular = 0,
-        eFloating = 1,
-        eSplit = 2,
-        eRegularLeft = 3,
-    };
+enum EViewStyle {
+	eRegular = 0,
+	eFloating = 1,
+	eSplit = 2,
+	eRegularLeft = 3,
+};
 
-    MainFrame();
+MainFrame();
 
-    ~MainFrame();
+~MainFrame();
 
-    ui::Window m_window{ui::null};
+ui::Window m_window{ui::null};
 
-    CopiedString m_command_status;
-    CopiedString m_position_status;
-    CopiedString m_brushcount_status;
-    CopiedString m_texture_status;
-    CopiedString m_grid_status;
+CopiedString m_command_status;
+CopiedString m_position_status;
+CopiedString m_brushcount_status;
+CopiedString m_texture_status;
+CopiedString m_grid_status;
 private:
 
-    void Create();
+void Create();
 
-    void SaveWindowInfo();
+void SaveWindowInfo();
 
-    void Shutdown();
+void Shutdown();
 
-    ui::Widget m_vSplit{ui::null};
-    ui::Widget m_hSplit{ui::null};
-    ui::Widget m_vSplit2{ui::null};
+ui::Widget m_vSplit{ui::null};
+ui::Widget m_hSplit{ui::null};
+ui::Widget m_vSplit2{ui::null};
 
-    XYWnd *m_pXYWnd;
-    XYWnd *m_pYZWnd;
-    XYWnd *m_pXZWnd;
-    CamWnd *m_pCamWnd;
-    ZWnd *m_pZWnd;
-    XYWnd *m_pActiveXY;
+XYWnd *m_pXYWnd;
+XYWnd *m_pYZWnd;
+XYWnd *m_pXZWnd;
+CamWnd *m_pCamWnd;
+ZWnd *m_pZWnd;
+XYWnd *m_pActiveXY;
 
-    bool m_bSleeping;
+bool m_bSleeping;
 
-    void *m_pStatusLabel[c_count_status];
+void *m_pStatusLabel[c_count_status];
 
-    WindowPositionTracker m_position_tracker;
+WindowPositionTracker m_position_tracker;
 
-    IdleDraw m_idleRedrawStatusText;
+IdleDraw m_idleRedrawStatusText;
 
 public:
 
-    bool IsSleeping()
-    {
-        return m_bSleeping;
-    }
+bool IsSleeping()
+{
+	return m_bSleeping;
+}
 
-    void OnSleep();
+void OnSleep();
 
-    void SetStatusText(CopiedString &status_text, const char *pText);
+void SetStatusText(CopiedString &status_text, const char *pText);
 
-    void UpdateStatusText();
+void UpdateStatusText();
 
-    void RedrawStatusText();
+void RedrawStatusText();
 
-    typedef MemberCaller<MainFrame, void(), &MainFrame::RedrawStatusText> RedrawStatusTextCaller;
+typedef MemberCaller<MainFrame, void (), &MainFrame::RedrawStatusText> RedrawStatusTextCaller;
 
-    void SetGridStatus();
+void SetGridStatus();
 
-    typedef MemberCaller<MainFrame, void(), &MainFrame::SetGridStatus> SetGridStatusCaller;
+typedef MemberCaller<MainFrame, void (), &MainFrame::SetGridStatus> SetGridStatusCaller;
 
-    void SetActiveXY(XYWnd *p);
+void SetActiveXY(XYWnd *p);
 
-    XYWnd *ActiveXY()
-    {
-        return m_pActiveXY;
-    };
+XYWnd *ActiveXY()
+{
+	return m_pActiveXY;
+};
 
-    XYWnd *GetXYWnd()
-    {
-        return m_pXYWnd;
-    }
+XYWnd *GetXYWnd()
+{
+	return m_pXYWnd;
+}
 
-    XYWnd *GetXZWnd()
-    {
-        return m_pXZWnd;
-    }
+XYWnd *GetXZWnd()
+{
+	return m_pXZWnd;
+}
 
-    XYWnd *GetYZWnd()
-    {
-        return m_pYZWnd;
-    }
+XYWnd *GetYZWnd()
+{
+	return m_pYZWnd;
+}
 
-    ZWnd *GetZWnd()
-    {
-        return m_pZWnd;
-    }
+ZWnd *GetZWnd()
+{
+	return m_pZWnd;
+}
 
-    CamWnd *GetCamWnd()
-    {
-        return m_pCamWnd;
-    }
+CamWnd *GetCamWnd()
+{
+	return m_pCamWnd;
+}
 
-    void ReleaseContexts();
+void ReleaseContexts();
 
-    void CreateContexts();
+void CreateContexts();
 };
 
 extern MainFrame *g_pParentWnd;
@@ -154,17 +154,17 @@ extern MainFrame *g_pParentWnd;
 ui::Window MainFrame_getWindow();
 
 enum EMouseButtonMode {
-    ETwoButton = 0,
-    EThreeButton = 1,
+	ETwoButton = 0,
+	EThreeButton = 1,
 };
 
 struct glwindow_globals_t {
-    int m_nMouseType;
+	int m_nMouseType;
 
-    glwindow_globals_t() :
-            m_nMouseType(EThreeButton)
-    {
-    }
+	glwindow_globals_t() :
+		m_nMouseType(EThreeButton)
+	{
+	}
 };
 
 void GLWindow_Construct();
@@ -194,15 +194,15 @@ void ScreenUpdates_process();
 
 class ScopeDisableScreenUpdates {
 public:
-    ScopeDisableScreenUpdates(const char *message, const char *title)
-    {
-        ScreenUpdates_Disable(message, title);
-    }
+ScopeDisableScreenUpdates(const char *message, const char *title)
+{
+	ScreenUpdates_Disable(message, title);
+}
 
-    ~ScopeDisableScreenUpdates()
-    {
-        ScreenUpdates_Enable();
-    }
+~ScopeDisableScreenUpdates()
+{
+	ScreenUpdates_Enable();
+}
 };
 
 

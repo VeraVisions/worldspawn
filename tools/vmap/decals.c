@@ -213,7 +213,7 @@ static qboolean MakeTextureMatrix( decalProjector_t *dp, vec4_t projection, bspD
 				for ( k = 0; k < 3; k++ )
 				{
 					if ( fabs( deltas[ k ][ j ] ) > delta &&
-						 fabs( texDeltas[ k ][ i ] ) > texDelta  ) {
+					     fabs( texDeltas[ k ][ i ] ) > texDelta  ) {
 						delta = deltas[ k ][ j ];
 						texDelta = texDeltas[ k ][ i ];
 					}
@@ -237,15 +237,15 @@ static qboolean MakeTextureMatrix( decalProjector_t *dp, vec4_t projection, bspD
 	/* debug code */
 	#if 1
 	Sys_Printf( "Mat: [ %f %f %f %f ] [ %f %f %f %f ] Theta: %f (%f)\n",
-				dp->texMat[ 0 ][ 0 ], dp->texMat[ 0 ][ 1 ], dp->texMat[ 0 ][ 2 ], dp->texMat[ 0 ][ 3 ],
-				dp->texMat[ 1 ][ 0 ], dp->texMat[ 1 ][ 1 ], dp->texMat[ 1 ][ 2 ], dp->texMat[ 1 ][ 3 ],
-				RAD2DEG( acos( DotProduct( dp->texMat[ 0 ], dp->texMat[ 1 ] ) ) ),
-				RAD2DEG( acos( DotProduct( axis[ 0 ], axis[ 1 ] ) ) ) );
+	            dp->texMat[ 0 ][ 0 ], dp->texMat[ 0 ][ 1 ], dp->texMat[ 0 ][ 2 ], dp->texMat[ 0 ][ 3 ],
+	            dp->texMat[ 1 ][ 0 ], dp->texMat[ 1 ][ 1 ], dp->texMat[ 1 ][ 2 ], dp->texMat[ 1 ][ 3 ],
+	            RAD2DEG( acos( DotProduct( dp->texMat[ 0 ], dp->texMat[ 1 ] ) ) ),
+	            RAD2DEG( acos( DotProduct( axis[ 0 ], axis[ 1 ] ) ) ) );
 
 	Sys_Printf( "XYZ: %f %f %f ST: %f %f ST(t): %f %f\n",
-				a->xyz[ 0 ], a->xyz[ 1 ], a->xyz[ 2 ],
-				a->st[ 0 ], a->st[ 1 ],
-				DotProduct( a->xyz, dp->texMat[ 0 ] ) + dp->texMat[ 0 ][ 3 ], DotProduct( a->xyz, dp->texMat[ 1 ] ) + dp->texMat[ 1 ][ 3 ] );
+	            a->xyz[ 0 ], a->xyz[ 1 ], a->xyz[ 2 ],
+	            a->st[ 0 ], a->st[ 1 ],
+	            DotProduct( a->xyz, dp->texMat[ 0 ] ) + dp->texMat[ 0 ][ 3 ], DotProduct( a->xyz, dp->texMat[ 1 ] ) + dp->texMat[ 1 ][ 3 ] );
 	#endif
 
 	/* test texture matrix */
@@ -253,21 +253,21 @@ static qboolean MakeTextureMatrix( decalProjector_t *dp, vec4_t projection, bspD
 	t = DotProduct( a->xyz, dp->texMat[ 1 ] ) + dp->texMat[ 1 ][ 3 ];
 	if ( fabs( s - a->st[ 0 ] ) > 0.01 || fabs( t - a->st[ 1 ] ) > 0.01 ) {
 		Sys_Printf( "Bad texture matrix! (A) (%f, %f) != (%f, %f)\n",
-					s, t, a->st[ 0 ], a->st[ 1 ] );
+		            s, t, a->st[ 0 ], a->st[ 1 ] );
 		//%	return qfalse;
 	}
 	s = DotProduct( b->xyz, dp->texMat[ 0 ] ) + dp->texMat[ 0 ][ 3 ];
 	t = DotProduct( b->xyz, dp->texMat[ 1 ] ) + dp->texMat[ 1 ][ 3 ];
 	if ( fabs( s - b->st[ 0 ] ) > 0.01 || fabs( t - b->st[ 1 ] ) > 0.01 ) {
 		Sys_Printf( "Bad texture matrix! (B) (%f, %f) != (%f, %f)\n",
-					s, t, b->st[ 0 ], b->st[ 1 ] );
+		            s, t, b->st[ 0 ], b->st[ 1 ] );
 		//%	return qfalse;
 	}
 	s = DotProduct( c->xyz, dp->texMat[ 0 ] ) + dp->texMat[ 0 ][ 3 ];
 	t = DotProduct( c->xyz, dp->texMat[ 1 ] ) + dp->texMat[ 1 ][ 3 ];
 	if ( fabs( s - c->st[ 0 ] ) > 0.01 || fabs( t - c->st[ 1 ] ) > 0.01 ) {
 		Sys_Printf( "Bad texture matrix! (C) (%f, %f) != (%f, %f)\n",
-					s, t, c->st[ 0 ], c->st[ 1 ] );
+		            s, t, c->st[ 0 ], c->st[ 1 ] );
 		//%	return qfalse;
 	}
 
@@ -504,7 +504,7 @@ void ProcessDecals( void ){
 						/* planar? (nuking this optimization as it doesn't work on non-rectangular quads) */
 						plane[ 0 ] = 0.0f;  /* stupid msvc */
 						if ( 0 && PlaneFromPoints( plane, dv[ 0 ]->xyz, dv[ 1 ]->xyz, dv[ 2 ]->xyz ) &&
-							 fabs( DotProduct( dv[ 1 ]->xyz, plane ) - plane[ 3 ] ) <= PLANAR_EPSILON ) {
+						     fabs( DotProduct( dv[ 1 ]->xyz, plane ) - plane[ 3 ] ) <= PLANAR_EPSILON ) {
 							/* make a quad projector */
 							MakeDecalProjector( p->shaderInfo, projection, distance, 4, dv );
 						}
@@ -864,7 +864,7 @@ void MakeEntityDecals( entity_t *e ){
 			/* bounds check */
 			for ( k = 0; k < 3; k++ )
 				if ( ds->mins[ k ] >= ( dp.center[ k ] + dp.radius ) ||
-					 ds->maxs[ k ] <= ( dp.center[ k ] - dp.radius ) ) {
+				     ds->maxs[ k ] <= ( dp.center[ k ] - dp.radius ) ) {
 					break;
 				}
 			if ( k < 3 ) {

@@ -141,7 +141,7 @@ static void vfsInitPakFile( const char *filename ){
 		g_pakFiles = g_slist_append( g_pakFiles, file );
 
 		vfsFixDOSName( filename_inzip );
-		 //-1 null terminated string
+		//-1 null terminated string
 		filename_lower = g_ascii_strdown( filename_inzip, -1 );
 
 		file->name = strdup( filename_lower );
@@ -396,9 +396,9 @@ int vfsLoadFile( const char *filename, void **bufferptr, int index ){
 
 		if ( count == index ) {
 
-		if ( unzGoToFilePos( file->zipfile, &file->zippos ) != UNZ_OK ) {
-			return -1;
-		}
+			if ( unzGoToFilePos( file->zipfile, &file->zippos ) != UNZ_OK ) {
+				return -1;
+			}
 			if ( unzOpenCurrentFile( file->zipfile ) != UNZ_OK ) {
 				return -1;
 			}

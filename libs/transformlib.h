@@ -33,7 +33,7 @@ class TransformNode
 public:
 STRING_CONSTANT( Name, "TransformNode" );
 /// \brief Returns the transform which maps the node's local-space into the local-space of its parent node.
-virtual const Matrix4& localToParent() const  = 0;
+virtual const Matrix4& localToParent() const = 0;
 };
 
 /// \brief A transform node which has no effect.
@@ -149,8 +149,8 @@ void setScale( const Scale& value ){
 }
 void freezeTransform(){
 	if ( m_translation != c_translation_identity
-		 || m_rotation != c_rotation_identity
-		 || m_scale != c_scale_identity ) {
+	     || m_rotation != c_rotation_identity
+	     || m_scale != c_scale_identity ) {
 		m_apply();
 		m_translation = c_translation_identity;
 		m_rotation = c_rotation_identity;

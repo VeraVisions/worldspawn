@@ -23,7 +23,7 @@
 #define INCLUDED_ECLASSMODEL_H
 
 namespace scene {
-    class Node;
+class Node;
 }
 class EntityClass;
 

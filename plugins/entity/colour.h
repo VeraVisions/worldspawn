@@ -32,95 +32,95 @@
 
 inline void default_colour(Vector3 &colour)
 {
-    colour = Vector3(1, 1, 1);
+	colour = Vector3(1, 1, 1);
 }
 
 inline void read_colour(Vector3 &colour, const char *value)
 {
-    if (!string_parse_vector3(value, colour)) {
-        default_colour(colour);
-    }
+	if (!string_parse_vector3(value, colour)) {
+		default_colour(colour);
+	}
 }
 
 inline void read_colour255(Vector3 &colour, const char *value)
 {
-    if (!string_parse_vector3(value, colour)) {
-        default_colour(colour);
-    } else {
-	colour[0] /= 255;   
-	colour[1] /= 255;  
-	colour[2] /= 255;   
-    }
+	if (!string_parse_vector3(value, colour)) {
+		default_colour(colour);
+	} else {
+		colour[0] /= 255;
+		colour[1] /= 255;
+		colour[2] /= 255;
+	}
 }
 
 inline void write_colour(const Vector3 &colour, Entity *entity)
 {
-    char value[64];
+	char value[64];
 
-    sprintf(value, "%f %f %f", colour[0], colour[1], colour[2]);
-    entity->setKeyValue("_color", value);
+	sprintf(value, "%f %f %f", colour[0], colour[1], colour[2]);
+	entity->setKeyValue("_color", value);
 }
 
 class Colour {
-    Callback<void()> m_colourChanged;
-    Shader *m_state;
+Callback<void()> m_colourChanged;
+Shader *m_state;
 
-    void capture_state()
-    {
-        m_state = colour_capture_state_fill(m_colour);
-    }
+void capture_state()
+{
+	m_state = colour_capture_state_fill(m_colour);
+}
 
-    void release_state()
-    {
-        colour_release_state_fill(m_colour);
-    }
+void release_state()
+{
+	colour_release_state_fill(m_colour);
+}
 
 public:
-    Vector3 m_colour;
+Vector3 m_colour;
 
-    Colour(const Callback<void()> &colourChanged)
-            : m_colourChanged(colourChanged)
-    {
-        default_colour(m_colour);
-        capture_state();
-    }
+Colour(const Callback<void()> &colourChanged)
+	: m_colourChanged(colourChanged)
+{
+	default_colour(m_colour);
+	capture_state();
+}
 
-    ~Colour()
-    {
-        release_state();
-    }
+~Colour()
+{
+	release_state();
+}
 
-    void colourChanged(const char *value)
-    {
-        release_state();
-        read_colour(m_colour, value);
-        capture_state();
+void colourChanged(const char *value)
+{
+	release_state();
+	read_colour(m_colour, value);
+	capture_state();
 
-        m_colourChanged();
-    }
+	m_colourChanged();
+}
 
-    void colour255Changed(const char *value)
-    {
-        release_state();
-        read_colour255(m_colour, value);
-        capture_state();
+void colour255Changed(const char *value)
+{
+	release_state();
+	read_colour255(m_colour, value);
+	capture_state();
 
-        m_colourChanged();
-    }
+	m_colourChanged();
+}
 
-    typedef MemberCaller<Colour, void(const char *), &Colour::colourChanged> ColourChangedCaller;
-    typedef MemberCaller<Colour, void(const char *), &Colour::colour255Changed> Colour255ChangedCaller;
+typedef MemberCaller<Colour, void (const char *), &Colour::colourChanged> ColourChangedCaller;
+typedef MemberCaller<Colour, void (const char *), &Colour::colour255Changed> Colour255ChangedCaller;
 
 
-    void write(Entity *entity) const
-    {
-        write_colour(m_colour, entity);
-    }
+void write(Entity *entity) const
+{
+	write_colour(m_colour, entity);
+}
 
-    Shader *state() const
-    {
-        return m_state;
-    }
+Shader *state() const
+{
+	return m_state;
+}
 };
 
 #endif

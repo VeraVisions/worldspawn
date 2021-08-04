@@ -78,13 +78,13 @@ void SplitMeshByPlane( mesh_t *in, vec3_t normal, float dist, mesh_t **front, me
 	float frac;
 	int frontAprox, backAprox;
 
-	for ( i = 0 ; i < 2 ; i++ ) {
+	for ( i = 0; i < 2; i++ ) {
 		dv = in->verts;
 		c_front = 0;
 		c_back = 0;
 		c_on = 0;
-		for ( h = 0 ; h < in->height ; h++ ) {
-			for ( w = 0 ; w < in->width ; w++, dv++ ) {
+		for ( h = 0; h < in->height; h++ ) {
+			for ( w = 0; w < in->width; w++, dv++ ) {
 				d[h][w] = DotProduct( dv->xyz, normal ) - dist;
 				if ( d[h][w] > ON_EPSILON ) {
 					c_front++;
@@ -112,7 +112,7 @@ void SplitMeshByPlane( mesh_t *in, vec3_t normal, float dist, mesh_t **front, me
 
 		// find a split point
 		split = -1;
-		for ( w = 0 ; w < in->width - 1 ; w++ ) {
+		for ( w = 0; w < in->width - 1; w++ ) {
 			if ( ( d[0][w] < 0 ) != ( d[0][w + 1] < 0 ) ) {
 				if ( split == -1 ) {
 					split = w;
@@ -134,8 +134,8 @@ void SplitMeshByPlane( mesh_t *in, vec3_t normal, float dist, mesh_t **front, me
 		}
 
 		// make sure the split point stays the same for all other rows
-		for ( h = 1 ; h < in->height ; h++ ) {
-			for ( w = 0 ; w < in->width - 1 ; w++ ) {
+		for ( h = 1; h < in->height; h++ ) {
+			for ( w = 0; w < in->width - 1; w++ ) {
 				if ( ( d[h][w] < 0 ) != ( d[h][w + 1] < 0 ) ) {
 					if ( w != split ) {
 						Sys_Printf( "multiple crossing points for patch -- can't clip\n" );
@@ -196,8 +196,8 @@ void SplitMeshByPlane( mesh_t *in, vec3_t normal, float dist, mesh_t **front, me
 	}
 
 	// distribute the points
-	for ( w = 0 ; w < in->width ; w++ ) {
-		for ( h = 0 ; h < in->height ; h++ ) {
+	for ( w = 0; w < in->width; w++ ) {
+		for ( h = 0; h < in->height; h++ ) {
 			if ( w <= split ) {
 				f->verts[ h * f->width + w ] = in->verts[ h * in->width + w ];
 			}
@@ -264,7 +264,7 @@ qboolean ChopPatchSurfaceByBrush( entity_t *e, mapDrawSurface_t *ds, brush_t *b 
 	// only split by the top and bottom planes to avoid
 	// some messy patch clipping issues
 
-	for ( i = 4 ; i <= 5 ; i++ ) {
+	for ( i = 4; i <= 5; i++ ) {
 		s = &b->sides[ i ];
 		plane = &mapplanes[ s->planenum ];
 
@@ -272,7 +272,7 @@ qboolean ChopPatchSurfaceByBrush( entity_t *e, mapDrawSurface_t *ds, brush_t *b 
 
 		if ( !back ) {
 			// nothing actually contained inside
-			for ( j = 0 ; j < numOutside ; j++ ) {
+			for ( j = 0; j < numOutside; j++ ) {
 				FreeMesh( outside[j] );
 			}
 			return qfalse;
@@ -351,7 +351,7 @@ winding_t *WindingFromDrawSurf( mapDrawSurface_t *ds ){
 			max = 256;
 		}
 
-		for ( i = 0 ; i < max ; i++ ) {
+		for ( i = 0; i < max; i++ ) {
 			VectorCopy( ds->verts[i].xyz, p[i] );
 		}
 
@@ -360,7 +360,7 @@ winding_t *WindingFromDrawSurf( mapDrawSurface_t *ds ){
 
 	w = AllocWinding( ds->numVerts );
 	w->numpoints = ds->numVerts;
-	for ( i = 0 ; i < ds->numVerts ; i++ ) {
+	for ( i = 0; i < ds->numVerts; i++ ) {
 		VectorCopy( ds->verts[i].xyz, w->p[i] );
 	}
 	return w;
@@ -830,7 +830,7 @@ int CubemapForBounds( vec3_t mins, vec3_t maxs ){
 			cmdist = d;
 
 			if (bspCubemaps[i].cubesize <= 0)
-				cm = -1;	//defer to default
+				cm = -1;        //defer to default
 			else
 				cm = i;
 		}
@@ -864,7 +864,7 @@ void CreateMapCubemaps( void ){
 		e = &entities[ i ];
 
 		if (strcmp(ValueForKey( e, "classname" ), "env_cubemap"))
-			continue;	//not a cubemap, not interested in it.
+			continue;       //not a cubemap, not interested in it.
 
 		if (numBSPCubemaps == sizeof(bspCubemaps)/sizeof(bspCubemaps[0]))
 		{
@@ -873,7 +873,7 @@ void CreateMapCubemaps( void ){
 		}
 		sscanf( ValueForKey( e, "origin" ), "%f %f %f", &bspCubemaps[numBSPCubemaps].origin[ 0 ], &bspCubemaps[numBSPCubemaps].origin[ 1 ], &bspCubemaps[numBSPCubemaps].origin[ 2 ] );
 		size = ValueForKey( e, "size" );
-		if (*size)	//0 or negative means defer to default (eg skybox or whatever)
+		if (*size)      //0 or negative means defer to default (eg skybox or whatever)
 			sscanf( size, "%i", &bspCubemaps[numBSPCubemaps].cubesize );
 		else
 			bspCubemaps[numBSPCubemaps].cubesize = 128; //a default size.

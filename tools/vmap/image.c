@@ -184,14 +184,14 @@ static void LoadPNGBuffer( byte *buffer, int size, byte **pixels, int *width, in
 
 	/* read image header chunk */
 	png_get_IHDR( png, info,
-				  &w, &h, &bitDepth, &colorType, NULL, NULL, NULL );
+	              &w, &h, &bitDepth, &colorType, NULL, NULL, NULL );
 
 	/* the following will probably bork on certain types of png images, but hey... */
 
 	/* force indexed/gray/trans chunk to rgb */
 	if ( ( colorType == PNG_COLOR_TYPE_PALETTE && bitDepth <= 8 ) ||
-		 ( colorType == PNG_COLOR_TYPE_GRAY && bitDepth <= 8 ) ||
-		 png_get_valid( png, info, PNG_INFO_tRNS ) ) {
+	     ( colorType == PNG_COLOR_TYPE_GRAY && bitDepth <= 8 ) ||
+	     png_get_valid( png, info, PNG_INFO_tRNS ) ) {
 		png_set_expand( png );
 	}
 
@@ -473,7 +473,7 @@ image_t *ImageLoad( const char *filename ){
 				if (pixels) {
 					// On error, LoadJPGBuff might store a pointer to the error message in pixels
 					Sys_FPrintf( SYS_WRN, "WARNING: LoadJPGBuff %s %s\n", name, (unsigned char*) pixels );
-				}				
+				}
 			} else {
 				if ( width == image->width && height == image->height ) {
 					int i;

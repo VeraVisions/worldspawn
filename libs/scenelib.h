@@ -107,7 +107,7 @@ NodeType() : m_typeId( NODETYPEID_NONE ){
 void initialise(){
 	m_typeId = GlobalSceneGraph().getNodeTypeId( Name() );
 }
-typedef MemberCaller<NodeType<Type>, void(), &NodeType<Type>::initialise> InitialiseCaller;
+typedef MemberCaller<NodeType<Type>, void (), &NodeType<Type>::initialise> InitialiseCaller;
 TypeId getTypeId(){
 #if GDEF_DEBUG
 	ASSERT_MESSAGE( m_typeId != NODETYPEID_NONE, "node-type " << makeQuoted( Name() ) << " used before being initialised" );
@@ -449,7 +449,7 @@ InstanceType() : m_typeId( INSTANCETYPEID_NONE ){
 void initialise(){
 	m_typeId = GlobalSceneGraph().getInstanceTypeId( Name() );
 }
-typedef MemberCaller<InstanceType<Type>, void(), &InstanceType<Type>::initialise> InitialiseCaller;
+typedef MemberCaller<InstanceType<Type>, void (), &InstanceType<Type>::initialise> InitialiseCaller;
 TypeId getTypeId(){
 #if GDEF_DEBUG
 	ASSERT_MESSAGE( m_typeId != INSTANCETYPEID_NONE, "instance-type " << makeQuoted( Name() ) << " used before being initialised" );

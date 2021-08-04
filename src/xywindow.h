@@ -38,7 +38,7 @@ class Shader;
 
 class SelectionSystemWindowObserver;
 namespace scene {
-    class Node;
+class Node;
 }
 
 
@@ -54,270 +54,270 @@ bool ClipMode();
 
 inline const char *ViewType_getTitle(VIEWTYPE viewtype)
 {
-    if (viewtype == XY) {
-        return "XY Top";
-    }
-    if (viewtype == XZ) {
-        return "XZ Front";
-    }
-    if (viewtype == YZ) {
-        return "YZ Side";
-    }
-    return "";
+	if (viewtype == XY) {
+		return "XY Top";
+	}
+	if (viewtype == XZ) {
+		return "XZ Front";
+	}
+	if (viewtype == YZ) {
+		return "YZ Side";
+	}
+	return "";
 }
 
 class XYWnd {
-    ui::GLArea m_gl_widget;
-    guint m_sizeHandler;
-    guint m_exposeHandler;
+ui::GLArea m_gl_widget;
+guint m_sizeHandler;
+guint m_exposeHandler;
 
-    DeferredDraw m_deferredDraw;
-    DeferredMotion m_deferred_motion;
+DeferredDraw m_deferredDraw;
+DeferredMotion m_deferred_motion;
 public:
-    ui::Window m_parent;
+ui::Window m_parent;
 
-    XYWnd();
+XYWnd();
 
-    ~XYWnd();
+~XYWnd();
 
-    void queueDraw()
-    {
-        m_deferredDraw.draw();
-    }
+void queueDraw()
+{
+	m_deferredDraw.draw();
+}
 
-    ui::GLArea GetWidget()
-    {
-        return m_gl_widget;
-    }
+ui::GLArea GetWidget()
+{
+	return m_gl_widget;
+}
 
 public:
-    SelectionSystemWindowObserver *m_window_observer;
-    XORRectangle m_XORRectangle;
-    WindowPositionTracker m_positionTracker;
+SelectionSystemWindowObserver *m_window_observer;
+XORRectangle m_XORRectangle;
+WindowPositionTracker m_positionTracker;
 
-    static void captureStates();
+static void captureStates();
 
-    static void releaseStates();
+static void releaseStates();
 
-    void PositionView(const Vector3 &position);
+void PositionView(const Vector3 &position);
 
-    const Vector3 &GetOrigin();
+const Vector3 &GetOrigin();
 
-    void SetOrigin(const Vector3 &origin);
+void SetOrigin(const Vector3 &origin);
 
-    void Scroll(int x, int y);
+void Scroll(int x, int y);
 
-    void XY_Draw();
+void XY_Draw();
 
-    void DrawCameraIcon(const Vector3 &origin, const Vector3 &angles);
+void DrawCameraIcon(const Vector3 &origin, const Vector3 &angles);
 
-    void XY_DrawBlockGrid();
+void XY_DrawBlockGrid();
 
-    void XY_DrawAxis();
+void XY_DrawAxis();
 
-    void XY_DrawGrid();
+void XY_DrawGrid();
 
-    void XY_DrawBackground();
+void XY_DrawBackground();
 
-    void XY_LoadBackgroundImage(const char *name);
+void XY_LoadBackgroundImage(const char *name);
 
-    void XY_DisableBackground();
+void XY_DisableBackground();
 
-    void XY_MouseUp(int x, int y, unsigned int buttons);
+void XY_MouseUp(int x, int y, unsigned int buttons);
 
-    void XY_MouseDown(int x, int y, unsigned int buttons);
+void XY_MouseDown(int x, int y, unsigned int buttons);
 
-    void XY_MouseMoved(int x, int y, unsigned int buttons);
+void XY_MouseMoved(int x, int y, unsigned int buttons);
 
-    void NewBrushDrag_Begin(int x, int y);
+void NewBrushDrag_Begin(int x, int y);
 
-    void NewBrushDrag(int x, int y);
+void NewBrushDrag(int x, int y);
 
-    void NewBrushDrag_End(int x, int y);
+void NewBrushDrag_End(int x, int y);
 
-    void XY_ToPoint(int x, int y, Vector3 &point);
+void XY_ToPoint(int x, int y, Vector3 &point);
 
-    void XY_SnapToGrid(Vector3 &point);
+void XY_SnapToGrid(Vector3 &point);
 
-    void Move_Begin();
+void Move_Begin();
 
-    void Move_End();
+void Move_End();
 
-    bool m_move_started;
-    guint m_move_focusOut;
+bool m_move_started;
+guint m_move_focusOut;
 
-    void Zoom_Begin();
+void Zoom_Begin();
 
-    void Zoom_End();
+void Zoom_End();
 
-    bool m_zoom_started;
-    guint m_zoom_focusOut;
+bool m_zoom_started;
+guint m_zoom_focusOut;
 
-    void SetActive(bool b)
-    {
-        m_bActive = b;
-    };
+void SetActive(bool b)
+{
+	m_bActive = b;
+};
 
-    bool Active()
-    {
-        return m_bActive;
-    };
+bool Active()
+{
+	return m_bActive;
+};
 
-    void Clipper_OnLButtonDown(int x, int y);
+void Clipper_OnLButtonDown(int x, int y);
 
-    void Clipper_OnLButtonUp(int x, int y);
+void Clipper_OnLButtonUp(int x, int y);
 
-    void Clipper_OnMouseMoved(int x, int y);
+void Clipper_OnMouseMoved(int x, int y);
 
-    void Clipper_Crosshair_OnMouseMoved(int x, int y);
+void Clipper_Crosshair_OnMouseMoved(int x, int y);
 
-    void DropClipPoint(int pointx, int pointy);
+void DropClipPoint(int pointx, int pointy);
 
-    void SetViewType(VIEWTYPE n);
+void SetViewType(VIEWTYPE n);
 
-    bool m_bActive;
+bool m_bActive;
 
-    static ui::Menu m_mnuDrop;
-    static ui::Menu m_mnuDropSingle;
-    static ui::Menu m_mnuDropMultiple;
+static ui::Menu m_mnuDrop;
+static ui::Menu m_mnuDropSingle;
+static ui::Menu m_mnuDropMultiple;
 
-    int m_chasemouse_current_x, m_chasemouse_current_y;
-    int m_chasemouse_delta_x, m_chasemouse_delta_y;
+int m_chasemouse_current_x, m_chasemouse_current_y;
+int m_chasemouse_delta_x, m_chasemouse_delta_y;
 
 
-    guint m_chasemouse_handler;
+guint m_chasemouse_handler;
 
-    void ChaseMouse();
+void ChaseMouse();
 
-    bool chaseMouseMotion(int pointx, int pointy);
+bool chaseMouseMotion(int pointx, int pointy);
 
-    void updateModelview();
+void updateModelview();
 
-    void updateProjection();
+void updateProjection();
 
-    Matrix4 m_projection;
-    Matrix4 m_modelview;
+Matrix4 m_projection;
+Matrix4 m_modelview;
 
-    int m_nWidth;
-    int m_nHeight;
+int m_nWidth;
+int m_nHeight;
 // background image stuff
-    qtexture_t *m_tex;
-    bool m_backgroundActivated;
-    float m_alpha;   // vertex alpha
-    float m_xmin, m_ymin, m_xmax, m_ymax;
+qtexture_t *m_tex;
+bool m_backgroundActivated;
+float m_alpha;       // vertex alpha
+float m_xmin, m_ymin, m_xmax, m_ymax;
 private:
-    float m_fScale;
-    Vector3 m_vOrigin;
+float m_fScale;
+Vector3 m_vOrigin;
 
 
-    View m_view;
-    static Shader *m_state_selected;
+View m_view;
+static Shader *m_state_selected;
 
-    int m_ptCursorX, m_ptCursorY;
+int m_ptCursorX, m_ptCursorY;
 
-    unsigned int m_buttonstate;
+unsigned int m_buttonstate;
 
-    int m_nNewBrushPressx;
-    int m_nNewBrushPressy;
-    scene::Node *m_NewBrushDrag;
-    bool m_bNewBrushDrag;
+int m_nNewBrushPressx;
+int m_nNewBrushPressy;
+scene::Node *m_NewBrushDrag;
+bool m_bNewBrushDrag;
 
-    Vector3 m_mousePosition;
+Vector3 m_mousePosition;
 
-    VIEWTYPE m_viewType;
+VIEWTYPE m_viewType;
 
-    void OriginalButtonUp(guint32 nFlags, int point, int pointy);
+void OriginalButtonUp(guint32 nFlags, int point, int pointy);
 
-    void OriginalButtonDown(guint32 nFlags, int point, int pointy);
+void OriginalButtonDown(guint32 nFlags, int point, int pointy);
 
-    void OnContextMenu();
+void OnContextMenu();
 
-    void PaintSizeInfo(int nDim1, int nDim2, Vector3 &vMinBounds, Vector3 &vMaxBounds);
+void PaintSizeInfo(int nDim1, int nDim2, Vector3 &vMinBounds, Vector3 &vMaxBounds);
 
-    int m_entityCreate_x, m_entityCreate_y;
-    bool m_entityCreate;
+int m_entityCreate_x, m_entityCreate_y;
+bool m_entityCreate;
 
 public:
-    void ButtonState_onMouseDown(unsigned int buttons)
-    {
-        m_buttonstate |= buttons;
-    }
+void ButtonState_onMouseDown(unsigned int buttons)
+{
+	m_buttonstate |= buttons;
+}
 
-    void ButtonState_onMouseUp(unsigned int buttons)
-    {
-        m_buttonstate &= ~buttons;
-    }
+void ButtonState_onMouseUp(unsigned int buttons)
+{
+	m_buttonstate &= ~buttons;
+}
 
-    unsigned int getButtonState() const
-    {
-        return m_buttonstate;
-    }
+unsigned int getButtonState() const
+{
+	return m_buttonstate;
+}
 
-    void EntityCreate_MouseDown(int x, int y);
+void EntityCreate_MouseDown(int x, int y);
 
-    void EntityCreate_MouseMove(int x, int y);
+void EntityCreate_MouseMove(int x, int y);
 
-    void EntityCreate_MouseUp(int x, int y);
+void EntityCreate_MouseUp(int x, int y);
 
-    void OnEntityCreate(const char *item);
+void OnEntityCreate(const char *item);
 
-    VIEWTYPE GetViewType()
-    {
-        return m_viewType;
-    }
+VIEWTYPE GetViewType()
+{
+	return m_viewType;
+}
 
-    void SetScale(float f);
+void SetScale(float f);
 
-    float Scale()
-    {
-        return m_fScale;
-    }
+float Scale()
+{
+	return m_fScale;
+}
 
-    int Width()
-    {
-        return m_nWidth;
-    }
+int Width()
+{
+	return m_nWidth;
+}
 
-    int Height()
-    {
-        return m_nHeight;
-    }
+int Height()
+{
+	return m_nHeight;
+}
 
-    Signal0 onDestroyed;
-    Signal3<const WindowVector &, ButtonIdentifier, ModifierFlags> onMouseDown;
+Signal0 onDestroyed;
+Signal3<const WindowVector &, ButtonIdentifier, ModifierFlags> onMouseDown;
 
-    void mouseDown(const WindowVector &position, ButtonIdentifier button, ModifierFlags modifiers);
+void mouseDown(const WindowVector &position, ButtonIdentifier button, ModifierFlags modifiers);
 
-    typedef Member<XYWnd, void(const WindowVector &, ButtonIdentifier,
-                               ModifierFlags), &XYWnd::mouseDown> MouseDownCaller;
+typedef Member<XYWnd, void (const WindowVector &, ButtonIdentifier,
+                            ModifierFlags), &XYWnd::mouseDown> MouseDownCaller;
 };
 
 inline void XYWnd_Update(XYWnd &xywnd)
 {
-    xywnd.queueDraw();
+	xywnd.queueDraw();
 }
 
 
 struct xywindow_globals_t {
-    Vector3 color_gridback;
-    Vector3 color_gridminor;
-    Vector3 color_gridmajor;
-    Vector3 color_gridblock;
-    Vector3 color_gridtext;
-    Vector3 color_brushes;
-    Vector3 color_selbrushes;
-    Vector3 color_clipper;
-    Vector3 color_viewname;
-    Vector3 color_gridminor_alt;
-    Vector3 color_gridmajor_alt;
-    Vector3 AxisColorX;
-    Vector3 AxisColorY;
-    Vector3 AxisColorZ;
+	Vector3 color_gridback;
+	Vector3 color_gridminor;
+	Vector3 color_gridmajor;
+	Vector3 color_gridblock;
+	Vector3 color_gridtext;
+	Vector3 color_brushes;
+	Vector3 color_selbrushes;
+	Vector3 color_clipper;
+	Vector3 color_viewname;
+	Vector3 color_gridminor_alt;
+	Vector3 color_gridmajor_alt;
+	Vector3 AxisColorX;
+	Vector3 AxisColorY;
+	Vector3 AxisColorZ;
 
-    bool m_bRightClick;
-    bool m_bNoStipple;
+	bool m_bRightClick;
+	bool m_bNoStipple;
 
-    xywindow_globals_t() :
+	xywindow_globals_t() :
 		color_gridback(0.0f, 0.0f, 0.0f),
 		color_gridmajor(0.45f, 0.45f, 0.45f),
 		color_gridminor(0.2f, 0.2f, 0.2f),
@@ -335,8 +335,8 @@ struct xywindow_globals_t {
 		AxisColorZ(0.f, 0.f, 1.f),
 		m_bRightClick(true),
 		m_bNoStipple(false)
-    {
-    }
+	{
+	}
 
 };
 

@@ -82,7 +82,9 @@ MemStream( size_type nLen );
 virtual ~MemStream();
 
 int refCount;
-void IncRef() { refCount++; }
+void IncRef() {
+	refCount++;
+}
 void DecRef() {
 	refCount--; if ( refCount <= 0 ) {
 		delete this;
@@ -106,7 +108,9 @@ void SetLength( size_type nNewLen );
 size_type GetLength() const;
 
 unsigned char* GetBuffer() const
-{ return m_pBuffer; }
+{
+	return m_pBuffer;
+}
 
 size_type read( byte_type* buffer, size_type length );
 size_type write( const byte_type* buffer, size_type length );
@@ -130,7 +134,9 @@ FileStream();
 virtual ~FileStream();
 
 int refCount;
-void IncRef() { refCount++; }
+void IncRef() {
+	refCount++;
+}
 void DecRef() {
 	refCount--; if ( refCount <= 0 ) {
 		delete this;

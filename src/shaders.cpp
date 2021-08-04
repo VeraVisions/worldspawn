@@ -29,43 +29,43 @@
 
 void ViewShader(const char *pFile, const char *pName)
 {
-    char *pBuff = 0;
-    //int nSize =
-    vfsLoadFile(pFile, reinterpret_cast<void **>( &pBuff ));
-    if (pBuff == 0) {
-        globalErrorStream() << "Failed to load shader file " << pFile << "\n";
-        return;
-    }
-    // look for the shader declaration
-    StringOutputStream strFind(string_length(pName));
-    strFind << LowerCase(pName);
-    StringOutputStream strLook(string_length(pBuff));
-    strFind << LowerCase(pBuff);
-    // offset used when jumping over commented out definitions
-    std::size_t nOffset = 0;
-    while (true) {
-        const char *substr = strstr(strFind.c_str() + nOffset, strFind.c_str());
-        if (substr == 0) {
-            break;
-        }
-        std::size_t nStart = substr - strLook.c_str();
-        // we have found something, maybe it's a commented out shader name?
-        char *strCheck = new char[string_length(strLook.c_str()) + 1];
-        strcpy(strCheck, strLook.c_str());
-        strCheck[nStart] = 0;
-        char *pCheck = strrchr(strCheck, '\n');
-        // if there's a commentary sign in-between we'll continue
-        if (pCheck && strstr(pCheck, "//")) {
-            delete[] strCheck;
-            nOffset = nStart + 1;
-            continue;
-        }
-        delete[] strCheck;
-        nOffset = nStart;
-        break;
-    }
-    // now close the file
-    vfsFreeFile(pBuff);
+	char *pBuff = 0;
+	//int nSize =
+	vfsLoadFile(pFile, reinterpret_cast<void **>( &pBuff ));
+	if (pBuff == 0) {
+		globalErrorStream() << "Failed to load shader file " << pFile << "\n";
+		return;
+	}
+	// look for the shader declaration
+	StringOutputStream strFind(string_length(pName));
+	strFind << LowerCase(pName);
+	StringOutputStream strLook(string_length(pBuff));
+	strFind << LowerCase(pBuff);
+	// offset used when jumping over commented out definitions
+	std::size_t nOffset = 0;
+	while (true) {
+		const char *substr = strstr(strFind.c_str() + nOffset, strFind.c_str());
+		if (substr == 0) {
+			break;
+		}
+		std::size_t nStart = substr - strLook.c_str();
+		// we have found something, maybe it's a commented out shader name?
+		char *strCheck = new char[string_length(strLook.c_str()) + 1];
+		strcpy(strCheck, strLook.c_str());
+		strCheck[nStart] = 0;
+		char *pCheck = strrchr(strCheck, '\n');
+		// if there's a commentary sign in-between we'll continue
+		if (pCheck && strstr(pCheck, "//")) {
+			delete[] strCheck;
+			nOffset = nStart + 1;
+			continue;
+		}
+		delete[] strCheck;
+		nOffset = nStart;
+		break;
+	}
+	// now close the file
+	vfsFreeFile(pBuff);
 
-    DoTextEditor(pFile, static_cast<int>( nOffset ));
+	DoTextEditor(pFile, static_cast<int>( nOffset ));
 }

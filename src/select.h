@@ -95,15 +95,15 @@ void Selection_destroy();
 
 
 struct select_workzone_t {
-    // defines the boundaries of the current work area
-    // is used to guess brushes and drop points third coordinate when creating from 2D view
-    Vector3 d_work_min, d_work_max;
+	// defines the boundaries of the current work area
+	// is used to guess brushes and drop points third coordinate when creating from 2D view
+	Vector3 d_work_min, d_work_max;
 
-    select_workzone_t() :
-            d_work_min(-64.0f, -64.0f, -64.0f),
-            d_work_max(64.0f, 64.0f, 64.0f)
-    {
-    }
+	select_workzone_t() :
+		d_work_min(-64.0f, -64.0f, -64.0f),
+		d_work_max(64.0f, 64.0f, 64.0f)
+	{
+	}
 };
 
 const select_workzone_t &Select_getWorkZone();

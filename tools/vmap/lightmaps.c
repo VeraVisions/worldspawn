@@ -60,10 +60,10 @@ qboolean AllocLMBlock( int w, int h, int *x, int *y ){
 
 	best = LIGHTMAP_HEIGHT;
 
-	for ( i = 0 ; i <= LIGHTMAP_WIDTH - w ; i++ ) {
+	for ( i = 0; i <= LIGHTMAP_WIDTH - w; i++ ) {
 		best2 = 0;
 
-		for ( j = 0 ; j < w ; j++ ) {
+		for ( j = 0; j < w; j++ ) {
 			if ( allocated[i + j] >= best ) {
 				break;
 			}
@@ -81,7 +81,7 @@ qboolean AllocLMBlock( int w, int h, int *x, int *y ){
 		return qfalse;
 	}
 
-	for ( i = 0 ; i < w ; i++ ) {
+	for ( i = 0; i < w; i++ ) {
 		allocated[*x + i] = best + h;
 	}
 

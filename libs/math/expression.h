@@ -305,9 +305,9 @@ struct eval_dot
 {
 	static value_type apply( const First& first, const Second& second ){
 		return static_cast<value_type>(
-				   first.eval( Index::VALUE ) * second.eval( Index::VALUE )
-				   + eval_dot< IntegralConstant<Index::VALUE - 1> >::apply( first, second )
-				   );
+			first.eval( Index::VALUE ) * second.eval( Index::VALUE )
+			+ eval_dot< IntegralConstant<Index::VALUE - 1> >::apply( first, second )
+			);
 	}
 };
 
@@ -351,9 +351,9 @@ struct eval_squared
 {
 	static value_type apply( const First& first ){
 		return static_cast<value_type>(
-				   squared( first.eval( Index::VALUE ) )
-				   + eval_squared< IntegralConstant<Index::VALUE - 1> >::apply( first )
-				   );
+			squared( first.eval( Index::VALUE ) )
+			+ eval_squared< IntegralConstant<Index::VALUE - 1> >::apply( first )
+			);
 	}
 };
 
@@ -385,7 +385,7 @@ template<typename First>
 inline VectorScalar<
 	Multiplied<typename First::value_type, typename First::value_type>,
 	First,
-    // multiple evaulations of subexpression
+	// multiple evaulations of subexpression
 	ScalarDivided<
 		Literal<typename First::value_type>,
 		SquareRoot<
@@ -401,7 +401,7 @@ template<typename First>
 inline VectorScalar<
 	Multiplied<typename First::value_type, typename First::value_type>,
 	First,
-    // single evaluation of subexpression
+	// single evaluation of subexpression
 	Literal<typename First::value_type>
 	>
 vector_normalised( const First& first ){
@@ -454,21 +454,21 @@ inline Matrix4Identity matrix4_identity( const Matrix4& value ){
 template<typename Expression>
 inline Matrix4 matrix4_for_expression( const Expression& expression ){
 	return Matrix4(
-			   expression.eval( 0, 0 ), expression.eval( 0, 1 ), expression.eval( 0, 2 ), expression.eval( 0, 3 ),
-			   expression.eval( 1, 0 ), expression.eval( 1, 1 ), expression.eval( 1, 2 ), expression.eval( 1, 3 ),
-			   expression.eval( 2, 0 ), expression.eval( 2, 1 ), expression.eval( 2, 2 ), expression.eval( 2, 3 ),
-			   expression.eval( 3, 0 ), expression.eval( 3, 1 ), expression.eval( 3, 2 ), expression.eval( 3, 3 )
-			   );
+		expression.eval( 0, 0 ), expression.eval( 0, 1 ), expression.eval( 0, 2 ), expression.eval( 0, 3 ),
+		expression.eval( 1, 0 ), expression.eval( 1, 1 ), expression.eval( 1, 2 ), expression.eval( 1, 3 ),
+		expression.eval( 2, 0 ), expression.eval( 2, 1 ), expression.eval( 2, 2 ), expression.eval( 2, 3 ),
+		expression.eval( 3, 0 ), expression.eval( 3, 1 ), expression.eval( 3, 2 ), expression.eval( 3, 3 )
+		);
 }
 
 template<typename Expression>
 inline Matrix4 matrix4_affine_for_expression( const Expression& expression ){
 	return Matrix4(
-			   expression.eval( 0, 0 ), expression.eval( 0, 1 ), expression.eval( 0, 2 ), 0,
-			   expression.eval( 1, 0 ), expression.eval( 1, 1 ), expression.eval( 1, 2 ), 0,
-			   expression.eval( 2, 0 ), expression.eval( 2, 1 ), expression.eval( 2, 2 ), 0,
-			   expression.eval( 3, 0 ), expression.eval( 3, 1 ), expression.eval( 3, 2 ), 1
-			   );
+		expression.eval( 0, 0 ), expression.eval( 0, 1 ), expression.eval( 0, 2 ), 0,
+		expression.eval( 1, 0 ), expression.eval( 1, 1 ), expression.eval( 1, 2 ), 0,
+		expression.eval( 2, 0 ), expression.eval( 2, 1 ), expression.eval( 2, 2 ), 0,
+		expression.eval( 3, 0 ), expression.eval( 3, 1 ), expression.eval( 3, 2 ), 1
+		);
 }
 
 
@@ -486,9 +486,9 @@ PointMultiplied( const First& first_, const Second& second_ )
 }
 value_type eval( unsigned int i ) const {
 	return static_cast<value_type>( second.eval( 0, i ) * first.eval( 0 )
-									+ second.eval( 1, i ) * first.eval( 1 )
-									+ second.eval( 2, i ) * first.eval( 2 )
-									+ second.eval( 3, i ) );
+	                                + second.eval( 1, i ) * first.eval( 1 )
+	                                + second.eval( 2, i ) * first.eval( 2 )
+	                                + second.eval( 3, i ) );
 }
 };
 
@@ -513,11 +513,11 @@ Matrix4Multiplied( const First& first_, const Second& second_ )
 
 value_type eval( unsigned int r, unsigned int c ) const {
 	return static_cast<value_type>(
-			   second.eval( r, 0 ) * first.eval( 0, c )
-			   + second.eval( r, 1 ) * first.eval( 1, c )
-			   + second.eval( r, 2 ) * first.eval( 2, c )
-			   + second.eval( r, 3 ) * first.eval( 3, c )
-			   );
+		second.eval( r, 0 ) * first.eval( 0, c )
+		+ second.eval( r, 1 ) * first.eval( 1, c )
+		+ second.eval( r, 2 ) * first.eval( 2, c )
+		+ second.eval( r, 3 ) * first.eval( 3, c )
+		);
 }
 };
 

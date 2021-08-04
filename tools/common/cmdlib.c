@@ -105,11 +105,11 @@ void ExpandWildcards( int *argc, char ***argv ){
 	char    *path;
 
 	ex_argc = 0;
-	for ( i = 0 ; i < *argc ; i++ )
+	for ( i = 0; i < *argc; i++ )
 	{
 		path = ( *argv )[i];
 		if ( path[0] == '-'
-			 || ( !strstr( path, "*" ) && !strstr( path, "?" ) ) ) {
+		     || ( !strstr( path, "*" ) && !strstr( path, "?" ) ) ) {
 			ex_argv[ex_argc++] = path;
 			continue;
 		}
@@ -168,7 +168,7 @@ void SetQdirFromPath( const char *path ){
 	// search for "quake2" in path
 
 	len = strlen( BASEDIRNAME );
-	for ( c = path + strlen( path ) - 1 ; c != path ; c-- )
+	for ( c = path + strlen( path ) - 1; c != path; c-- )
 	{
 		int i;
 
@@ -490,7 +490,7 @@ int Q_stricmp( const char *s1, const char *s2 ){
     in = start;
     while (*in)
     {
-   *in = toupper(*in);
+ * in = toupper(*in);
         in++;
     }
     return start;
@@ -1066,7 +1066,7 @@ void    CreatePath( const char *path ){
 		path += 2;
 	}
 
-	for ( ofs = path + 1 ; *ofs ; ofs++ )
+	for ( ofs = path + 1; *ofs; ofs++ )
 	{
 		c = *ofs;
 		if ( c == '/' || c == '\\' ) { // create the directory

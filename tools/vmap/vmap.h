@@ -339,7 +339,7 @@
 #define MAX_WORLD_COORD         ( 65536 )
 #define WORLD_SIZE              ( MAX_WORLD_COORD - MIN_WORLD_COORD )
 
-#define LIGHTMAP_HDR			//calc+store lightmaps as linear floats instead of bytes. we can then write it out as a variety of different formats.
+#define LIGHTMAP_HDR                    //calc+store lightmaps as linear floats instead of bytes. we can then write it out as a variety of different formats.
 
 typedef void ( *bspFunc )( const char * );
 
@@ -461,8 +461,8 @@ typedef enum
 	MST_PATCH,
 	MST_TRIANGLE_SOUP,
 	MST_FLARE,
-	MST_FOLIAGE,			//new for wolf
-	MST_PATCHFIXED=256,		//new for FTE. patch with fixed tessellation (if values are 0 then uses the control points directly)
+	MST_FOLIAGE,                    //new for wolf
+	MST_PATCHFIXED=256,             //new for FTE. patch with fixed tessellation (if values are 0 then uses the control points directly)
 }
 bspSurfaceType_t;
 
@@ -920,7 +920,7 @@ fog_t;
 typedef struct
 {
 	vec3_t origin;
-	int cubesize;	//pixel size of the cubemap
+	int cubesize;   //pixel size of the cubemap
 } denvmap_t;
 
 typedef struct
@@ -1589,8 +1589,8 @@ int                         IterationsForCurve( float len, int subdivisions );
 mesh_t                      *SubdivideMesh2( mesh_t in, int iterations );
 mesh_t                      *SubdivideMeshQuads( mesh_t *in, float minLength, int maxsize, int *widthtable, int *heighttable );
 mesh_t                      *RemoveLinearMeshColumnsRows( mesh_t *in );
-void                        MakeMeshNormals( mesh_t in );
-void                        PutMeshOnCurve( mesh_t in );
+void MakeMeshNormals( mesh_t in );
+void PutMeshOnCurve( mesh_t in );
 
 void                        MakeNormalVectors( vec3_t forward, vec3_t right, vec3_t up );
 
@@ -2057,7 +2057,7 @@ Q_EXTERN int blockSize[ 3 ]                                 /* should be the sam
 #ifndef MAIN_C
 ;
 #else
-	= { 1024, 1024, 1024 };
+        = { 1024, 1024, 1024 };
 #endif
 
 Q_EXTERN char name[ 1024 ];
@@ -2426,7 +2426,7 @@ Q_EXTERN vec3_t gridSize
 #ifndef MAIN_C
 ;
 #else
-	= { 64, 64, 128 };
+        = { 64, 64, 128 };
 #endif
 
 
@@ -2515,12 +2515,12 @@ Q_EXTERN bspFog_t bspFogs[ MAX_MAP_FOGS ];
 #define AUTOEXPAND_BY_REALLOC( ptr, reqitem, allocated, def ) \
 	do \
 	{ \
-		if ( reqitem >= allocated )	\
+		if ( reqitem >= allocated )     \
 		{ \
-			if ( allocated == 0 ) {	\
+			if ( allocated == 0 ) { \
 				allocated = def; } \
-			while ( reqitem >= allocated && allocated )	\
-				allocated *= 2;	\
+			while ( reqitem >= allocated && allocated )     \
+			allocated *= 2; \
 			if ( !allocated || allocated > 2147483647 / (int)sizeof( *ptr ) ) \
 			{ \
 				Error( #ptr " over 2 GB" ); \
@@ -2532,7 +2532,7 @@ Q_EXTERN bspFog_t bspFogs[ MAX_MAP_FOGS ];
 	} \
 	while ( 0 )
 
-#define AUTOEXPAND_BY_REALLOC_BSP( suffix, def ) AUTOEXPAND_BY_REALLOC( bsp##suffix, numBSP##suffix, allocatedBSP##suffix, def )
+#define AUTOEXPAND_BY_REALLOC_BSP( suffix, def ) AUTOEXPAND_BY_REALLOC( bsp ## suffix, numBSP ## suffix, allocatedBSP ## suffix, def )
 
 #define Image_LinearFloatFromsRGBFloat( c ) ( ( ( c ) <= 0.04045f ) ? ( c ) * ( 1.0f / 12.92f ) : (float)pow( ( ( c ) + 0.055f ) * ( 1.0f / 1.055f ), 2.4f ) )
 #define Image_sRGBFloatFromLinearFloat( c ) ( ( ( c ) < 0.0031308f ) ? ( c ) * 12.92f : 1.055f * (float)pow( ( c ), 1.0f / 2.4f ) - 0.055f )

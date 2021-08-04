@@ -48,7 +48,7 @@ bool operator<( const SelectionIntersection& other ) const {
 }
 bool equalEpsilon( const SelectionIntersection& other, float distanceEpsilon, float depthEpsilon ) const {
 	return float_equal_epsilon( m_distance, other.m_distance, distanceEpsilon )
-		   && float_equal_epsilon( m_depth, other.m_depth, depthEpsilon );
+	       && float_equal_epsilon( m_depth, other.m_depth, depthEpsilon );
 }
 float depth() const {
 	return m_depth;
@@ -84,9 +84,11 @@ typedef const elem_type& reference;
 class iterator
 {
 public:
-iterator() {}
+iterator() {
+}
 iterator( byte_pointer vertices, std::size_t stride )
-	: m_iter( vertices ), m_stride( stride ) {}
+	: m_iter( vertices ), m_stride( stride ) {
+}
 
 bool operator==( const iterator& other ) const {
 	return m_iter == other.m_iter;
@@ -120,7 +122,8 @@ std::size_t m_stride;
 };
 
 VertexPointer( pointer vertices, std::size_t stride )
-	: m_vertices( reinterpret_cast<byte_pointer>( vertices ) ), m_stride( stride ) {}
+	: m_vertices( reinterpret_cast<byte_pointer>( vertices ) ), m_stride( stride ) {
+}
 
 iterator begin() const {
 	return iterator( m_vertices, m_stride );
@@ -144,7 +147,8 @@ typedef const index_type* pointer;
 class iterator
 {
 public:
-iterator( pointer iter ) : m_iter( iter ) {}
+iterator( pointer iter ) : m_iter( iter ) {
+}
 
 bool operator==( const iterator& other ) const {
 	return m_iter == other.m_iter;
@@ -176,7 +180,8 @@ pointer m_iter;
 };
 
 IndexPointer( pointer indices, std::size_t count )
-	: m_indices( indices ), m_finish( indices + count ) {}
+	: m_indices( indices ), m_finish( indices + count ) {
+}
 
 iterator begin() const {
 	return m_indices;
@@ -250,7 +255,7 @@ inline SelectionTestable* Instance_getSelectionTestable( scene::Instance& instan
 
 
 class Plane3;
-typedef Callback<void(const Plane3&)> PlaneCallback;
+typedef Callback<void (const Plane3&)> PlaneCallback;
 
 class SelectedPlanes
 {

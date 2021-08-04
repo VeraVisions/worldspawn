@@ -81,40 +81,40 @@ extern bool g_brush_always_caulk;
 //!\todo Rewrite.
 class ClipPoint {
 public:
-	Vector3 m_ptClip;        // the 3d point
-	bool m_bSet;
+Vector3 m_ptClip;                // the 3d point
+bool m_bSet;
 
-	ClipPoint()
-	{
-		Reset();
-	};
+ClipPoint()
+{
+	Reset();
+};
 
-	void Reset()
-	{
-		m_ptClip[0] = m_ptClip[1] = m_ptClip[2] = 0.0;
-		m_bSet = false;
-	}
+void Reset()
+{
+	m_ptClip[0] = m_ptClip[1] = m_ptClip[2] = 0.0;
+	m_bSet = false;
+}
 
-	bool Set()
-	{
-		return m_bSet;
-	}
+bool Set()
+{
+	return m_bSet;
+}
 
-	void Set(bool b)
-	{
-		m_bSet = b;
-	}
+void Set(bool b)
+{
+	m_bSet = b;
+}
 
-	operator Vector3 &()
-	{
-		return m_ptClip;
-	};
+operator Vector3 &()
+{
+	return m_ptClip;
+};
 
-	/*! Draw clip/path point with rasterized number label */
-	void Draw(int num, float scale);
+/*! Draw clip/path point with rasterized number label */
+void Draw(int num, float scale);
 
-	/*! Draw clip/path point with rasterized string label */
-	void Draw(const char *label, float scale);
+/*! Draw clip/path point with rasterized string label */
+void Draw(const char *label, float scale);
 };
 
 VIEWTYPE g_clip_viewtype;
@@ -164,7 +164,7 @@ inline double ClipPoint_Intersect(const ClipPoint &clip, const Vector3 &point, V
 	int nDim1 = (viewtype == YZ) ? 1 : 0;
 	int nDim2 = (viewtype == XY) ? 1 : 2;
 	double screenDistanceSquared(vector2_length_squared(Vector2(fDiff(clip.m_ptClip[nDim1], point[nDim1]) * scale,
-									fDiff(clip.m_ptClip[nDim2], point[nDim2]) * scale)));
+	                                                            fDiff(clip.m_ptClip[nDim2], point[nDim2]) * scale)));
 	if (screenDistanceSquared < 8 * 8) {
 		return screenDistanceSquared;
 	}
@@ -273,7 +273,7 @@ void Clip()
 		AABB bounds(Vector3(0, 0, 0), Vector3(64, 64, 64));
 		PlanePointsFromClipPoints(planepts, bounds, g_clip_viewtype);
 		Scene_BrushSplitByPlane(GlobalSceneGraph(), planepts[0], planepts[1], planepts[2], Clip_getShader(),
-					(!g_bSwitch) ? eFront : eBack);
+		                        (!g_bSwitch) ? eFront : eBack);
 		g_Clip1.Reset();
 		g_Clip2.Reset();
 		g_Clip3.Reset();
@@ -289,7 +289,7 @@ void SplitClip()
 		AABB bounds(Vector3(0, 0, 0), Vector3(64, 64, 64));
 		PlanePointsFromClipPoints(planepts, bounds, g_clip_viewtype);
 		Scene_BrushSplitByPlane(GlobalSceneGraph(), planepts[0], planepts[1], planepts[2], Clip_getShader(),
-					eFrontAndBack);
+		                        eFrontAndBack);
 		g_Clip1.Reset();
 		g_Clip2.Reset();
 		g_Clip3.Reset();
@@ -465,13 +465,13 @@ inline unsigned int buttons_for_event_button(GdkEventButton *event)
 	unsigned int flags = 0;
 
 	switch (event->button) {
-		case 1:
+	case 1:
 		flags |= RAD_LBUTTON;
 		break;
-		case 2:
+	case 2:
 		flags |= RAD_MBUTTON;
 		break;
-		case 3:
+	case 3:
 		flags |= RAD_RBUTTON;
 		break;
 	}
@@ -580,7 +580,7 @@ ui::Menu XYWnd::m_mnuDropMultiple(ui::null);
 // this is disabled, and broken
 // http://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=394
 #if 0
-                                                                                                                        void WXY_Print(){
+void WXY_Print(){
 	long width, height;
 	width = g_pParentWnd->ActiveXY()->Width();
 	height = g_pParentWnd->ActiveXY()->Height();
@@ -756,7 +756,7 @@ gboolean xywnd_button_press(ui::Widget widget, GdkEventButton *event, XYWnd *xyw
 		xywnd->ButtonState_onMouseDown(buttons_for_event_button(event));
 
 		xywnd->onMouseDown(WindowVector(event->x, event->y), button_for_button(event->button),
-				modifiers_for_state(event->state));
+		                   modifiers_for_state(event->state));
 	}
 	return FALSE;
 }
@@ -775,7 +775,7 @@ gboolean xywnd_focus_in(ui::Widget widget, GdkEventFocus *event, XYWnd *xywnd)
 {
 	if (event->type == GDK_FOCUS_CHANGE) {
 		if (event->in) {
-		g_pParentWnd->SetActiveXY(xywnd);
+			g_pParentWnd->SetActiveXY(xywnd);
 		}
 	}
 	return FALSE;
@@ -787,7 +787,7 @@ void xywnd_motion(gdouble x, gdouble y, guint state, void *data)
 		return;
 	}
 	reinterpret_cast<XYWnd *>( data )->XY_MouseMoved(static_cast<int>( x ), static_cast<int>( y ),
-							buttons_for_state(state));
+	                                                 buttons_for_state(state));
 }
 
 gboolean xywnd_wheel_scroll(ui::Widget widget, GdkEventScroll *event, XYWnd *xywnd)
@@ -879,8 +879,8 @@ XYWnd::XYWnd() :
 	g_object_ref(m_gl_widget._handle);
 
 	gtk_widget_set_events(m_gl_widget,
-				GDK_DESTROY | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-				GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
+	                      GDK_DESTROY | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
+	                      GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
 	gtk_widget_set_can_focus(m_gl_widget, true);
 
 	m_sizeHandler = m_gl_widget.connect("size_allocate", G_CALLBACK(xywnd_size_allocate), this);
@@ -1133,8 +1133,8 @@ void XYWnd::NewBrushDrag(int x, int y)
 	// d1223m
 	//Scene_BrushResize_Selected(GlobalSceneGraph(), aabb_for_minmax(mins, maxs), TextureBrowser_GetSelectedShader(GlobalTextureBrowser()));
 	Scene_BrushResize_Selected(GlobalSceneGraph(), aabb_for_minmax(mins, maxs),
-				g_brush_always_caulk ?
-				"textures/common/caulk" : TextureBrowser_GetSelectedShader(GlobalTextureBrowser()));
+	                           g_brush_always_caulk ?
+	                           "textures/common/caulk" : TextureBrowser_GetSelectedShader(GlobalTextureBrowser()));
 }
 
 void entitycreate_activated(ui::Widget item)
@@ -1146,10 +1146,10 @@ void entitycreate_activated(ui::Widget item)
 		g_pParentWnd->ActiveXY()->OnEntityCreate(entity_name);
 	} else {
 		GlobalRadiant().m_pfnMessageBox(MainFrame_getWindow(), "There's already a worldspawn in your map!"
-							"",
-						"Info",
-						eMB_OK,
-						eMB_ICONDEFAULT);
+		                                "",
+		                                "Info",
+		                                eMB_OK,
+		                                eMB_ICONDEFAULT);
 	}
 }
 
@@ -1162,75 +1162,75 @@ void EntityClassMenu_addItem(ui::Menu menu, const char *name)
 }
 
 class EntityClassMenuInserter : public EntityClassVisitor {
-	typedef std::pair<ui::Menu, CopiedString> MenuPair;
-	typedef std::vector<MenuPair> MenuStack;
-	MenuStack m_stack;
-	CopiedString m_previous;
+typedef std::pair<ui::Menu, CopiedString> MenuPair;
+typedef std::vector<MenuPair> MenuStack;
+MenuStack m_stack;
+CopiedString m_previous;
 public:
-	EntityClassMenuInserter(ui::Menu menu)
-	{
-		m_stack.reserve(2);
-		m_stack.push_back(MenuPair(menu, ""));
+EntityClassMenuInserter(ui::Menu menu)
+{
+	m_stack.reserve(2);
+	m_stack.push_back(MenuPair(menu, ""));
+}
+
+~EntityClassMenuInserter()
+{
+	if (!string_empty(m_previous.c_str())) {
+		addItem(m_previous.c_str(), "");
 	}
+}
 
-	~EntityClassMenuInserter()
-	{
-		if (!string_empty(m_previous.c_str())) {
-			addItem(m_previous.c_str(), "");
-		}
+void visit(EntityClass *e)
+{
+	ASSERT_MESSAGE(!string_empty(e->name()), "entity-class has no name");
+	if (!string_empty(m_previous.c_str())) {
+		addItem(m_previous.c_str(), e->name());
 	}
+	m_previous = e->name();
+}
 
-	void visit(EntityClass *e)
-	{
-		ASSERT_MESSAGE(!string_empty(e->name()), "entity-class has no name");
-		if (!string_empty(m_previous.c_str())) {
-			addItem(m_previous.c_str(), e->name());
-		}
-		m_previous = e->name();
-	}
+void pushMenu(const CopiedString &name)
+{
+	auto item = ui::MenuItem(name.c_str());
+	item.show();
+	m_stack.back().first.add(item);
 
-	void pushMenu(const CopiedString &name)
-	{
-		auto item = ui::MenuItem(name.c_str());
-		item.show();
-		m_stack.back().first.add(item);
+	auto submenu = ui::Menu(ui::New);
+	gtk_menu_item_set_submenu(item, submenu);
 
-		auto submenu = ui::Menu(ui::New);
-		gtk_menu_item_set_submenu(item, submenu);
+	m_stack.push_back(MenuPair(submenu, name));
+}
 
-		m_stack.push_back(MenuPair(submenu, name));
-	}
+void popMenu()
+{
+	m_stack.pop_back();
+}
 
-	void popMenu()
-	{
-		m_stack.pop_back();
-	}
+void addItem(const char *name, const char *next)
+{
+	const char *underscore = strchr(name, '_');
 
-	void addItem(const char *name, const char *next)
-	{
-		const char *underscore = strchr(name, '_');
+	if (underscore != 0 && underscore != name) {
+		bool nextEqual = string_equal_n(name, next, (underscore + 1) - name);
+		const char *parent = m_stack.back().second.c_str();
 
-		if (underscore != 0 && underscore != name) {
-			bool nextEqual = string_equal_n(name, next, (underscore + 1) - name);
-			const char *parent = m_stack.back().second.c_str();
-
-			if (!string_empty(parent)
-				&& string_length(parent) == std::size_t(underscore - name)
-				&& string_equal_n(name, parent, underscore - name)) { // this is a child
-			} else if (nextEqual) {
-				if (m_stack.size() == 2) {
-					popMenu();
-				}
-				pushMenu(CopiedString(StringRange(name, underscore)));
-			} else if (m_stack.size() == 2) {
+		if (!string_empty(parent)
+		    && string_length(parent) == std::size_t(underscore - name)
+		    && string_equal_n(name, parent, underscore - name)) {             // this is a child
+		} else if (nextEqual) {
+			if (m_stack.size() == 2) {
 				popMenu();
 			}
+			pushMenu(CopiedString(StringRange(name, underscore)));
 		} else if (m_stack.size() == 2) {
 			popMenu();
 		}
-
-		EntityClassMenu_addItem(m_stack.back().first, name);
+	} else if (m_stack.size() == 2) {
+		popMenu();
 	}
+
+	EntityClassMenu_addItem(m_stack.back().first, name);
+}
 };
 
 void XYWnd::OnContextMenu()
@@ -1240,7 +1240,7 @@ void XYWnd::OnContextMenu()
 	}
 
 	/* first time, init */
-	if (!m_mnuDrop) { 
+	if (!m_mnuDrop) {
 		auto menu1 = m_mnuDrop = ui::Menu(ui::New);
 		EntityClassMenuInserter inserter(menu1);
 		GlobalEntityClassManager().forEachPoint(inserter);
@@ -1333,13 +1333,13 @@ void XYWnd_zoomDelta(int x, int y, unsigned int state, void *data)
 		g_dragZoom += y;
 
 		while (abs(g_dragZoom) > 8) {
-		if (g_dragZoom > 0) {
-			XYWnd_ZoomOut(reinterpret_cast<XYWnd *>( data ));
-			g_dragZoom -= 8;
-		} else {
-			XYWnd_ZoomIn(reinterpret_cast<XYWnd *>( data ));
-			g_dragZoom += 8;
-		}
+			if (g_dragZoom > 0) {
+				XYWnd_ZoomOut(reinterpret_cast<XYWnd *>( data ));
+				g_dragZoom -= 8;
+			} else {
+				XYWnd_ZoomIn(reinterpret_cast<XYWnd *>( data ));
+				g_dragZoom += 8;
+			}
 		}
 	}
 }
@@ -1401,7 +1401,7 @@ inline WindowVector WindowVector_forInteger(int x, int y)
 void XYWnd::mouseDown(const WindowVector &position, ButtonIdentifier button, ModifierFlags modifiers)
 {
 	XY_MouseDown(static_cast<int>( position.x()), static_cast<int>( position.y()),
-			buttons_for_button_and_modifiers(button, modifiers));
+	             buttons_for_button_and_modifiers(button, modifiers));
 }
 
 void CamWnd_DisableMovement();
@@ -1418,16 +1418,16 @@ void XYWnd::XY_MouseDown(int x, int y, unsigned int buttons)
 	} else if (buttons == NewBrushDrag_buttons() && GlobalSelectionSystem().countSelected() == 0) {
 		NewBrushDrag_Begin(x, y);
 	}
-		// control mbutton = move camera
+	// control mbutton = move camera
 	else if (buttons == MoveCamera_buttons()) {
 		XYWnd_PositionCamera(this, x, y, *g_pParentWnd->GetCamWnd());
 	}
-		// mbutton = angle camera
+	// mbutton = angle camera
 	else if (buttons == OrientCamera_buttons()) {
 		XYWnd_OrientCamera(this, x, y, *g_pParentWnd->GetCamWnd());
 	} else {
 		m_window_observer->onMouseDown(WindowVector_forInteger(x, y), button_for_flags(buttons),
-					modifiers_for_flags(buttons));
+		                               modifiers_for_flags(buttons));
 	}
 	CamWnd_DisableMovement();
 }
@@ -1446,7 +1446,7 @@ void XYWnd::XY_MouseUp(int x, int y, unsigned int buttons)
 		NewBrushDrag_End(x, y);
 	} else {
 		m_window_observer->onMouseUp(WindowVector_forInteger(x, y), button_for_flags(buttons),
-					modifiers_for_flags(buttons));
+		                             modifiers_for_flags(buttons));
 	}
 }
 
@@ -1455,22 +1455,22 @@ void XYWnd::XY_MouseMoved(int x, int y, unsigned int buttons)
 	// rbutton = drag xy origin
 	if (m_move_started) {
 	}
-		// zoom in/out
+	// zoom in/out
 	else if (m_zoom_started) {
 	} else if (ClipMode() && g_pMovingClip != 0) {
 		Clipper_OnMouseMoved(x, y);
 	}
-		// lbutton without selection = drag new brush
+	// lbutton without selection = drag new brush
 	else if (m_bNewBrushDrag) {
 		NewBrushDrag(x, y);
 	}
 
-		// control mbutton = move camera
+	// control mbutton = move camera
 	else if (getButtonState() == MoveCamera_buttons()) {
 		XYWnd_PositionCamera(this, x, y, *g_pParentWnd->GetCamWnd());
 	}
 
-		// mbutton = angle camera
+	// mbutton = angle camera
 	else if (getButtonState() == OrientCamera_buttons()) {
 		XYWnd_OrientCamera(this, x, y, *g_pParentWnd->GetCamWnd());
 	} else {
@@ -1482,12 +1482,12 @@ void XYWnd::XY_MouseMoved(int x, int y, unsigned int buttons)
 
 		StringOutputStream status(64);
 		status << "x:: " << FloatFormat(m_mousePosition[0], 6, 1)
-		<< "  y:: " << FloatFormat(m_mousePosition[1], 6, 1)
-		<< "  z:: " << FloatFormat(m_mousePosition[2], 6, 1);
+		       << "  y:: " << FloatFormat(m_mousePosition[1], 6, 1)
+		       << "  z:: " << FloatFormat(m_mousePosition[2], 6, 1);
 		g_pParentWnd->SetStatusText(g_pParentWnd->m_position_status, status.c_str());
 
 		if (g_bCrossHairs) {
-		XYWnd_Update(*this);
+			XYWnd_Update(*this);
 		}
 
 		Clipper_Crosshair_OnMouseMoved(x, y);
@@ -1577,21 +1577,21 @@ void XYWnd::XY_LoadBackgroundImage(const char *name)
 	}
 	g_pParentWnd->ActiveXY()->m_tex = (qtexture_t *) malloc(sizeof(qtexture_t));
 	LoadTextureRGBA(g_pParentWnd->ActiveXY()->XYWnd::m_tex, image->getRGBAPixels(), image->getWidth(),
-			image->getHeight());
+	                image->getHeight());
 	globalOutputStream() << "Loaded background texture " << relative << "\n";
 	g_pParentWnd->ActiveXY()->m_backgroundActivated = true;
 
 	int m_ix, m_iy;
 	switch (g_pParentWnd->ActiveXY()->m_viewType) {
-		case XY:
+	case XY:
 		m_ix = 0;
 		m_iy = 1;
 		break;
-		case XZ:
+	case XZ:
 		m_ix = 0;
 		m_iy = 2;
 		break;
-		case YZ:
+	case YZ:
 		m_ix = 1;
 		m_iy = 2;
 		break;
@@ -1619,7 +1619,7 @@ void WXY_BackgroundSelect(void)
 	bool brushesSelected = Scene_countSelectedBrushes(GlobalSceneGraph()) != 0;
 	if (!brushesSelected) {
 		ui::alert(ui::root, "You have to select some brushes to get the bounding box for.\n",
-			"No selection", ui::alert_type::OK, ui::alert_icon::Error);
+		          "No selection", ui::alert_type::OK, ui::alert_icon::Error);
 		return;
 	}
 
@@ -1743,7 +1743,7 @@ void XYWnd::XY_DrawGrid(void)
 	}
 	int power = minor_power;
 	while ((power % 3) != 0 ||
-		(step * m_fScale) <= 32.0f) { // make sure major grid spacing is at least 32 pixels on the screen
+	       (step * m_fScale) <= 32.0f) {  // make sure major grid spacing is at least 32 pixels on the screen
 		++power;
 		step = float(two_to_the_power(power));
 	}
@@ -1795,55 +1795,55 @@ void XYWnd::XY_DrawGrid(void)
 
 	#define COLORS_DIFFER(a, b) \
 	( ( a )[0] != ( b )[0] || \
-	( a )[1] != ( b )[1] || \
-	( a )[2] != ( b )[2] )
+	  ( a )[1] != ( b )[1] || \
+	  ( a )[2] != ( b )[2] )
 
 	// djbob
 	// draw minor blocks
 	if (g_xywindow_globals_private.d_showgrid || a < 1.0f) {
 		if (a < 1.0f) {
-		glEnable(GL_BLEND);
+			glEnable(GL_BLEND);
 		}
 
 		if (COLORS_DIFFER(g_xywindow_globals.color_gridminor, g_xywindow_globals.color_gridback)) {
-		glColor4fv(vector4_to_array(Vector4(g_xywindow_globals.color_gridminor, a)));
+			glColor4fv(vector4_to_array(Vector4(g_xywindow_globals.color_gridminor, a)));
 
-		glBegin(GL_LINES);
-		int i = 0;
-		for (x = xb; x < xe; x += minor_step, ++i) {
-			if ((i & mask) != 0) {
-			glVertex2f(x, yb);
-			glVertex2f(x, ye);
+			glBegin(GL_LINES);
+			int i = 0;
+			for (x = xb; x < xe; x += minor_step, ++i) {
+				if ((i & mask) != 0) {
+					glVertex2f(x, yb);
+					glVertex2f(x, ye);
+				}
 			}
-		}
-		i = 0;
-		for (y = yb; y < ye; y += minor_step, ++i) {
-			if ((i & mask) != 0) {
-			glVertex2f(xb, y);
-			glVertex2f(xe, y);
+			i = 0;
+			for (y = yb; y < ye; y += minor_step, ++i) {
+				if ((i & mask) != 0) {
+					glVertex2f(xb, y);
+					glVertex2f(xe, y);
+				}
 			}
-		}
-		glEnd();
+			glEnd();
 		}
 
 		// draw major blocks
 		if (COLORS_DIFFER(g_xywindow_globals.color_gridmajor, g_xywindow_globals.color_gridminor)) {
-		glColor4fv(vector4_to_array(Vector4(g_xywindow_globals.color_gridmajor, a)));
+			glColor4fv(vector4_to_array(Vector4(g_xywindow_globals.color_gridmajor, a)));
 
-		glBegin(GL_LINES);
-		for (x = xb; x <= xe; x += step) {
-			glVertex2f(x, yb);
-			glVertex2f(x, ye);
-		}
-		for (y = yb; y <= ye; y += step) {
-			glVertex2f(xb, y);
-			glVertex2f(xe, y);
-		}
-		glEnd();
+			glBegin(GL_LINES);
+			for (x = xb; x <= xe; x += step) {
+				glVertex2f(x, yb);
+				glVertex2f(x, ye);
+			}
+			for (y = yb; y <= ye; y += step) {
+				glVertex2f(xb, y);
+				glVertex2f(xe, y);
+			}
+			glEnd();
 		}
 
 		if (a < 1.0f) {
-		glDisable(GL_BLEND);
+			glDisable(GL_BLEND);
 		}
 	}
 
@@ -1853,25 +1853,25 @@ void XYWnd::XY_DrawGrid(void)
 		float offx = m_vOrigin[nDim2] + h - (4 + GlobalOpenGL().m_font->getPixelAscent()) / m_fScale;
 		float offy = m_vOrigin[nDim1] - w + 4 / m_fScale;
 		for (x = xb - fmod(xb, stepx); x <= xe; x += stepx) {
-		glRasterPos2f(x, offx);
-		sprintf(text, "%g", x);
-		GlobalOpenGL().drawString(text);
+			glRasterPos2f(x, offx);
+			sprintf(text, "%g", x);
+			GlobalOpenGL().drawString(text);
 		}
 		for (y = yb - fmod(yb, stepy); y <= ye; y += stepy) {
-		glRasterPos2f(offy, y);
-		sprintf(text, "%g", y);
-		GlobalOpenGL().drawString(text);
+			glRasterPos2f(offy, y);
+			sprintf(text, "%g", y);
+			GlobalOpenGL().drawString(text);
 		}
 
 		if (Active()) {
-		glColor3fv(vector3_to_array(g_xywindow_globals.color_viewname));
+			glColor3fv(vector3_to_array(g_xywindow_globals.color_viewname));
 		}
 
 		// we do this part (the old way) only if show_axis is disabled
 		if (!g_xywindow_globals_private.show_axis) {
-		glRasterPos2f(m_vOrigin[nDim1] - w + 35 / m_fScale, m_vOrigin[nDim2] + h - 20 / m_fScale);
+			glRasterPos2f(m_vOrigin[nDim1] - w + 35 / m_fScale, m_vOrigin[nDim2] + h - 20 / m_fScale);
 
-		GlobalOpenGL().drawString(ViewType_getTitle(m_viewType));
+			GlobalOpenGL().drawString(ViewType_getTitle(m_viewType));
 		}
 	}
 
@@ -1910,7 +1910,7 @@ void XYWnd::XY_DrawBlockGrid()
 	}
 
 	if (!g_xywindow_globals_private.blockSize || g_xywindow_globals_private.blockSize > 65536 ||
-		g_xywindow_globals_private.blockSize < 1024) {
+	    g_xywindow_globals_private.blockSize < 1024) {
 		// don't use custom blocksize if it is less than the default, or greater than the maximum world coordinate
 		g_xywindow_globals_private.blockSize = 1024;
 	}
@@ -1968,8 +1968,8 @@ void XYWnd::XY_DrawBlockGrid()
 
 	if (m_viewType == XY) {
 		for (y = yb; y <= ye; y += g_xywindow_globals_private.blockSize) {
-		glVertex2f(xb, y);
-		glVertex2f(xe, y);
+			glVertex2f(xb, y);
+			glVertex2f(xe, y);
 		}
 	}
 
@@ -1980,13 +1980,13 @@ void XYWnd::XY_DrawBlockGrid()
 
 	if (m_viewType == XY && m_fScale > .1) {
 		for (x = xb; x < xe; x += g_xywindow_globals_private.blockSize) {
-		for (y = yb; y < ye; y += g_xywindow_globals_private.blockSize) {
-			glRasterPos2f(x + (g_xywindow_globals_private.blockSize / 2),
-				y + (g_xywindow_globals_private.blockSize / 2));
-			sprintf(text, "%i,%i", (int) floor(x / g_xywindow_globals_private.blockSize),
-				(int) floor(y / g_xywindow_globals_private.blockSize));
-			GlobalOpenGL().drawString(text);
-		}
+			for (y = yb; y < ye; y += g_xywindow_globals_private.blockSize) {
+				glRasterPos2f(x + (g_xywindow_globals_private.blockSize / 2),
+				              y + (g_xywindow_globals_private.blockSize / 2));
+				sprintf(text, "%i,%i", (int) floor(x / g_xywindow_globals_private.blockSize),
+				        (int) floor(y / g_xywindow_globals_private.blockSize));
+				GlobalOpenGL().drawString(text);
+			}
 		}
 	}
 
@@ -2054,14 +2054,14 @@ void XYWnd::PaintSizeInfo(int nDim1, int nDim2, Vector3 &vMinBounds, Vector3 &vM
 	const char *g_pDimStrings[] = {"x:", "y:", "z:"};
 	typedef const char *OrgStrings[2];
 	const OrgStrings g_pOrgStrings[] = {{"x:", "y:",},
-						{"x:", "z:",},
-						{"y:", "z:",}};
+		{"x:", "z:",},
+		{"y:", "z:",}};
 
 	Vector3 vSize(vector3_subtracted(vMaxBounds, vMinBounds));
 
 	glColor3f(g_xywindow_globals.color_selbrushes[0] * .65f,
-		g_xywindow_globals.color_selbrushes[1] * .65f,
-		g_xywindow_globals.color_selbrushes[2] * .65f);
+	          g_xywindow_globals.color_selbrushes[1] * .65f,
+	          g_xywindow_globals.color_selbrushes[2] * .65f);
 
 	StringOutputStream dimensions(16);
 
@@ -2093,7 +2093,7 @@ void XYWnd::PaintSizeInfo(int nDim1, int nDim2, Vector3 &vMinBounds, Vector3 &vM
 
 		glRasterPos3f(vMinBounds[nDim1] + 4, vMaxBounds[nDim2] + 8 / m_fScale, 0.0f);
 		dimensions << "(" << g_pOrgStrings[0][0] << vMinBounds[nDim1] << "  " << g_pOrgStrings[0][1]
-			<< vMaxBounds[nDim2] << ")";
+		           << vMaxBounds[nDim2] << ")";
 		GlobalOpenGL().drawString(dimensions.c_str());
 	} else if (m_viewType == XZ) {
 		glBegin(GL_LINES);
@@ -2123,7 +2123,7 @@ void XYWnd::PaintSizeInfo(int nDim1, int nDim2, Vector3 &vMinBounds, Vector3 &vM
 
 		glRasterPos3f(vMinBounds[nDim1] + 4, 0, vMaxBounds[nDim2] + 8 / m_fScale);
 		dimensions << "(" << g_pOrgStrings[1][0] << vMinBounds[nDim1] << "  " << g_pOrgStrings[1][1]
-			<< vMaxBounds[nDim2] << ")";
+		           << vMaxBounds[nDim2] << ")";
 		GlobalOpenGL().drawString(dimensions.c_str());
 	} else {
 		glBegin(GL_LINES);
@@ -2153,81 +2153,81 @@ void XYWnd::PaintSizeInfo(int nDim1, int nDim2, Vector3 &vMinBounds, Vector3 &vM
 
 		glRasterPos3f(0, vMinBounds[nDim1] + 4.0f, vMaxBounds[nDim2] + 8 / m_fScale);
 		dimensions << "(" << g_pOrgStrings[2][0] << vMinBounds[nDim1] << "  " << g_pOrgStrings[2][1]
-			<< vMaxBounds[nDim2] << ")";
+		           << vMaxBounds[nDim2] << ")";
 		GlobalOpenGL().drawString(dimensions.c_str());
 	}
 }
 
 class XYRenderer : public Renderer {
-	struct state_type {
-		state_type() :
-			m_highlight(0),
-			m_state(0)
-		{
-		}
+struct state_type {
+	state_type() :
+		m_highlight(0),
+		m_state(0)
+	{
+	}
 
-		unsigned int m_highlight;
-		Shader *m_state;
-	};
+	unsigned int m_highlight;
+	Shader *m_state;
+};
 
 public:
-	XYRenderer(RenderStateFlags globalstate, Shader *selected) :
-		m_globalstate(globalstate),
-		m_state_selected(selected)
-	{
-		ASSERT_NOTNULL(selected);
-		m_state_stack.push_back(state_type());
-	}
+XYRenderer(RenderStateFlags globalstate, Shader *selected) :
+	m_globalstate(globalstate),
+	m_state_selected(selected)
+{
+	ASSERT_NOTNULL(selected);
+	m_state_stack.push_back(state_type());
+}
 
-	void SetState(Shader *state, EStyle style)
-	{
-		ASSERT_NOTNULL(state);
-		if (style == eWireframeOnly) {
+void SetState(Shader *state, EStyle style)
+{
+	ASSERT_NOTNULL(state);
+	if (style == eWireframeOnly) {
 		m_state_stack.back().m_state = state;
-		}
 	}
+}
 
-	EStyle getStyle() const
-	{
-		return eWireframeOnly;
-	}
+EStyle getStyle() const
+{
+	return eWireframeOnly;
+}
 
-	void PushState()
-	{
-		m_state_stack.push_back(m_state_stack.back());
-	}
+void PushState()
+{
+	m_state_stack.push_back(m_state_stack.back());
+}
 
-	void PopState()
-	{
-		ASSERT_MESSAGE(!m_state_stack.empty(), "popping empty stack");
-		m_state_stack.pop_back();
-	}
+void PopState()
+{
+	ASSERT_MESSAGE(!m_state_stack.empty(), "popping empty stack");
+	m_state_stack.pop_back();
+}
 
-	void Highlight(EHighlightMode mode, bool bEnable = true)
-	{
-		(bEnable)
-		? m_state_stack.back().m_highlight |= mode
-		: m_state_stack.back().m_highlight &= ~mode;
-	}
+void Highlight(EHighlightMode mode, bool bEnable = true)
+{
+	(bEnable)
+	        ? m_state_stack.back().m_highlight |= mode
+	        : m_state_stack.back().m_highlight &= ~mode;
+}
 
-	void addRenderable(const OpenGLRenderable &renderable, const Matrix4 &localToWorld)
-	{
-		if (m_state_stack.back().m_highlight & ePrimitive) {
+void addRenderable(const OpenGLRenderable &renderable, const Matrix4 &localToWorld)
+{
+	if (m_state_stack.back().m_highlight & ePrimitive) {
 		m_state_selected->addRenderable(renderable, localToWorld);
-		} else {
+	} else {
 		m_state_stack.back().m_state->addRenderable(renderable, localToWorld);
-		}
 	}
+}
 
-	void render(const Matrix4 &modelview, const Matrix4 &projection)
-	{
-		GlobalShaderCache().render(m_globalstate, modelview, projection);
-	}
+void render(const Matrix4 &modelview, const Matrix4 &projection)
+{
+	GlobalShaderCache().render(m_globalstate, modelview, projection);
+}
 
 private:
-	std::vector<state_type> m_state_stack;
-	RenderStateFlags m_globalstate;
-	Shader *m_state_selected;
+std::vector<state_type> m_state_stack;
+RenderStateFlags m_globalstate;
+Shader *m_state_selected;
 };
 
 void XYWnd::updateProjection()
@@ -2241,16 +2241,16 @@ void XYWnd::updateProjection()
 	m_projection[14] = -1.0f;
 
 	m_projection[1] =
-	m_projection[2] =
-	m_projection[3] =
+		m_projection[2] =
+			m_projection[3] =
 
-	m_projection[4] =
-	m_projection[6] =
-	m_projection[7] =
+				m_projection[4] =
+					m_projection[6] =
+						m_projection[7] =
 
-	m_projection[8] =
-	m_projection[9] =
-	m_projection[11] = 0.0f;
+							m_projection[8] =
+								m_projection[9] =
+									m_projection[11] = 0.0f;
 
 	m_projection[15] = 1.0f;
 
@@ -2270,7 +2270,7 @@ void XYWnd::updateModelview()
 
 	// axis base
 	switch (m_viewType) {
-		case XY:
+	case XY:
 		m_modelview[0] = m_fScale;
 		m_modelview[1] = 0;
 		m_modelview[2] = 0;
@@ -2283,7 +2283,7 @@ void XYWnd::updateModelview()
 		m_modelview[9] = 0;
 		m_modelview[10] = -m_fScale;
 		break;
-		case XZ:
+	case XZ:
 		m_modelview[0] = m_fScale;
 		m_modelview[1] = 0;
 		m_modelview[2] = 0;
@@ -2296,7 +2296,7 @@ void XYWnd::updateModelview()
 		m_modelview[9] = m_fScale;
 		m_modelview[10] = 0;
 		break;
-		case YZ:
+	case YZ:
 		m_modelview[0] = 0;
 		m_modelview[1] = 0;
 		m_modelview[2] = -m_fScale;
@@ -2332,8 +2332,8 @@ void XYWnd::XY_Draw()
 	//
 	glViewport(0, 0, m_nWidth, m_nHeight);
 	glClearColor(g_xywindow_globals.color_gridback[0],
-			g_xywindow_globals.color_gridback[1],
-			g_xywindow_globals.color_gridback[2], 0);
+	             g_xywindow_globals.color_gridback[1],
+	             g_xywindow_globals.color_gridback[2], 0);
 
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -2684,21 +2684,21 @@ void XZ_Front_Shown_Construct(ui::Window parent)
 
 
 class EntityClassMenu : public ModuleObserver {
-    std::size_t m_unrealised;
+std::size_t m_unrealised;
 public:
-	EntityClassMenu() : m_unrealised(1)
-	{
-	}
+EntityClassMenu() : m_unrealised(1)
+{
+}
 
-	void realise()
-	{
-		if (--m_unrealised == 0) {
-		}
+void realise()
+{
+	if (--m_unrealised == 0) {
 	}
+}
 
-	void unrealise()
-	{
-		if (++m_unrealised == 1) {
+void unrealise()
+{
+	if (++m_unrealised == 1) {
 		if (XYWnd::m_mnuDrop) {
 			XYWnd::m_mnuDrop.destroy();
 			XYWnd::m_mnuDrop = ui::Menu(ui::null);
@@ -2711,8 +2711,8 @@ public:
 			XYWnd::m_mnuDropMultiple.destroy();
 			XYWnd::m_mnuDropMultiple = ui::Menu(ui::null);
 		}
-		}
 	}
+}
 };
 
 EntityClassMenu g_EntityClassMenu;
@@ -2724,14 +2724,14 @@ void ShowNamesToggle()
 	XY_UpdateAllWindows();
 }
 
-typedef FreeCaller<void(), ShowNamesToggle> ShowNamesToggleCaller;
+typedef FreeCaller<void (), ShowNamesToggle> ShowNamesToggleCaller;
 
 void ShowNamesExport(const Callback<void(bool)> &importer)
 {
 	importer(GlobalEntityCreator().getShowNames());
 }
 
-typedef FreeCaller<void(const Callback<void(bool)> &), ShowNamesExport> ShowNamesExportCaller;
+typedef FreeCaller<void (const Callback<void (bool)> &), ShowNamesExport> ShowNamesExportCaller;
 
 void ShowAnglesToggle()
 {
@@ -2739,14 +2739,14 @@ void ShowAnglesToggle()
 	XY_UpdateAllWindows();
 }
 
-typedef FreeCaller<void(), ShowAnglesToggle> ShowAnglesToggleCaller;
+typedef FreeCaller<void (), ShowAnglesToggle> ShowAnglesToggleCaller;
 
 void ShowAnglesExport(const Callback<void(bool)> &importer)
 {
 	importer(GlobalEntityCreator().getShowAngles());
 }
 
-typedef FreeCaller<void(const Callback<void(bool)> &), ShowAnglesExport> ShowAnglesExportCaller;
+typedef FreeCaller<void (const Callback<void (bool)> &), ShowAnglesExport> ShowAnglesExportCaller;
 
 void ShowBlocksToggle()
 {
@@ -2754,14 +2754,14 @@ void ShowBlocksToggle()
 	XY_UpdateAllWindows();
 }
 
-typedef FreeCaller<void(), ShowBlocksToggle> ShowBlocksToggleCaller;
+typedef FreeCaller<void (), ShowBlocksToggle> ShowBlocksToggleCaller;
 
 void ShowBlocksExport(const Callback<void(bool)> &importer)
 {
 	importer(g_xywindow_globals_private.show_blocks);
 }
 
-typedef FreeCaller<void(const Callback<void(bool)> &), ShowBlocksExport> ShowBlocksExportCaller;
+typedef FreeCaller<void (const Callback<void (bool)> &), ShowBlocksExport> ShowBlocksExportCaller;
 
 void ShowCoordinatesToggle()
 {
@@ -2769,14 +2769,14 @@ void ShowCoordinatesToggle()
 	XY_UpdateAllWindows();
 }
 
-typedef FreeCaller<void(), ShowCoordinatesToggle> ShowCoordinatesToggleCaller;
+typedef FreeCaller<void (), ShowCoordinatesToggle> ShowCoordinatesToggleCaller;
 
 void ShowCoordinatesExport(const Callback<void(bool)> &importer)
 {
 	importer(g_xywindow_globals_private.show_coordinates);
 }
 
-typedef FreeCaller<void(const Callback<void(bool)> &), ShowCoordinatesExport> ShowCoordinatesExportCaller;
+typedef FreeCaller<void (const Callback<void (bool)> &), ShowCoordinatesExport> ShowCoordinatesExportCaller;
 
 void ShowOutlineToggle()
 {
@@ -2784,14 +2784,14 @@ void ShowOutlineToggle()
 	XY_UpdateAllWindows();
 }
 
-typedef FreeCaller<void(), ShowOutlineToggle> ShowOutlineToggleCaller;
+typedef FreeCaller<void (), ShowOutlineToggle> ShowOutlineToggleCaller;
 
 void ShowOutlineExport(const Callback<void(bool)> &importer)
 {
 	importer(g_xywindow_globals_private.show_outline);
 }
 
-typedef FreeCaller<void(const Callback<void(bool)> &), ShowOutlineExport> ShowOutlineExportCaller;
+typedef FreeCaller<void (const Callback<void (bool)> &), ShowOutlineExport> ShowOutlineExportCaller;
 
 void ShowAxesToggle()
 {
@@ -2799,14 +2799,14 @@ void ShowAxesToggle()
 	XY_UpdateAllWindows();
 }
 
-typedef FreeCaller<void(), ShowAxesToggle> ShowAxesToggleCaller;
+typedef FreeCaller<void (), ShowAxesToggle> ShowAxesToggleCaller;
 
 void ShowAxesExport(const Callback<void(bool)> &importer)
 {
 	importer(g_xywindow_globals_private.show_axis);
 }
 
-typedef FreeCaller<void(const Callback<void(bool)> &), ShowAxesExport> ShowAxesExportCaller;
+typedef FreeCaller<void (const Callback<void (bool)> &), ShowAxesExport> ShowAxesExportCaller;
 
 void ShowWorkzoneToggle()
 {
@@ -2814,14 +2814,14 @@ void ShowWorkzoneToggle()
 	XY_UpdateAllWindows();
 }
 
-typedef FreeCaller<void(), ShowWorkzoneToggle> ShowWorkzoneToggleCaller;
+typedef FreeCaller<void (), ShowWorkzoneToggle> ShowWorkzoneToggleCaller;
 
 void ShowWorkzoneExport(const Callback<void(bool)> &importer)
 {
 	importer(g_xywindow_globals_private.d_show_work);
 }
 
-typedef FreeCaller<void(const Callback<void(bool)> &), ShowWorkzoneExport> ShowWorkzoneExportCaller;
+typedef FreeCaller<void (const Callback<void (bool)> &), ShowWorkzoneExport> ShowWorkzoneExportCaller;
 
 ShowNamesExportCaller g_show_names_caller;
 Callback<void(const Callback<void(bool)> &)> g_show_names_callback(g_show_names_caller);
@@ -2857,7 +2857,7 @@ void XYShow_registerCommands()
 	GlobalToggles_insert("ShowNames", ShowNamesToggleCaller(), ToggleItem::AddCallbackCaller(g_show_names));
 	GlobalToggles_insert("ShowBlocks", ShowBlocksToggleCaller(), ToggleItem::AddCallbackCaller(g_show_blocks));
 	GlobalToggles_insert("ShowCoordinates", ShowCoordinatesToggleCaller(),
-				ToggleItem::AddCallbackCaller(g_show_coordinates));
+	                     ToggleItem::AddCallbackCaller(g_show_coordinates));
 	GlobalToggles_insert("ShowWindowOutline", ShowOutlineToggleCaller(), ToggleItem::AddCallbackCaller(g_show_outline));
 	GlobalToggles_insert("ShowAxes", ShowAxesToggleCaller(), ToggleItem::AddCallbackCaller(g_show_axes));
 	GlobalToggles_insert("ShowWorkzone", ShowWorkzoneToggleCaller(), ToggleItem::AddCallbackCaller(g_show_workzone));
@@ -2926,19 +2926,19 @@ struct ToggleShown_Bool {
 void XYWindow_Construct()
 {
 	GlobalCommands_insert("ToggleCrosshairs", makeCallbackF(ToggleShowCrosshair),
-				Accelerator('X', (GdkModifierType) GDK_SHIFT_MASK));
+	                      Accelerator('X', (GdkModifierType) GDK_SHIFT_MASK));
 	GlobalCommands_insert("ToggleSizePaint", makeCallbackF(ToggleShowSizeInfo), Accelerator('J'));
 	GlobalCommands_insert("ToggleGrid", makeCallbackF(ToggleShowGrid), Accelerator('0'));
 
 	GlobalToggles_insert("ToggleView", ToggleShown::ToggleCaller(g_xy_top_shown),
-				ToggleItem::AddCallbackCaller(g_xy_top_shown.m_item),
-				Accelerator('V', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
+	                     ToggleItem::AddCallbackCaller(g_xy_top_shown.m_item),
+	                     Accelerator('V', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
 	GlobalToggles_insert("ToggleSideView", ToggleShown::ToggleCaller(g_yz_side_shown),
-				ToggleItem::AddCallbackCaller(g_yz_side_shown.m_item));
+	                     ToggleItem::AddCallbackCaller(g_yz_side_shown.m_item));
 	GlobalToggles_insert("ToggleFrontView", ToggleShown::ToggleCaller(g_xz_front_shown),
-				ToggleItem::AddCallbackCaller(g_xz_front_shown.m_item));
+	                     ToggleItem::AddCallbackCaller(g_xz_front_shown.m_item));
 	GlobalCommands_insert("NextView", makeCallbackF(XY_Next), Accelerator(GDK_KEY_Tab,
-										(GdkModifierType) GDK_CONTROL_MASK)); // fixme: doesn't show its shortcut
+	                                                                      (GdkModifierType) GDK_CONTROL_MASK));   // fixme: doesn't show its shortcut
 	GlobalCommands_insert("ZoomIn", makeCallbackF(XY_ZoomIn), Accelerator(GDK_KEY_Delete));
 	GlobalCommands_insert("ZoomOut", makeCallbackF(XY_ZoomOut), Accelerator(GDK_KEY_Insert));
 	GlobalCommands_insert("ViewTop", makeCallbackF(XY_Top), Accelerator(GDK_KEY_KP_Home));
@@ -2946,27 +2946,27 @@ void XYWindow_Construct()
 	GlobalCommands_insert("ViewFront", makeCallbackF(XY_Front), Accelerator(GDK_KEY_KP_End));
 	GlobalCommands_insert("Zoom100", makeCallbackF(XY_Zoom100));
 	GlobalCommands_insert("CenterXYView", makeCallbackF(XY_Focus),
-				Accelerator(GDK_KEY_Tab, (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
+	                      Accelerator(GDK_KEY_Tab, (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
 
 	GlobalPreferenceSystem().registerPreference("ClipCaulk", make_property_string(g_clip_useCaulk));
 
 	GlobalPreferenceSystem().registerPreference("NewRightClick",
-							make_property_string(g_xywindow_globals.m_bRightClick));
+	                                            make_property_string(g_xywindow_globals.m_bRightClick));
 	GlobalPreferenceSystem().registerPreference("ChaseMouse",
-							make_property_string(g_xywindow_globals_private.m_bChaseMouse));
+	                                            make_property_string(g_xywindow_globals_private.m_bChaseMouse));
 	GlobalPreferenceSystem().registerPreference("SizePainting",
-							make_property_string(g_xywindow_globals_private.m_bSizePaint));
+	                                            make_property_string(g_xywindow_globals_private.m_bSizePaint));
 	GlobalPreferenceSystem().registerPreference("NoStipple", make_property_string(g_xywindow_globals.m_bNoStipple));
 	GlobalPreferenceSystem().registerPreference("SI_ShowCoords",
-							make_property_string(g_xywindow_globals_private.show_coordinates));
+	                                            make_property_string(g_xywindow_globals_private.show_coordinates));
 	GlobalPreferenceSystem().registerPreference("SI_ShowOutlines",
-							make_property_string(g_xywindow_globals_private.show_outline));
+	                                            make_property_string(g_xywindow_globals_private.show_outline));
 	GlobalPreferenceSystem().registerPreference("SI_ShowAxis",
-							make_property_string(g_xywindow_globals_private.show_axis));
+	                                            make_property_string(g_xywindow_globals_private.show_axis));
 	GlobalPreferenceSystem().registerPreference("CamXYUpdate",
-							make_property_string(g_xywindow_globals_private.m_bCamXYUpdate));
+	                                            make_property_string(g_xywindow_globals_private.m_bCamXYUpdate));
 	GlobalPreferenceSystem().registerPreference("ShowWorkzone",
-							make_property_string(g_xywindow_globals_private.d_show_work));
+	                                            make_property_string(g_xywindow_globals_private.d_show_work));
 
 	GlobalPreferenceSystem().registerPreference("SI_AxisColors0", make_property_string(g_xywindow_globals.AxisColorX));
 	GlobalPreferenceSystem().registerPreference("SI_AxisColors1", make_property_string(g_xywindow_globals.AxisColorY));
@@ -2978,7 +2978,7 @@ void XYWindow_Construct()
 	GlobalPreferenceSystem().registerPreference("SI_Colors7", make_property_string(g_xywindow_globals.color_gridtext));
 	GlobalPreferenceSystem().registerPreference("SI_Colors8", make_property_string(g_xywindow_globals.color_brushes));
 	GlobalPreferenceSystem().registerPreference("SI_Colors14",
-							make_property_string(g_xywindow_globals.color_gridmajor_alt));
+	                                            make_property_string(g_xywindow_globals.color_gridmajor_alt));
 
 
 	GlobalPreferenceSystem().registerPreference("XZVIS", make_property_string<ToggleShown_Bool>(g_xz_front_shown));

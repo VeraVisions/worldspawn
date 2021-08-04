@@ -29,10 +29,10 @@ targetnames_t g_targetnames;
 
 targetables_t *getTargetables(const char *targetname)
 {
-    if (targetname[0] == '\0') {
-        return 0;
-    }
-    return &g_targetnames[targetname];
+	if (targetname[0] == '\0') {
+		return 0;
+	}
+	return &g_targetnames[targetname];
 }
 
 Shader *RenderableTargetingEntity::m_state;

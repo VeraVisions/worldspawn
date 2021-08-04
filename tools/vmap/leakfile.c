@@ -93,11 +93,11 @@ xmlNodePtr LeakFile( tree_t *tree, const char *filename ){
 
 		// find the best portal exit
 		next = node->occupied;
-		for ( p = node->portals ; p ; p = p->next[!s] )
+		for ( p = node->portals; p; p = p->next[!s] )
 		{
 			s = ( p->nodes[0] == node );
 			if ( p->nodes[s]->occupied
-				 && p->nodes[s]->occupied < next ) {
+			     && p->nodes[s]->occupied < next ) {
 				nextportal = p;
 				nextnode = p->nodes[s];
 				next = nextnode->occupied;

@@ -57,38 +57,38 @@ class ModelDependencies :
 };
 
 class ModelIQMAPI : public TypeSystemRef {
-	IQMModelLoader m_modeliqm;
-	public:
-	typedef ModelLoader Type;
+IQMModelLoader m_modeliqm;
+public:
+typedef ModelLoader Type;
 
-	STRING_CONSTANT( Name, "iqm" );
+STRING_CONSTANT( Name, "iqm" );
 
-	ModelIQMAPI(){
-		GlobalFiletypesModule::getTable().addType( Type::Name(), Name(), filetype_t( "InterQuake Models", "*.iqm" ) );
-	}
+ModelIQMAPI(){
+	GlobalFiletypesModule::getTable().addType( Type::Name(), Name(), filetype_t( "InterQuake Models", "*.iqm" ) );
+}
 
-	ModelLoader *getTable(){
-		return &m_modeliqm;
-	}
+ModelLoader *getTable(){
+	return &m_modeliqm;
+}
 };
 typedef SingletonModule<ModelIQMAPI, ModelDependencies> ModelIQMModule;
 ModelIQMModule g_ModelIQMModule;
 
 /* Vera Visions Model Format */
 class ModelVVMAPI : public TypeSystemRef {
-	IQMModelLoader m_modeliqm;
-	public:
-	typedef ModelLoader Type;
+IQMModelLoader m_modeliqm;
+public:
+typedef ModelLoader Type;
 
-	STRING_CONSTANT( Name, "vvm" );
+STRING_CONSTANT( Name, "vvm" );
 
-	ModelVVMAPI(){
-		GlobalFiletypesModule::getTable().addType( Type::Name(), Name(), filetype_t( "Vera Visions Model", "*.vvm" ) );
-	}
+ModelVVMAPI(){
+	GlobalFiletypesModule::getTable().addType( Type::Name(), Name(), filetype_t( "Vera Visions Model", "*.vvm" ) );
+}
 
-	ModelLoader *getTable(){
-		return &m_modeliqm;
-	}
+ModelLoader *getTable(){
+	return &m_modeliqm;
+}
 };
 typedef SingletonModule<ModelVVMAPI, ModelDependencies> ModelVVMModule;
 ModelVVMModule g_ModelVVMModule;

@@ -24,9 +24,9 @@
 
 inline void container_remove_all(ui::Container container)
 {
-    container.foreach([=](ui::Widget it) mutable {
-        container.remove(it);
-    });
+	container.foreach([=](ui::Widget it) mutable {
+		container.remove(it);
+	});
 }
 
 #endif

@@ -31,87 +31,87 @@
 #include "property.h"
 
 class ToggleItem {
-    Callback<void(const Callback<void(bool)> &)> m_exportCallback;
-    typedef std::list<Callback<void(bool)>> ImportCallbacks;
-    ImportCallbacks m_importCallbacks;
+Callback<void(const Callback<void(bool)> &)> m_exportCallback;
+typedef std::list<Callback<void (bool)> > ImportCallbacks;
+ImportCallbacks m_importCallbacks;
 public:
-    ToggleItem(const Callback<void(const Callback<void(bool)> &)> &exportCallback) : m_exportCallback(exportCallback)
-    {
-    }
+ToggleItem(const Callback<void(const Callback<void(bool)> &)> &exportCallback) : m_exportCallback(exportCallback)
+{
+}
 
-    void update()
-    {
-        for (ImportCallbacks::iterator i = m_importCallbacks.begin(); i != m_importCallbacks.end(); ++i) {
-            m_exportCallback(*i);
-        }
-    }
+void update()
+{
+	for (ImportCallbacks::iterator i = m_importCallbacks.begin(); i != m_importCallbacks.end(); ++i) {
+		m_exportCallback(*i);
+	}
+}
 
-    void addCallback(const Callback<void(bool)> &callback)
-    {
-        m_importCallbacks.push_back(callback);
-        m_exportCallback(callback);
-    }
+void addCallback(const Callback<void(bool)> &callback)
+{
+	m_importCallbacks.push_back(callback);
+	m_exportCallback(callback);
+}
 
-    typedef MemberCaller<ToggleItem, void(const Callback<void(bool)> &), &ToggleItem::addCallback> AddCallbackCaller;
+typedef MemberCaller<ToggleItem, void (const Callback<void (bool)> &), &ToggleItem::addCallback> AddCallbackCaller;
 };
 
 class ToggleShown {
-    bool m_shownDeferred;
+bool m_shownDeferred;
 
-    ToggleShown(const ToggleShown &other); // NOT COPYABLE
-    ToggleShown &operator=(const ToggleShown &other); // NOT ASSIGNABLE
+ToggleShown(const ToggleShown &other);     // NOT COPYABLE
+ToggleShown &operator=(const ToggleShown &other);     // NOT ASSIGNABLE
 
-    static gboolean notify_visible(ui::Widget widget, gpointer dummy, ToggleShown *self);
+static gboolean notify_visible(ui::Widget widget, gpointer dummy, ToggleShown *self);
 
-    static gboolean destroy(ui::Widget widget, ToggleShown *self);
+static gboolean destroy(ui::Widget widget, ToggleShown *self);
 
 public:
-    ui::Widget m_widget;
-    ToggleItem m_item;
+ui::Widget m_widget;
+ToggleItem m_item;
 
-    ToggleShown(bool shown)
-            : m_shownDeferred(shown), m_widget(ui::null), m_item(ActiveCaller(*this))
-    {
-    }
+ToggleShown(bool shown)
+	: m_shownDeferred(shown), m_widget(ui::null), m_item(ActiveCaller(*this))
+{
+}
 
-    void update();
+void update();
 
-    bool active() const;
+bool active() const;
 
-    void exportActive(const Callback<void(bool)> &importCallback);
+void exportActive(const Callback<void(bool)> &importCallback);
 
-    typedef MemberCaller<ToggleShown, void(const Callback<void(bool)> &), &ToggleShown::exportActive> ActiveCaller;
+typedef MemberCaller<ToggleShown, void (const Callback<void (bool)> &), &ToggleShown::exportActive> ActiveCaller;
 
-    void set(bool shown);
+void set(bool shown);
 
-    void toggle();
+void toggle();
 
-    typedef MemberCaller<ToggleShown, void(), &ToggleShown::toggle> ToggleCaller;
+typedef MemberCaller<ToggleShown, void (), &ToggleShown::toggle> ToggleCaller;
 
-    void connect(ui::Widget widget);
+void connect(ui::Widget widget);
 };
 
 
 void widget_queue_draw(ui::Widget &widget);
 
-typedef ReferenceCaller<ui::Widget, void(), widget_queue_draw> WidgetQueueDrawCaller;
+typedef ReferenceCaller<ui::Widget, void (), widget_queue_draw> WidgetQueueDrawCaller;
 
 
 void widget_make_default(ui::Widget widget);
 
 class WidgetFocusPrinter {
-    const char *m_name;
+const char *m_name;
 
-    static gboolean focus_in(ui::Widget widget, GdkEventFocus *event, WidgetFocusPrinter *self);
+static gboolean focus_in(ui::Widget widget, GdkEventFocus *event, WidgetFocusPrinter *self);
 
-    static gboolean focus_out(ui::Widget widget, GdkEventFocus *event, WidgetFocusPrinter *self);
+static gboolean focus_out(ui::Widget widget, GdkEventFocus *event, WidgetFocusPrinter *self);
 
 public:
-    WidgetFocusPrinter(const char *name) : m_name(name)
-    {
-    }
+WidgetFocusPrinter(const char *name) : m_name(name)
+{
+}
 
-    void connect(ui::Widget widget);
+void connect(ui::Widget widget);
 };
 
 #endif

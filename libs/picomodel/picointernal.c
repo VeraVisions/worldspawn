@@ -479,20 +479,26 @@ void _pico_copy_color( picoColor_t src, picoColor_t dest ){
 
 #if GDEF_ARCH_ENDIAN_BIG
 
-int   _pico_big_long( int src ) { return src; }
-short _pico_big_short( short src ) { return src; }
-float _pico_big_float( float src ) { return src; }
+int   _pico_big_long( int src ) {
+	return src;
+}
+short _pico_big_short( short src ) {
+	return src;
+}
+float _pico_big_float( float src ) {
+	return src;
+}
 
 int _pico_little_long( int src ){
 	return ( ( src & 0xFF000000 ) >> 24 ) |
-		   ( ( src & 0x00FF0000 ) >> 8 ) |
-		   ( ( src & 0x0000FF00 ) << 8 ) |
-		   ( ( src & 0x000000FF ) << 24 );
+	       ( ( src & 0x00FF0000 ) >> 8 ) |
+	       ( ( src & 0x0000FF00 ) << 8 ) |
+	       ( ( src & 0x000000FF ) << 24 );
 }
 
 short _pico_little_short( short src ){
 	return ( ( src & 0xFF00 ) >> 8 ) |
-		   ( ( src & 0x00FF ) << 8 );
+	       ( ( src & 0x00FF ) << 8 );
 }
 
 float _pico_little_float( float src ){
@@ -506,20 +512,26 @@ float _pico_little_float( float src ){
 }
 #else /*__BIG_ENDIAN__*/
 
-int   _pico_little_long( int src ) { return src; }
-short _pico_little_short( short src ) { return src; }
-float _pico_little_float( float src ) { return src; }
+int   _pico_little_long( int src ) {
+	return src;
+}
+short _pico_little_short( short src ) {
+	return src;
+}
+float _pico_little_float( float src ) {
+	return src;
+}
 
 int _pico_big_long( int src ){
 	return ( ( src & 0xFF000000 ) >> 24 ) |
-		   ( ( src & 0x00FF0000 ) >> 8 ) |
-		   ( ( src & 0x0000FF00 ) << 8 ) |
-		   ( ( src & 0x000000FF ) << 24 );
+	       ( ( src & 0x00FF0000 ) >> 8 ) |
+	       ( ( src & 0x0000FF00 ) << 8 ) |
+	       ( ( src & 0x000000FF ) << 24 );
 }
 
 short _pico_big_short( short src ){
 	return ( ( src & 0xFF00 ) >> 8 ) |
-		   ( ( src & 0x00FF ) << 8 );
+	       ( ( src & 0x00FF ) << 8 );
 }
 
 float _pico_big_float( float src ){
@@ -708,7 +720,7 @@ void _pico_parse_skip_white( picoParser_t *p, int *hasLFs ){
 	{
 		/* sanity checks */
 		if ( p->cursor <  p->buffer ||
-			 p->cursor >= p->max ) {
+		     p->cursor >= p->max ) {
 			return;
 		}
 		/* break for chars other than white spaces */
@@ -796,8 +808,8 @@ int _pico_parse_ex( picoParser_t *p, int allowLFs, int handleQuoted ){
 
 	/* sanity checks */
 	if ( p == NULL || p->buffer == NULL ||
-		 p->cursor <  p->buffer ||
-		 p->cursor >= p->max ) {
+	     p->cursor <  p->buffer ||
+	     p->cursor >= p->max ) {
 		return 0;
 	}
 	/* clear parser token */
@@ -900,7 +912,7 @@ char *_pico_parse( picoParser_t *p, int allowLFs ){
  *  skips the rest of the current line in parser.
  */
 void _pico_parse_skip_rest( picoParser_t *p ){
-	while ( _pico_parse_ex( p,0,0 ) ) ;
+	while ( _pico_parse_ex( p,0,0 ) );
 }
 
 /* _pico_parse_skip_braced:

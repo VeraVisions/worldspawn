@@ -30,9 +30,9 @@ const m4x4_t g_m4x4_identity = {
 
 void m4x4_identity( m4x4_t matrix ){
 	matrix[1] = matrix[2] = matrix[3] =
-								matrix[4] = matrix[6] = matrix[7] =
-															matrix[8] = matrix[9] = matrix[11] =
-																						matrix[12] = matrix[13] = matrix[14] = 0;
+		matrix[4] = matrix[6] = matrix[7] =
+			matrix[8] = matrix[9] = matrix[11] =
+				matrix[12] = matrix[13] = matrix[14] = 0;
 
 	matrix[0] = matrix[5] = matrix[10] = matrix[15] = 1;
 }
@@ -49,8 +49,8 @@ void m4x4_assign( m4x4_t matrix, const m4x4_t other ){
 
 void m4x4_translation_for_vec3( m4x4_t matrix, const vec3_t translation ){
 	matrix[1] = matrix[2] = matrix[3] =
-								matrix[4] = matrix[6] = matrix[7] =
-															matrix[8] = matrix[9] = matrix[11] = 0;
+		matrix[4] = matrix[6] = matrix[7] =
+			matrix[8] = matrix[9] = matrix[11] = 0;
 
 	matrix[0] = matrix[5] = matrix[10] = matrix[15] = 1;
 
@@ -98,17 +98,17 @@ void m4x4_rotation_for_vec3( m4x4_t matrix, const vec3_t euler, eulerOrder_t ord
 
 #if 1
 
-		{
-			matrix[0]  = (vec_t)( cy * cz );
-			matrix[1]  = (vec_t)( cy * sz );
-			matrix[2]  = (vec_t)-sy;
-			matrix[4]  = (vec_t)( sx * sy * cz + cx * -sz );
-			matrix[5]  = (vec_t)( sx * sy * sz + cx * cz );
-			matrix[6]  = (vec_t)( sx * cy );
-			matrix[8]  = (vec_t)( cx * sy * cz + sx * sz );
-			matrix[9]  = (vec_t)( cx * sy * sz + -sx * cz );
-			matrix[10] = (vec_t)( cx * cy );
-		}
+	{
+		matrix[0]  = (vec_t)( cy * cz );
+		matrix[1]  = (vec_t)( cy * sz );
+		matrix[2]  = (vec_t)-sy;
+		matrix[4]  = (vec_t)( sx * sy * cz + cx * -sz );
+		matrix[5]  = (vec_t)( sx * sy * sz + cx * cz );
+		matrix[6]  = (vec_t)( sx * cy );
+		matrix[8]  = (vec_t)( cx * sy * cz + sx * sz );
+		matrix[9]  = (vec_t)( cx * sy * sz + -sx * cz );
+		matrix[10] = (vec_t)( cx * cy );
+	}
 
 		matrix[12]  =  matrix[13] = matrix[14] = matrix[3] = matrix[7] = matrix[11] = 0;
 		matrix[15] =  1;
@@ -198,17 +198,17 @@ void m4x4_rotation_for_vec3( m4x4_t matrix, const vec3_t euler, eulerOrder_t ord
 
 #if 1
 
-		{
-			matrix[0]  = (vec_t)( cy * cz + sx * sy * -sz );
-			matrix[1]  = (vec_t)( cy * sz + sx * sy * cz );
-			matrix[2]  = (vec_t)( -cx * sy );
-			matrix[4]  = (vec_t)( cx * -sz );
-			matrix[5]  = (vec_t)( cx * cz );
-			matrix[6]  = (vec_t)( sx );
-			matrix[8]  = (vec_t)( sy * cz + -sx * cy * -sz );
-			matrix[9]  = (vec_t)( sy * sz + -sx * cy * cz );
-			matrix[10] = (vec_t)( cx * cy );
-		}
+	{
+		matrix[0]  = (vec_t)( cy * cz + sx * sy * -sz );
+		matrix[1]  = (vec_t)( cy * sz + sx * sy * cz );
+		matrix[2]  = (vec_t)( -cx * sy );
+		matrix[4]  = (vec_t)( cx * -sz );
+		matrix[5]  = (vec_t)( cx * cz );
+		matrix[6]  = (vec_t)( sx );
+		matrix[8]  = (vec_t)( sy * cz + -sx * cy * -sz );
+		matrix[9]  = (vec_t)( sy * sz + -sx * cy * cz );
+		matrix[10] = (vec_t)( cx * cy );
+	}
 
 		matrix[12]  =  matrix[13] = matrix[14] = matrix[3] = matrix[7] = matrix[11] = 0;
 		matrix[15] =  1;
@@ -236,17 +236,17 @@ void m4x4_rotation_for_vec3( m4x4_t matrix, const vec3_t euler, eulerOrder_t ord
 	case eZYX:
 #if 1
 
-		{
-			matrix[0]  = (vec_t)( cy * cz );
-			matrix[4]  = (vec_t)( cy * -sz );
-			matrix[8]  = (vec_t)sy;
-			matrix[1]  = (vec_t)( sx * sy * cz + cx * sz );
-			matrix[5]  = (vec_t)( sx * sy * -sz + cx * cz );
-			matrix[9]  = (vec_t)( -sx * cy );
-			matrix[2]  = (vec_t)( cx * -sy * cz + sx * sz );
-			matrix[6]  = (vec_t)( cx * -sy * -sz + sx * cz );
-			matrix[10] = (vec_t)( cx * cy );
-		}
+	{
+		matrix[0]  = (vec_t)( cy * cz );
+		matrix[4]  = (vec_t)( cy * -sz );
+		matrix[8]  = (vec_t)sy;
+		matrix[1]  = (vec_t)( sx * sy * cz + cx * sz );
+		matrix[5]  = (vec_t)( sx * sy * -sz + cx * cz );
+		matrix[9]  = (vec_t)( -sx * cy );
+		matrix[2]  = (vec_t)( cx * -sy * cz + sx * sz );
+		matrix[6]  = (vec_t)( cx * -sy * -sz + sx * cz );
+		matrix[10] = (vec_t)( cx * cy );
+	}
 
 		matrix[12]  =  matrix[13] = matrix[14] = matrix[3] = matrix[7] = matrix[11] = 0;
 		matrix[15] =  1;
@@ -276,9 +276,9 @@ void m4x4_rotation_for_vec3( m4x4_t matrix, const vec3_t euler, eulerOrder_t ord
 
 void m4x4_scale_for_vec3( m4x4_t matrix, const vec3_t scale ){
 	matrix[1] = matrix[2] = matrix[3] =
-								matrix[4] = matrix[6] = matrix[7] =
-															matrix[8] = matrix[9] = matrix[11] =
-																						matrix[12] = matrix[13] = matrix[14] = 0;
+		matrix[4] = matrix[6] = matrix[7] =
+			matrix[8] = matrix[9] = matrix[11] =
+				matrix[12] = matrix[13] = matrix[14] = 0;
 
 	matrix[15] = 1;
 
@@ -350,9 +350,9 @@ void m4x4_rotation_for_axisangle( m4x4_t matrix, const vec3_t axis, double angle
 }
 
 void m4x4_frustum( m4x4_t matrix,
-				   vec_t left, vec_t right,
-				   vec_t bottom, vec_t top,
-				   vec_t nearval, vec_t farval ){
+                   vec_t left, vec_t right,
+                   vec_t bottom, vec_t top,
+                   vec_t nearval, vec_t farval ){
 	matrix[0] = (vec_t)( ( 2 * nearval ) / ( right - left ) );
 	matrix[1] = 0;
 	matrix[2] = 0;
@@ -1425,17 +1425,17 @@ int m4x4_orthogonal_invert( m4x4_t matrix ){
 		det = pos + neg;
 #elif 0
 		float det
-			= ( src[0] * src[5] * src[10] )
-			  + ( src[1] * src[6] * src[8] )
-			  + ( src[2] * src[4] * src[9] )
-			  - ( src[2] * src[5] * src[8] )
-			  - ( src[1] * src[4] * src[10] )
-			  - ( src[0] * src[6] * src[9] );
+		        = ( src[0] * src[5] * src[10] )
+		          + ( src[1] * src[6] * src[8] )
+		          + ( src[2] * src[4] * src[9] )
+		          - ( src[2] * src[5] * src[8] )
+		          - ( src[1] * src[4] * src[10] )
+		          - ( src[0] * src[6] * src[9] );
 #else
 		float det
-			= src[0] * ( src[5] * src[10] - src[9] * src[6] )
-			  - src[1] * ( src[4] * src[10] - src[8] * src[6] )
-			  + src[2] * ( src[4] * src[9] - src[8] * src[5] );
+		        = src[0] * ( src[5] * src[10] - src[9] * src[6] )
+		          - src[1] * ( src[4] * src[10] - src[8] * src[6] )
+		          + src[2] * ( src[4] * src[9] - src[8] * src[5] );
 
 #endif
 
@@ -1457,14 +1457,14 @@ int m4x4_orthogonal_invert( m4x4_t matrix ){
 
 	/* Do the translation part */
 	matrix[12] = -( src[12] * matrix[0] +
-					src[13] * matrix[4] +
-					src[14] * matrix[8] );
+	                src[13] * matrix[4] +
+	                src[14] * matrix[8] );
 	matrix[13] = -( src[12] * matrix[1] +
-					src[13] * matrix[5] +
-					src[14] * matrix[9] );
+	                src[13] * matrix[5] +
+	                src[14] * matrix[9] );
 	matrix[14] = -( src[12] * matrix[2] +
-					src[13] * matrix[6] +
-					src[14] * matrix[10] );
+	                src[13] * matrix[6] +
+	                src[14] * matrix[10] );
 
 	return 0;
 }
@@ -1561,8 +1561,8 @@ float m3_det( m3x3_t mat ){
 	float det;
 
 	det = mat[0] * ( mat[4] * mat[8] - mat[7] * mat[5] )
-		  - mat[1] * ( mat[3] * mat[8] - mat[6] * mat[5] )
-		  + mat[2] * ( mat[3] * mat[7] - mat[6] * mat[4] );
+	      - mat[1] * ( mat[3] * mat[8] - mat[6] * mat[5] )
+	      + mat[2] * ( mat[3] * mat[7] - mat[6] * mat[4] );
 
 	return( det );
 }

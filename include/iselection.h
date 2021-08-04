@@ -57,7 +57,7 @@ typedef BasicVector4<float> Vector4;
 class Matrix4;
 typedef Vector4 Quaternion;
 
-typedef Callback<void(const Selectable&)> SelectionChangeCallback;
+typedef Callback<void (const Selectable&)> SelectionChangeCallback;
 typedef SignalHandler1<const Selectable&> SelectionChangeHandler;
 
 class SelectionSystem

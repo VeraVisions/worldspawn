@@ -370,8 +370,8 @@ void SmoothNormals( void ){
 			{
 				VectorSubtract( bspDrawVerts[ j ].normal, votes[ k ], diff );
 				if ( fabs( diff[ 0 ] ) < EQUAL_NORMAL_EPSILON &&
-					 fabs( diff[ 1 ] ) < EQUAL_NORMAL_EPSILON &&
-					 fabs( diff[ 2 ] ) < EQUAL_NORMAL_EPSILON ) {
+				     fabs( diff[ 1 ] ) < EQUAL_NORMAL_EPSILON &&
+				     fabs( diff[ 2 ] ) < EQUAL_NORMAL_EPSILON ) {
 					break;
 				}
 			}
@@ -1197,9 +1197,9 @@ void MapRawLightmap( int rawLightmapNum ){
 				#if 0
 			if ( lm->plane ) {
 				Sys_Printf( "Planar patch: [%1.3f %1.3f %1.3f] [%1.3f %1.3f %1.3f] [%1.3f %1.3f %1.3f]\n",
-							lm->plane[ 0 ], lm->plane[ 1 ], lm->plane[ 2 ],
-							lm->vecs[ 0 ][ 0 ], lm->vecs[ 0 ][ 1 ], lm->vecs[ 0 ][ 2 ],
-							lm->vecs[ 1 ][ 0 ], lm->vecs[ 1 ][ 1 ], lm->vecs[ 1 ][ 2 ] );
+				            lm->plane[ 0 ], lm->plane[ 1 ], lm->plane[ 2 ],
+				            lm->vecs[ 0 ][ 0 ], lm->vecs[ 0 ][ 1 ], lm->vecs[ 0 ][ 2 ],
+				            lm->vecs[ 1 ][ 0 ], lm->vecs[ 1 ][ 1 ], lm->vecs[ 1 ][ 2 ] );
 			}
 				#endif
 
@@ -1458,8 +1458,8 @@ void MapRawLightmap( int rawLightmapNum ){
 				AddPointToBounds( info->mins, mins, maxs );
 				AddPointToBounds( info->maxs, mins, maxs );
 				if ( origin[ 0 ] > ( info->mins[ 0 ] - TOL ) && origin[ 0 ] < ( info->maxs[ 0 ] + TOL ) &&
-					 origin[ 1 ] > ( info->mins[ 1 ] - TOL ) && origin[ 1 ] < ( info->maxs[ 1 ] + TOL ) &&
-					 origin[ 2 ] > ( info->mins[ 2 ] - TOL ) && origin[ 2 ] < ( info->maxs[ 2 ] + TOL ) ) {
+				     origin[ 1 ] > ( info->mins[ 1 ] - TOL ) && origin[ 1 ] < ( info->maxs[ 1 ] + TOL ) &&
+				     origin[ 2 ] > ( info->mins[ 2 ] - TOL ) && origin[ 2 ] < ( info->maxs[ 2 ] + TOL ) ) {
 					break;
 				}
 			}
@@ -1471,11 +1471,11 @@ void MapRawLightmap( int rawLightmapNum ){
 
 			/* report bogus origin */
 			Sys_Printf( "%6d [%2d,%2d] (%4d): XYZ(%+4.1f %+4.1f %+4.1f) LO(%+4.1f %+4.1f %+4.1f) HI(%+4.1f %+4.1f %+4.1f) <%3.0f>\n",
-						rawLightmapNum, x, y, *cluster,
-						origin[ 0 ], origin[ 1 ], origin[ 2 ],
-						mins[ 0 ], mins[ 1 ], mins[ 2 ],
-						maxs[ 0 ], maxs[ 1 ], maxs[ 2 ],
-						luxel[ 3 ] );
+			            rawLightmapNum, x, y, *cluster,
+			            origin[ 0 ], origin[ 1 ], origin[ 2 ],
+			            mins[ 0 ], mins[ 1 ], mins[ 2 ],
+			            maxs[ 0 ], maxs[ 1 ], maxs[ 2 ],
+			            luxel[ 3 ] );
 		}
 	}
 	#endif
@@ -1957,8 +1957,8 @@ static void SubsampleRawLuxel_r( rawLightmap_t *lm, trace_t *trace, vec3_t sampl
 
 	/* subsample further? */
 	if ( ( lightLuxel[ 3 ] + 1.0f ) < lightSamples &&
-		 ( total[ 0 ] > 4.0f || total[ 1 ] > 4.0f || total[ 2 ] > 4.0f ) &&
-		 lighted != 0 && lighted != mapped ) {
+	     ( total[ 0 ] > 4.0f || total[ 1 ] > 4.0f || total[ 2 ] > 4.0f ) &&
+	     lighted != 0 && lighted != mapped ) {
 		for ( b = 0; b < 4; b++ )
 		{
 			if ( cluster[ b ] < 0 ) {
@@ -2280,7 +2280,7 @@ void IlluminateRawLightmap( int rawLightmapNum ){
 			for ( lightmapNum = 0; lightmapNum < MAX_LIGHTMAPS; lightmapNum++ )
 			{
 				if ( lm->styles[ lightmapNum ] == trace.light->style ||
-					 lm->styles[ lightmapNum ] == LS_NONE ) {
+				     lm->styles[ lightmapNum ] == LS_NONE ) {
 					break;
 				}
 			}
@@ -2300,8 +2300,8 @@ void IlluminateRawLightmap( int rawLightmapNum ){
 
 			/* determine filter radius */
 			filterRadius = lm->filterRadius > trace.light->filterRadius
-						   ? lm->filterRadius
-						   : trace.light->filterRadius;
+			                           ? lm->filterRadius
+			                           : trace.light->filterRadius;
 			if ( filterRadius < 0.0f ) {
 				filterRadius = 0.0f;
 			}
@@ -2358,7 +2358,7 @@ void IlluminateRawLightmap( int rawLightmapNum ){
 
 					/* check for evilness */
 					if ( trace.forceSubsampling > 1.0f && ( lightSamples > 1 || lightRandomSamples ) && luxelFilterRadius == 0 ) {
-							totalLighted++;
+						totalLighted++;
 						*flag |= FLAG_FORCE_SUBSAMPLING; /* force */
 					}
 					/* add to count */
@@ -2735,7 +2735,7 @@ void IlluminateRawLightmap( int rawLightmapNum ){
 				filterColor = qfalse;
 				filterDir = qfalse;
 				if ( *cluster < 0 ||
-					 ( lm->splotchFix && ( luxel[ 0 ] <= ambientColor[ 0 ] || luxel[ 1 ] <= ambientColor[ 1 ] || luxel[ 2 ] <= ambientColor[ 2 ] ) ) ) {
+				     ( lm->splotchFix && ( luxel[ 0 ] <= ambientColor[ 0 ] || luxel[ 1 ] <= ambientColor[ 1 ] || luxel[ 2 ] <= ambientColor[ 2 ] ) ) ) {
 					filterColor = qtrue;
 				}
 
@@ -2772,7 +2772,7 @@ void IlluminateRawLightmap( int rawLightmapNum ){
 
 						/* ignore unmapped/unlit luxels */
 						if ( *cluster2 < 0 || luxel2[ 3 ] == 0.0f ||
-							 ( lm->splotchFix && VectorCompare( luxel2, ambientColor ) ) ) {
+						     ( lm->splotchFix && VectorCompare( luxel2, ambientColor ) ) ) {
 							continue;
 						}
 
@@ -2948,8 +2948,8 @@ void IlluminateVertexes( int num ){
 				/* is this sample bright enough? */
 				radVertLuxel = RAD_VERTEX_LUXEL( 0, ds->firstVert + i );
 				if ( radVertLuxel[ 0 ] <= ambientColor[ 0 ] &&
-					 radVertLuxel[ 1 ] <= ambientColor[ 1 ] &&
-					 radVertLuxel[ 2 ] <= ambientColor[ 2 ] ) {
+				     radVertLuxel[ 1 ] <= ambientColor[ 1 ] &&
+				     radVertLuxel[ 2 ] <= ambientColor[ 2 ] ) {
 					/* nudge the sample point around a bit */
 					for ( x = 0; x < 5; x++ )
 					{
@@ -3011,8 +3011,8 @@ void IlluminateVertexes( int num ){
 								/* bright enough? */
 								radVertLuxel = RAD_VERTEX_LUXEL( 0, ds->firstVert + i );
 								if ( radVertLuxel[ 0 ] > ambientColor[ 0 ] ||
-									 radVertLuxel[ 1 ] > ambientColor[ 1 ] ||
-									 radVertLuxel[ 2 ] > ambientColor[ 2 ] ) {
+								     radVertLuxel[ 1 ] > ambientColor[ 1 ] ||
+								     radVertLuxel[ 2 ] > ambientColor[ 2 ] ) {
 									x = y = z = 1000;
 								}
 							}
@@ -3023,8 +3023,8 @@ void IlluminateVertexes( int num ){
 				/* add to average? */
 				radVertLuxel = RAD_VERTEX_LUXEL( 0, ds->firstVert + i );
 				if ( radVertLuxel[ 0 ] > ambientColor[ 0 ] ||
-					 radVertLuxel[ 1 ] > ambientColor[ 1 ] ||
-					 radVertLuxel[ 2 ] > ambientColor[ 2 ] ) {
+				     radVertLuxel[ 1 ] > ambientColor[ 1 ] ||
+				     radVertLuxel[ 2 ] > ambientColor[ 2 ] ) {
 					numAvg++;
 					for ( lightmapNum = 0; lightmapNum < MAX_LIGHTMAPS; lightmapNum++ )
 					{

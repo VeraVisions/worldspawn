@@ -185,7 +185,7 @@ char encode( const UTF8Character& c ) const {
 	ASSERT_MESSAGE( !globalCharacterSet().isUTF8(), "locale is utf8, no conversion required" );
 	ASSERT_MESSAGE( !char_is_ascii( *c.buffer ), "encode: ascii character" );
 	std::pair<const UTF8CharacterToExtendedASCII*, const UTF8CharacterToExtendedASCII*> range
-		= std::equal_range( m_encodeMap, m_encodeMap + 128, UTF8CharacterToExtendedASCII( c, 0 ) );
+	        = std::equal_range( m_encodeMap, m_encodeMap + 128, UTF8CharacterToExtendedASCII( c, 0 ) );
 	ASSERT_MESSAGE( range.first != range.second, "encode: invalid character: " << c );
 	return ( *range.first ).m_c;
 }

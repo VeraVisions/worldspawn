@@ -42,16 +42,16 @@
  */
 void Help_OpenVV(void)
 {
-    OpenURL("https://www.vera-visions.com/");
+	OpenURL("https://www.vera-visions.com/");
 }
 void Help_OpenMAT(void)
 {
-    OpenURL("https://www.vera-visions.com/docs/materials/");
+	OpenURL("https://www.vera-visions.com/docs/materials/");
 }
 
 
 void create_game_help_menu(ui::Menu menu)
 {
-    create_menu_item_with_mnemonic(menu, "Vera Visions", makeCallbackF(Help_OpenVV));
-    create_menu_item_with_mnemonic(menu, "Material Manual", makeCallbackF(Help_OpenMAT));
+	create_menu_item_with_mnemonic(menu, "Vera Visions", makeCallbackF(Help_OpenVV));
+	create_menu_item_with_mnemonic(menu, "Material Manual", makeCallbackF(Help_OpenMAT));
 }

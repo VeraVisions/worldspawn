@@ -302,7 +302,7 @@ static float bezier( float x0, float x1, float x2, float x3, float t ){
    ====================================================================== */
 
 static float bez2_time( float x0, float x1, float x2, float x3, float time,
-						float *t0, float *t1 ){
+                        float *t0, float *t1 ){
 	float v, t;
 
 	t = *t0 + ( *t1 - *t0 ) * 0.5f;
@@ -340,7 +340,7 @@ static float bez2( lwKey *key0, lwKey *key1, float time ){
 	}
 
 	t = bez2_time( key0->time, x, key1->time + key1->param[ 0 ], key1->time,
-				   time, &t0, &t1 );
+	               time, &t0, &t1 );
 
 	if ( key0->shape == ID_BEZ2 ) {
 		y = key0->value + key0->param[ 3 ];
@@ -369,11 +369,11 @@ static float outgoing( lwKey *key0, lwKey *key1 ){
 	{
 	case ID_TCB:
 		a = ( 1.0f - key0->tension )
-			* ( 1.0f + key0->continuity )
-			* ( 1.0f + key0->bias );
+		    * ( 1.0f + key0->continuity )
+		    * ( 1.0f + key0->bias );
 		b = ( 1.0f - key0->tension )
-			* ( 1.0f - key0->continuity )
-			* ( 1.0f - key0->bias );
+		    * ( 1.0f - key0->continuity )
+		    * ( 1.0f - key0->bias );
 		d = key1->value - key0->value;
 
 		if ( key0->prev ) {
@@ -450,11 +450,11 @@ static float incoming( lwKey *key0, lwKey *key1 ){
 
 	case ID_TCB:
 		a = ( 1.0f - key1->tension )
-			* ( 1.0f - key1->continuity )
-			* ( 1.0f + key1->bias );
+		    * ( 1.0f - key1->continuity )
+		    * ( 1.0f + key1->bias );
 		b = ( 1.0f - key1->tension )
-			* ( 1.0f + key1->continuity )
-			* ( 1.0f - key1->bias );
+		    * ( 1.0f + key1->continuity )
+		    * ( 1.0f - key1->bias );
 		d = key1->value - key0->value;
 
 		if ( key1->next ) {
@@ -555,7 +555,7 @@ float evalEnvelope( lwEnvelope *env, float time ){
 
 		case BEH_LINEAR:
 			out = outgoing( skey, skey->next )
-				  / ( skey->next->time - skey->time );
+			      / ( skey->next->time - skey->time );
 			return out * ( time - skey->time ) + skey->value;
 		}
 	}
@@ -589,7 +589,7 @@ float evalEnvelope( lwEnvelope *env, float time ){
 
 		case BEH_LINEAR:
 			in = incoming( ekey->prev, ekey )
-				 / ( ekey->time - ekey->prev->time );
+			     / ( ekey->time - ekey->prev->time );
 			return in * ( time - ekey->time ) + ekey->value;
 		}
 	}

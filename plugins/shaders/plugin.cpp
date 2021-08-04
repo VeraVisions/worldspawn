@@ -34,46 +34,46 @@ class ShadersDependencies :
 	public GlobalTexturesModuleRef,
 	public GlobalScripLibModuleRef,
 	public GlobalRadiantModuleRef {
-	ImageModuleRef m_bitmapModule;
+ImageModuleRef m_bitmapModule;
 public:
-	ShadersDependencies() :
-		m_bitmapModule("tga")
-	{
-	}
+ShadersDependencies() :
+	m_bitmapModule("tga")
+{
+}
 
-	ImageModuleRef &getBitmapModule()
-	{
-		return m_bitmapModule;
-	}
+ImageModuleRef &getBitmapModule()
+{
+	return m_bitmapModule;
+}
 };
 
 class MaterialAPI {
-	ShaderSystem *m_shadersq3;
+ShaderSystem *m_shadersq3;
 public:
-	typedef ShaderSystem Type;
+typedef ShaderSystem Type;
 
-	STRING_CONSTANT(Name, "mat");
+STRING_CONSTANT(Name, "mat");
 
-	MaterialAPI(ShadersDependencies &dependencies)
-	{
-		g_shadersExtension = "mat";
-		g_shadersDirectory = "textures/";
-		g_enableDefaultShaders = false;
-		g_useShaderList = false;
-		g_bitmapModule = dependencies.getBitmapModule().getTable();
-		Shaders_Construct();
-		m_shadersq3 = &GetShaderSystem();
-	}
+MaterialAPI(ShadersDependencies &dependencies)
+{
+	g_shadersExtension = "mat";
+	g_shadersDirectory = "textures/";
+	g_enableDefaultShaders = false;
+	g_useShaderList = false;
+	g_bitmapModule = dependencies.getBitmapModule().getTable();
+	Shaders_Construct();
+	m_shadersq3 = &GetShaderSystem();
+}
 
-	~MaterialAPI()
-	{
-		Shaders_Destroy();
-	}
+~MaterialAPI()
+{
+	Shaders_Destroy();
+}
 
-	ShaderSystem *getTable()
-	{
-		return m_shadersq3;
-	}
+ShaderSystem *getTable()
+{
+	return m_shadersq3;
+}
 };
 
 typedef SingletonModule<MaterialAPI, ShadersDependencies, DependenciesAPIConstructor<MaterialAPI, ShadersDependencies> > MaterialModule;

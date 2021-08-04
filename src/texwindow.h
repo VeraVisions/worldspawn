@@ -52,8 +52,8 @@ extern ui::Widget g_page_textures;
 
 void TextureBrowser_exportTitle(const Callback<void(const char *)> &importer);
 
-typedef FreeCaller<void(
-        const Callback<void(const char *)> &), TextureBrowser_exportTitle> TextureBrowserExportTitleCaller;
+typedef FreeCaller<void (
+			   const Callback<void (const char *)> &), TextureBrowser_exportTitle> TextureBrowserExportTitleCaller;
 
 const Vector3 &TextureBrowser_getBackgroundColour(TextureBrowser &textureBrowser);
 

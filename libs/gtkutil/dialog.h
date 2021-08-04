@@ -32,23 +32,23 @@ typedef struct _GdkEventAny GdkEventAny;
 
 
 struct ModalDialog {
-    ModalDialog()
-            : loop(true), ret(eIDCANCEL)
-    {
-    }
+	ModalDialog()
+		: loop(true), ret(eIDCANCEL)
+	{
+	}
 
-    bool loop;
-    EMessageBoxReturn ret;
+	bool loop;
+	EMessageBoxReturn ret;
 };
 
 struct ModalDialogButton {
-    ModalDialogButton(ModalDialog &dialog, EMessageBoxReturn value)
-            : m_dialog(dialog), m_value(value)
-    {
-    }
+	ModalDialogButton(ModalDialog &dialog, EMessageBoxReturn value)
+		: m_dialog(dialog), m_value(value)
+	{
+	}
 
-    ModalDialog &m_dialog;
-    EMessageBoxReturn m_value;
+	ModalDialog &m_dialog;
+	EMessageBoxReturn m_value;
 };
 
 typedef void ( *GCallback )(void);
@@ -98,14 +98,14 @@ ui::Window create_simple_modal_dialog_window(const char *title, ModalDialog &dia
 
 class RadioHBox {
 public:
-    ui::HBox m_hbox;
-    ui::RadioButton m_radio;
+ui::HBox m_hbox;
+ui::RadioButton m_radio;
 
-    RadioHBox(ui::HBox hbox, ui::RadioButton radio) :
-            m_hbox(hbox),
-            m_radio(radio)
-    {
-    }
+RadioHBox(ui::HBox hbox, ui::RadioButton radio) :
+	m_hbox(hbox),
+	m_radio(radio)
+{
+}
 };
 
 RadioHBox RadioHBox_new(StringArrayRange names);
@@ -113,29 +113,29 @@ RadioHBox RadioHBox_new(StringArrayRange names);
 
 class PathEntry {
 public:
-    ui::Frame m_frame;
-    ui::Entry m_entry;
-    ui::Button m_button;
+ui::Frame m_frame;
+ui::Entry m_entry;
+ui::Button m_button;
 
-    PathEntry(ui::Frame frame, ui::Entry entry, ui::Button button) :
-            m_frame(frame),
-            m_entry(entry),
-            m_button(button)
-    {
-    }
+PathEntry(ui::Frame frame, ui::Entry entry, ui::Button button) :
+	m_frame(frame),
+	m_entry(entry),
+	m_button(button)
+{
+}
 };
 
 PathEntry PathEntry_new();
 
 class BrowsedPathEntry {
 public:
-    typedef Callback<void(const char *)> SetPathCallback;
-    typedef Callback<void(const SetPathCallback &)> BrowseCallback;
+typedef Callback<void (const char *)> SetPathCallback;
+typedef Callback<void (const SetPathCallback &)> BrowseCallback;
 
-    PathEntry m_entry;
-    BrowseCallback m_browse;
+PathEntry m_entry;
+BrowseCallback m_browse;
 
-    BrowsedPathEntry(const BrowseCallback &browse);
+BrowsedPathEntry(const BrowseCallback &browse);
 };
 
 ui::Label DialogLabel_new(const char *name);

@@ -98,7 +98,7 @@ ui::Widget g_textoolWin;
 //End Textool globals
 
 void queueDraw(){
-    gtk_widget_queue_draw( g_textoolWin );
+	gtk_widget_queue_draw( g_textoolWin );
 }
 
 }
@@ -108,280 +108,280 @@ void queueDraw(){
 inline void spin_button_set_step(ui::SpinButton spin, gfloat step)
 {
 #if 1
-    gtk_adjustment_set_step_increment(gtk_spin_button_get_adjustment(spin), step);
+	gtk_adjustment_set_step_increment(gtk_spin_button_get_adjustment(spin), step);
 #else
-    GValue gvalue = GValue_default();
-    g_value_init( &gvalue, G_TYPE_DOUBLE );
-    g_value_set_double( &gvalue, step );
-    g_object_set( G_OBJECT( gtk_spin_button_get_adjustment( spin ) ), "step-increment", &gvalue, NULL );
+	GValue gvalue = GValue_default();
+	g_value_init( &gvalue, G_TYPE_DOUBLE );
+	g_value_set_double( &gvalue, step );
+	g_object_set( G_OBJECT( gtk_spin_button_get_adjustment( spin ) ), "step-increment", &gvalue, NULL );
 #endif
 }
 
 class Increment {
-    float &m_f;
+float &m_f;
 public:
-    ui::SpinButton m_spin;
-    ui::Entry m_entry;
+ui::SpinButton m_spin;
+ui::Entry m_entry;
 
-    Increment(float &f) : m_f(f), m_spin(ui::null), m_entry(ui::null)
-    {
-    }
+Increment(float &f) : m_f(f), m_spin(ui::null), m_entry(ui::null)
+{
+}
 
-    void cancel()
-    {
-        entry_set_float(m_entry, m_f);
-    }
+void cancel()
+{
+	entry_set_float(m_entry, m_f);
+}
 
-    typedef MemberCaller<Increment, void(), &Increment::cancel> CancelCaller;
+typedef MemberCaller<Increment, void (), &Increment::cancel> CancelCaller;
 
-    void apply()
-    {
-        m_f = static_cast<float>( entry_get_float(m_entry));
-        spin_button_set_step(m_spin, m_f);
-    }
+void apply()
+{
+	m_f = static_cast<float>( entry_get_float(m_entry));
+	spin_button_set_step(m_spin, m_f);
+}
 
-    typedef MemberCaller<Increment, void(), &Increment::apply> ApplyCaller;
+typedef MemberCaller<Increment, void (), &Increment::apply> ApplyCaller;
 };
 
 void SurfaceInspector_GridChange();
 
 class SurfaceInspector : public Dialog {
-    ui::Window BuildDialog();
+ui::Window BuildDialog();
 
-    NonModalEntry m_textureEntry;
-    NonModalSpinner m_hshiftSpinner;
-    NonModalEntry m_hshiftEntry;
-    NonModalSpinner m_vshiftSpinner;
-    NonModalEntry m_vshiftEntry;
-    NonModalSpinner m_hscaleSpinner;
-    NonModalEntry m_hscaleEntry;
-    NonModalSpinner m_vscaleSpinner;
-    NonModalEntry m_vscaleEntry;
-    NonModalSpinner m_rotateSpinner;
-    NonModalEntry m_rotateEntry;
+NonModalEntry m_textureEntry;
+NonModalSpinner m_hshiftSpinner;
+NonModalEntry m_hshiftEntry;
+NonModalSpinner m_vshiftSpinner;
+NonModalEntry m_vshiftEntry;
+NonModalSpinner m_hscaleSpinner;
+NonModalEntry m_hscaleEntry;
+NonModalSpinner m_vscaleSpinner;
+NonModalEntry m_vscaleEntry;
+NonModalSpinner m_rotateSpinner;
+NonModalEntry m_rotateEntry;
 
-    IdleDraw m_idleDraw;
+IdleDraw m_idleDraw;
 
-    GtkCheckButton *m_surfaceFlags[32];
-    GtkCheckButton *m_contentFlags[32];
+GtkCheckButton *m_surfaceFlags[32];
+GtkCheckButton *m_contentFlags[32];
 
-    NonModalEntry m_valueEntry;
-    ui::Entry m_valueEntryWidget{ui::null};
+NonModalEntry m_valueEntry;
+ui::Entry m_valueEntryWidget{ui::null};
 public:
-    WindowPositionTracker m_positionTracker;
+WindowPositionTracker m_positionTracker;
 
 // Dialog Data
-    float m_fitHorizontal;
-    float m_fitVertical;
+float m_fitHorizontal;
+float m_fitVertical;
 
-    Increment m_hshiftIncrement;
-    Increment m_vshiftIncrement;
-    Increment m_hscaleIncrement;
-    Increment m_vscaleIncrement;
-    Increment m_rotateIncrement;
-    ui::Entry m_texture{ui::null};
+Increment m_hshiftIncrement;
+Increment m_vshiftIncrement;
+Increment m_hscaleIncrement;
+Increment m_vscaleIncrement;
+Increment m_rotateIncrement;
+ui::Entry m_texture{ui::null};
 
-    SurfaceInspector() :
-            m_textureEntry(ApplyShaderCaller(*this), UpdateCaller(*this)),
-            m_hshiftSpinner(ApplyTexdefCaller(*this), UpdateCaller(*this)),
-            m_hshiftEntry(Increment::ApplyCaller(m_hshiftIncrement), Increment::CancelCaller(m_hshiftIncrement)),
-            m_vshiftSpinner(ApplyTexdefCaller(*this), UpdateCaller(*this)),
-            m_vshiftEntry(Increment::ApplyCaller(m_vshiftIncrement), Increment::CancelCaller(m_vshiftIncrement)),
-            m_hscaleSpinner(ApplyTexdefCaller(*this), UpdateCaller(*this)),
-            m_hscaleEntry(Increment::ApplyCaller(m_hscaleIncrement), Increment::CancelCaller(m_hscaleIncrement)),
-            m_vscaleSpinner(ApplyTexdefCaller(*this), UpdateCaller(*this)),
-            m_vscaleEntry(Increment::ApplyCaller(m_vscaleIncrement), Increment::CancelCaller(m_vscaleIncrement)),
-            m_rotateSpinner(ApplyTexdefCaller(*this), UpdateCaller(*this)),
-            m_rotateEntry(Increment::ApplyCaller(m_rotateIncrement), Increment::CancelCaller(m_rotateIncrement)),
-            m_idleDraw(UpdateCaller(*this)),
-            m_valueEntry(ApplyFlagsCaller(*this), UpdateCaller(*this)),
-            m_hshiftIncrement(g_si_globals.shift[0]),
-            m_vshiftIncrement(g_si_globals.shift[1]),
-            m_hscaleIncrement(g_si_globals.scale[0]),
-            m_vscaleIncrement(g_si_globals.scale[1]),
-            m_rotateIncrement(g_si_globals.rotate)
-    {
-        m_fitVertical = 1;
-        m_fitHorizontal = 1;
-        m_positionTracker.setPosition(c_default_window_pos);
-    }
+SurfaceInspector() :
+	m_textureEntry(ApplyShaderCaller(*this), UpdateCaller(*this)),
+	m_hshiftSpinner(ApplyTexdefCaller(*this), UpdateCaller(*this)),
+	m_hshiftEntry(Increment::ApplyCaller(m_hshiftIncrement), Increment::CancelCaller(m_hshiftIncrement)),
+	m_vshiftSpinner(ApplyTexdefCaller(*this), UpdateCaller(*this)),
+	m_vshiftEntry(Increment::ApplyCaller(m_vshiftIncrement), Increment::CancelCaller(m_vshiftIncrement)),
+	m_hscaleSpinner(ApplyTexdefCaller(*this), UpdateCaller(*this)),
+	m_hscaleEntry(Increment::ApplyCaller(m_hscaleIncrement), Increment::CancelCaller(m_hscaleIncrement)),
+	m_vscaleSpinner(ApplyTexdefCaller(*this), UpdateCaller(*this)),
+	m_vscaleEntry(Increment::ApplyCaller(m_vscaleIncrement), Increment::CancelCaller(m_vscaleIncrement)),
+	m_rotateSpinner(ApplyTexdefCaller(*this), UpdateCaller(*this)),
+	m_rotateEntry(Increment::ApplyCaller(m_rotateIncrement), Increment::CancelCaller(m_rotateIncrement)),
+	m_idleDraw(UpdateCaller(*this)),
+	m_valueEntry(ApplyFlagsCaller(*this), UpdateCaller(*this)),
+	m_hshiftIncrement(g_si_globals.shift[0]),
+	m_vshiftIncrement(g_si_globals.shift[1]),
+	m_hscaleIncrement(g_si_globals.scale[0]),
+	m_vscaleIncrement(g_si_globals.scale[1]),
+	m_rotateIncrement(g_si_globals.rotate)
+{
+	m_fitVertical = 1;
+	m_fitHorizontal = 1;
+	m_positionTracker.setPosition(c_default_window_pos);
+}
 
-    void constructWindow(ui::Window main_window)
-    {
-        m_parent = main_window;
-        Create();
-        AddGridChangeCallback(FreeCaller<void(), SurfaceInspector_GridChange>());
-    }
+void constructWindow(ui::Window main_window)
+{
+	m_parent = main_window;
+	Create();
+	AddGridChangeCallback(FreeCaller<void(), SurfaceInspector_GridChange>());
+}
 
-    void destroyWindow()
-    {
-        Destroy();
-    }
+void destroyWindow()
+{
+	Destroy();
+}
 
-    bool visible()
-    {
-        return GetWidget().visible();
-    }
+bool visible()
+{
+	return GetWidget().visible();
+}
 
-    void queueDraw()
-    {
-        if (visible()) {
-            m_idleDraw.queueDraw();
-        }
-    }
+void queueDraw()
+{
+	if (visible()) {
+		m_idleDraw.queueDraw();
+	}
+}
 
-    void Update();
+void Update();
 
-    typedef MemberCaller<SurfaceInspector, void(), &SurfaceInspector::Update> UpdateCaller;
+typedef MemberCaller<SurfaceInspector, void (), &SurfaceInspector::Update> UpdateCaller;
 
-    void ApplyShader();
+void ApplyShader();
 
-    typedef MemberCaller<SurfaceInspector, void(), &SurfaceInspector::ApplyShader> ApplyShaderCaller;
+typedef MemberCaller<SurfaceInspector, void (), &SurfaceInspector::ApplyShader> ApplyShaderCaller;
 
-    void ApplyTexdef();
+void ApplyTexdef();
 
-    typedef MemberCaller<SurfaceInspector, void(), &SurfaceInspector::ApplyTexdef> ApplyTexdefCaller;
+typedef MemberCaller<SurfaceInspector, void (), &SurfaceInspector::ApplyTexdef> ApplyTexdefCaller;
 
-    void ApplyFlags();
+void ApplyFlags();
 
-    typedef MemberCaller<SurfaceInspector, void(), &SurfaceInspector::ApplyFlags> ApplyFlagsCaller;
+typedef MemberCaller<SurfaceInspector, void (), &SurfaceInspector::ApplyFlags> ApplyFlagsCaller;
 };
 
 namespace {
-    SurfaceInspector *g_SurfaceInspector;
+SurfaceInspector *g_SurfaceInspector;
 
-    inline SurfaceInspector &getSurfaceInspector()
-    {
-        ASSERT_NOTNULL(g_SurfaceInspector);
-        return *g_SurfaceInspector;
-    }
+inline SurfaceInspector &getSurfaceInspector()
+{
+	ASSERT_NOTNULL(g_SurfaceInspector);
+	return *g_SurfaceInspector;
+}
 }
 
 void SurfaceInspector_constructWindow(ui::Window main_window)
 {
-    getSurfaceInspector().constructWindow(main_window);
+	getSurfaceInspector().constructWindow(main_window);
 }
 
 void SurfaceInspector_destroyWindow()
 {
-    getSurfaceInspector().destroyWindow();
+	getSurfaceInspector().destroyWindow();
 }
 
 void SurfaceInspector_queueDraw()
 {
-    getSurfaceInspector().queueDraw();
+	getSurfaceInspector().queueDraw();
 }
 
 namespace {
-    CopiedString g_selectedShader;
-    TextureProjection g_selectedTexdef;
-    ContentsFlagsValue g_selectedFlags;
-    size_t g_selectedShaderSize[2];
+CopiedString g_selectedShader;
+TextureProjection g_selectedTexdef;
+ContentsFlagsValue g_selectedFlags;
+size_t g_selectedShaderSize[2];
 }
 
 void SurfaceInspector_SetSelectedShader(const char *shader)
 {
-    g_selectedShader = shader;
-    SurfaceInspector_queueDraw();
+	g_selectedShader = shader;
+	SurfaceInspector_queueDraw();
 }
 
 void SurfaceInspector_SetSelectedTexdef(const TextureProjection &projection)
 {
-    g_selectedTexdef = projection;
-    SurfaceInspector_queueDraw();
+	g_selectedTexdef = projection;
+	SurfaceInspector_queueDraw();
 }
 
 void SurfaceInspector_SetSelectedFlags(const ContentsFlagsValue &flags)
 {
-    g_selectedFlags = flags;
-    SurfaceInspector_queueDraw();
+	g_selectedFlags = flags;
+	SurfaceInspector_queueDraw();
 }
 
 static bool s_texture_selection_dirty = false;
 
 void SurfaceInspector_updateSelection()
 {
-    s_texture_selection_dirty = true;
-    SurfaceInspector_queueDraw();
+	s_texture_selection_dirty = true;
+	SurfaceInspector_queueDraw();
 
 #if TEXTOOL_ENABLED
-    if ( g_bp_globals.m_texdefTypeId == TEXDEFTYPEID_BRUSHPRIMITIVES ) {
-        TexTool::queueDraw();
-        //globalOutputStream() << "textool texture changed..\n";
-    }
+	if ( g_bp_globals.m_texdefTypeId == TEXDEFTYPEID_BRUSHPRIMITIVES ) {
+		TexTool::queueDraw();
+		//globalOutputStream() << "textool texture changed..\n";
+	}
 #endif
 }
 
 void SurfaceInspector_SelectionChanged(const Selectable &selectable)
 {
-    SurfaceInspector_updateSelection();
+	SurfaceInspector_updateSelection();
 }
 
 void SurfaceInspector_SetCurrent_FromSelected()
 {
-    if (s_texture_selection_dirty == true) {
-        s_texture_selection_dirty = false;
-        if (!g_SelectedFaceInstances.empty()) {
-            TextureProjection projection;
+	if (s_texture_selection_dirty == true) {
+		s_texture_selection_dirty = false;
+		if (!g_SelectedFaceInstances.empty()) {
+			TextureProjection projection;
 //This *may* be the point before it fucks up... Let's see!
 //Yep, there was a call to removeScale in there...
-            Scene_BrushGetTexdef_Component_Selected(GlobalSceneGraph(), projection);
+			Scene_BrushGetTexdef_Component_Selected(GlobalSceneGraph(), projection);
 
-            SurfaceInspector_SetSelectedTexdef(projection);
+			SurfaceInspector_SetSelectedTexdef(projection);
 
-            Scene_BrushGetShaderSize_Component_Selected(GlobalSceneGraph(), g_selectedShaderSize[0],
-                                                        g_selectedShaderSize[1]);
-            g_selectedTexdef.m_brushprimit_texdef.coords[0][2] = float_mod(
-                    g_selectedTexdef.m_brushprimit_texdef.coords[0][2], (float) g_selectedShaderSize[0]);
-            g_selectedTexdef.m_brushprimit_texdef.coords[1][2] = float_mod(
-                    g_selectedTexdef.m_brushprimit_texdef.coords[1][2], (float) g_selectedShaderSize[1]);
+			Scene_BrushGetShaderSize_Component_Selected(GlobalSceneGraph(), g_selectedShaderSize[0],
+			                                            g_selectedShaderSize[1]);
+			g_selectedTexdef.m_brushprimit_texdef.coords[0][2] = float_mod(
+				g_selectedTexdef.m_brushprimit_texdef.coords[0][2], (float) g_selectedShaderSize[0]);
+			g_selectedTexdef.m_brushprimit_texdef.coords[1][2] = float_mod(
+				g_selectedTexdef.m_brushprimit_texdef.coords[1][2], (float) g_selectedShaderSize[1]);
 
-            CopiedString name;
-            Scene_BrushGetShader_Component_Selected(GlobalSceneGraph(), name);
-            if (string_not_empty(name.c_str())) {
-                SurfaceInspector_SetSelectedShader(name.c_str());
-            }
+			CopiedString name;
+			Scene_BrushGetShader_Component_Selected(GlobalSceneGraph(), name);
+			if (string_not_empty(name.c_str())) {
+				SurfaceInspector_SetSelectedShader(name.c_str());
+			}
 
-            ContentsFlagsValue flags;
-            Scene_BrushGetFlags_Component_Selected(GlobalSceneGraph(), flags);
-            SurfaceInspector_SetSelectedFlags(flags);
-        } else {
-            TextureProjection projection;
-            Scene_BrushGetTexdef_Selected(GlobalSceneGraph(), projection);
-            SurfaceInspector_SetSelectedTexdef(projection);
+			ContentsFlagsValue flags;
+			Scene_BrushGetFlags_Component_Selected(GlobalSceneGraph(), flags);
+			SurfaceInspector_SetSelectedFlags(flags);
+		} else {
+			TextureProjection projection;
+			Scene_BrushGetTexdef_Selected(GlobalSceneGraph(), projection);
+			SurfaceInspector_SetSelectedTexdef(projection);
 
-            CopiedString name;
-            Scene_BrushGetShader_Selected(GlobalSceneGraph(), name);
-            if (string_empty(name.c_str())) {
-                Scene_PatchGetShader_Selected(GlobalSceneGraph(), name);
-            }
-            if (string_not_empty(name.c_str())) {
-                SurfaceInspector_SetSelectedShader(name.c_str());
-            }
+			CopiedString name;
+			Scene_BrushGetShader_Selected(GlobalSceneGraph(), name);
+			if (string_empty(name.c_str())) {
+				Scene_PatchGetShader_Selected(GlobalSceneGraph(), name);
+			}
+			if (string_not_empty(name.c_str())) {
+				SurfaceInspector_SetSelectedShader(name.c_str());
+			}
 
-            ContentsFlagsValue flags(0, 0, 0, false);
-            Scene_BrushGetFlags_Selected(GlobalSceneGraph(), flags);
-            SurfaceInspector_SetSelectedFlags(flags);
-        }
-    }
+			ContentsFlagsValue flags(0, 0, 0, false);
+			Scene_BrushGetFlags_Selected(GlobalSceneGraph(), flags);
+			SurfaceInspector_SetSelectedFlags(flags);
+		}
+	}
 }
 
 const char *SurfaceInspector_GetSelectedShader()
 {
-    SurfaceInspector_SetCurrent_FromSelected();
-    return g_selectedShader.c_str();
+	SurfaceInspector_SetCurrent_FromSelected();
+	return g_selectedShader.c_str();
 }
 
 const TextureProjection &SurfaceInspector_GetSelectedTexdef()
 {
-    SurfaceInspector_SetCurrent_FromSelected();
-    return g_selectedTexdef;
+	SurfaceInspector_SetCurrent_FromSelected();
+	return g_selectedTexdef;
 }
 
 const ContentsFlagsValue &SurfaceInspector_GetSelectedFlags()
 {
-    SurfaceInspector_SetCurrent_FromSelected();
-    return g_selectedFlags;
+	SurfaceInspector_SetCurrent_FromSelected();
+	return g_selectedFlags;
 }
 
 
@@ -408,16 +408,16 @@ si_globals_t g_si_globals;
 // see fenris #2810
 void DoSnapTToGrid(float hscale, float vscale)
 {
-    g_si_globals.shift[0] = static_cast<float>( float_to_integer(static_cast<float>( GetGridSize()) / hscale));
-    g_si_globals.shift[1] = static_cast<float>( float_to_integer(static_cast<float>( GetGridSize()) / vscale));
-    getSurfaceInspector().queueDraw();
+	g_si_globals.shift[0] = static_cast<float>( float_to_integer(static_cast<float>( GetGridSize()) / hscale));
+	g_si_globals.shift[1] = static_cast<float>( float_to_integer(static_cast<float>( GetGridSize()) / vscale));
+	getSurfaceInspector().queueDraw();
 }
 
 void SurfaceInspector_GridChange()
 {
-    if (g_si_globals.m_bSnapTToGrid) {
-        DoSnapTToGrid(Texdef_getDefaultTextureScale(), Texdef_getDefaultTextureScale());
-    }
+	if (g_si_globals.m_bSnapTToGrid) {
+		DoSnapTToGrid(Texdef_getDefaultTextureScale(), Texdef_getDefaultTextureScale());
+	}
 }
 
 // make the shift increments match the grid settings
@@ -428,16 +428,16 @@ void SurfaceInspector_GridChange()
 // increment * scale = gridsize
 static void OnBtnMatchGrid(ui::Widget widget, gpointer data)
 {
-    float hscale, vscale;
-    hscale = static_cast<float>( gtk_spin_button_get_value(getSurfaceInspector().m_hscaleIncrement.m_spin));
-    vscale = static_cast<float>( gtk_spin_button_get_value(getSurfaceInspector().m_vscaleIncrement.m_spin));
+	float hscale, vscale;
+	hscale = static_cast<float>( gtk_spin_button_get_value(getSurfaceInspector().m_hscaleIncrement.m_spin));
+	vscale = static_cast<float>( gtk_spin_button_get_value(getSurfaceInspector().m_vscaleIncrement.m_spin));
 
-    if (hscale == 0.0f || vscale == 0.0f) {
-        globalOutputStream() << "ERROR: unexpected scale == 0.0f\n";
-        return;
-    }
+	if (hscale == 0.0f || vscale == 0.0f) {
+		globalOutputStream() << "ERROR: unexpected scale == 0.0f\n";
+		return;
+	}
 
-    DoSnapTToGrid(hscale, vscale);
+	DoSnapTToGrid(hscale, vscale);
 }
 
 // DoSurface will always try to show the surface inspector
@@ -445,174 +445,174 @@ static void OnBtnMatchGrid(ui::Widget widget, gpointer data)
 // Shamus: It does get called when the SI is hidden, but not when you select something new. ;-)
 void DoSurface(void)
 {
-    if (!getSurfaceInspector().GetWidget()) {
-        getSurfaceInspector().Create();
+	if (!getSurfaceInspector().GetWidget()) {
+		getSurfaceInspector().Create();
 
-    }
-    getSurfaceInspector().Update();
-    getSurfaceInspector().importData();
-    getSurfaceInspector().ShowDlg();
+	}
+	getSurfaceInspector().Update();
+	getSurfaceInspector().importData();
+	getSurfaceInspector().ShowDlg();
 }
 
 void SurfaceInspector_toggleShown()
 {
-    if (getSurfaceInspector().visible()) {
-        getSurfaceInspector().HideDlg();
-    } else {
-        DoSurface();
-    }
+	if (getSurfaceInspector().visible()) {
+		getSurfaceInspector().HideDlg();
+	} else {
+		DoSurface();
+	}
 }
 
 void SurfaceInspector_FitTexture()
 {
-    UndoableCommand undo("textureAutoFit");
-    Select_FitTexture(getSurfaceInspector().m_fitHorizontal, getSurfaceInspector().m_fitVertical);
+	UndoableCommand undo("textureAutoFit");
+	Select_FitTexture(getSurfaceInspector().m_fitHorizontal, getSurfaceInspector().m_fitVertical);
 }
 
 static void OnBtnPatchdetails(ui::Widget widget, gpointer data)
 {
-    Patch_CapTexture();
+	Patch_CapTexture();
 }
 
 static void OnBtnPatchnatural(ui::Widget widget, gpointer data)
 {
-    Patch_NaturalTexture();
+	Patch_NaturalTexture();
 }
 
 static void OnBtnPatchreset(ui::Widget widget, gpointer data)
 {
-    Patch_ResetTexture();
+	Patch_ResetTexture();
 }
 
 static void OnBtnPatchFit(ui::Widget widget, gpointer data)
 {
-    Patch_FitTexture();
+	Patch_FitTexture();
 }
 
 static void OnBtnAxial(ui::Widget widget, gpointer data)
 {
 //globalOutputStream() << "--> [OnBtnAxial]...\n";
-    UndoableCommand undo("textureDefault");
-    TextureProjection projection;
+	UndoableCommand undo("textureDefault");
+	TextureProjection projection;
 //globalOutputStream() << "    TexDef_Construct_Default()...\n";
-    TexDef_Construct_Default(projection);
+	TexDef_Construct_Default(projection);
 //globalOutputStream() << "    Select_SetTexdef()...\n";
 
 #if TEXTOOL_ENABLED
 
-    //Shamus:
-    if ( g_bp_globals.m_texdefTypeId == TEXDEFTYPEID_BRUSHPRIMITIVES ) {
-        // Scale up texture width/height if in BP mode...
+	//Shamus:
+	if ( g_bp_globals.m_texdefTypeId == TEXDEFTYPEID_BRUSHPRIMITIVES ) {
+		// Scale up texture width/height if in BP mode...
 //NOTE: This may not be correct any more! :-P
-        if ( !g_SelectedFaceInstances.empty() ) {
-            Face & face = g_SelectedFaceInstances.last().getFace();
-            float x = face.getShader().m_state->getTexture().width;
-            float y = face.getShader().m_state->getTexture().height;
-            projection.m_brushprimit_texdef.coords[0][0] /= x;
-            projection.m_brushprimit_texdef.coords[0][1] /= y;
-            projection.m_brushprimit_texdef.coords[1][0] /= x;
-            projection.m_brushprimit_texdef.coords[1][1] /= y;
-        }
-    }
+		if ( !g_SelectedFaceInstances.empty() ) {
+			Face & face = g_SelectedFaceInstances.last().getFace();
+			float x = face.getShader().m_state->getTexture().width;
+			float y = face.getShader().m_state->getTexture().height;
+			projection.m_brushprimit_texdef.coords[0][0] /= x;
+			projection.m_brushprimit_texdef.coords[0][1] /= y;
+			projection.m_brushprimit_texdef.coords[1][0] /= x;
+			projection.m_brushprimit_texdef.coords[1][1] /= y;
+		}
+	}
 #endif
 
-    Select_SetTexdef(projection, true);
+	Select_SetTexdef(projection, true);
 }
 
 static void OnBtnFaceFit(ui::Widget widget, gpointer data)
 {
-    getSurfaceInspector().exportData();
-    SurfaceInspector_FitTexture();
+	getSurfaceInspector().exportData();
+	SurfaceInspector_FitTexture();
 }
 
 typedef const char *FlagName;
 
 const FlagName surfaceflagNamesDefault[32] = {
-        "surf1",
-        "surf2",
-        "surf3",
-        "surf4",
-        "surf5",
-        "surf6",
-        "surf7",
-        "surf8",
-        "surf9",
-        "surf10",
-        "surf11",
-        "surf12",
-        "surf13",
-        "surf14",
-        "surf15",
-        "surf16",
-        "surf17",
-        "surf18",
-        "surf19",
-        "surf20",
-        "surf21",
-        "surf22",
-        "surf23",
-        "surf24",
-        "surf25",
-        "surf26",
-        "surf27",
-        "surf28",
-        "surf29",
-        "surf30",
-        "surf31",
-        "surf32"
+	"surf1",
+	"surf2",
+	"surf3",
+	"surf4",
+	"surf5",
+	"surf6",
+	"surf7",
+	"surf8",
+	"surf9",
+	"surf10",
+	"surf11",
+	"surf12",
+	"surf13",
+	"surf14",
+	"surf15",
+	"surf16",
+	"surf17",
+	"surf18",
+	"surf19",
+	"surf20",
+	"surf21",
+	"surf22",
+	"surf23",
+	"surf24",
+	"surf25",
+	"surf26",
+	"surf27",
+	"surf28",
+	"surf29",
+	"surf30",
+	"surf31",
+	"surf32"
 };
 
 const FlagName contentflagNamesDefault[32] = {
-        "cont1",
-        "cont2",
-        "cont3",
-        "cont4",
-        "cont5",
-        "cont6",
-        "cont7",
-        "cont8",
-        "cont9",
-        "cont10",
-        "cont11",
-        "cont12",
-        "cont13",
-        "cont14",
-        "cont15",
-        "cont16",
-        "cont17",
-        "cont18",
-        "cont19",
-        "cont20",
-        "cont21",
-        "cont22",
-        "cont23",
-        "cont24",
-        "cont25",
-        "cont26",
-        "cont27",
-        "cont28",
-        "cont29",
-        "cont30",
-        "cont31",
-        "cont32"
+	"cont1",
+	"cont2",
+	"cont3",
+	"cont4",
+	"cont5",
+	"cont6",
+	"cont7",
+	"cont8",
+	"cont9",
+	"cont10",
+	"cont11",
+	"cont12",
+	"cont13",
+	"cont14",
+	"cont15",
+	"cont16",
+	"cont17",
+	"cont18",
+	"cont19",
+	"cont20",
+	"cont21",
+	"cont22",
+	"cont23",
+	"cont24",
+	"cont25",
+	"cont26",
+	"cont27",
+	"cont28",
+	"cont29",
+	"cont30",
+	"cont31",
+	"cont32"
 };
 
 const char *getSurfaceFlagName(std::size_t bit)
 {
-    const char *value = g_pGameDescription->getKeyValue(surfaceflagNamesDefault[bit]);
-    if (string_empty(value)) {
-        return surfaceflagNamesDefault[bit];
-    }
-    return value;
+	const char *value = g_pGameDescription->getKeyValue(surfaceflagNamesDefault[bit]);
+	if (string_empty(value)) {
+		return surfaceflagNamesDefault[bit];
+	}
+	return value;
 }
 
 const char *getContentFlagName(std::size_t bit)
 {
-    const char *value = g_pGameDescription->getKeyValue(contentflagNamesDefault[bit]);
-    if (string_empty(value)) {
-        return contentflagNamesDefault[bit];
-    }
-    return value;
+	const char *value = g_pGameDescription->getKeyValue(contentflagNamesDefault[bit]);
+	if (string_empty(value)) {
+		return contentflagNamesDefault[bit];
+	}
+	return value;
 }
 
 
@@ -621,423 +621,423 @@ const char *getContentFlagName(std::size_t bit)
 
 guint togglebutton_connect_toggled(ui::ToggleButton button, const Callback<void()> &callback)
 {
-    return g_signal_connect_swapped(G_OBJECT(button), "toggled", G_CALLBACK(callback.getThunk()),
-                                    callback.getEnvironment());
+	return g_signal_connect_swapped(G_OBJECT(button), "toggled", G_CALLBACK(callback.getThunk()),
+	                                callback.getEnvironment());
 }
 
 ui::Window SurfaceInspector::BuildDialog()
 {
-    ui::Window window = ui::Window(create_floating_window("Surface Inspector", m_parent));
+	ui::Window window = ui::Window(create_floating_window("Surface Inspector", m_parent));
 
-    m_positionTracker.connect(window);
+	m_positionTracker.connect(window);
 
-    global_accel_connect_window(window);
+	global_accel_connect_window(window);
 
-    window_connect_focus_in_clear_focus_widget(window);
-
-
-    {
-        // replaced by only the vbox:
-        auto vbox = ui::VBox(FALSE, 5);
-        vbox.show();
-        window.add(vbox);
-        gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
-
-        {
-            auto hbox2 = ui::HBox(FALSE, 5);
-            hbox2.show();
-            vbox.pack_start(hbox2, FALSE, FALSE, 0);
-
-            {
-                ui::Widget label = ui::Label("Texture");
-                label.show();
-                hbox2.pack_start(label, FALSE, TRUE, 0);
-            }
-            {
-                auto entry = ui::Entry(ui::New);
-                entry.show();
-                hbox2.pack_start(entry, TRUE, TRUE, 0);
-                m_texture = entry;
-                m_textureEntry.connect(entry);
-                GlobalTextureEntryCompletion::instance().connect(entry);
-            }
-        }
+	window_connect_focus_in_clear_focus_widget(window);
 
 
-        {
-            auto table = ui::Table(6, 4, FALSE);
-            table.show();
-            vbox.pack_start(table, FALSE, FALSE, 0);
-            gtk_table_set_row_spacings(table, 5);
-            gtk_table_set_col_spacings(table, 5);
-            {
-                ui::Widget label = ui::Label("Horizontal shift");
-                label.show();
-                gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
-                table.attach(label, {0, 1, 0, 1}, {GTK_FILL, 0});
-            }
-            {
-                auto spin = ui::SpinButton(ui::Adjustment(0, -8192, 8192, 2, 8, 0), 0, 2);
-                m_hshiftIncrement.m_spin = spin;
-                m_hshiftSpinner.connect(spin);
-                spin.show();
-                table.attach(spin, {1, 2, 0, 1}, {GTK_EXPAND | GTK_FILL, 0});
-                spin.dimensions(60, -1);
-            }
-            {
-                ui::Widget label = ui::Label("Step");
-                label.show();
-                gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
-                table.attach(label, {2, 3, 0, 1}, {GTK_FILL, 0});
-            }
-            {
-                auto entry = ui::Entry(ui::New);
-                entry.show();
-                table.attach(entry, {3, 4, 0, 1}, {GTK_EXPAND | GTK_FILL, 0});
-                entry.dimensions(50, -1);
-                m_hshiftIncrement.m_entry = entry;
-                m_hshiftEntry.connect(entry);
-            }
-            {
-                ui::Widget label = ui::Label("Vertical shift");
-                label.show();
-                gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
-                table.attach(label, {0, 1, 1, 2}, {GTK_FILL, 0});
-            }
-            {
-                auto spin = ui::SpinButton(ui::Adjustment(0, -8192, 8192, 2, 8, 0), 0, 2);
-                m_vshiftIncrement.m_spin = spin;
-                m_vshiftSpinner.connect(spin);
-                spin.show();
-                table.attach(spin, {1, 2, 1, 2}, {GTK_FILL, 0});
-                spin.dimensions(60, -1);
-            }
-            {
-                ui::Widget label = ui::Label("Step");
-                label.show();
-                gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
-                table.attach(label, {2, 3, 1, 2}, {GTK_FILL, 0});
-            }
-            {
-                auto entry = ui::Entry(ui::New);
-                entry.show();
-                table.attach(entry, {3, 4, 1, 2}, {GTK_FILL, 0});
-                entry.dimensions(50, -1);
-                m_vshiftIncrement.m_entry = entry;
-                m_vshiftEntry.connect(entry);
-            }
-            {
-                ui::Widget label = ui::Label("Horizontal stretch");
-                label.show();
-                gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
-                table.attach(label, {0, 1, 2, 3}, {GTK_FILL, 0});
-            }
-            {
-                auto spin = ui::SpinButton(ui::Adjustment(0, -8192, 8192, 2, 8, 0), 0, 5);
-                m_hscaleIncrement.m_spin = spin;
-                m_hscaleSpinner.connect(spin);
-                spin.show();
-                table.attach(spin, {1, 2, 2, 3}, {GTK_FILL, 0});
-                spin.dimensions(60, -1);
-            }
-            {
-                ui::Widget label = ui::Label("Step");
-                label.show();
-                gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
-                table.attach(label, {2, 3, 2, 3}, {GTK_FILL, 0});
-            }
-            {
-                auto entry = ui::Entry(ui::New);
-                entry.show();
-                table.attach(entry, {3, 4, 2, 3}, {GTK_FILL, 0});
-                entry.dimensions(50, -1);
-                m_hscaleIncrement.m_entry = entry;
-                m_hscaleEntry.connect(entry);
-            }
-            {
-                ui::Widget label = ui::Label("Vertical stretch");
-                label.show();
-                gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
-                table.attach(label, {0, 1, 3, 4}, {GTK_FILL, 0});
-            }
-            {
-                auto spin = ui::SpinButton(ui::Adjustment(0, -8192, 8192, 2, 8, 0), 0, 5);
-                m_vscaleIncrement.m_spin = spin;
-                m_vscaleSpinner.connect(spin);
-                spin.show();
-                table.attach(spin, {1, 2, 3, 4}, {GTK_FILL, 0});
-                spin.dimensions(60, -1);
-            }
-            {
-                ui::Widget label = ui::Label("Step");
-                label.show();
-                gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
-                table.attach(label, {2, 3, 3, 4}, {GTK_FILL, 0});
-            }
-            {
-                auto entry = ui::Entry(ui::New);
-                entry.show();
-                table.attach(entry, {3, 4, 3, 4}, {GTK_FILL, 0});
-                entry.dimensions(50, -1);
-                m_vscaleIncrement.m_entry = entry;
-                m_vscaleEntry.connect(entry);
-            }
-            {
-                ui::Widget label = ui::Label("Rotate");
-                label.show();
-                gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
-                table.attach(label, {0, 1, 4, 5}, {GTK_FILL, 0});
-            }
-            {
-                auto spin = ui::SpinButton(ui::Adjustment(0, -8192, 8192, 2, 8, 0), 0, 2);
-                m_rotateIncrement.m_spin = spin;
-                m_rotateSpinner.connect(spin);
-                spin.show();
-                table.attach(spin, {1, 2, 4, 5}, {GTK_FILL, 0});
-                spin.dimensions(60, -1);
-                gtk_spin_button_set_wrap(spin, TRUE);
-            }
-            {
-                ui::Widget label = ui::Label("Step");
-                label.show();
-                gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
-                table.attach(label, {2, 3, 4, 5}, {GTK_FILL, 0});
-            }
-            {
-                auto entry = ui::Entry(ui::New);
-                entry.show();
-                table.attach(entry, {3, 4, 4, 5}, {GTK_FILL, 0});
-                entry.dimensions(50, -1);
-                m_rotateIncrement.m_entry = entry;
-                m_rotateEntry.connect(entry);
-            }
-            {
-                // match grid button
-                ui::Widget button = ui::Button("Match Grid");
-                button.show();
-                table.attach(button, {2, 4, 5, 6}, {GTK_EXPAND | GTK_FILL, 0});
-                button.connect("clicked", G_CALLBACK(OnBtnMatchGrid), 0);
-            }
-        }
+	{
+		// replaced by only the vbox:
+		auto vbox = ui::VBox(FALSE, 5);
+		vbox.show();
+		window.add(vbox);
+		gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
-        {
-            auto frame = ui::Frame("Texturing");
-            frame.show();
-            vbox.pack_start(frame, FALSE, FALSE, 0);
-            {
-                auto table = ui::Table(4, 4, FALSE);
-                table.show();
-                frame.add(table);
-                gtk_table_set_row_spacings(table, 5);
-                gtk_table_set_col_spacings(table, 5);
-                gtk_container_set_border_width(GTK_CONTAINER(table), 5);
-                {
-                    ui::Widget label = ui::Label("Brush");
-                    label.show();
-                    table.attach(label, {0, 1, 0, 1}, {GTK_FILL, 0});
-                }
-                {
-                    ui::Widget label = ui::Label("Patch");
-                    label.show();
-                    table.attach(label, {0, 1, 2, 3}, {GTK_FILL, 0});
-                }
-                {
-                    ui::Widget label = ui::Label("Width");
-                    label.show();
-                    table.attach(label, {2, 3, 0, 1}, {GTK_FILL, 0});
-                }
-                {
-                    ui::Widget label = ui::Label("Height");
-                    label.show();
-                    table.attach(label, {3, 4, 0, 1}, {GTK_FILL, 0});
-                }
-                {
-                    ui::Widget button = ui::Button("Axial");
-                    button.show();
-                    table.attach(button, {0, 1, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
-                    button.connect("clicked",
-                                   G_CALLBACK(OnBtnAxial), 0);
-                    button.dimensions(60, -1);
-                }
-                {
-                    ui::Widget button = ui::Button("Fit");
-                    button.show();
-                    table.attach(button, {1, 2, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
-                    button.connect("clicked",
-                                   G_CALLBACK(OnBtnFaceFit), 0);
-                    button.dimensions(60, -1);
-                }
-                {
-                    ui::Widget button = ui::Button("CAP");
-                    button.show();
-                    table.attach(button, {0, 1, 3, 4}, {GTK_EXPAND | GTK_FILL, 0});
-                    button.connect("clicked",
-                                   G_CALLBACK(OnBtnPatchdetails), 0);
-                    button.dimensions(60, -1);
-                }
-                {
-                    ui::Widget button = ui::Button("Set...");
-                    button.show();
-                    table.attach(button, {1, 2, 3, 4}, {GTK_EXPAND | GTK_FILL, 0});
-                    button.connect("clicked",
-                                   G_CALLBACK(OnBtnPatchreset), 0);
-                    button.dimensions(60, -1);
-                }
-                {
-                    ui::Widget button = ui::Button("Natural");
-                    button.show();
-                    table.attach(button, {2, 3, 3, 4}, {GTK_EXPAND | GTK_FILL, 0});
-                    button.connect("clicked",
-                                   G_CALLBACK(OnBtnPatchnatural), 0);
-                    button.dimensions(60, -1);
-                }
-                {
-                    ui::Widget button = ui::Button("Fit");
-                    button.show();
-                    table.attach(button, {3, 4, 3, 4}, {GTK_EXPAND | GTK_FILL, 0});
-                    button.connect("clicked",
-                                   G_CALLBACK(OnBtnPatchFit), 0);
-                    button.dimensions(60, -1);
-                }
-                {
-                    auto spin = ui::SpinButton(ui::Adjustment(1, 0, 1 << 16, 1, 10, 0), 0, 6);
-                    spin.show();
-                    table.attach(spin, {2, 3, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
-                    spin.dimensions(60, -1);
-                    AddDialogData(spin, m_fitHorizontal);
-                }
-                {
-                    auto spin = ui::SpinButton(ui::Adjustment(1, 0, 1 << 16, 1, 10, 0), 0, 6);
-                    spin.show();
-                    table.attach(spin, {3, 4, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
-                    spin.dimensions(60, -1);
-                    AddDialogData(spin, m_fitVertical);
-                }
-            }
-        }
-        if (!string_empty(g_pGameDescription->getKeyValue("si_flags"))) {
-            {
-                auto frame = ui::Frame("Surface Flags");
-                frame.show();
-                vbox.pack_start(frame, TRUE, TRUE, 0);
-                {
-                    auto vbox3 = ui::VBox(FALSE, 4);
-                    //gtk_container_set_border_width(GTK_CONTAINER(vbox3), 4);
-                    vbox3.show();
-                    frame.add(vbox3);
-                    {
-                        auto table = ui::Table(8, 4, FALSE);
-                        table.show();
-                        vbox3.pack_start(table, TRUE, TRUE, 0);
-                        gtk_table_set_row_spacings(table, 0);
-                        gtk_table_set_col_spacings(table, 0);
+		{
+			auto hbox2 = ui::HBox(FALSE, 5);
+			hbox2.show();
+			vbox.pack_start(hbox2, FALSE, FALSE, 0);
 
-                        GtkCheckButton **p = m_surfaceFlags;
+			{
+				ui::Widget label = ui::Label("Texture");
+				label.show();
+				hbox2.pack_start(label, FALSE, TRUE, 0);
+			}
+			{
+				auto entry = ui::Entry(ui::New);
+				entry.show();
+				hbox2.pack_start(entry, TRUE, TRUE, 0);
+				m_texture = entry;
+				m_textureEntry.connect(entry);
+				GlobalTextureEntryCompletion::instance().connect(entry);
+			}
+		}
 
-                        for (unsigned int c = 0; c != 4; ++c) {
-                            for (unsigned int r = 0; r != 8; ++r) {
-                                auto check = ui::CheckButton(getSurfaceFlagName(c * 8 + r));
-                                check.show();
-                                table.attach(check, {c, c + 1, r, r + 1}, {GTK_EXPAND | GTK_FILL, 0});
-                                *p++ = check;
-                                guint handler_id = togglebutton_connect_toggled(check, ApplyFlagsCaller(*this));
-                                g_object_set_data(G_OBJECT(check), "handler", gint_to_pointer(handler_id));
-                            }
-                        }
-                    }
-                }
-            }
-            {
-                auto frame = ui::Frame("Content Flags");
-                frame.show();
-                vbox.pack_start(frame, TRUE, TRUE, 0);
-                {
-                    auto vbox3 = ui::VBox(FALSE, 4);
-                    //gtk_container_set_border_width(GTK_CONTAINER(vbox3), 4);
-                    vbox3.show();
-                    frame.add(vbox3);
-                    {
 
-                        auto table = ui::Table(8, 4, FALSE);
-                        table.show();
-                        vbox3.pack_start(table, TRUE, TRUE, 0);
-                        gtk_table_set_row_spacings(table, 0);
-                        gtk_table_set_col_spacings(table, 0);
+		{
+			auto table = ui::Table(6, 4, FALSE);
+			table.show();
+			vbox.pack_start(table, FALSE, FALSE, 0);
+			gtk_table_set_row_spacings(table, 5);
+			gtk_table_set_col_spacings(table, 5);
+			{
+				ui::Widget label = ui::Label("Horizontal shift");
+				label.show();
+				gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+				table.attach(label, {0, 1, 0, 1}, {GTK_FILL, 0});
+			}
+			{
+				auto spin = ui::SpinButton(ui::Adjustment(0, -8192, 8192, 2, 8, 0), 0, 2);
+				m_hshiftIncrement.m_spin = spin;
+				m_hshiftSpinner.connect(spin);
+				spin.show();
+				table.attach(spin, {1, 2, 0, 1}, {GTK_EXPAND | GTK_FILL, 0});
+				spin.dimensions(60, -1);
+			}
+			{
+				ui::Widget label = ui::Label("Step");
+				label.show();
+				gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+				table.attach(label, {2, 3, 0, 1}, {GTK_FILL, 0});
+			}
+			{
+				auto entry = ui::Entry(ui::New);
+				entry.show();
+				table.attach(entry, {3, 4, 0, 1}, {GTK_EXPAND | GTK_FILL, 0});
+				entry.dimensions(50, -1);
+				m_hshiftIncrement.m_entry = entry;
+				m_hshiftEntry.connect(entry);
+			}
+			{
+				ui::Widget label = ui::Label("Vertical shift");
+				label.show();
+				gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+				table.attach(label, {0, 1, 1, 2}, {GTK_FILL, 0});
+			}
+			{
+				auto spin = ui::SpinButton(ui::Adjustment(0, -8192, 8192, 2, 8, 0), 0, 2);
+				m_vshiftIncrement.m_spin = spin;
+				m_vshiftSpinner.connect(spin);
+				spin.show();
+				table.attach(spin, {1, 2, 1, 2}, {GTK_FILL, 0});
+				spin.dimensions(60, -1);
+			}
+			{
+				ui::Widget label = ui::Label("Step");
+				label.show();
+				gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+				table.attach(label, {2, 3, 1, 2}, {GTK_FILL, 0});
+			}
+			{
+				auto entry = ui::Entry(ui::New);
+				entry.show();
+				table.attach(entry, {3, 4, 1, 2}, {GTK_FILL, 0});
+				entry.dimensions(50, -1);
+				m_vshiftIncrement.m_entry = entry;
+				m_vshiftEntry.connect(entry);
+			}
+			{
+				ui::Widget label = ui::Label("Horizontal stretch");
+				label.show();
+				gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+				table.attach(label, {0, 1, 2, 3}, {GTK_FILL, 0});
+			}
+			{
+				auto spin = ui::SpinButton(ui::Adjustment(0, -8192, 8192, 2, 8, 0), 0, 5);
+				m_hscaleIncrement.m_spin = spin;
+				m_hscaleSpinner.connect(spin);
+				spin.show();
+				table.attach(spin, {1, 2, 2, 3}, {GTK_FILL, 0});
+				spin.dimensions(60, -1);
+			}
+			{
+				ui::Widget label = ui::Label("Step");
+				label.show();
+				gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+				table.attach(label, {2, 3, 2, 3}, {GTK_FILL, 0});
+			}
+			{
+				auto entry = ui::Entry(ui::New);
+				entry.show();
+				table.attach(entry, {3, 4, 2, 3}, {GTK_FILL, 0});
+				entry.dimensions(50, -1);
+				m_hscaleIncrement.m_entry = entry;
+				m_hscaleEntry.connect(entry);
+			}
+			{
+				ui::Widget label = ui::Label("Vertical stretch");
+				label.show();
+				gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+				table.attach(label, {0, 1, 3, 4}, {GTK_FILL, 0});
+			}
+			{
+				auto spin = ui::SpinButton(ui::Adjustment(0, -8192, 8192, 2, 8, 0), 0, 5);
+				m_vscaleIncrement.m_spin = spin;
+				m_vscaleSpinner.connect(spin);
+				spin.show();
+				table.attach(spin, {1, 2, 3, 4}, {GTK_FILL, 0});
+				spin.dimensions(60, -1);
+			}
+			{
+				ui::Widget label = ui::Label("Step");
+				label.show();
+				gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+				table.attach(label, {2, 3, 3, 4}, {GTK_FILL, 0});
+			}
+			{
+				auto entry = ui::Entry(ui::New);
+				entry.show();
+				table.attach(entry, {3, 4, 3, 4}, {GTK_FILL, 0});
+				entry.dimensions(50, -1);
+				m_vscaleIncrement.m_entry = entry;
+				m_vscaleEntry.connect(entry);
+			}
+			{
+				ui::Widget label = ui::Label("Rotate");
+				label.show();
+				gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+				table.attach(label, {0, 1, 4, 5}, {GTK_FILL, 0});
+			}
+			{
+				auto spin = ui::SpinButton(ui::Adjustment(0, -8192, 8192, 2, 8, 0), 0, 2);
+				m_rotateIncrement.m_spin = spin;
+				m_rotateSpinner.connect(spin);
+				spin.show();
+				table.attach(spin, {1, 2, 4, 5}, {GTK_FILL, 0});
+				spin.dimensions(60, -1);
+				gtk_spin_button_set_wrap(spin, TRUE);
+			}
+			{
+				ui::Widget label = ui::Label("Step");
+				label.show();
+				gtk_misc_set_alignment(GTK_MISC(label), 0, 0);
+				table.attach(label, {2, 3, 4, 5}, {GTK_FILL, 0});
+			}
+			{
+				auto entry = ui::Entry(ui::New);
+				entry.show();
+				table.attach(entry, {3, 4, 4, 5}, {GTK_FILL, 0});
+				entry.dimensions(50, -1);
+				m_rotateIncrement.m_entry = entry;
+				m_rotateEntry.connect(entry);
+			}
+			{
+				// match grid button
+				ui::Widget button = ui::Button("Match Grid");
+				button.show();
+				table.attach(button, {2, 4, 5, 6}, {GTK_EXPAND | GTK_FILL, 0});
+				button.connect("clicked", G_CALLBACK(OnBtnMatchGrid), 0);
+			}
+		}
 
-                        GtkCheckButton **p = m_contentFlags;
+		{
+			auto frame = ui::Frame("Texturing");
+			frame.show();
+			vbox.pack_start(frame, FALSE, FALSE, 0);
+			{
+				auto table = ui::Table(4, 4, FALSE);
+				table.show();
+				frame.add(table);
+				gtk_table_set_row_spacings(table, 5);
+				gtk_table_set_col_spacings(table, 5);
+				gtk_container_set_border_width(GTK_CONTAINER(table), 5);
+				{
+					ui::Widget label = ui::Label("Brush");
+					label.show();
+					table.attach(label, {0, 1, 0, 1}, {GTK_FILL, 0});
+				}
+				{
+					ui::Widget label = ui::Label("Patch");
+					label.show();
+					table.attach(label, {0, 1, 2, 3}, {GTK_FILL, 0});
+				}
+				{
+					ui::Widget label = ui::Label("Width");
+					label.show();
+					table.attach(label, {2, 3, 0, 1}, {GTK_FILL, 0});
+				}
+				{
+					ui::Widget label = ui::Label("Height");
+					label.show();
+					table.attach(label, {3, 4, 0, 1}, {GTK_FILL, 0});
+				}
+				{
+					ui::Widget button = ui::Button("Axial");
+					button.show();
+					table.attach(button, {0, 1, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnAxial), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Fit");
+					button.show();
+					table.attach(button, {1, 2, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnFaceFit), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("CAP");
+					button.show();
+					table.attach(button, {0, 1, 3, 4}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnPatchdetails), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Set...");
+					button.show();
+					table.attach(button, {1, 2, 3, 4}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnPatchreset), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Natural");
+					button.show();
+					table.attach(button, {2, 3, 3, 4}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnPatchnatural), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Fit");
+					button.show();
+					table.attach(button, {3, 4, 3, 4}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnPatchFit), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					auto spin = ui::SpinButton(ui::Adjustment(1, 0, 1 << 16, 1, 10, 0), 0, 6);
+					spin.show();
+					table.attach(spin, {2, 3, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
+					spin.dimensions(60, -1);
+					AddDialogData(spin, m_fitHorizontal);
+				}
+				{
+					auto spin = ui::SpinButton(ui::Adjustment(1, 0, 1 << 16, 1, 10, 0), 0, 6);
+					spin.show();
+					table.attach(spin, {3, 4, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
+					spin.dimensions(60, -1);
+					AddDialogData(spin, m_fitVertical);
+				}
+			}
+		}
+		if (!string_empty(g_pGameDescription->getKeyValue("si_flags"))) {
+			{
+				auto frame = ui::Frame("Surface Flags");
+				frame.show();
+				vbox.pack_start(frame, TRUE, TRUE, 0);
+				{
+					auto vbox3 = ui::VBox(FALSE, 4);
+					//gtk_container_set_border_width(GTK_CONTAINER(vbox3), 4);
+					vbox3.show();
+					frame.add(vbox3);
+					{
+						auto table = ui::Table(8, 4, FALSE);
+						table.show();
+						vbox3.pack_start(table, TRUE, TRUE, 0);
+						gtk_table_set_row_spacings(table, 0);
+						gtk_table_set_col_spacings(table, 0);
 
-                        for (unsigned int c = 0; c != 4; ++c) {
-                            for (unsigned int r = 0; r != 8; ++r) {
-                                auto check = ui::CheckButton(getContentFlagName(c * 8 + r));
-                                check.show();
-                                table.attach(check, {c, c + 1, r, r + 1}, {GTK_EXPAND | GTK_FILL, 0});
-                                *p++ = check;
-                                guint handler_id = togglebutton_connect_toggled(check, ApplyFlagsCaller(*this));
-                                g_object_set_data(G_OBJECT(check), "handler", gint_to_pointer(handler_id));
-                            }
-                        }
+						GtkCheckButton **p = m_surfaceFlags;
 
-                        // not allowed to modify detail flag using Surface Inspector
-                        gtk_widget_set_sensitive(ui::CheckButton::from(m_contentFlags[BRUSH_DETAIL_FLAG]), FALSE);
-                    }
-                }
-            }
-            {
-                auto frame = ui::Frame("Value");
-                frame.show();
-                vbox.pack_start(frame, TRUE, TRUE, 0);
-                {
-                    auto vbox3 = ui::VBox(FALSE, 4);
-                    gtk_container_set_border_width(GTK_CONTAINER(vbox3), 4);
-                    vbox3.show();
-                    frame.add(vbox3);
+						for (unsigned int c = 0; c != 4; ++c) {
+							for (unsigned int r = 0; r != 8; ++r) {
+								auto check = ui::CheckButton(getSurfaceFlagName(c * 8 + r));
+								check.show();
+								table.attach(check, {c, c + 1, r, r + 1}, {GTK_EXPAND | GTK_FILL, 0});
+								*p++ = check;
+								guint handler_id = togglebutton_connect_toggled(check, ApplyFlagsCaller(*this));
+								g_object_set_data(G_OBJECT(check), "handler", gint_to_pointer(handler_id));
+							}
+						}
+					}
+				}
+			}
+			{
+				auto frame = ui::Frame("Content Flags");
+				frame.show();
+				vbox.pack_start(frame, TRUE, TRUE, 0);
+				{
+					auto vbox3 = ui::VBox(FALSE, 4);
+					//gtk_container_set_border_width(GTK_CONTAINER(vbox3), 4);
+					vbox3.show();
+					frame.add(vbox3);
+					{
 
-                    {
-                        auto entry = ui::Entry(ui::New);
-                        entry.show();
-                        vbox3.pack_start(entry, TRUE, TRUE, 0);
-                        m_valueEntryWidget = entry;
-                        m_valueEntry.connect(entry);
-                    }
-                }
-            }
-        }
+						auto table = ui::Table(8, 4, FALSE);
+						table.show();
+						vbox3.pack_start(table, TRUE, TRUE, 0);
+						gtk_table_set_row_spacings(table, 0);
+						gtk_table_set_col_spacings(table, 0);
+
+						GtkCheckButton **p = m_contentFlags;
+
+						for (unsigned int c = 0; c != 4; ++c) {
+							for (unsigned int r = 0; r != 8; ++r) {
+								auto check = ui::CheckButton(getContentFlagName(c * 8 + r));
+								check.show();
+								table.attach(check, {c, c + 1, r, r + 1}, {GTK_EXPAND | GTK_FILL, 0});
+								*p++ = check;
+								guint handler_id = togglebutton_connect_toggled(check, ApplyFlagsCaller(*this));
+								g_object_set_data(G_OBJECT(check), "handler", gint_to_pointer(handler_id));
+							}
+						}
+
+						// not allowed to modify detail flag using Surface Inspector
+						gtk_widget_set_sensitive(ui::CheckButton::from(m_contentFlags[BRUSH_DETAIL_FLAG]), FALSE);
+					}
+				}
+			}
+			{
+				auto frame = ui::Frame("Value");
+				frame.show();
+				vbox.pack_start(frame, TRUE, TRUE, 0);
+				{
+					auto vbox3 = ui::VBox(FALSE, 4);
+					gtk_container_set_border_width(GTK_CONTAINER(vbox3), 4);
+					vbox3.show();
+					frame.add(vbox3);
+
+					{
+						auto entry = ui::Entry(ui::New);
+						entry.show();
+						vbox3.pack_start(entry, TRUE, TRUE, 0);
+						m_valueEntryWidget = entry;
+						m_valueEntry.connect(entry);
+					}
+				}
+			}
+		}
 
 #if TEXTOOL_ENABLED
-        if ( g_bp_globals.m_texdefTypeId == TEXDEFTYPEID_BRUSHPRIMITIVES ) {
+		if ( g_bp_globals.m_texdefTypeId == TEXDEFTYPEID_BRUSHPRIMITIVES ) {
 // Shamus: Textool goodies...
-            ui::Widget frame = ui::Frame( "Textool" );
-            frame.show();
-            vbox.pack_start( frame , FALSE, FALSE, 0 );
-            {
-                //Prolly should make this a member or global var, so the SI can draw on it...
-                TexTool::g_textoolWin = glwidget_new( FALSE );
-                // --> Dunno, but this stuff may be necessary... (Looks like it!)
-                g_object_ref( TexTool::g_textoolWin );
-                gtk_widget_set_events( TexTool::g_textoolWin, GDK_DESTROY | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK );
-                gtk_widget_set_can_focus( TexTool::g_textoolWin, true );
-                // <-- end stuff...
-                TexTool::g_textoolWin.show();
-                TexTool::g_textoolWin.dimensions( -1, 240 ); //Yeah!
-                frame.add(TexTool::g_textoolWin);
+			ui::Widget frame = ui::Frame( "Textool" );
+			frame.show();
+			vbox.pack_start( frame, FALSE, FALSE, 0 );
+			{
+				//Prolly should make this a member or global var, so the SI can draw on it...
+				TexTool::g_textoolWin = glwidget_new( FALSE );
+				// --> Dunno, but this stuff may be necessary... (Looks like it!)
+				g_object_ref( TexTool::g_textoolWin );
+				gtk_widget_set_events( TexTool::g_textoolWin, GDK_DESTROY | GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK );
+				gtk_widget_set_can_focus( TexTool::g_textoolWin, true );
+				// <-- end stuff...
+				TexTool::g_textoolWin.show();
+				TexTool::g_textoolWin.dimensions( -1, 240 ); //Yeah!
+				frame.add(TexTool::g_textoolWin);
 
-                TexTool::g_textoolWin.connect( "size_allocate", G_CALLBACK( TexTool::size_allocate ), NULL );
-                TexTool::g_textoolWin.connect( "expose_event", G_CALLBACK( TexTool::expose ), NULL );
-                TexTool::g_textoolWin.connect( "button_press_event", G_CALLBACK( TexTool::button_press ), NULL );
-                TexTool::g_textoolWin.connect( "button_release_event", G_CALLBACK( TexTool::button_release ), NULL );
-                TexTool::g_textoolWin.connect( "motion_notify_event", G_CALLBACK( TexTool::motion ), NULL );
-            }
-            {
-                ui::Widget hbox = ui::HBox( FALSE, 5 );
-                hbox.show();
-                vbox.pack_start( hbox , FALSE, FALSE, 0 );
-                // Checkboxes go here... (Flip X/Y)
-                ui::Widget flipX = ui::CheckButton( "Flip X axis" );
-                ui::Widget flipY = ui::CheckButton( "Flip Y axis" );
-                flipX.show();
-                flipY.show();
-                hbox.pack_start( flipX, FALSE, FALSE, 0 );
-                hbox.pack_start( flipY, FALSE, FALSE, 0 );
+				TexTool::g_textoolWin.connect( "size_allocate", G_CALLBACK( TexTool::size_allocate ), NULL );
+				TexTool::g_textoolWin.connect( "expose_event", G_CALLBACK( TexTool::expose ), NULL );
+				TexTool::g_textoolWin.connect( "button_press_event", G_CALLBACK( TexTool::button_press ), NULL );
+				TexTool::g_textoolWin.connect( "button_release_event", G_CALLBACK( TexTool::button_release ), NULL );
+				TexTool::g_textoolWin.connect( "motion_notify_event", G_CALLBACK( TexTool::motion ), NULL );
+			}
+			{
+				ui::Widget hbox = ui::HBox( FALSE, 5 );
+				hbox.show();
+				vbox.pack_start( hbox, FALSE, FALSE, 0 );
+				// Checkboxes go here... (Flip X/Y)
+				ui::Widget flipX = ui::CheckButton( "Flip X axis" );
+				ui::Widget flipY = ui::CheckButton( "Flip Y axis" );
+				flipX.show();
+				flipY.show();
+				hbox.pack_start( flipX, FALSE, FALSE, 0 );
+				hbox.pack_start( flipY, FALSE, FALSE, 0 );
 
 //Instead of this, we probably need to create a vbox to put into the frame, then the
 //window, then the hbox. !!! FIX !!!
@@ -1047,14 +1047,14 @@ ui::Window SurfaceInspector::BuildDialog()
 //        g_object_set_data(G_OBJECT(flipX), "handler", gint_to_pointer(flipX.connect("toggled", G_CALLBACK(TexTool::flipX), 0)));
 //        g_object_set_data(G_OBJECT(flipY), "handler", gint_to_pointer(flipY.connect("toggled", G_CALLBACK(TexTool::flipY), 0)));
 //Instead, just do:
-                flipX.connect( "toggled", G_CALLBACK( TexTool::flipX ), NULL );
-                flipY.connect( "toggled", G_CALLBACK( TexTool::flipY ), NULL );
-            }
-        }
+				flipX.connect( "toggled", G_CALLBACK( TexTool::flipX ), NULL );
+				flipY.connect( "toggled", G_CALLBACK( TexTool::flipY ), NULL );
+			}
+		}
 #endif
-    }
+	}
 
-    return window;
+	return window;
 }
 
 /*
@@ -1069,29 +1069,29 @@ ui::Window SurfaceInspector::BuildDialog()
 
 void spin_button_set_value_no_signal(ui::SpinButton spin, gdouble value)
 {
-    guint handler_id = gpointer_to_int(g_object_get_data(G_OBJECT(spin), "handler"));
-    g_signal_handler_block(G_OBJECT(gtk_spin_button_get_adjustment(spin)), handler_id);
-    gtk_spin_button_set_value(spin, value);
-    g_signal_handler_unblock(G_OBJECT(gtk_spin_button_get_adjustment(spin)), handler_id);
+	guint handler_id = gpointer_to_int(g_object_get_data(G_OBJECT(spin), "handler"));
+	g_signal_handler_block(G_OBJECT(gtk_spin_button_get_adjustment(spin)), handler_id);
+	gtk_spin_button_set_value(spin, value);
+	g_signal_handler_unblock(G_OBJECT(gtk_spin_button_get_adjustment(spin)), handler_id);
 }
 
 void spin_button_set_step_increment(ui::SpinButton spin, gdouble value)
 {
-    auto adjust = gtk_spin_button_get_adjustment(spin);
-    gtk_adjustment_set_step_increment(adjust, value);
+	auto adjust = gtk_spin_button_get_adjustment(spin);
+	gtk_adjustment_set_step_increment(adjust, value);
 }
 
 void SurfaceInspector::Update()
 {
-    const char *name = SurfaceInspector_GetSelectedShader();
+	const char *name = SurfaceInspector_GetSelectedShader();
 
-    if (shader_is_texture(name)) {
-        m_texture.text(shader_get_textureName(name));
-    } else {
-        m_texture.text("");
-    }
+	if (shader_is_texture(name)) {
+		m_texture.text(shader_get_textureName(name));
+	} else {
+		m_texture.text("");
+	}
 
-    texdef_t shiftScaleRotate;
+	texdef_t shiftScaleRotate;
 //Shamus: This is where we get into trouble--the BP code tries to convert to a "faked"
 //shift, rotate & scale values from the brush face, which seems to screw up for some reason.
 //!!! FIX !!!
@@ -1101,57 +1101,57 @@ void SurfaceInspector::Update()
     << g_selectedBrushPrimitTexdef.coords[1][0] << ", " << g_selectedBrushPrimitTexdef.coords[1][1] << ")("
     << g_selectedBrushPrimitTexdef.coords[0][2] << ", " << g_selectedBrushPrimitTexdef.coords[1][2] << ") SurfaceInspector::Update\n";//*/
 //Ok, it's screwed up *before* we get here...
-    ShiftScaleRotate_fromFace(shiftScaleRotate, SurfaceInspector_GetSelectedTexdef());
+	ShiftScaleRotate_fromFace(shiftScaleRotate, SurfaceInspector_GetSelectedTexdef());
 
-    // normalize again to hide the ridiculously high scale values that get created when using texlock
-    shiftScaleRotate.shift[0] = float_mod(shiftScaleRotate.shift[0], (float) g_selectedShaderSize[0]);
-    shiftScaleRotate.shift[1] = float_mod(shiftScaleRotate.shift[1], (float) g_selectedShaderSize[1]);
+	// normalize again to hide the ridiculously high scale values that get created when using texlock
+	shiftScaleRotate.shift[0] = float_mod(shiftScaleRotate.shift[0], (float) g_selectedShaderSize[0]);
+	shiftScaleRotate.shift[1] = float_mod(shiftScaleRotate.shift[1], (float) g_selectedShaderSize[1]);
 
-    {
-        spin_button_set_value_no_signal(m_hshiftIncrement.m_spin, shiftScaleRotate.shift[0]);
-        spin_button_set_step_increment(m_hshiftIncrement.m_spin, g_si_globals.shift[0]);
-        entry_set_float(m_hshiftIncrement.m_entry, g_si_globals.shift[0]);
-    }
+	{
+		spin_button_set_value_no_signal(m_hshiftIncrement.m_spin, shiftScaleRotate.shift[0]);
+		spin_button_set_step_increment(m_hshiftIncrement.m_spin, g_si_globals.shift[0]);
+		entry_set_float(m_hshiftIncrement.m_entry, g_si_globals.shift[0]);
+	}
 
-    {
-        spin_button_set_value_no_signal(m_vshiftIncrement.m_spin, shiftScaleRotate.shift[1]);
-        spin_button_set_step_increment(m_vshiftIncrement.m_spin, g_si_globals.shift[1]);
-        entry_set_float(m_vshiftIncrement.m_entry, g_si_globals.shift[1]);
-    }
+	{
+		spin_button_set_value_no_signal(m_vshiftIncrement.m_spin, shiftScaleRotate.shift[1]);
+		spin_button_set_step_increment(m_vshiftIncrement.m_spin, g_si_globals.shift[1]);
+		entry_set_float(m_vshiftIncrement.m_entry, g_si_globals.shift[1]);
+	}
 
-    {
-        spin_button_set_value_no_signal(m_hscaleIncrement.m_spin, shiftScaleRotate.scale[0]);
-        spin_button_set_step_increment(m_hscaleIncrement.m_spin, g_si_globals.scale[0]);
-        entry_set_float(m_hscaleIncrement.m_entry, g_si_globals.scale[0]);
-    }
+	{
+		spin_button_set_value_no_signal(m_hscaleIncrement.m_spin, shiftScaleRotate.scale[0]);
+		spin_button_set_step_increment(m_hscaleIncrement.m_spin, g_si_globals.scale[0]);
+		entry_set_float(m_hscaleIncrement.m_entry, g_si_globals.scale[0]);
+	}
 
-    {
-        spin_button_set_value_no_signal(m_vscaleIncrement.m_spin, shiftScaleRotate.scale[1]);
-        spin_button_set_step_increment(m_vscaleIncrement.m_spin, g_si_globals.scale[1]);
-        entry_set_float(m_vscaleIncrement.m_entry, g_si_globals.scale[1]);
-    }
+	{
+		spin_button_set_value_no_signal(m_vscaleIncrement.m_spin, shiftScaleRotate.scale[1]);
+		spin_button_set_step_increment(m_vscaleIncrement.m_spin, g_si_globals.scale[1]);
+		entry_set_float(m_vscaleIncrement.m_entry, g_si_globals.scale[1]);
+	}
 
-    {
-        spin_button_set_value_no_signal(m_rotateIncrement.m_spin, shiftScaleRotate.rotate);
-        spin_button_set_step_increment(m_rotateIncrement.m_spin, g_si_globals.rotate);
-        entry_set_float(m_rotateIncrement.m_entry, g_si_globals.rotate);
-    }
+	{
+		spin_button_set_value_no_signal(m_rotateIncrement.m_spin, shiftScaleRotate.rotate);
+		spin_button_set_step_increment(m_rotateIncrement.m_spin, g_si_globals.rotate);
+		entry_set_float(m_rotateIncrement.m_entry, g_si_globals.rotate);
+	}
 
-    if (!string_empty(g_pGameDescription->getKeyValue("si_flags"))) {
-        ContentsFlagsValue flags(SurfaceInspector_GetSelectedFlags());
+	if (!string_empty(g_pGameDescription->getKeyValue("si_flags"))) {
+		ContentsFlagsValue flags(SurfaceInspector_GetSelectedFlags());
 
-        entry_set_int(m_valueEntryWidget, flags.m_value);
+		entry_set_int(m_valueEntryWidget, flags.m_value);
 
-        for (GtkCheckButton **p = m_surfaceFlags; p != m_surfaceFlags + 32; ++p) {
-            toggle_button_set_active_no_signal(ui::CheckButton::from(*p),
-                                               flags.m_surfaceFlags & (1 << (p - m_surfaceFlags)));
-        }
+		for (GtkCheckButton **p = m_surfaceFlags; p != m_surfaceFlags + 32; ++p) {
+			toggle_button_set_active_no_signal(ui::CheckButton::from(*p),
+			                                   flags.m_surfaceFlags & (1 << (p - m_surfaceFlags)));
+		}
 
-        for (GtkCheckButton **p = m_contentFlags; p != m_contentFlags + 32; ++p) {
-            toggle_button_set_active_no_signal(ui::CheckButton::from(*p),
-                                               flags.m_contentFlags & (1 << (p - m_contentFlags)));
-        }
-    }
+		for (GtkCheckButton **p = m_contentFlags; p != m_contentFlags + 32; ++p) {
+			toggle_button_set_active_no_signal(ui::CheckButton::from(*p),
+			                                   flags.m_contentFlags & (1 << (p - m_contentFlags)));
+		}
+	}
 }
 
 /*
@@ -1164,242 +1164,242 @@ void SurfaceInspector::Update()
  */
 void SurfaceInspector::ApplyShader()
 {
-    StringOutputStream name(256);
-    name << GlobalTexturePrefix_get() << gtk_entry_get_text(m_texture);
+	StringOutputStream name(256);
+	name << GlobalTexturePrefix_get() << gtk_entry_get_text(m_texture);
 
-    // TTimo: detect and refuse invalid texture names (at least the ones with spaces)
-    if (!texdef_name_valid(name.c_str())) {
-        globalErrorStream() << "invalid texture name '" << name.c_str() << "'\n";
-        SurfaceInspector_queueDraw();
-        return;
-    }
+	// TTimo: detect and refuse invalid texture names (at least the ones with spaces)
+	if (!texdef_name_valid(name.c_str())) {
+		globalErrorStream() << "invalid texture name '" << name.c_str() << "'\n";
+		SurfaceInspector_queueDraw();
+		return;
+	}
 
-    UndoableCommand undo("textureNameSetSelected");
-    Select_SetShader(name.c_str());
+	UndoableCommand undo("textureNameSetSelected");
+	Select_SetShader(name.c_str());
 }
 
 void SurfaceInspector::ApplyTexdef()
 {
-    texdef_t shiftScaleRotate;
+	texdef_t shiftScaleRotate;
 
-    shiftScaleRotate.shift[0] = static_cast<float>( gtk_spin_button_get_value(m_hshiftIncrement.m_spin));
-    shiftScaleRotate.shift[1] = static_cast<float>( gtk_spin_button_get_value(m_vshiftIncrement.m_spin));
-    shiftScaleRotate.scale[0] = static_cast<float>( gtk_spin_button_get_value(m_hscaleIncrement.m_spin));
-    shiftScaleRotate.scale[1] = static_cast<float>( gtk_spin_button_get_value(m_vscaleIncrement.m_spin));
-    shiftScaleRotate.rotate = static_cast<float>( gtk_spin_button_get_value(m_rotateIncrement.m_spin));
+	shiftScaleRotate.shift[0] = static_cast<float>( gtk_spin_button_get_value(m_hshiftIncrement.m_spin));
+	shiftScaleRotate.shift[1] = static_cast<float>( gtk_spin_button_get_value(m_vshiftIncrement.m_spin));
+	shiftScaleRotate.scale[0] = static_cast<float>( gtk_spin_button_get_value(m_hscaleIncrement.m_spin));
+	shiftScaleRotate.scale[1] = static_cast<float>( gtk_spin_button_get_value(m_vscaleIncrement.m_spin));
+	shiftScaleRotate.rotate = static_cast<float>( gtk_spin_button_get_value(m_rotateIncrement.m_spin));
 
-    TextureProjection projection;
+	TextureProjection projection;
 //Shamus: This is the other place that screws up, it seems, since it doesn't seem to do the
 //conversion from the face (I think) and so bogus values end up in the thing... !!! FIX !!!
 //This is actually OK. :-P
-    ShiftScaleRotate_toFace(shiftScaleRotate, projection);
+	ShiftScaleRotate_toFace(shiftScaleRotate, projection);
 
-    UndoableCommand undo("textureProjectionSetSelected");
-    Select_SetTexdef(projection, true);
+	UndoableCommand undo("textureProjectionSetSelected");
+	Select_SetTexdef(projection, true);
 }
 
 void SurfaceInspector::ApplyFlags()
 {
-    unsigned int surfaceflags = 0;
-    for (GtkCheckButton **p = m_surfaceFlags; p != m_surfaceFlags + 32; ++p) {
-        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*p))) {
-            surfaceflags |= (1 << (p - m_surfaceFlags));
-        }
-    }
+	unsigned int surfaceflags = 0;
+	for (GtkCheckButton **p = m_surfaceFlags; p != m_surfaceFlags + 32; ++p) {
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*p))) {
+			surfaceflags |= (1 << (p - m_surfaceFlags));
+		}
+	}
 
-    unsigned int contentflags = 0;
-    for (GtkCheckButton **p = m_contentFlags; p != m_contentFlags + 32; ++p) {
-        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*p))) {
-            contentflags |= (1 << (p - m_contentFlags));
-        }
-    }
+	unsigned int contentflags = 0;
+	for (GtkCheckButton **p = m_contentFlags; p != m_contentFlags + 32; ++p) {
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*p))) {
+			contentflags |= (1 << (p - m_contentFlags));
+		}
+	}
 
-    int value = entry_get_int(m_valueEntryWidget);
+	int value = entry_get_int(m_valueEntryWidget);
 
-    UndoableCommand undo("flagsSetSelected");
-    Select_SetFlags(ContentsFlagsValue(surfaceflags, contentflags, value, true));
+	UndoableCommand undo("flagsSetSelected");
+	Select_SetFlags(ContentsFlagsValue(surfaceflags, contentflags, value, true));
 }
 
 
 void Face_getTexture(Face &face, CopiedString &shader, TextureProjection &projection, ContentsFlagsValue &flags)
 {
-    shader = face.GetShader();
-    face.GetTexdef(projection);
-    flags = face.getShader().m_flags;
+	shader = face.GetShader();
+	face.GetTexdef(projection);
+	flags = face.getShader().m_flags;
 }
 
-typedef Function<void(Face &, CopiedString &, TextureProjection &,
-                      ContentsFlagsValue &), Face_getTexture> FaceGetTexture;
+typedef Function<void (Face &, CopiedString &, TextureProjection &,
+                       ContentsFlagsValue &), Face_getTexture> FaceGetTexture;
 
 void
 Face_setTexture(Face &face, const char *shader, const TextureProjection &projection, const ContentsFlagsValue &flags)
 {
-    face.SetShader(shader);
-    face.SetTexdef(projection, false);
-    face.SetFlags(flags);
+	face.SetShader(shader);
+	face.SetTexdef(projection, false);
+	face.SetFlags(flags);
 }
 
-typedef Function<void(Face &, const char *, const TextureProjection &,
-                      const ContentsFlagsValue &), Face_setTexture> FaceSetTexture;
+typedef Function<void (Face &, const char *, const TextureProjection &,
+                       const ContentsFlagsValue &), Face_setTexture> FaceSetTexture;
 
 
 void Patch_getTexture(Patch &patch, CopiedString &shader, TextureProjection &projection, ContentsFlagsValue &flags)
 {
-    shader = patch.GetShader();
-    projection = TextureProjection(texdef_t(), brushprimit_texdef_t(), Vector3(0, 0, 0), Vector3(0, 0, 0));
-    flags = ContentsFlagsValue(0, 0, 0, false);
+	shader = patch.GetShader();
+	projection = TextureProjection(texdef_t(), brushprimit_texdef_t(), Vector3(0, 0, 0), Vector3(0, 0, 0));
+	flags = ContentsFlagsValue(0, 0, 0, false);
 }
 
-typedef Function<void(Patch &, CopiedString &, TextureProjection &,
-                      ContentsFlagsValue &), Patch_getTexture> PatchGetTexture;
+typedef Function<void (Patch &, CopiedString &, TextureProjection &,
+                       ContentsFlagsValue &), Patch_getTexture> PatchGetTexture;
 
 void
 Patch_setTexture(Patch &patch, const char *shader, const TextureProjection &projection, const ContentsFlagsValue &flags)
 {
-    patch.SetShader(shader);
+	patch.SetShader(shader);
 }
 
-typedef Function<void(Patch &, const char *, const TextureProjection &,
-                      const ContentsFlagsValue &), Patch_setTexture> PatchSetTexture;
+typedef Function<void (Patch &, const char *, const TextureProjection &,
+                       const ContentsFlagsValue &), Patch_setTexture> PatchSetTexture;
 
 
-typedef Callback<void(CopiedString &, TextureProjection &, ContentsFlagsValue &)> GetTextureCallback;
-typedef Callback<void(const char *, const TextureProjection &, const ContentsFlagsValue &)> SetTextureCallback;
+typedef Callback<void (CopiedString &, TextureProjection &, ContentsFlagsValue &)> GetTextureCallback;
+typedef Callback<void (const char *, const TextureProjection &, const ContentsFlagsValue &)> SetTextureCallback;
 
 struct Texturable {
-    GetTextureCallback getTexture;
-    SetTextureCallback setTexture;
+	GetTextureCallback getTexture;
+	SetTextureCallback setTexture;
 };
 
 
 void Face_getClosest(Face &face, SelectionTest &test, SelectionIntersection &bestIntersection, Texturable &texturable)
 {
-    SelectionIntersection intersection;
-    face.testSelect(test, intersection);
-    if (intersection.valid()
-        && SelectionIntersection_closer(intersection, bestIntersection)) {
-        bestIntersection = intersection;
-        texturable.setTexture = makeCallback(FaceSetTexture(), face);
-        texturable.getTexture = makeCallback(FaceGetTexture(), face);
-    }
+	SelectionIntersection intersection;
+	face.testSelect(test, intersection);
+	if (intersection.valid()
+	    && SelectionIntersection_closer(intersection, bestIntersection)) {
+		bestIntersection = intersection;
+		texturable.setTexture = makeCallback(FaceSetTexture(), face);
+		texturable.getTexture = makeCallback(FaceGetTexture(), face);
+	}
 }
 
 
 class OccludeSelector : public Selector {
-    SelectionIntersection &m_bestIntersection;
-    bool &m_occluded;
+SelectionIntersection &m_bestIntersection;
+bool &m_occluded;
 public:
-    OccludeSelector(SelectionIntersection &bestIntersection, bool &occluded) : m_bestIntersection(bestIntersection),
-                                                                               m_occluded(occluded)
-    {
-        m_occluded = false;
-    }
+OccludeSelector(SelectionIntersection &bestIntersection, bool &occluded) : m_bestIntersection(bestIntersection),
+	m_occluded(occluded)
+{
+	m_occluded = false;
+}
 
-    void pushSelectable(Selectable &selectable)
-    {
-    }
+void pushSelectable(Selectable &selectable)
+{
+}
 
-    void popSelectable()
-    {
-    }
+void popSelectable()
+{
+}
 
-    void addIntersection(const SelectionIntersection &intersection)
-    {
-        if (SelectionIntersection_closer(intersection, m_bestIntersection)) {
-            m_bestIntersection = intersection;
-            m_occluded = true;
-        }
-    }
+void addIntersection(const SelectionIntersection &intersection)
+{
+	if (SelectionIntersection_closer(intersection, m_bestIntersection)) {
+		m_bestIntersection = intersection;
+		m_occluded = true;
+	}
+}
 };
 
 class BrushGetClosestFaceVisibleWalker : public scene::Graph::Walker {
-    SelectionTest &m_test;
-    Texturable &m_texturable;
-    mutable SelectionIntersection m_bestIntersection;
+SelectionTest &m_test;
+Texturable &m_texturable;
+mutable SelectionIntersection m_bestIntersection;
 public:
-    BrushGetClosestFaceVisibleWalker(SelectionTest &test, Texturable &texturable) : m_test(test),
-                                                                                    m_texturable(texturable)
-    {
-    }
+BrushGetClosestFaceVisibleWalker(SelectionTest &test, Texturable &texturable) : m_test(test),
+	m_texturable(texturable)
+{
+}
 
-    bool pre(const scene::Path &path, scene::Instance &instance) const
-    {
-        if (path.top().get().visible()) {
-            BrushInstance *brush = Instance_getBrush(instance);
-            if (brush != 0) {
-                m_test.BeginMesh(brush->localToWorld());
+bool pre(const scene::Path &path, scene::Instance &instance) const
+{
+	if (path.top().get().visible()) {
+		BrushInstance *brush = Instance_getBrush(instance);
+		if (brush != 0) {
+			m_test.BeginMesh(brush->localToWorld());
 
-                for (Brush::const_iterator i = brush->getBrush().begin(); i != brush->getBrush().end(); ++i) {
-                    Face_getClosest(*(*i), m_test, m_bestIntersection, m_texturable);
-                }
-            } else {
-                SelectionTestable *selectionTestable = Instance_getSelectionTestable(instance);
-                if (selectionTestable) {
-                    bool occluded;
-                    OccludeSelector selector(m_bestIntersection, occluded);
-                    selectionTestable->testSelect(selector, m_test);
-                    if (occluded) {
-                        Patch *patch = Node_getPatch(path.top());
-                        if (patch != 0) {
-                            m_texturable.setTexture = makeCallback(PatchSetTexture(), *patch);
-                            m_texturable.getTexture = makeCallback(PatchGetTexture(), *patch);
-                        } else {
-                            m_texturable = Texturable();
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
+			for (Brush::const_iterator i = brush->getBrush().begin(); i != brush->getBrush().end(); ++i) {
+				Face_getClosest(*(*i), m_test, m_bestIntersection, m_texturable);
+			}
+		} else {
+			SelectionTestable *selectionTestable = Instance_getSelectionTestable(instance);
+			if (selectionTestable) {
+				bool occluded;
+				OccludeSelector selector(m_bestIntersection, occluded);
+				selectionTestable->testSelect(selector, m_test);
+				if (occluded) {
+					Patch *patch = Node_getPatch(path.top());
+					if (patch != 0) {
+						m_texturable.setTexture = makeCallback(PatchSetTexture(), *patch);
+						m_texturable.getTexture = makeCallback(PatchGetTexture(), *patch);
+					} else {
+						m_texturable = Texturable();
+					}
+				}
+			}
+		}
+	}
+	return true;
+}
 };
 
 Texturable Scene_getClosestTexturable(scene::Graph &graph, SelectionTest &test)
 {
-    Texturable texturable;
-    graph.traverse(BrushGetClosestFaceVisibleWalker(test, texturable));
-    return texturable;
+	Texturable texturable;
+	graph.traverse(BrushGetClosestFaceVisibleWalker(test, texturable));
+	return texturable;
 }
 
 bool
 Scene_getClosestTexture(scene::Graph &graph, SelectionTest &test, CopiedString &shader, TextureProjection &projection,
                         ContentsFlagsValue &flags)
 {
-    Texturable texturable = Scene_getClosestTexturable(graph, test);
-    if (texturable.getTexture != GetTextureCallback()) {
-        texturable.getTexture(shader, projection, flags);
-        return true;
-    }
-    return false;
+	Texturable texturable = Scene_getClosestTexturable(graph, test);
+	if (texturable.getTexture != GetTextureCallback()) {
+		texturable.getTexture(shader, projection, flags);
+		return true;
+	}
+	return false;
 }
 
 void Scene_setClosestTexture(scene::Graph &graph, SelectionTest &test, const char *shader,
                              const TextureProjection &projection, const ContentsFlagsValue &flags)
 {
-    Texturable texturable = Scene_getClosestTexturable(graph, test);
-    if (texturable.setTexture != SetTextureCallback()) {
-        texturable.setTexture(shader, projection, flags);
-    }
+	Texturable texturable = Scene_getClosestTexturable(graph, test);
+	if (texturable.setTexture != SetTextureCallback()) {
+		texturable.setTexture(shader, projection, flags);
+	}
 }
 
 
 class FaceTexture {
 public:
-    TextureProjection m_projection;
-    ContentsFlagsValue m_flags;
+TextureProjection m_projection;
+ContentsFlagsValue m_flags;
 };
 
 FaceTexture g_faceTextureClipboard;
 
 void FaceTextureClipboard_setDefault()
 {
-    g_faceTextureClipboard.m_flags = ContentsFlagsValue(0, 0, 0, false);
-    TexDef_Construct_Default(g_faceTextureClipboard.m_projection);
+	g_faceTextureClipboard.m_flags = ContentsFlagsValue(0, 0, 0, false);
+	TexDef_Construct_Default(g_faceTextureClipboard.m_projection);
 }
 
 void TextureClipboard_textureSelected(const char *shader)
 {
-    FaceTextureClipboard_setDefault();
+	FaceTextureClipboard_setDefault();
 }
 
 class TextureBrowser;
@@ -1412,79 +1412,79 @@ const char *TextureBrowser_GetSelectedShader(TextureBrowser &textureBrowser);
 
 void Scene_copyClosestTexture(SelectionTest &test)
 {
-    CopiedString shader;
-    if (Scene_getClosestTexture(GlobalSceneGraph(), test, shader, g_faceTextureClipboard.m_projection,
-                                g_faceTextureClipboard.m_flags)) {
-        TextureBrowser_SetSelectedShader(g_TextureBrowser, shader.c_str());
-    }
+	CopiedString shader;
+	if (Scene_getClosestTexture(GlobalSceneGraph(), test, shader, g_faceTextureClipboard.m_projection,
+	                            g_faceTextureClipboard.m_flags)) {
+		TextureBrowser_SetSelectedShader(g_TextureBrowser, shader.c_str());
+	}
 }
 
 void Scene_applyClosestTexture(SelectionTest &test)
 {
-    UndoableCommand command("facePaintTexture");
+	UndoableCommand command("facePaintTexture");
 
-    Scene_setClosestTexture(GlobalSceneGraph(), test, TextureBrowser_GetSelectedShader(g_TextureBrowser),
-                            g_faceTextureClipboard.m_projection, g_faceTextureClipboard.m_flags);
+	Scene_setClosestTexture(GlobalSceneGraph(), test, TextureBrowser_GetSelectedShader(g_TextureBrowser),
+	                        g_faceTextureClipboard.m_projection, g_faceTextureClipboard.m_flags);
 
-    SceneChangeNotify();
+	SceneChangeNotify();
 }
 
 
 void SelectedFaces_copyTexture()
 {
-    if (!g_SelectedFaceInstances.empty()) {
-        Face &face = g_SelectedFaceInstances.last().getFace();
-        face.GetTexdef(g_faceTextureClipboard.m_projection);
-        g_faceTextureClipboard.m_flags = face.getShader().m_flags;
+	if (!g_SelectedFaceInstances.empty()) {
+		Face &face = g_SelectedFaceInstances.last().getFace();
+		face.GetTexdef(g_faceTextureClipboard.m_projection);
+		g_faceTextureClipboard.m_flags = face.getShader().m_flags;
 
-        TextureBrowser_SetSelectedShader(g_TextureBrowser, face.getShader().getShader());
-    }
+		TextureBrowser_SetSelectedShader(g_TextureBrowser, face.getShader().getShader());
+	}
 }
 
 void FaceInstance_pasteTexture(FaceInstance &faceInstance)
 {
-    faceInstance.getFace().SetTexdef(g_faceTextureClipboard.m_projection, false);
-    faceInstance.getFace().SetShader(TextureBrowser_GetSelectedShader(g_TextureBrowser));
-    faceInstance.getFace().SetFlags(g_faceTextureClipboard.m_flags);
-    SceneChangeNotify();
+	faceInstance.getFace().SetTexdef(g_faceTextureClipboard.m_projection, false);
+	faceInstance.getFace().SetShader(TextureBrowser_GetSelectedShader(g_TextureBrowser));
+	faceInstance.getFace().SetFlags(g_faceTextureClipboard.m_flags);
+	SceneChangeNotify();
 }
 
 bool SelectedFaces_empty()
 {
-    return g_SelectedFaceInstances.empty();
+	return g_SelectedFaceInstances.empty();
 }
 
 void SelectedFaces_pasteTexture()
 {
-    UndoableCommand command("facePasteTexture");
-    g_SelectedFaceInstances.foreach(FaceInstance_pasteTexture);
+	UndoableCommand command("facePasteTexture");
+	g_SelectedFaceInstances.foreach(FaceInstance_pasteTexture);
 }
 
 
 void SurfaceInspector_constructPreferences(PreferencesPage &page)
 {
-    page.appendCheckBox("", "Surface Inspector Increments Match Grid", g_si_globals.m_bSnapTToGrid);
+	page.appendCheckBox("", "Surface Inspector Increments Match Grid", g_si_globals.m_bSnapTToGrid);
 }
 
 void SurfaceInspector_constructPage(PreferenceGroup &group)
 {
-    PreferencesPage page(group.createPage("Surface Inspector", "Surface Inspector Preferences"));
-    SurfaceInspector_constructPreferences(page);
+	PreferencesPage page(group.createPage("Surface Inspector", "Surface Inspector Preferences"));
+	SurfaceInspector_constructPreferences(page);
 }
 
 void SurfaceInspector_registerPreferencesPage()
 {
-    PreferencesDialog_addSettingsPage(makeCallbackF(SurfaceInspector_constructPage));
+	PreferencesDialog_addSettingsPage(makeCallbackF(SurfaceInspector_constructPage));
 }
 
 void SurfaceInspector_registerCommands()
 {
-    GlobalCommands_insert("FitTexture", makeCallbackF(SurfaceInspector_FitTexture),
-                          Accelerator('B', (GdkModifierType) GDK_SHIFT_MASK));
-    GlobalCommands_insert("SurfaceInspector", makeCallbackF(SurfaceInspector_toggleShown), Accelerator('S'));
+	GlobalCommands_insert("FitTexture", makeCallbackF(SurfaceInspector_FitTexture),
+	                      Accelerator('B', (GdkModifierType) GDK_SHIFT_MASK));
+	GlobalCommands_insert("SurfaceInspector", makeCallbackF(SurfaceInspector_toggleShown), Accelerator('S'));
 
-    GlobalCommands_insert("FaceCopyTexture", makeCallbackF(SelectedFaces_copyTexture));
-    GlobalCommands_insert("FacePasteTexture", makeCallbackF(SelectedFaces_pasteTexture));
+	GlobalCommands_insert("FaceCopyTexture", makeCallbackF(SelectedFaces_copyTexture));
+	GlobalCommands_insert("FacePasteTexture", makeCallbackF(SelectedFaces_pasteTexture));
 }
 
 
@@ -1493,34 +1493,34 @@ void SurfaceInspector_registerCommands()
 
 void SurfaceInspector_Construct()
 {
-    g_SurfaceInspector = new SurfaceInspector;
+	g_SurfaceInspector = new SurfaceInspector;
 
-    SurfaceInspector_registerCommands();
+	SurfaceInspector_registerCommands();
 
-    FaceTextureClipboard_setDefault();
+	FaceTextureClipboard_setDefault();
 
-    GlobalPreferenceSystem().registerPreference("SurfaceWnd", make_property<WindowPositionTracker_String>(
-            getSurfaceInspector().m_positionTracker));
-    GlobalPreferenceSystem().registerPreference("SI_SurfaceTexdef_Scale1", make_property_string(g_si_globals.scale[0]));
-    GlobalPreferenceSystem().registerPreference("SI_SurfaceTexdef_Scale2", make_property_string(g_si_globals.scale[1]));
-    GlobalPreferenceSystem().registerPreference("SI_SurfaceTexdef_Shift1", make_property_string(g_si_globals.shift[0]));
-    GlobalPreferenceSystem().registerPreference("SI_SurfaceTexdef_Shift2", make_property_string(g_si_globals.shift[1]));
-    GlobalPreferenceSystem().registerPreference("SI_SurfaceTexdef_Rotate", make_property_string(g_si_globals.rotate));
-    GlobalPreferenceSystem().registerPreference("SnapTToGrid", make_property_string(g_si_globals.m_bSnapTToGrid));
+	GlobalPreferenceSystem().registerPreference("SurfaceWnd", make_property<WindowPositionTracker_String>(
+							    getSurfaceInspector().m_positionTracker));
+	GlobalPreferenceSystem().registerPreference("SI_SurfaceTexdef_Scale1", make_property_string(g_si_globals.scale[0]));
+	GlobalPreferenceSystem().registerPreference("SI_SurfaceTexdef_Scale2", make_property_string(g_si_globals.scale[1]));
+	GlobalPreferenceSystem().registerPreference("SI_SurfaceTexdef_Shift1", make_property_string(g_si_globals.shift[0]));
+	GlobalPreferenceSystem().registerPreference("SI_SurfaceTexdef_Shift2", make_property_string(g_si_globals.shift[1]));
+	GlobalPreferenceSystem().registerPreference("SI_SurfaceTexdef_Rotate", make_property_string(g_si_globals.rotate));
+	GlobalPreferenceSystem().registerPreference("SnapTToGrid", make_property_string(g_si_globals.m_bSnapTToGrid));
 
-    typedef FreeCaller<void(
-            const Selectable &), SurfaceInspector_SelectionChanged> SurfaceInspectorSelectionChangedCaller;
-    GlobalSelectionSystem().addSelectionChangeCallback(SurfaceInspectorSelectionChangedCaller());
-    typedef FreeCaller<void(), SurfaceInspector_updateSelection> SurfaceInspectorUpdateSelectionCaller;
-    Brush_addTextureChangedCallback(SurfaceInspectorUpdateSelectionCaller());
-    Patch_addTextureChangedCallback(SurfaceInspectorUpdateSelectionCaller());
+	typedef FreeCaller<void (
+				   const Selectable &), SurfaceInspector_SelectionChanged> SurfaceInspectorSelectionChangedCaller;
+	GlobalSelectionSystem().addSelectionChangeCallback(SurfaceInspectorSelectionChangedCaller());
+	typedef FreeCaller<void (), SurfaceInspector_updateSelection> SurfaceInspectorUpdateSelectionCaller;
+	Brush_addTextureChangedCallback(SurfaceInspectorUpdateSelectionCaller());
+	Patch_addTextureChangedCallback(SurfaceInspectorUpdateSelectionCaller());
 
-    SurfaceInspector_registerPreferencesPage();
+	SurfaceInspector_registerPreferencesPage();
 }
 
 void SurfaceInspector_Destroy()
 {
-    delete g_SurfaceInspector;
+	delete g_SurfaceInspector;
 }
 
 
@@ -1535,9 +1535,13 @@ namespace TexTool { // namespace hides these symbols from other object-files
 //      But... You can see down below that it *is* initialized! WTF?
 struct Extent
 {
-    float minX, minY, maxX, maxY;
-    float width( void ) { return fabs( maxX - minX ); }
-    float height( void ) { return fabs( maxY - minY ); }
+	float minX, minY, maxX, maxY;
+	float width( void ) {
+		return fabs( maxX - minX );
+	}
+	float height( void ) {
+		return fabs( maxY - minY );
+	}
 };
 
 //This seems to control the texture scale... (Yep! ;-)
@@ -1580,51 +1584,51 @@ void DrawCircularArc( Vector2 ctr, float startAngle, float endAngle, float radiu
 
 
 void CopyPointsFromSelectedFace( void ){
-    // Make sure that there's a face and winding to get!
+	// Make sure that there's a face and winding to get!
 
-    if ( g_SelectedFaceInstances.empty() ) {
-        numPts = 0;
-        return;
-    }
+	if ( g_SelectedFaceInstances.empty() ) {
+		numPts = 0;
+		return;
+	}
 
-    Face & face = g_SelectedFaceInstances.last().getFace();
-    textureNum = face.getShader().m_state->getTexture().texture_number;
-    textureSize.x() = face.getShader().m_state->getTexture().width;
-    textureSize.y() = face.getShader().m_state->getTexture().height;
+	Face & face = g_SelectedFaceInstances.last().getFace();
+	textureNum = face.getShader().m_state->getTexture().texture_number;
+	textureSize.x() = face.getShader().m_state->getTexture().width;
+	textureSize.y() = face.getShader().m_state->getTexture().height;
 //globalOutputStream() << "--> Texture #" << textureNum << ": " << textureSize.x() << " x " << textureSize.y() << "...\n";
 
-    currentBP = SurfaceInspector_GetSelectedTexdef().m_brushprimit_texdef;
+	currentBP = SurfaceInspector_GetSelectedTexdef().m_brushprimit_texdef;
 
-    face.EmitTextureCoordinates();
-    Winding & w = face.getWinding();
-    int count = 0;
+	face.EmitTextureCoordinates();
+	Winding & w = face.getWinding();
+	int count = 0;
 
-    for ( Winding::const_iterator i = w.begin(); i != w.end(); i++ )
-    {
-        //globalOutputStream() << (*i).texcoord.x() << " " << (*i).texcoord.y() << ", ";
-        pts[count].x() = ( *i ).texcoord.x();
-        pts[count].y() = ( *i ).texcoord.y();
-        count++;
-    }
+	for ( Winding::const_iterator i = w.begin(); i != w.end(); i++ )
+	{
+		//globalOutputStream() << (*i).texcoord.x() << " " << (*i).texcoord.y() << ", ";
+		pts[count].x() = ( *i ).texcoord.x();
+		pts[count].y() = ( *i ).texcoord.y();
+		count++;
+	}
 
-    numPts = count;
+	numPts = count;
 
-    //globalOutputStream() << " ..copied points\n";
+	//globalOutputStream() << " ..copied points\n";
 }
 
 brushprimit_texdef_t bp;
 //This approach is probably wrongheaded and just not right anyway. So, !!! FIX !!! [DONE]
 void CommitChanges( void ){
-    texdef_t t;                                 // Throwaway, since this is BP only
+	texdef_t t;                             // Throwaway, since this is BP only
 
-    bp.coords[0][0] = tm.coords[0][0] * origBP.coords[0][0] + tm.coords[0][1] * origBP.coords[1][0];
-    bp.coords[0][1] = tm.coords[0][0] * origBP.coords[0][1] + tm.coords[0][1] * origBP.coords[1][1];
-    bp.coords[0][2] = tm.coords[0][0] * origBP.coords[0][2] + tm.coords[0][1] * origBP.coords[1][2] + tm.coords[0][2];
+	bp.coords[0][0] = tm.coords[0][0] * origBP.coords[0][0] + tm.coords[0][1] * origBP.coords[1][0];
+	bp.coords[0][1] = tm.coords[0][0] * origBP.coords[0][1] + tm.coords[0][1] * origBP.coords[1][1];
+	bp.coords[0][2] = tm.coords[0][0] * origBP.coords[0][2] + tm.coords[0][1] * origBP.coords[1][2] + tm.coords[0][2];
 //Ok, this works for translation...
 //	bp.coords[0][2] = tm.coords[0][0] * origBP.coords[0][2] + tm.coords[0][1] * origBP.coords[1][2] + tm.coords[0][2] * textureSize.x();
-    bp.coords[1][0] = tm.coords[1][0] * origBP.coords[0][0] + tm.coords[1][1] * origBP.coords[1][0];
-    bp.coords[1][1] = tm.coords[1][0] * origBP.coords[0][1] + tm.coords[1][1] * origBP.coords[1][1];
-    bp.coords[1][2] = tm.coords[1][0] * origBP.coords[0][2] + tm.coords[1][1] * origBP.coords[1][2] + tm.coords[1][2];
+	bp.coords[1][0] = tm.coords[1][0] * origBP.coords[0][0] + tm.coords[1][1] * origBP.coords[1][0];
+	bp.coords[1][1] = tm.coords[1][0] * origBP.coords[0][1] + tm.coords[1][1] * origBP.coords[1][1];
+	bp.coords[1][2] = tm.coords[1][0] * origBP.coords[0][2] + tm.coords[1][1] * origBP.coords[1][2] + tm.coords[1][2];
 //	bp.coords[1][2] = tm.coords[1][0] * origBP.coords[0][2] + tm.coords[1][1] * origBP.coords[1][2] + tm.coords[1][2] * textureSize.y();
 
 //This doesn't work:	g_brush_texture_changed();
@@ -1632,7 +1636,7 @@ void CommitChanges( void ){
 //Note: We should only set an undo *after* the button has been released... !!! FIX !!!
 //Definitely *should* have an undo, though!
 //  UndoableCommand undo("textureProjectionSetSelected");
-    Select_SetTexdef( TextureProjection( t, bp, Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ) ) );
+	Select_SetTexdef( TextureProjection( t, bp, Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ) ) );
 //This is working, but for some reason the translate is causing the rest of the SI
 //widgets to yield bad readings... !!! FIX !!!
 //I.e., click on textool window, translate face wireframe, then controls go crazy. Dunno why.
@@ -1644,12 +1648,12 @@ void CommitChanges( void ){
 }
 
 void UpdateControlPoints( void ){
-    CommitChanges();
+	CommitChanges();
 
-    // Init texture transform matrix
+	// Init texture transform matrix
 
-    tm.coords[0][0] = 1.0f; tm.coords[0][1] = 0.0f; tm.coords[0][2] = 0.0f;
-    tm.coords[1][0] = 0.0f; tm.coords[1][1] = 1.0f; tm.coords[1][2] = 0.0f;
+	tm.coords[0][0] = 1.0f; tm.coords[0][1] = 0.0f; tm.coords[0][2] = 0.0f;
+	tm.coords[1][0] = 0.0f; tm.coords[1][1] = 1.0f; tm.coords[1][2] = 0.0f;
 }
 
 
@@ -1684,18 +1688,18 @@ const float gridRadius = gridWidth * 0.5f;
 
 typedef const float WidgetColor[3];
 const WidgetColor widgetColor[10] = {
-    { 1.0000f, 0.2000f, 0.0000f },          // Red
-    { 0.9137f, 0.9765f, 0.4980f },          // Yellow
-    { 0.0000f, 0.6000f, 0.3216f },          // Green
-    { 0.6157f, 0.7726f, 0.8196f },          // Cyan
-    { 0.4980f, 0.5000f, 0.4716f },          // Grey
+	{ 1.0000f, 0.2000f, 0.0000f },      // Red
+	{ 0.9137f, 0.9765f, 0.4980f },      // Yellow
+	{ 0.0000f, 0.6000f, 0.3216f },      // Green
+	{ 0.6157f, 0.7726f, 0.8196f },      // Cyan
+	{ 0.4980f, 0.5000f, 0.4716f },      // Grey
 
-    // Highlight colors
-    { 1.0000f, 0.6000f, 0.4000f },          // Light Red
-    { 1.0000f, 1.0000f, 0.8980f },          // Light Yellow
-    { 0.4000f, 1.0000f, 0.7216f },          // Light Green
-    { 1.0000f, 1.0000f, 1.0000f },          // Light Cyan
-    { 0.8980f, 0.9000f, 0.8716f }           // Light Grey
+	// Highlight colors
+	{ 1.0000f, 0.6000f, 0.4000f },      // Light Red
+	{ 1.0000f, 1.0000f, 0.8980f },      // Light Yellow
+	{ 0.4000f, 1.0000f, 0.7216f },      // Light Green
+	{ 1.0000f, 1.0000f, 1.0000f },      // Light Cyan
+	{ 0.8980f, 0.9000f, 0.8716f }       // Light Grey
 };
 
 #define COLOR_RED           0
@@ -1711,188 +1715,188 @@ const WidgetColor widgetColor[10] = {
 
 void DrawControlWidgets( void ){
 //Note that the grid should go *behind* the face outline... !!! FIX !!!
-    // Grid
-    float xStart = center.x() - ( gridWidth / 2.0f );
-    float yStart = center.y() - ( gridWidth / 2.0f );
-    float xScale = ( extents.height() / extents.width() ) * ( textureSize.y() / textureSize.x() );
+	// Grid
+	float xStart = center.x() - ( gridWidth / 2.0f );
+	float yStart = center.y() - ( gridWidth / 2.0f );
+	float xScale = ( extents.height() / extents.width() ) * ( textureSize.y() / textureSize.x() );
 
-    glPushMatrix();
+	glPushMatrix();
 //Small problem with this approach: Changing the center point in the TX code doesn't seem to
 //change anything here--prolly because we load a new identity matrix. A couple of ways to fix
 //this would be to get rid of that code, or change the center to a new point by taking into
 //account the transforms that we toss with the new identity matrix. Dunno which is better.
-    glLoadIdentity();
-    glScalef( xScale, 1.0, 1.0 );           // Will that square it up? Yup.
-    glRotatef( static_cast<float>( radians_to_degrees( atan2( -currentBP.coords[0][1], currentBP.coords[0][0] ) ) ), 0.0, 0.0, -1.0 );
-    glTranslatef( -center.x(), -center.y(), 0.0 );
+	glLoadIdentity();
+	glScalef( xScale, 1.0, 1.0 );       // Will that square it up? Yup.
+	glRotatef( static_cast<float>( radians_to_degrees( atan2( -currentBP.coords[0][1], currentBP.coords[0][0] ) ) ), 0.0, 0.0, -1.0 );
+	glTranslatef( -center.x(), -center.y(), 0.0 );
 
-    // Circle
-    glColor3fv( translatingX && translatingY ? widgetColor[COLOR_LT_YELLOW] : widgetColor[COLOR_YELLOW] );
-    glBegin( GL_LINE_LOOP );
-    DrawCircularArc( center, 0, 2.0f * PI, gridRadius * 0.16 );
+	// Circle
+	glColor3fv( translatingX && translatingY ? widgetColor[COLOR_LT_YELLOW] : widgetColor[COLOR_YELLOW] );
+	glBegin( GL_LINE_LOOP );
+	DrawCircularArc( center, 0, 2.0f * PI, gridRadius * 0.16 );
 
-    glEnd();
+	glEnd();
 
-    // Axes
-    glBegin( GL_LINES );
-    glColor3fv( translatingY && !translatingX ? widgetColor[COLOR_LT_GREEN] : widgetColor[COLOR_GREEN] );
-    glVertex2f( center.x(), center.y() + ( gridRadius * 0.16 ) );
-    glVertex2f( center.x(), center.y() + ( gridRadius * 1.00 ) );
-    glColor3fv( translatingX && !translatingY ? widgetColor[COLOR_LT_RED] : widgetColor[COLOR_RED] );
-    glVertex2f( center.x() + ( gridRadius * 0.16 ), center.y() );
-    glVertex2f( center.x() + ( gridRadius * 1.00 ), center.y() );
-    glEnd();
+	// Axes
+	glBegin( GL_LINES );
+	glColor3fv( translatingY && !translatingX ? widgetColor[COLOR_LT_GREEN] : widgetColor[COLOR_GREEN] );
+	glVertex2f( center.x(), center.y() + ( gridRadius * 0.16 ) );
+	glVertex2f( center.x(), center.y() + ( gridRadius * 1.00 ) );
+	glColor3fv( translatingX && !translatingY ? widgetColor[COLOR_LT_RED] : widgetColor[COLOR_RED] );
+	glVertex2f( center.x() + ( gridRadius * 0.16 ), center.y() );
+	glVertex2f( center.x() + ( gridRadius * 1.00 ), center.y() );
+	glEnd();
 
-    // Arrowheads
-    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    glBegin( GL_TRIANGLES );
-    glColor3fv( translatingY && !translatingX ? widgetColor[COLOR_LT_GREEN] : widgetColor[COLOR_GREEN] );
-    glVertex2f( center.x(), center.y() + ( gridRadius * 1.10 ) );
-    glVertex2f( center.x() + ( gridRadius * 0.06 ), center.y() + ( gridRadius * 0.94 ) );
-    glVertex2f( center.x() - ( gridRadius * 0.06 ), center.y() + ( gridRadius * 0.94 ) );
-    glColor3fv( translatingX && !translatingY ? widgetColor[COLOR_LT_RED] : widgetColor[COLOR_RED] );
-    glVertex2f( center.x() + ( gridRadius * 1.10 ), center.y() );
-    glVertex2f( center.x() + ( gridRadius * 0.94 ), center.y() + ( gridRadius * 0.06 ) );
-    glVertex2f( center.x() + ( gridRadius * 0.94 ), center.y() - ( gridRadius * 0.06 ) );
-    glEnd();
+	// Arrowheads
+	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	glBegin( GL_TRIANGLES );
+	glColor3fv( translatingY && !translatingX ? widgetColor[COLOR_LT_GREEN] : widgetColor[COLOR_GREEN] );
+	glVertex2f( center.x(), center.y() + ( gridRadius * 1.10 ) );
+	glVertex2f( center.x() + ( gridRadius * 0.06 ), center.y() + ( gridRadius * 0.94 ) );
+	glVertex2f( center.x() - ( gridRadius * 0.06 ), center.y() + ( gridRadius * 0.94 ) );
+	glColor3fv( translatingX && !translatingY ? widgetColor[COLOR_LT_RED] : widgetColor[COLOR_RED] );
+	glVertex2f( center.x() + ( gridRadius * 1.10 ), center.y() );
+	glVertex2f( center.x() + ( gridRadius * 0.94 ), center.y() + ( gridRadius * 0.06 ) );
+	glVertex2f( center.x() + ( gridRadius * 0.94 ), center.y() - ( gridRadius * 0.06 ) );
+	glEnd();
 
-    // Arc
-    glBegin( GL_LINE_STRIP );
-    glColor3fv( rotating ? widgetColor[COLOR_LT_CYAN] : widgetColor[COLOR_CYAN] );
-    DrawCircularArc( center, 0.03f * PI, 0.47f * PI, gridRadius * 0.90 );
-    glEnd();
+	// Arc
+	glBegin( GL_LINE_STRIP );
+	glColor3fv( rotating ? widgetColor[COLOR_LT_CYAN] : widgetColor[COLOR_CYAN] );
+	DrawCircularArc( center, 0.03f * PI, 0.47f * PI, gridRadius * 0.90 );
+	glEnd();
 
-    // Boxes
-    glColor3fv( scalingY && !scalingX ? widgetColor[COLOR_LT_GREEN] : widgetColor[COLOR_GREEN] );
-    glBegin( GL_LINES );
-    glVertex2f( center.x() + ( gridRadius * 0.20 ), center.y() + ( gridRadius * 1.50 ) );
-    glVertex2f( center.x() - ( gridRadius * 0.20 ), center.y() + ( gridRadius * 1.50 ) );
-    glEnd();
-    glBegin( GL_LINE_LOOP );
-    glVertex2f( center.x() + ( gridRadius * 0.10 ), center.y() + ( gridRadius * 1.40 ) );
-    glVertex2f( center.x() - ( gridRadius * 0.10 ), center.y() + ( gridRadius * 1.40 ) );
-    glVertex2f( center.x() - ( gridRadius * 0.10 ), center.y() + ( gridRadius * 1.20 ) );
-    glVertex2f( center.x() + ( gridRadius * 0.10 ), center.y() + ( gridRadius * 1.20 ) );
-    glEnd();
+	// Boxes
+	glColor3fv( scalingY && !scalingX ? widgetColor[COLOR_LT_GREEN] : widgetColor[COLOR_GREEN] );
+	glBegin( GL_LINES );
+	glVertex2f( center.x() + ( gridRadius * 0.20 ), center.y() + ( gridRadius * 1.50 ) );
+	glVertex2f( center.x() - ( gridRadius * 0.20 ), center.y() + ( gridRadius * 1.50 ) );
+	glEnd();
+	glBegin( GL_LINE_LOOP );
+	glVertex2f( center.x() + ( gridRadius * 0.10 ), center.y() + ( gridRadius * 1.40 ) );
+	glVertex2f( center.x() - ( gridRadius * 0.10 ), center.y() + ( gridRadius * 1.40 ) );
+	glVertex2f( center.x() - ( gridRadius * 0.10 ), center.y() + ( gridRadius * 1.20 ) );
+	glVertex2f( center.x() + ( gridRadius * 0.10 ), center.y() + ( gridRadius * 1.20 ) );
+	glEnd();
 
-    glColor3fv( scalingX && !scalingY ? widgetColor[COLOR_LT_RED] : widgetColor[COLOR_RED] );
-    glBegin( GL_LINES );
-    glVertex2f( center.x() + ( gridRadius * 1.50 ), center.y() + ( gridRadius * 0.20 ) );
-    glVertex2f( center.x() + ( gridRadius * 1.50 ), center.y() - ( gridRadius * 0.20 ) );
-    glEnd();
-    glBegin( GL_LINE_LOOP );
-    glVertex2f( center.x() + ( gridRadius * 1.40 ), center.y() + ( gridRadius * 0.10 ) );
-    glVertex2f( center.x() + ( gridRadius * 1.40 ), center.y() - ( gridRadius * 0.10 ) );
-    glVertex2f( center.x() + ( gridRadius * 1.20 ), center.y() - ( gridRadius * 0.10 ) );
-    glVertex2f( center.x() + ( gridRadius * 1.20 ), center.y() + ( gridRadius * 0.10 ) );
-    glEnd();
+	glColor3fv( scalingX && !scalingY ? widgetColor[COLOR_LT_RED] : widgetColor[COLOR_RED] );
+	glBegin( GL_LINES );
+	glVertex2f( center.x() + ( gridRadius * 1.50 ), center.y() + ( gridRadius * 0.20 ) );
+	glVertex2f( center.x() + ( gridRadius * 1.50 ), center.y() - ( gridRadius * 0.20 ) );
+	glEnd();
+	glBegin( GL_LINE_LOOP );
+	glVertex2f( center.x() + ( gridRadius * 1.40 ), center.y() + ( gridRadius * 0.10 ) );
+	glVertex2f( center.x() + ( gridRadius * 1.40 ), center.y() - ( gridRadius * 0.10 ) );
+	glVertex2f( center.x() + ( gridRadius * 1.20 ), center.y() - ( gridRadius * 0.10 ) );
+	glVertex2f( center.x() + ( gridRadius * 1.20 ), center.y() + ( gridRadius * 0.10 ) );
+	glEnd();
 
-    glColor3fv( scalingX && scalingY ? widgetColor[COLOR_LT_CYAN] : widgetColor[COLOR_CYAN] );
-    glBegin( GL_LINE_STRIP );
-    glVertex2f( center.x() + ( gridRadius * 1.50 ), center.y() + ( gridRadius * 1.10 ) );
-    glVertex2f( center.x() + ( gridRadius * 1.50 ), center.y() + ( gridRadius * 1.50 ) );
-    glVertex2f( center.x() + ( gridRadius * 1.10 ), center.y() + ( gridRadius * 1.50 ) );
-    glEnd();
-    glBegin( GL_LINE_LOOP );
-    glVertex2f( center.x() + ( gridRadius * 1.40 ), center.y() + ( gridRadius * 1.40 ) );
-    glVertex2f( center.x() + ( gridRadius * 1.40 ), center.y() + ( gridRadius * 1.20 ) );
-    glVertex2f( center.x() + ( gridRadius * 1.20 ), center.y() + ( gridRadius * 1.20 ) );
-    glVertex2f( center.x() + ( gridRadius * 1.20 ), center.y() + ( gridRadius * 1.40 ) );
-    glEnd();
+	glColor3fv( scalingX && scalingY ? widgetColor[COLOR_LT_CYAN] : widgetColor[COLOR_CYAN] );
+	glBegin( GL_LINE_STRIP );
+	glVertex2f( center.x() + ( gridRadius * 1.50 ), center.y() + ( gridRadius * 1.10 ) );
+	glVertex2f( center.x() + ( gridRadius * 1.50 ), center.y() + ( gridRadius * 1.50 ) );
+	glVertex2f( center.x() + ( gridRadius * 1.10 ), center.y() + ( gridRadius * 1.50 ) );
+	glEnd();
+	glBegin( GL_LINE_LOOP );
+	glVertex2f( center.x() + ( gridRadius * 1.40 ), center.y() + ( gridRadius * 1.40 ) );
+	glVertex2f( center.x() + ( gridRadius * 1.40 ), center.y() + ( gridRadius * 1.20 ) );
+	glVertex2f( center.x() + ( gridRadius * 1.20 ), center.y() + ( gridRadius * 1.20 ) );
+	glVertex2f( center.x() + ( gridRadius * 1.20 ), center.y() + ( gridRadius * 1.40 ) );
+	glEnd();
 
-    glPopMatrix();
+	glPopMatrix();
 }
 
 void DrawControlPoints( void ){
-    glColor3f( 1, 1, 1 );
-    glBegin( GL_LINE_LOOP );
+	glColor3f( 1, 1, 1 );
+	glBegin( GL_LINE_LOOP );
 
-    for ( int i = 0; i < numPts; i++ )
-        glVertex2f( pts[i].x(), pts[i].y() );
+	for ( int i = 0; i < numPts; i++ )
+		glVertex2f( pts[i].x(), pts[i].y() );
 
-    glEnd();
+	glEnd();
 }
 
 // Note: Setup and all that jazz must be done by the caller!
 
 void DrawCircularArc( Vector2 ctr, float startAngle, float endAngle, float radius ){
-    float stepSize = ( 2.0f * PI ) / 200.0f;
+	float stepSize = ( 2.0f * PI ) / 200.0f;
 
-    for ( float angle = startAngle; angle <= endAngle; angle += stepSize )
-        glVertex2f( ctr.x() + radius * cos( angle ), ctr.y() + radius * sin( angle ) );
+	for ( float angle = startAngle; angle <= endAngle; angle += stepSize )
+		glVertex2f( ctr.x() + radius * cos( angle ), ctr.y() + radius * sin( angle ) );
 }
 
 
 void focus(){
-    if ( numPts == 0 ) {
-        return;
-    }
+	if ( numPts == 0 ) {
+		return;
+	}
 
-    // Find selected texture's extents...
+	// Find selected texture's extents...
 
-    extents.minX = extents.maxX = pts[0].x(),
-    extents.minY = extents.maxY = pts[0].y();
+	extents.minX = extents.maxX = pts[0].x(),
+	extents.minY = extents.maxY = pts[0].y();
 
-    for ( int i = 1; i < numPts; i++ )
-    {
-        if ( pts[i].x() < extents.minX ) {
-            extents.minX = pts[i].x();
-        }
-        if ( pts[i].x() > extents.maxX ) {
-            extents.maxX = pts[i].x();
-        }
-        if ( pts[i].y() < extents.minY ) {
-            extents.minY = pts[i].y();
-        }
-        if ( pts[i].y() > extents.maxY ) {
-            extents.maxY = pts[i].y();
-        }
-    }
+	for ( int i = 1; i < numPts; i++ )
+	{
+		if ( pts[i].x() < extents.minX ) {
+			extents.minX = pts[i].x();
+		}
+		if ( pts[i].x() > extents.maxX ) {
+			extents.maxX = pts[i].x();
+		}
+		if ( pts[i].y() < extents.minY ) {
+			extents.minY = pts[i].y();
+		}
+		if ( pts[i].y() > extents.maxY ) {
+			extents.maxY = pts[i].y();
+		}
+	}
 
-    // Do some viewport fitting stuff...
+	// Do some viewport fitting stuff...
 
 //globalOutputStream() << "--> Center: " << center.x() << ", " << center.y() << "\n";
 //globalOutputStream() << "--> Extents (stage 1): " << extents.minX << ", "
 //	<< extents.maxX << ", " << extents.minY << ", " << extents.maxY << "\n";
-    // TTimo: Apply a ratio to get the area we'll draw.
-    center.x() = 0.5f * ( extents.minX + extents.maxX ),
-        center.y() = 0.5f * ( extents.minY + extents.maxY );
-    extents.minX = center.x() + VP_PADDING * ( extents.minX - center.x() ),
-    extents.minY = center.y() + VP_PADDING * ( extents.minY - center.y() ),
-    extents.maxX = center.x() + VP_PADDING * ( extents.maxX - center.x() ),
-    extents.maxY = center.y() + VP_PADDING * ( extents.maxY - center.y() );
+	// TTimo: Apply a ratio to get the area we'll draw.
+	center.x() = 0.5f * ( extents.minX + extents.maxX ),
+	        center.y() = 0.5f * ( extents.minY + extents.maxY );
+	extents.minX = center.x() + VP_PADDING * ( extents.minX - center.x() ),
+	extents.minY = center.y() + VP_PADDING * ( extents.minY - center.y() ),
+	extents.maxX = center.x() + VP_PADDING * ( extents.maxX - center.x() ),
+	extents.maxY = center.y() + VP_PADDING * ( extents.maxY - center.y() );
 //globalOutputStream() << "--> Extents (stage 2): " << extents.minX << ", "
 //	<< extents.maxX << ", " << extents.minY << ", " << extents.maxY << "\n";
 
-    // TTimo: We want a texture with the same X / Y ratio.
-    // TTimo: Compute XY space / window size ratio.
-    float SSize = extents.width(), TSize = extents.height();
-    float ratioX = textureSize.x() * extents.width() / windowSize.x(),
-          ratioY = textureSize.y() * extents.height() / windowSize.y();
+	// TTimo: We want a texture with the same X / Y ratio.
+	// TTimo: Compute XY space / window size ratio.
+	float SSize = extents.width(), TSize = extents.height();
+	float ratioX = textureSize.x() * extents.width() / windowSize.x(),
+	      ratioY = textureSize.y() * extents.height() / windowSize.y();
 //globalOutputStream() << "--> Texture size: " << textureSize.x() << ", " << textureSize.y() << "\n";
 //globalOutputStream() << "--> Window size: " << windowSize.x() << ", " << windowSize.y() << "\n";
 
-    if ( ratioX > ratioY ) {
-        TSize = ( windowSize.y() * ratioX ) / textureSize.y();
+	if ( ratioX > ratioY ) {
+		TSize = ( windowSize.y() * ratioX ) / textureSize.y();
 //		TSize = extents.width() * (windowSize.y() / windowSize.x()) * (textureSize.x() / textureSize.y());
-    }
-    else
-    {
-        SSize = ( windowSize.x() * ratioY ) / textureSize.x();
+	}
+	else
+	{
+		SSize = ( windowSize.x() * ratioY ) / textureSize.x();
 //		SSize = extents.height() * (windowSize.x() / windowSize.y()) * (textureSize.y() / textureSize.x());
-    }
+	}
 
-    extents.minX = center.x() - 0.5f * SSize, extents.maxX = center.x() + 0.5f * SSize,
-    extents.minY = center.y() - 0.5f * TSize, extents.maxY = center.y() + 0.5f * TSize;
+	extents.minX = center.x() - 0.5f * SSize, extents.maxX = center.x() + 0.5f * SSize,
+	extents.minY = center.y() - 0.5f * TSize, extents.maxY = center.y() + 0.5f * TSize;
 //globalOutputStream() << "--> Extents (stage 3): " << extents.minX << ", "
 //	<< extents.maxX << ", " << extents.minY << ", " << extents.maxY << "\n";
 }
 
 gboolean size_allocate( ui::Widget win, GtkAllocation * a, gpointer ){
-    windowSize.x() = a->width;
-    windowSize.y() = a->height;
-    queueDraw();
-    return false;
+	windowSize.x() = a->width;
+	windowSize.y() = a->height;
+	queueDraw();
+	return false;
 }
 
 gboolean expose( ui::Widget win, GdkEventExpose * e, gpointer ){
@@ -1903,77 +1907,77 @@ gboolean expose( ui::Widget win, GdkEventExpose * e, gpointer ){
 //This needs to go elsewhere...
 //	InitTextool();
 
-    if ( glwidget_make_current( win ) == FALSE ) {
-        globalOutputStream() << "    FAILED to make current! Oh, the agony! :-(\n";
-        return true;
-    }
+	if ( glwidget_make_current( win ) == FALSE ) {
+		globalOutputStream() << "    FAILED to make current! Oh, the agony! :-(\n";
+		return true;
+	}
 
-    CopyPointsFromSelectedFace();
+	CopyPointsFromSelectedFace();
 
-    if ( !lButtonDown ) {
-        focus();
-    }
+	if ( !lButtonDown ) {
+		focus();
+	}
 
-    // Probably should init button/anchor states here as well...
+	// Probably should init button/anchor states here as well...
 //	rotationAngle = 0.0f;
-    glClearColor( 0, 0, 0, 0 );
-    glViewport( 0, 0, e->area.width, e->area.height );
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
+	glClearColor( 0, 0, 0, 0 );
+	glViewport( 0, 0, e->area.width, e->area.height );
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
 
 //???
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    glDisable( GL_DEPTH_TEST );
-    glDisable( GL_BLEND );
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	glDisable( GL_DEPTH_TEST );
+	glDisable( GL_BLEND );
 
-    glOrtho( extents.minX, extents.maxX, extents.maxY, extents.minY, -1, 1 );
+	glOrtho( extents.minX, extents.maxX, extents.maxY, extents.minY, -1, 1 );
 
-    glColor3f( 1, 1, 1 );
-    // draw the texture background
-    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    glBindTexture( GL_TEXTURE_2D, textureNum );
+	glColor3f( 1, 1, 1 );
+	// draw the texture background
+	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	glBindTexture( GL_TEXTURE_2D, textureNum );
 
-    glEnable( GL_TEXTURE_2D );
-    glBegin( GL_QUADS );
-    glTexCoord2f( extents.minX, extents.minY );
-    glVertex2f( extents.minX, extents.minY );
-    glTexCoord2f( extents.maxX, extents.minY );
-    glVertex2f( extents.maxX, extents.minY );
-    glTexCoord2f( extents.maxX, extents.maxY );
-    glVertex2f( extents.maxX, extents.maxY );
-    glTexCoord2f( extents.minX, extents.maxY );
-    glVertex2f( extents.minX, extents.maxY );
-    glEnd();
-    glDisable( GL_TEXTURE_2D );
+	glEnable( GL_TEXTURE_2D );
+	glBegin( GL_QUADS );
+	glTexCoord2f( extents.minX, extents.minY );
+	glVertex2f( extents.minX, extents.minY );
+	glTexCoord2f( extents.maxX, extents.minY );
+	glVertex2f( extents.maxX, extents.minY );
+	glTexCoord2f( extents.maxX, extents.maxY );
+	glVertex2f( extents.maxX, extents.maxY );
+	glTexCoord2f( extents.minX, extents.maxY );
+	glVertex2f( extents.minX, extents.maxY );
+	glEnd();
+	glDisable( GL_TEXTURE_2D );
 
-    // draw the texture-space grid
-    glColor3fv( widgetColor[COLOR_GREY] );
-    glBegin( GL_LINES );
+	// draw the texture-space grid
+	glColor3fv( widgetColor[COLOR_GREY] );
+	glBegin( GL_LINES );
 
-    const int gridSubdivisions = 8;
-    const float gridExtents = 4.0f;
+	const int gridSubdivisions = 8;
+	const float gridExtents = 4.0f;
 
-    for ( int i = 0; i < gridSubdivisions + 1; ++i )
-    {
-        float y = i * ( gridExtents / float(gridSubdivisions) );
-        float x = i * ( gridExtents / float(gridSubdivisions) );
-        glVertex2f( 0, y );
-        glVertex2f( gridExtents, y );
-        glVertex2f( x, 0 );
-        glVertex2f( x, gridExtents );
-    }
+	for ( int i = 0; i < gridSubdivisions + 1; ++i )
+	{
+		float y = i * ( gridExtents / float(gridSubdivisions) );
+		float x = i * ( gridExtents / float(gridSubdivisions) );
+		glVertex2f( 0, y );
+		glVertex2f( gridExtents, y );
+		glVertex2f( x, 0 );
+		glVertex2f( x, gridExtents );
+	}
 
-    glEnd();
+	glEnd();
 
-    DrawControlPoints();
-    DrawControlWidgets();
+	DrawControlPoints();
+	DrawControlWidgets();
 //???
-    // reset the current texture
+	// reset the current texture
 //  glBindTexture(GL_TEXTURE_2D, 0);
 //  glFinish();
-    glwidget_swap_buffers( win );
+	glwidget_swap_buffers( win );
 
-    return false;
+	return false;
 }
 
 /*int FindSelectedPoint(int x, int y)
@@ -1997,29 +2001,29 @@ Vector2 oldTrans;
 gboolean button_press( ui::Widget win, GdkEventButton * e, gpointer ){
 //	globalOutputStream() << "--> Textool button press...\n";
 
-    if ( e->button == 1 ) {
-        lButtonDown = true;
-        GlobalUndoSystem().start();
+	if ( e->button == 1 ) {
+		lButtonDown = true;
+		GlobalUndoSystem().start();
 
-        origBP = currentBP;
+		origBP = currentBP;
 
-        //globalOutputStream() << "--> Original BP: [" << origBP.coords[0][0] << "][" << origBP.coords[0][1] << "][" << origBP.coords[0][2] << "]\n";
-        //globalOutputStream() << "                 [" << origBP.coords[1][0] << "][" << origBP.coords[1][1] << "][" << origBP.coords[1][2] << "]\n";
-        //float angle = atan2(origBP.coords[0][1], origBP.coords[0][0]) * 180.0f / 3.141592653589f;
-        origAngle = ( origBP.coords[0][1] > 0 ? PI : -PI ); // Could also be -PI... !!! FIX !!! [DONE]
+		//globalOutputStream() << "--> Original BP: [" << origBP.coords[0][0] << "][" << origBP.coords[0][1] << "][" << origBP.coords[0][2] << "]\n";
+		//globalOutputStream() << "                 [" << origBP.coords[1][0] << "][" << origBP.coords[1][1] << "][" << origBP.coords[1][2] << "]\n";
+		//float angle = atan2(origBP.coords[0][1], origBP.coords[0][0]) * 180.0f / 3.141592653589f;
+		origAngle = ( origBP.coords[0][1] > 0 ? PI : -PI ); // Could also be -PI... !!! FIX !!! [DONE]
 
-        if ( origBP.coords[0][0] != 0.0f ) {
-            origAngle = atan( origBP.coords[0][1] / origBP.coords[0][0] );
-        }
+		if ( origBP.coords[0][0] != 0.0f ) {
+			origAngle = atan( origBP.coords[0][1] / origBP.coords[0][0] );
+		}
 
-        origScaleX = origBP.coords[0][0] / cos( origAngle );
-        origScaleY = origBP.coords[1][1] / cos( origAngle );
-        rotationAngle = origAngle;
-        oldCenter[0] = oldCenter[1] = 0;
+		origScaleX = origBP.coords[0][0] / cos( origAngle );
+		origScaleY = origBP.coords[1][1] / cos( origAngle );
+		rotationAngle = origAngle;
+		oldCenter[0] = oldCenter[1] = 0;
 
-        //globalOutputStream() << "--> BP stats: ang=" << origAngle * RAD_TO_DEG << ", scale=" << origScaleX << "/" << origScaleY << "\n";
-        //Should also set the Flip X/Y checkboxes here as well... !!! FIX !!!
-        //Also: should reverse texture left/right up/down instead of flipping the points...
+		//globalOutputStream() << "--> BP stats: ang=" << origAngle * RAD_TO_DEG << ", scale=" << origScaleX << "/" << origScaleY << "\n";
+		//Should also set the Flip X/Y checkboxes here as well... !!! FIX !!!
+		//Also: should reverse texture left/right up/down instead of flipping the points...
 
 //disnowok
 //float nx = windowSize.x() * (e->x - extents.minX) / (extents.maxX - extents.minX);
@@ -2027,25 +2031,25 @@ gboolean button_press( ui::Widget win, GdkEventButton * e, gpointer ){
 //disdoes...
 //But I want it to scroll the texture window, not the points... !!! FIX !!!
 //Actually, should scroll the texture window only when mouse is down on no widgets...
-        float nx = e->x / windowSize.x() * extents.width() + extents.minX;
-        float ny = e->y / windowSize.y() * extents.height() + extents.minY;
-        trans.x() = -tm.coords[0][0] * nx - tm.coords[0][1] * ny;
-        trans.y() = -tm.coords[1][0] * nx - tm.coords[1][1] * ny;
+		float nx = e->x / windowSize.x() * extents.width() + extents.minX;
+		float ny = e->y / windowSize.y() * extents.height() + extents.minY;
+		trans.x() = -tm.coords[0][0] * nx - tm.coords[0][1] * ny;
+		trans.y() = -tm.coords[1][0] * nx - tm.coords[1][1] * ny;
 
-        dragPoint.x() = e->x, dragPoint.y() = e->y;
-        trans2.x() = nx, trans2.y() = ny;
-        oldRotationAngle = rotationAngle;
+		dragPoint.x() = e->x, dragPoint.y() = e->y;
+		trans2.x() = nx, trans2.y() = ny;
+		oldRotationAngle = rotationAngle;
 //		oldTrans.x() = tm.coords[0][2] - nx * textureSize.x();
 //		oldTrans.y() = tm.coords[1][2] - ny * textureSize.y();
-        oldTrans.x() = tm.coords[0][2];
-        oldTrans.y() = tm.coords[1][2];
-        oldCenter.x() = center.x();
-        oldCenter.y() = center.y();
+		oldTrans.x() = tm.coords[0][2];
+		oldTrans.y() = tm.coords[1][2];
+		oldCenter.x() = center.x();
+		oldCenter.y() = center.y();
 
-        queueDraw();
+		queueDraw();
 
-        return true;
-    }
+		return true;
+	}
 /*	else if (e->button == 3)
     {
         rButtonDown = true;
@@ -2053,13 +2057,13 @@ gboolean button_press( ui::Widget win, GdkEventButton * e, gpointer ){
 
 //globalOutputStream() << "(" << (haveAnchor ? "anchor" : "released") << ")\n";
 
-    return false;
+	return false;
 }
 
 gboolean button_release( ui::Widget win, GdkEventButton * e, gpointer ){
 //	globalOutputStream() << "--> Textool button release...\n";
 
-    if ( e->button == 1 ) {
+	if ( e->button == 1 ) {
 /*		float ptx = e->x / windowSize.x() * extents.width() + extents.minX;
         float pty = e->y / windowSize.y() * extents.height() + extents.minY;
 
@@ -2068,35 +2072,35 @@ gboolean button_release( ui::Widget win, GdkEventButton * e, gpointer ){
         if (translatingX || translatingY)
             center.x() = ptx, center.y() = pty;//*/
 
-        lButtonDown = false;
+		lButtonDown = false;
 
-        if ( translatingX || translatingY ) {
-            GlobalUndoSystem().finish( "translateTexture" );
-        }
-        else if ( rotating ) {
-            GlobalUndoSystem().finish( "rotateTexture" );
-        }
-        else if ( scalingX || scalingY ) {
-            GlobalUndoSystem().finish( "scaleTexture" );
-        }
-        else if ( resizingX || resizingY ) {
-            GlobalUndoSystem().finish( "resizeTexture" );
-        }
-        else
-        {
-            GlobalUndoSystem().finish( "textoolUnknown" );
-        }
+		if ( translatingX || translatingY ) {
+			GlobalUndoSystem().finish( "translateTexture" );
+		}
+		else if ( rotating ) {
+			GlobalUndoSystem().finish( "rotateTexture" );
+		}
+		else if ( scalingX || scalingY ) {
+			GlobalUndoSystem().finish( "scaleTexture" );
+		}
+		else if ( resizingX || resizingY ) {
+			GlobalUndoSystem().finish( "resizeTexture" );
+		}
+		else
+		{
+			GlobalUndoSystem().finish( "textoolUnknown" );
+		}
 
-        rotating = translatingX = translatingY = scalingX = scalingY
-                                                                = resizingX = resizingY = false;
+		rotating = translatingX = translatingY = scalingX = scalingY
+		                                                            = resizingX = resizingY = false;
 
-        queueDraw();
-    }
-    else if ( e->button == 3 ) {
-        rButtonDown = false;
-    }
+		queueDraw();
+	}
+	else if ( e->button == 3 ) {
+		rButtonDown = false;
+	}
 
-    return true;
+	return true;
 }
 
 /*
@@ -2121,58 +2125,58 @@ gboolean button_release( ui::Widget win, GdkEventButton * e, gpointer ){
 gboolean motion( ui::Widget win, GdkEventMotion * e, gpointer ){
 //	globalOutputStream() << "--> Textool motion...\n";
 
-    if ( lButtonDown ) {
-        if ( translatingX || translatingY ) {
-            float ptx = e->x / windowSize.x() * extents.width() + extents.minX;
-            float pty = e->y / windowSize.y() * extents.height() + extents.minY;
+	if ( lButtonDown ) {
+		if ( translatingX || translatingY ) {
+			float ptx = e->x / windowSize.x() * extents.width() + extents.minX;
+			float pty = e->y / windowSize.y() * extents.height() + extents.minY;
 
 //Need to fix this to take the rotation angle into account, so that it moves along
 //the rotated X/Y axis...
-            if ( translatingX ) {
+			if ( translatingX ) {
 //				tm.coords[0][2] = (trans.x() + ptx) * textureSize.x();
 //This works, but only when the angle is zero. !!! FIX !!! [DONE]
 //				tm.coords[0][2] = oldCenter.x() + (ptx * textureSize.x());
-                tm.coords[0][2] = oldTrans.x() + ( ptx - trans2.x() ) * textureSize.x();
+				tm.coords[0][2] = oldTrans.x() + ( ptx - trans2.x() ) * textureSize.x();
 //				center.x() = oldCenter.x() + (ptx - trans2.x());
-            }
+			}
 
-            if ( translatingY ) {
+			if ( translatingY ) {
 //				tm.coords[1][2] = (trans.y() + pty) * textureSize.y();
 //				tm.coords[1][2] = oldCenter.y() + (pty * textureSize.y());
-                tm.coords[1][2] = oldTrans.y() + ( pty - trans2.y() ) * textureSize.y();
+				tm.coords[1][2] = oldTrans.y() + ( pty - trans2.y() ) * textureSize.y();
 //				center.y() = oldCenter.y() + (pty - trans2.y());
-            }
+			}
 
 //Need to update center.x/y() so that the widget translates as well. Also, oldCenter
 //is badly named... Should be oldTrans or something like that... !!! FIX !!!
 //Changing center.x/y() here doesn't seem to change anything... :-/
-            UpdateControlPoints();
-        }
-        else if ( rotating ) {
-            // Shamus: New rotate code
-            int cx = (int)( windowSize.x() * ( center.x() - extents.minX ) / extents.width() );
-            int cy = (int)( windowSize.y() * ( center.y() - extents.minY ) / extents.height() );
-            Vector3 v1( dragPoint.x() - cx, dragPoint.y() - cy, 0 ), v2( e->x - cx, e->y - cy, 0 );
+			UpdateControlPoints();
+		}
+		else if ( rotating ) {
+			// Shamus: New rotate code
+			int cx = (int)( windowSize.x() * ( center.x() - extents.minX ) / extents.width() );
+			int cy = (int)( windowSize.y() * ( center.y() - extents.minY ) / extents.height() );
+			Vector3 v1( dragPoint.x() - cx, dragPoint.y() - cy, 0 ), v2( e->x - cx, e->y - cy, 0 );
 
-            vector3_normalise( v1 );
-            vector3_normalise( v2 );
-            float c = vector3_dot( v1, v2 );
-            Vector3 cross = vector3_cross( v1, v2 );
-            float s = vector3_length( cross );
+			vector3_normalise( v1 );
+			vector3_normalise( v2 );
+			float c = vector3_dot( v1, v2 );
+			Vector3 cross = vector3_cross( v1, v2 );
+			float s = vector3_length( cross );
 
-            if ( cross[2] > 0 ) {
-                s = -s;
-            }
+			if ( cross[2] > 0 ) {
+				s = -s;
+			}
 
 // Problem with this: arcsin/cos seems to only return -90 to 90 and 0 to 180...
 // Can't derive angle from that!
 
 //rotationAngle = asin(s);// * 180.0f / 3.141592653589f;
-            rotationAngle = acos( c );
+			rotationAngle = acos( c );
 //rotationAngle2 = asin(s);
-            if ( cross[2] < 0 ) {
-                rotationAngle = -rotationAngle;
-            }
+			if ( cross[2] < 0 ) {
+				rotationAngle = -rotationAngle;
+			}
 
 //NO! DOESN'T WORK! rotationAngle -= 45.0f * DEG_TO_RAD;
 //Let's try this:
@@ -2195,10 +2199,10 @@ gboolean motion( ui::Widget win, GdkEventMotion * e, gpointer ){
 
 // See brush_primit.cpp line 244 (Texdef_EmitTextureCoordinates()) for where texcoords come from...
 
-            tm.coords[0][0] =  c;
-            tm.coords[0][1] =  s;
-            tm.coords[1][0] = -s;
-            tm.coords[1][1] =  c;
+			tm.coords[0][0] =  c;
+			tm.coords[0][1] =  s;
+			tm.coords[1][0] = -s;
+			tm.coords[1][1] =  c;
 //It doesn't work anymore... Dunno why...
 //tm.coords[0][2] = -trans.x();			// This works!!! Yeah!!!
 //tm.coords[1][2] = -trans.y();
@@ -2222,91 +2226,91 @@ gboolean motion( ui::Widget win, GdkEventMotion * e, gpointer ){
 /*tm.coords[0][2] = -c * center.x() * textureSize.x() - s * center.y() * textureSize.y();
    tm.coords[1][2] =  s * center.x() * textureSize.x() - c * center.y() * textureSize.y();//*/
 //Yes!!!
-            tm.coords[0][2] = ( -c * center.x() * textureSize.x() - s * center.y() * textureSize.y() ) + center.x() * textureSize.x();
-            tm.coords[1][2] = ( s * center.x() * textureSize.x() - c * center.y() * textureSize.y() ) + center.y() * textureSize.y(); //*/
+			tm.coords[0][2] = ( -c * center.x() * textureSize.x() - s * center.y() * textureSize.y() ) + center.x() * textureSize.x();
+			tm.coords[1][2] = ( s * center.x() * textureSize.x() - c * center.y() * textureSize.y() ) + center.y() * textureSize.y(); //*/
 //This doesn't work...
 //And this is the wrong place for this anyway (I'm pretty sure).
 /*tm.coords[0][2] += oldCenter.x();
    tm.coords[1][2] += oldCenter.y();//*/
-            UpdateControlPoints(); // will cause a redraw
-        }
+			UpdateControlPoints(); // will cause a redraw
+		}
 
-        return true;
-    }
-    else                                    // Check for widget mouseovers
-    {
-        Vector2 tran;
-        float nx = e->x / windowSize.x() * extents.width() + extents.minX;
-        float ny = e->y / windowSize.y() * extents.height() + extents.minY;
-        // Translate nx/y to the "center" point...
-        nx -= center.x();
-        ny -= center.y();
-        ny = -ny;   // Flip Y-axis so that increasing numbers move up
+		return true;
+	}
+	else                                // Check for widget mouseovers
+	{
+		Vector2 tran;
+		float nx = e->x / windowSize.x() * extents.width() + extents.minX;
+		float ny = e->y / windowSize.y() * extents.height() + extents.minY;
+		// Translate nx/y to the "center" point...
+		nx -= center.x();
+		ny -= center.y();
+		ny = -ny; // Flip Y-axis so that increasing numbers move up
 
-        tran.x() = tm.coords[0][0] * nx + tm.coords[0][1] * ny;
-        tran.y() = tm.coords[1][0] * nx + tm.coords[1][1] * ny;
+		tran.x() = tm.coords[0][0] * nx + tm.coords[0][1] * ny;
+		tran.y() = tm.coords[1][0] * nx + tm.coords[1][1] * ny;
 //This doesn't seem to generate a valid distance from the center--for some reason it
 //calculates a fixed number every time
 //Look at nx/y above: they're getting fixed there! !!! FIX !!! [DONE]
-        float dist = sqrt( ( nx * nx ) + ( ny * ny ) );
-        // Normalize to the 2.0 = height standard (for now)
+		float dist = sqrt( ( nx * nx ) + ( ny * ny ) );
+		// Normalize to the 2.0 = height standard (for now)
 //globalOutputStream() << "--> Distance before: " << dist;
-        dist = dist * 2.0f / extents.height();
+		dist = dist * 2.0f / extents.height();
 //globalOutputStream() << ". After: " << dist;
-        tran.x() = tran.x() * 2.0f / extents.height();
-        tran.y() = tran.y() * 2.0f / extents.height();
+		tran.x() = tran.x() * 2.0f / extents.height();
+		tran.y() = tran.y() * 2.0f / extents.height();
 //globalOutputStream() << ". Trans: " << tran.x() << ", " << tran.y() << "\n";
 
 //Let's try this instead...
 //Interesting! It seems that e->x/y are rotated
 //(no, they're not--the TM above is what's doing it...)
-        nx = ( ( e->x / windowSize.y() ) * 2.0f ) - ( windowSize.x() / windowSize.y() );
-        ny = ( ( e->y / windowSize.y() ) * 2.0f ) - ( windowSize.y() / windowSize.y() );
-        ny = -ny;
+		nx = ( ( e->x / windowSize.y() ) * 2.0f ) - ( windowSize.x() / windowSize.y() );
+		ny = ( ( e->y / windowSize.y() ) * 2.0f ) - ( windowSize.y() / windowSize.y() );
+		ny = -ny;
 //Cool! It works! Now just need to do rotation...
 
-        rotating = translatingX = translatingY = scalingX = scalingY
-                                                                = resizingX = resizingY = false;
+		rotating = translatingX = translatingY = scalingX = scalingY
+		                                                            = resizingX = resizingY = false;
 
-        if ( dist < ( gridRadius * 0.16f ) ) {
-            translatingX = translatingY = true;
-        }
-        else if ( dist > ( gridRadius * 0.16f ) && dist < ( gridRadius * 1.10f )
-                  && fabs( ny ) < ( gridRadius * 0.05f ) && nx > 0 ) {
-            translatingX = true;
-        }
-        else if ( dist > ( gridRadius * 0.16f ) && dist < ( gridRadius * 1.10f )
-                  && fabs( nx ) < ( gridRadius * 0.05f ) && ny > 0 ) {
-            translatingY = true;
-        }
-        // Should tighten up the angle on this, or put this test after the axis tests...
-        else if ( tran.x() > 0 && tran.y() > 0
-                  && ( dist > ( gridRadius * 0.82f ) && dist < ( gridRadius * 0.98f ) ) ) {
-            rotating = true;
-        }
+		if ( dist < ( gridRadius * 0.16f ) ) {
+			translatingX = translatingY = true;
+		}
+		else if ( dist > ( gridRadius * 0.16f ) && dist < ( gridRadius * 1.10f )
+		          && fabs( ny ) < ( gridRadius * 0.05f ) && nx > 0 ) {
+			translatingX = true;
+		}
+		else if ( dist > ( gridRadius * 0.16f ) && dist < ( gridRadius * 1.10f )
+		          && fabs( nx ) < ( gridRadius * 0.05f ) && ny > 0 ) {
+			translatingY = true;
+		}
+		// Should tighten up the angle on this, or put this test after the axis tests...
+		else if ( tran.x() > 0 && tran.y() > 0
+		          && ( dist > ( gridRadius * 0.82f ) && dist < ( gridRadius * 0.98f ) ) ) {
+			rotating = true;
+		}
 
-        queueDraw();
+		queueDraw();
 
-        return true;
-    }
+		return true;
+	}
 
-    return false;
+	return false;
 }
 
 //It seems the fake tex coords conversion is screwing this stuff up... !!! FIX !!!
 //This is still wrong... Prolly need to do something with the oldScaleX/Y stuff...
 void flipX( ui::ToggleButton, gpointer ){
 //	globalOutputStream() << "--> Flip X...\n";
-    //Shamus:
+	//Shamus:
 //	SurfaceInspector_GetSelectedBPTexdef();		// Refresh g_selectedBrushPrimitTexdef...
 //	tm.coords[0][0] = -tm.coords[0][0];
 //	tm.coords[1][0] = -tm.coords[1][0];
 //	tm.coords[0][0] = -tm.coords[0][0];			// This should be correct now...Nope.
 //	tm.coords[1][1] = -tm.coords[1][1];
-    tm.coords[0][0] = -tm.coords[0][0];         // This should be correct now...
-    tm.coords[1][0] = -tm.coords[1][0];
+	tm.coords[0][0] = -tm.coords[0][0];     // This should be correct now...
+	tm.coords[1][0] = -tm.coords[1][0];
 //	tm.coords[2][0] = -tm.coords[2][0];//wil wok? no.
-    UpdateControlPoints();
+	UpdateControlPoints();
 }
 
 void flipY( ui::ToggleButton, gpointer ){
@@ -2315,10 +2319,10 @@ void flipY( ui::ToggleButton, gpointer ){
 //	tm.coords[1][1] = -tm.coords[1][1];
 //	tm.coords[0][1] = -tm.coords[0][1];			// This should be correct now...Nope.
 //	tm.coords[1][0] = -tm.coords[1][0];
-    tm.coords[0][1] = -tm.coords[0][1];         // This should be correct now...
-    tm.coords[1][1] = -tm.coords[1][1];
+	tm.coords[0][1] = -tm.coords[0][1];     // This should be correct now...
+	tm.coords[1][1] = -tm.coords[1][1];
 //	tm.coords[2][1] = -tm.coords[2][1];//wil wok? no.
-    UpdateControlPoints();
+	UpdateControlPoints();
 }
 
 } // end namespace TexTool

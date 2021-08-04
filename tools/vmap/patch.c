@@ -217,21 +217,21 @@ void ParseVertMatrix(bspDrawVert_t *v)
 	int i;
 	MatchToken( "(" );
 
-	for ( i = 0 ; i < 3 ; i++ ) {
+	for ( i = 0; i < 3; i++ ) {
 		GetToken( qfalse );
 		v->xyz[i] = atof( token );
 	}
-	for ( i = 0 ; i < 2 ; i++ ) {
+	for ( i = 0; i < 2; i++ ) {
 		GetToken( qfalse );
 		v->st[i] = atof( token );
 	}
-	for ( i = 0 ; i < 4 ; i++ ) {
+	for ( i = 0; i < 4; i++ ) {
 		GetToken( qfalse );
 		if (!strcmp(token, ")"))
 			break;
 		vcol[i] = atof( token );
 	}
-	for ( ; i < 4 ; i++ ) {
+	for ( ; i < 4; i++ ) {
 		vcol[i] = 1;
 	}
 	if (strcmp(token, ")"))
@@ -279,7 +279,7 @@ void ParsePatch( qboolean onlyLights, qboolean fixedtess ){
 
 //Hack for fixed tessellation
 /*	info[2] = info[3] = 2;
-	fixedtess = qtrue;*/
+        fixedtess = qtrue;*/
 
 	m.width = info[0];
 	m.height = info[1];
@@ -292,10 +292,10 @@ void ParsePatch( qboolean onlyLights, qboolean fixedtess ){
 	}
 
 	MatchToken( "(" );
-	for ( j = 0; j < m.width ; j++ )
+	for ( j = 0; j < m.width; j++ )
 	{
 		MatchToken( "(" );
-		for ( i = 0; i < m.height ; i++ )
+		for ( i = 0; i < m.height; i++ )
 			ParseVertMatrix(&verts[ i * m.width + j ]);
 		MatchToken( ")" );
 	}
@@ -473,7 +473,7 @@ void PatchMapDrawSurfs( entity_t *e ){
 	Sys_FPrintf( SYS_VRB, "--- PatchMapDrawSurfs ---\n" );
 
 	patchCount = 0;
-	for ( pm = e->patches ; pm ; pm = pm->next  ) {
+	for ( pm = e->patches; pm; pm = pm->next  ) {
 		meshes[patchCount] = pm;
 		patchCount++;
 	}
@@ -485,22 +485,22 @@ void PatchMapDrawSurfs( entity_t *e ){
 	memset( bordering, 0, patchCount * patchCount );
 
 	// build the bordering matrix
-	for ( k = 0 ; k < patchCount ; k++ ) {
+	for ( k = 0; k < patchCount; k++ ) {
 		bordering[k * patchCount + k] = 1;
 
-		for ( l = k + 1 ; l < patchCount ; l++ ) {
+		for ( l = k + 1; l < patchCount; l++ ) {
 			check = meshes[k];
 			scan = meshes[l];
 			c1 = scan->mesh.width * scan->mesh.height;
 			v1 = scan->mesh.verts;
 
-			for ( i = 0 ; i < c1 ; i++, v1++ ) {
+			for ( i = 0; i < c1; i++, v1++ ) {
 				c2 = check->mesh.width * check->mesh.height;
 				v2 = check->mesh.verts;
-				for ( j = 0 ; j < c2 ; j++, v2++ ) {
+				for ( j = 0; j < c2; j++, v2++ ) {
 					if ( fabs( v1->xyz[0] - v2->xyz[0] ) < 1.0
-						 && fabs( v1->xyz[1] - v2->xyz[1] ) < 1.0
-						 && fabs( v1->xyz[2] - v2->xyz[2] ) < 1.0 ) {
+					     && fabs( v1->xyz[1] - v2->xyz[1] ) < 1.0
+					     && fabs( v1->xyz[2] - v2->xyz[2] ) < 1.0 ) {
 						break;
 					}
 				}

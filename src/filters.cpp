@@ -38,35 +38,35 @@
 #include "preferences.h"
 
 struct filters_globals_t {
-    std::size_t exclude;
+	std::size_t exclude;
 
-    filters_globals_t() :
-            exclude(0)
-    {
-    }
+	filters_globals_t() :
+		exclude(0)
+	{
+	}
 };
 
 filters_globals_t g_filters_globals;
 
 inline bool filter_active(int mask)
 {
-    return (g_filters_globals.exclude & mask) > 0;
+	return (g_filters_globals.exclude & mask) > 0;
 }
 
 class FilterWrapper {
 public:
-    FilterWrapper(Filter &filter, int mask) : m_filter(filter), m_mask(mask)
-    {
-    }
+FilterWrapper(Filter &filter, int mask) : m_filter(filter), m_mask(mask)
+{
+}
 
-    void update()
-    {
-        m_filter.setActive(filter_active(m_mask));
-    }
+void update()
+{
+	m_filter.setActive(filter_active(m_mask));
+}
 
 private:
-    Filter &m_filter;
-    int m_mask;
+Filter &m_filter;
+int m_mask;
 };
 
 typedef std::list<FilterWrapper> Filters;
@@ -77,90 +77,90 @@ Filterables g_filterables;
 
 void UpdateFilters()
 {
-    {
-        for (Filters::iterator i = g_filters.begin(); i != g_filters.end(); ++i) {
-            (*i).update();
-        }
-    }
+	{
+		for (Filters::iterator i = g_filters.begin(); i != g_filters.end(); ++i) {
+			(*i).update();
+		}
+	}
 
-    {
-        for (Filterables::iterator i = g_filterables.begin(); i != g_filterables.end(); ++i) {
-            (*i)->updateFiltered();
-        }
-    }
+	{
+		for (Filterables::iterator i = g_filterables.begin(); i != g_filterables.end(); ++i) {
+			(*i)->updateFiltered();
+		}
+	}
 }
 
 
 class BasicFilterSystem : public FilterSystem {
 public:
-    void addFilter(Filter &filter, int mask)
-    {
-        g_filters.push_back(FilterWrapper(filter, mask));
-        g_filters.back().update();
-    }
+void addFilter(Filter &filter, int mask)
+{
+	g_filters.push_back(FilterWrapper(filter, mask));
+	g_filters.back().update();
+}
 
-    void registerFilterable(Filterable &filterable)
-    {
-        ASSERT_MESSAGE(g_filterables.find(&filterable) == g_filterables.end(), "filterable already registered");
-        filterable.updateFiltered();
-        g_filterables.insert(&filterable);
-    }
+void registerFilterable(Filterable &filterable)
+{
+	ASSERT_MESSAGE(g_filterables.find(&filterable) == g_filterables.end(), "filterable already registered");
+	filterable.updateFiltered();
+	g_filterables.insert(&filterable);
+}
 
-    void unregisterFilterable(Filterable &filterable)
-    {
-        ASSERT_MESSAGE(g_filterables.find(&filterable) != g_filterables.end(), "filterable not registered");
-        g_filterables.erase(&filterable);
-    }
+void unregisterFilterable(Filterable &filterable)
+{
+	ASSERT_MESSAGE(g_filterables.find(&filterable) != g_filterables.end(), "filterable not registered");
+	g_filterables.erase(&filterable);
+}
 };
 
 BasicFilterSystem g_FilterSystem;
 
 FilterSystem &GetFilterSystem()
 {
-    return g_FilterSystem;
+	return g_FilterSystem;
 }
 
 void PerformFiltering()
 {
-    UpdateFilters();
-    SceneChangeNotify();
+	UpdateFilters();
+	SceneChangeNotify();
 }
 
 class ToggleFilterFlag {
-    const unsigned int m_mask;
+const unsigned int m_mask;
 public:
-    ToggleItem m_item;
+ToggleItem m_item;
 
-    ToggleFilterFlag(unsigned int mask) : m_mask(mask), m_item(ActiveCaller(*this))
-    {
-    }
+ToggleFilterFlag(unsigned int mask) : m_mask(mask), m_item(ActiveCaller(*this))
+{
+}
 
-    ToggleFilterFlag(const ToggleFilterFlag &other) : m_mask(other.m_mask), m_item(ActiveCaller(*this))
-    {
-    }
+ToggleFilterFlag(const ToggleFilterFlag &other) : m_mask(other.m_mask), m_item(ActiveCaller(*this))
+{
+}
 
-    void active(const Callback<void(bool)> &importCallback)
-    {
-        importCallback((g_filters_globals.exclude & m_mask) != 0);
-    }
+void active(const Callback<void(bool)> &importCallback)
+{
+	importCallback((g_filters_globals.exclude & m_mask) != 0);
+}
 
-    typedef MemberCaller<ToggleFilterFlag, void(const Callback<void(bool)> &), &ToggleFilterFlag::active> ActiveCaller;
+typedef MemberCaller<ToggleFilterFlag, void (const Callback<void (bool)> &), &ToggleFilterFlag::active> ActiveCaller;
 
-    void toggle()
-    {
-        g_filters_globals.exclude ^= m_mask;
-        m_item.update();
-        PerformFiltering();
-    }
+void toggle()
+{
+	g_filters_globals.exclude ^= m_mask;
+	m_item.update();
+	PerformFiltering();
+}
 
-    void reset()
-    {
-        g_filters_globals.exclude = 0;
-        m_item.update();
-        PerformFiltering();
-    }
+void reset()
+{
+	g_filters_globals.exclude = 0;
+	m_item.update();
+	PerformFiltering();
+}
 
-    typedef MemberCaller<ToggleFilterFlag, void(), &ToggleFilterFlag::toggle> ToggleCaller;
+typedef MemberCaller<ToggleFilterFlag, void (), &ToggleFilterFlag::toggle> ToggleCaller;
 };
 
 
@@ -169,27 +169,27 @@ ToggleFilterFlags g_filter_items;
 
 void add_filter_command(unsigned int flag, const char *command, const Accelerator &accelerator)
 {
-    g_filter_items.push_back(ToggleFilterFlag(flag));
-    GlobalToggles_insert(command, ToggleFilterFlag::ToggleCaller(g_filter_items.back()),
-                         ToggleItem::AddCallbackCaller(g_filter_items.back().m_item), accelerator);
+	g_filter_items.push_back(ToggleFilterFlag(flag));
+	GlobalToggles_insert(command, ToggleFilterFlag::ToggleCaller(g_filter_items.back()),
+	                     ToggleItem::AddCallbackCaller(g_filter_items.back().m_item), accelerator);
 }
 
 void InvertFilters()
 {
-    std::list<ToggleFilterFlag>::iterator iter;
+	std::list<ToggleFilterFlag>::iterator iter;
 
-    for (iter = g_filter_items.begin(); iter != g_filter_items.end(); ++iter) {
-        iter->toggle();
-    }
+	for (iter = g_filter_items.begin(); iter != g_filter_items.end(); ++iter) {
+		iter->toggle();
+	}
 }
 
 void ResetFilters()
 {
-    std::list<ToggleFilterFlag>::iterator iter;
+	std::list<ToggleFilterFlag>::iterator iter;
 
-    for (iter = g_filter_items.begin(); iter != g_filter_items.end(); ++iter) {
-        iter->reset();
-    }
+	for (iter = g_filter_items.begin(); iter != g_filter_items.end(); ++iter) {
+		iter->reset();
+	}
 }
 
 void Filters_constructMenu(ui::Menu menu_in_menu)
@@ -227,79 +227,79 @@ void Filters_constructMenu(ui::Menu menu_in_menu)
 
 void ConstructFilters()
 {
-    GlobalPreferenceSystem().registerPreference("SI_Exclude", make_property_string(g_filters_globals.exclude));
+	GlobalPreferenceSystem().registerPreference("SI_Exclude", make_property_string(g_filters_globals.exclude));
 
-    GlobalCommands_insert("InvertFilters", makeCallbackF(InvertFilters));
-    GlobalCommands_insert("ResetFilters", makeCallbackF(ResetFilters));
+	GlobalCommands_insert("InvertFilters", makeCallbackF(InvertFilters));
+	GlobalCommands_insert("ResetFilters", makeCallbackF(ResetFilters));
 
-    add_filter_command(EXCLUDE_WORLD, "FilterWorldBrushes", Accelerator('1', (GdkModifierType) GDK_MOD1_MASK));
-    add_filter_command(EXCLUDE_GROUP, "FilterGroupBrushes", accelerator_null());
-    add_filter_command(EXCLUDE_ENT, "FilterEntities", Accelerator('2', (GdkModifierType) GDK_MOD1_MASK));
-    if (g_pGameDescription->mGameType == "doom3") {
-        add_filter_command(EXCLUDE_VISPORTALS, "FilterVisportals", Accelerator('3', (GdkModifierType) GDK_MOD1_MASK));
-    } else {
-        add_filter_command(EXCLUDE_AREAPORTALS, "FilterAreaportals", Accelerator('3', (GdkModifierType) GDK_MOD1_MASK));
-    }
-    add_filter_command(EXCLUDE_TRANSLUCENT, "FilterTranslucent", Accelerator('4', (GdkModifierType) GDK_MOD1_MASK));
-    add_filter_command(EXCLUDE_LIQUIDS, "FilterLiquids", Accelerator('5', (GdkModifierType) GDK_MOD1_MASK));
-    add_filter_command(EXCLUDE_CAULK, "FilterCaulk", Accelerator('6', (GdkModifierType) GDK_MOD1_MASK));
-    add_filter_command(EXCLUDE_CLIP, "FilterClips", Accelerator('7', (GdkModifierType) GDK_MOD1_MASK));
-    add_filter_command(EXCLUDE_PATHS, "FilterPaths", Accelerator('8', (GdkModifierType) GDK_MOD1_MASK));
-    if (g_pGameDescription->mGameType != "doom3") {
-        add_filter_command(EXCLUDE_CLUSTERPORTALS, "FilterClusterportals",
-                           Accelerator('9', (GdkModifierType) GDK_MOD1_MASK));
-    }
-    add_filter_command(EXCLUDE_LIGHTS, "FilterLights", Accelerator('0', (GdkModifierType) GDK_MOD1_MASK));
-    add_filter_command(EXCLUDE_STRUCTURAL, "FilterStructural",
-                       Accelerator('D', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
-    if (g_pGameDescription->mGameType != "doom3") {
-        add_filter_command(EXCLUDE_LIGHTGRID, "FilterLightgrid", accelerator_null());
-    }
-    add_filter_command(EXCLUDE_CURVES, "FilterPatches", Accelerator('P', (GdkModifierType) GDK_CONTROL_MASK));
-    add_filter_command(EXCLUDE_DETAILS, "FilterDetails", Accelerator('D', (GdkModifierType) GDK_CONTROL_MASK));
-    add_filter_command(EXCLUDE_HINTSSKIPS, "FilterHintsSkips", Accelerator('H', (GdkModifierType) GDK_CONTROL_MASK));
-    add_filter_command(EXCLUDE_MODELS, "FilterModels", Accelerator('M', (GdkModifierType) GDK_SHIFT_MASK));
-    add_filter_command(EXCLUDE_TRIGGERS, "FilterTriggers",
-                       Accelerator('T', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
-    if (g_pGameDescription->mGameType != "doom3") {
-        add_filter_command(EXCLUDE_BOTCLIP, "FilterBotClips", Accelerator('M', (GdkModifierType) GDK_MOD1_MASK));
-        add_filter_command(EXCLUDE_DECALS, "FilterDecals", Accelerator('D', (GdkModifierType) GDK_SHIFT_MASK));
-    }
+	add_filter_command(EXCLUDE_WORLD, "FilterWorldBrushes", Accelerator('1', (GdkModifierType) GDK_MOD1_MASK));
+	add_filter_command(EXCLUDE_GROUP, "FilterGroupBrushes", accelerator_null());
+	add_filter_command(EXCLUDE_ENT, "FilterEntities", Accelerator('2', (GdkModifierType) GDK_MOD1_MASK));
+	if (g_pGameDescription->mGameType == "doom3") {
+		add_filter_command(EXCLUDE_VISPORTALS, "FilterVisportals", Accelerator('3', (GdkModifierType) GDK_MOD1_MASK));
+	} else {
+		add_filter_command(EXCLUDE_AREAPORTALS, "FilterAreaportals", Accelerator('3', (GdkModifierType) GDK_MOD1_MASK));
+	}
+	add_filter_command(EXCLUDE_TRANSLUCENT, "FilterTranslucent", Accelerator('4', (GdkModifierType) GDK_MOD1_MASK));
+	add_filter_command(EXCLUDE_LIQUIDS, "FilterLiquids", Accelerator('5', (GdkModifierType) GDK_MOD1_MASK));
+	add_filter_command(EXCLUDE_CAULK, "FilterCaulk", Accelerator('6', (GdkModifierType) GDK_MOD1_MASK));
+	add_filter_command(EXCLUDE_CLIP, "FilterClips", Accelerator('7', (GdkModifierType) GDK_MOD1_MASK));
+	add_filter_command(EXCLUDE_PATHS, "FilterPaths", Accelerator('8', (GdkModifierType) GDK_MOD1_MASK));
+	if (g_pGameDescription->mGameType != "doom3") {
+		add_filter_command(EXCLUDE_CLUSTERPORTALS, "FilterClusterportals",
+		                   Accelerator('9', (GdkModifierType) GDK_MOD1_MASK));
+	}
+	add_filter_command(EXCLUDE_LIGHTS, "FilterLights", Accelerator('0', (GdkModifierType) GDK_MOD1_MASK));
+	add_filter_command(EXCLUDE_STRUCTURAL, "FilterStructural",
+	                   Accelerator('D', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
+	if (g_pGameDescription->mGameType != "doom3") {
+		add_filter_command(EXCLUDE_LIGHTGRID, "FilterLightgrid", accelerator_null());
+	}
+	add_filter_command(EXCLUDE_CURVES, "FilterPatches", Accelerator('P', (GdkModifierType) GDK_CONTROL_MASK));
+	add_filter_command(EXCLUDE_DETAILS, "FilterDetails", Accelerator('D', (GdkModifierType) GDK_CONTROL_MASK));
+	add_filter_command(EXCLUDE_HINTSSKIPS, "FilterHintsSkips", Accelerator('H', (GdkModifierType) GDK_CONTROL_MASK));
+	add_filter_command(EXCLUDE_MODELS, "FilterModels", Accelerator('M', (GdkModifierType) GDK_SHIFT_MASK));
+	add_filter_command(EXCLUDE_TRIGGERS, "FilterTriggers",
+	                   Accelerator('T', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
+	if (g_pGameDescription->mGameType != "doom3") {
+		add_filter_command(EXCLUDE_BOTCLIP, "FilterBotClips", Accelerator('M', (GdkModifierType) GDK_MOD1_MASK));
+		add_filter_command(EXCLUDE_DECALS, "FilterDecals", Accelerator('D', (GdkModifierType) GDK_SHIFT_MASK));
+	}
 
-    PerformFiltering();
+	PerformFiltering();
 }
 
 void DestroyFilters()
 {
-    g_filters.clear();
+	g_filters.clear();
 }
 
 #include "modulesystem/singletonmodule.h"
 #include "modulesystem/moduleregistry.h"
 
 class FilterAPI {
-    FilterSystem *m_filter;
+FilterSystem *m_filter;
 public:
-    typedef FilterSystem Type;
+typedef FilterSystem Type;
 
-    STRING_CONSTANT(Name, "*");
+STRING_CONSTANT(Name, "*");
 
-    FilterAPI()
-    {
-        ConstructFilters();
+FilterAPI()
+{
+	ConstructFilters();
 
-        m_filter = &GetFilterSystem();
-    }
+	m_filter = &GetFilterSystem();
+}
 
-    ~FilterAPI()
-    {
-        DestroyFilters();
-    }
+~FilterAPI()
+{
+	DestroyFilters();
+}
 
-    FilterSystem *getTable()
-    {
-        return m_filter;
-    }
+FilterSystem *getTable()
+{
+	return m_filter;
+}
 };
 
 typedef SingletonModule<FilterAPI> FilterModule;

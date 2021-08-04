@@ -30,7 +30,7 @@
 
 class InitialiserList
 {
-typedef std::list<Callback<void()>> Initialisers;
+typedef std::list<Callback<void ()> > Initialisers;
 Initialisers m_initialisers;
 mutable bool m_initialised;
 public:

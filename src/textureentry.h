@@ -32,45 +32,45 @@
 
 template<typename StringList>
 class EntryCompletion {
-    ui::ListStore m_store;
-    IdleDraw m_idleUpdate;
+ui::ListStore m_store;
+IdleDraw m_idleUpdate;
 public:
-    EntryCompletion() : m_store(ui::null), m_idleUpdate(UpdateCaller(*this))
-    {
-    }
+EntryCompletion() : m_store(ui::null), m_idleUpdate(UpdateCaller(*this))
+{
+}
 
-    void connect(ui::Entry entry);
+void connect(ui::Entry entry);
 
-    void append(const char *string);
+void append(const char *string);
 
-    using AppendCaller = MemberCaller<EntryCompletion, void(const char *), &EntryCompletion::append>;
+using AppendCaller = MemberCaller<EntryCompletion, void (const char *), &EntryCompletion::append>;
 
-    void fill();
+void fill();
 
-    void clear();
+void clear();
 
-    void update();
+void update();
 
-    using UpdateCaller = MemberCaller<EntryCompletion, void(), &EntryCompletion::update>;
+using UpdateCaller = MemberCaller<EntryCompletion, void (), &EntryCompletion::update>;
 };
 
 class TextureNameList {
 public:
-    void forEach(const ShaderNameCallback &callback) const
-    {
-        for (QERApp_ActiveShaders_IteratorBegin(); !QERApp_ActiveShaders_IteratorAtEnd(); QERApp_ActiveShaders_IteratorIncrement()) {
-            IShader *shader = QERApp_ActiveShaders_IteratorCurrent();
+void forEach(const ShaderNameCallback &callback) const
+{
+	for (QERApp_ActiveShaders_IteratorBegin(); !QERApp_ActiveShaders_IteratorAtEnd(); QERApp_ActiveShaders_IteratorIncrement()) {
+		IShader *shader = QERApp_ActiveShaders_IteratorCurrent();
 
-            if (shader_equal_prefix(shader->getName(), "textures/")) {
-                callback(shader->getName() + 9);
-            }
-        }
-    }
+		if (shader_equal_prefix(shader->getName(), "textures/")) {
+			callback(shader->getName() + 9);
+		}
+	}
+}
 
-    void connect(const SignalHandler &update) const
-    {
-        TextureBrowser_addActiveShadersChangedCallback(update);
-    }
+void connect(const SignalHandler &update) const
+{
+	TextureBrowser_addActiveShadersChangedCallback(update);
+}
 };
 
 typedef Static<EntryCompletion<TextureNameList> > GlobalTextureEntryCompletion;
@@ -78,15 +78,15 @@ typedef Static<EntryCompletion<TextureNameList> > GlobalTextureEntryCompletion;
 
 class ShaderList {
 public:
-    void forEach(const ShaderNameCallback &callback) const
-    {
-        GlobalShaderSystem().foreachShaderName(callback);
-    }
+void forEach(const ShaderNameCallback &callback) const
+{
+	GlobalShaderSystem().foreachShaderName(callback);
+}
 
-    void connect(const SignalHandler &update) const
-    {
-        TextureBrowser_addShadersRealiseCallback(update);
-    }
+void connect(const SignalHandler &update) const
+{
+	TextureBrowser_addShadersRealiseCallback(update);
+}
 };
 
 typedef Static<EntryCompletion<ShaderList> > GlobalShaderEntryCompletion;

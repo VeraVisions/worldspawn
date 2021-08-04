@@ -48,7 +48,7 @@ void lwFreeVMap( lwVMap *vmap ){
    ====================================================================== */
 
 lwVMap *lwGetVMap( picoMemStream_t *fp, int cksize, int ptoffset, int poloffset,
-				   int perpoly ){
+                   int perpoly ){
 	unsigned char *buf, *bp;
 	lwVMap *vmap;
 	float *f;

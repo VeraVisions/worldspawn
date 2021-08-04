@@ -28,18 +28,18 @@
 #include "generic/callback.h"
 
 enum EBrushPrefab {
-    eBrushCuboid,
-    eBrushPrism,
-    eBrushCone,
-    eBrushSphere,
-    eBrushRock,
+	eBrushCuboid,
+	eBrushPrism,
+	eBrushCone,
+	eBrushSphere,
+	eBrushRock,
 };
 
 class TextureProjection;
 
 class ContentsFlagsValue;
 namespace scene {
-    class Graph;
+class Graph;
 }
 
 void Scene_BrushConstructPrefab(scene::Graph &graph, EBrushPrefab type, std::size_t sides, const char *shader);

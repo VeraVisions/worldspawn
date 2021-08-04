@@ -28,60 +28,62 @@
 
 class rectangle_t {
 public:
-    rectangle_t()
-            : x(0), y(0), w(0), h(0)
-    {}
+rectangle_t()
+	: x(0), y(0), w(0), h(0)
+{
+}
 
-    rectangle_t(float _x, float _y, float _w, float _h)
-            : x(_x), y(_y), w(_w), h(_h)
-    {}
+rectangle_t(float _x, float _y, float _w, float _h)
+	: x(_x), y(_y), w(_w), h(_h)
+{
+}
 
-    float x;
-    float y;
-    float w;
-    float h;
+float x;
+float y;
+float w;
+float h;
 };
 
 struct Coord2D {
-    float x, y;
+	float x, y;
 
-    Coord2D(float _x, float _y)
-            : x(_x), y(_y)
-    {
-    }
+	Coord2D(float _x, float _y)
+		: x(_x), y(_y)
+	{
+	}
 };
 
 inline Coord2D coord2d_device2screen(const Coord2D &coord, unsigned int width, unsigned int height)
 {
-    return Coord2D(((coord.x + 1.0f) * 0.5f) * width, ((coord.y + 1.0f) * 0.5f) * height);
+	return Coord2D(((coord.x + 1.0f) * 0.5f) * width, ((coord.y + 1.0f) * 0.5f) * height);
 }
 
 inline rectangle_t rectangle_from_area(const float min[2], const float max[2], unsigned int width, unsigned int height)
 {
-    Coord2D botleft(coord2d_device2screen(Coord2D(min[0], min[1]), width, height));
-    Coord2D topright(coord2d_device2screen(Coord2D(max[0], max[1]), width, height));
-    return rectangle_t(botleft.x, botleft.y, topright.x - botleft.x, topright.y - botleft.y);
+	Coord2D botleft(coord2d_device2screen(Coord2D(min[0], min[1]), width, height));
+	Coord2D topright(coord2d_device2screen(Coord2D(max[0], max[1]), width, height));
+	return rectangle_t(botleft.x, botleft.y, topright.x - botleft.x, topright.y - botleft.y);
 }
 
 class XORRectangle {
 
-    rectangle_t m_rectangle;
+rectangle_t m_rectangle;
 
-    ui::GLArea m_widget;
-    cairo_t *cr;
+ui::GLArea m_widget;
+cairo_t *cr;
 
-    bool initialised() const;
+bool initialised() const;
 
-    void lazy_init();
+void lazy_init();
 
-    void draw() const;
+void draw() const;
 
 public:
-    XORRectangle(ui::GLArea widget);
+XORRectangle(ui::GLArea widget);
 
-    ~XORRectangle();
+~XORRectangle();
 
-    void set(rectangle_t rectangle);
+void set(rectangle_t rectangle);
 };
 
 

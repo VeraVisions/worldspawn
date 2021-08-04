@@ -689,7 +689,7 @@ static int DoNextChunk( T3dsLoaderPers *pers, int endofs ){
 			/* throw out a warning for version 4 models */
 			if ( version == 4 ) {
 				_pico_printf( PICO_WARNING,
-							  "3DS version is 4. Model might load incorrectly." );
+				              "3DS version is 4. Model might load incorrectly." );
 			}
 			/* store the 3ds file version in pico special field 0 */
 			/* PicoSetSurfaceSpecial(pers->surface,0,version); */		/* ydnar: this was causing a crash accessing uninitialized surface */

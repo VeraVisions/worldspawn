@@ -28,36 +28,36 @@
 #include <windows.h>
 
 MillisecondTime MillisecondTime::current(){
-    static class Cached
-    {
-    LONGLONG m_frequency;
-    LONGLONG m_base;
+	static class Cached
+	{
+	LONGLONG m_frequency;
+	LONGLONG m_base;
 public:
-    Cached(){
-        QueryPerformanceFrequency( (LARGE_INTEGER *) &m_frequency );
-        QueryPerformanceCounter( (LARGE_INTEGER *) &m_base );
-    }
-    LONGLONG frequency(){
-        return m_frequency;
-    }
-    LONGLONG base(){
-        return m_base;
-    }
-    } cached;
+	Cached(){
+		QueryPerformanceFrequency( (LARGE_INTEGER *) &m_frequency );
+		QueryPerformanceCounter( (LARGE_INTEGER *) &m_base );
+	}
+	LONGLONG frequency(){
+		return m_frequency;
+	}
+	LONGLONG base(){
+		return m_base;
+	}
+	} cached;
 
-    if ( cached.frequency() > 0 ) {
-        LONGLONG count;
-        QueryPerformanceCounter( (LARGE_INTEGER *) &count );
-        return time_from_ticks( count - cached.base(), cached.frequency() );
-    }
-    else
-    {
+	if ( cached.frequency() > 0 ) {
+		LONGLONG count;
+		QueryPerformanceCounter( (LARGE_INTEGER *) &count );
+		return time_from_ticks( count - cached.base(), cached.frequency() );
+	}
+	else
+	{
 #if 1
-        return MillisecondTime();
+		return MillisecondTime();
 #else
-        return time_from_ticks( timeGetTime(), 1000 );
+		return time_from_ticks( timeGetTime(), 1000 );
 #endif
-    }
+	}
 }
 
 
@@ -70,23 +70,23 @@ public:
 
 MillisecondTime MillisecondTime::current()
 {
-    static class Cached {
-        time_t m_base;
-    public:
-        Cached()
-        {
-            time(&m_base);
-        }
+	static class Cached {
+	time_t m_base;
+public:
+	Cached()
+	{
+		time(&m_base);
+	}
 
-        time_t base()
-        {
-            return m_base;
-        }
-    } cached;
+	time_t base()
+	{
+		return m_base;
+	}
+	} cached;
 
-    timeval time;
-    gettimeofday(&time, 0);
-    return MillisecondTime((time.tv_sec - cached.base()) * 1000 + time.tv_usec / 1000);
+	timeval time;
+	gettimeofday(&time, 0);
+	return MillisecondTime((time.tv_sec - cached.base()) * 1000 + time.tv_usec / 1000);
 }
 
 
@@ -95,7 +95,7 @@ MillisecondTime MillisecondTime::current()
 #include <ctime>
 
 MillisecondTime MillisecondTime::current(){
-    return time_from_ticks<std::clock_t>( std::clock(), CLOCKS_PER_SEC );
+	return time_from_ticks<std::clock_t>( std::clock(), CLOCKS_PER_SEC );
 }
 
 

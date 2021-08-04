@@ -288,7 +288,7 @@ void lwGetPolyNormals( lwPointList *point, lwPolygonList *polygon ){
 			p1[ j ] = point->pt[ polygon->pol[ i ].v[ 0 ].index ].pos[ j ];
 			p2[ j ] = point->pt[ polygon->pol[ i ].v[ 1 ].index ].pos[ j ];
 			pn[ j ] = point->pt[ polygon->pol[ i ].v[
-									 polygon->pol[ i ].nverts - 1 ].index ].pos[ j ];
+						     polygon->pol[ i ].nverts - 1 ].index ].pos[ j ];
 		}
 
 		for ( j = 0; j < 3; j++ ) {
@@ -357,7 +357,7 @@ int lwGetPointPolygons( lwPointList *point, lwPolygonList *polygon ){
    ====================================================================== */
 
 int lwResolvePolySurfaces( lwPolygonList *polygon, lwTagList *tlist,
-						   lwSurface **surf, int *nsurfs ){
+                           lwSurface **surf, int *nsurfs ){
 	lwSurface **s, *st;
 	int i, index;
 
@@ -553,7 +553,7 @@ Fail:
    ====================================================================== */
 
 int lwGetPolygonTags( picoMemStream_t *fp, int cksize, lwTagList *tlist,
-					  lwPolygonList *plist ){
+                      lwPolygonList *plist ){
 	unsigned int type;
 	int rlen = 0, i, j;
 

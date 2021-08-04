@@ -25,23 +25,23 @@
 #include "script/scripttokenwriter.h"
 
 class ScriptLibraryAPI {
-    _QERScripLibTable m_scriptlibrary;
+_QERScripLibTable m_scriptlibrary;
 public:
-    typedef _QERScripLibTable Type;
+typedef _QERScripLibTable Type;
 
-    STRING_CONSTANT(Name, "*");
+STRING_CONSTANT(Name, "*");
 
-    ScriptLibraryAPI()
-    {
-        m_scriptlibrary.m_pfnNewScriptTokeniser = &NewScriptTokeniser;
-        m_scriptlibrary.m_pfnNewSimpleTokeniser = &NewSimpleTokeniser;
-        m_scriptlibrary.m_pfnNewSimpleTokenWriter = &NewSimpleTokenWriter;
-    }
+ScriptLibraryAPI()
+{
+	m_scriptlibrary.m_pfnNewScriptTokeniser = &NewScriptTokeniser;
+	m_scriptlibrary.m_pfnNewSimpleTokeniser = &NewSimpleTokeniser;
+	m_scriptlibrary.m_pfnNewSimpleTokenWriter = &NewSimpleTokenWriter;
+}
 
-    _QERScripLibTable *getTable()
-    {
-        return &m_scriptlibrary;
-    }
+_QERScripLibTable *getTable()
+{
+	return &m_scriptlibrary;
+}
 };
 
 #include "modulesystem/singletonmodule.h"

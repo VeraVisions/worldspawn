@@ -62,11 +62,11 @@ void StoreAliasTriangles( void ){
 		Error( "Error: Too many triangles" );
 	}
 
-	for ( i = 0; i < numtris ; i++ )
+	for ( i = 0; i < numtris; i++ )
 	{
-		for ( j = 0 ; j < 3 ; j++ )
+		for ( j = 0; j < 3; j++ )
 		{
-			for ( k = 0 ; k < 3 ; k++ )
+			for ( k = 0; k < 3; k++ )
 			{
 				ptri[i + totaltris].verts[j][k] = fverts[tris[i].v[j]][k];
 			}
@@ -103,9 +103,9 @@ int ParseVertexL( FILE *input ){
 		Error( "Error: Too many vertices" );
 	}
 
-	for ( i = 0 ; i < numverts ; i++ )
+	for ( i = 0; i < numverts; i++ )
 	{
-		for ( j = 0 ; j < 3 ; j++ )
+		for ( j = 0; j < 3; j++ )
 		{
 			if ( feof( input ) ) {
 				Error( "Error: unexpected end of file" );
@@ -148,9 +148,9 @@ int ParseFaceL1( FILE *input ){
 		Error( "Error: Too many triangles" );
 	}
 
-	for ( i = 0 ; i < numtris ; i++ )
+	for ( i = 0; i < numtris; i++ )
 	{
-		for ( j = 0 ; j < 4 ; j++ )
+		for ( j = 0; j < 4; j++ )
 		{
 			if ( feof( input ) ) {
 				Error( "Error: unexpected end of file" );

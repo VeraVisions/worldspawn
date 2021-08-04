@@ -50,189 +50,189 @@
 /// The "origin" key directly controls the entity's local-to-parent transform.
 
 class Group {
-    EntityKeyValues m_entity;
-    KeyObserverMap m_keyObservers;
-    MatrixTransform m_transform;
-    TraversableNodeSet m_traverse;
+EntityKeyValues m_entity;
+KeyObserverMap m_keyObservers;
+MatrixTransform m_transform;
+TraversableNodeSet m_traverse;
 
-    ClassnameFilter m_filter;
-    NamedEntity m_named;
-    NameKeys m_nameKeys;
+ClassnameFilter m_filter;
+NamedEntity m_named;
+NameKeys m_nameKeys;
 
-    OriginKey m_originKey;
-    Vector3 m_origin;
+OriginKey m_originKey;
+Vector3 m_origin;
 
-    RenderableNamedEntity m_renderName;
-    mutable Vector3 m_name_origin;
+RenderableNamedEntity m_renderName;
+mutable Vector3 m_name_origin;
 
-    Callback<void()> m_transformChanged;
-    Callback<void()> m_evaluateTransform;
+Callback<void()> m_transformChanged;
+Callback<void()> m_evaluateTransform;
 
-    void construct()
-    {
-        m_keyObservers.insert("classname", ClassnameFilter::ClassnameChangedCaller(m_filter));
-        m_keyObservers.insert(Static<KeyIsName>::instance().m_nameKey, NamedEntity::IdentifierChangedCaller(m_named));
-        m_keyObservers.insert("origin", OriginKey::OriginChangedCaller(m_originKey));
-    }
+void construct()
+{
+	m_keyObservers.insert("classname", ClassnameFilter::ClassnameChangedCaller(m_filter));
+	m_keyObservers.insert(Static<KeyIsName>::instance().m_nameKey, NamedEntity::IdentifierChangedCaller(m_named));
+	m_keyObservers.insert("origin", OriginKey::OriginChangedCaller(m_originKey));
+}
 
 public:
-    Group(EntityClass *eclass, scene::Node &node, const Callback<void()> &transformChanged,
-          const Callback<void()> &evaluateTransform) :
-            m_entity(eclass),
-            m_filter(m_entity, node),
-            m_named(m_entity),
-            m_nameKeys(m_entity),
-            m_originKey(OriginChangedCaller(*this)),
-            m_origin(ORIGINKEY_IDENTITY),
-            m_renderName(m_named, m_name_origin),
-            m_name_origin(g_vector3_identity),
-            m_transformChanged(transformChanged),
-            m_evaluateTransform(evaluateTransform)
-    {
-        construct();
-    }
+Group(EntityClass *eclass, scene::Node &node, const Callback<void()> &transformChanged,
+      const Callback<void()> &evaluateTransform) :
+	m_entity(eclass),
+	m_filter(m_entity, node),
+	m_named(m_entity),
+	m_nameKeys(m_entity),
+	m_originKey(OriginChangedCaller(*this)),
+	m_origin(ORIGINKEY_IDENTITY),
+	m_renderName(m_named, m_name_origin),
+	m_name_origin(g_vector3_identity),
+	m_transformChanged(transformChanged),
+	m_evaluateTransform(evaluateTransform)
+{
+	construct();
+}
 
-    Group(const Group &other, scene::Node &node, const Callback<void()> &transformChanged,
-          const Callback<void()> &evaluateTransform) :
-            m_entity(other.m_entity),
-            m_filter(m_entity, node),
-            m_named(m_entity),
-            m_nameKeys(m_entity),
-            m_originKey(OriginChangedCaller(*this)),
-            m_origin(ORIGINKEY_IDENTITY),
-            m_renderName(m_named, g_vector3_identity),
-            m_transformChanged(transformChanged),
-            m_evaluateTransform(evaluateTransform)
-    {
-        construct();
-    }
+Group(const Group &other, scene::Node &node, const Callback<void()> &transformChanged,
+      const Callback<void()> &evaluateTransform) :
+	m_entity(other.m_entity),
+	m_filter(m_entity, node),
+	m_named(m_entity),
+	m_nameKeys(m_entity),
+	m_originKey(OriginChangedCaller(*this)),
+	m_origin(ORIGINKEY_IDENTITY),
+	m_renderName(m_named, g_vector3_identity),
+	m_transformChanged(transformChanged),
+	m_evaluateTransform(evaluateTransform)
+{
+	construct();
+}
 
-    InstanceCounter m_instanceCounter;
+InstanceCounter m_instanceCounter;
 
-    void instanceAttach(const scene::Path &path)
-    {
-        if (++m_instanceCounter.m_count == 1) {
-            m_filter.instanceAttach();
-            m_entity.instanceAttach(path_find_mapfile(path.begin(), path.end()));
-            m_traverse.instanceAttach(path_find_mapfile(path.begin(), path.end()));
-            m_entity.attach(m_keyObservers);
-        }
-    }
+void instanceAttach(const scene::Path &path)
+{
+	if (++m_instanceCounter.m_count == 1) {
+		m_filter.instanceAttach();
+		m_entity.instanceAttach(path_find_mapfile(path.begin(), path.end()));
+		m_traverse.instanceAttach(path_find_mapfile(path.begin(), path.end()));
+		m_entity.attach(m_keyObservers);
+	}
+}
 
-    void instanceDetach(const scene::Path &path)
-    {
-        if (--m_instanceCounter.m_count == 0) {
-            m_entity.detach(m_keyObservers);
-            m_traverse.instanceDetach(path_find_mapfile(path.begin(), path.end()));
-            m_entity.instanceDetach(path_find_mapfile(path.begin(), path.end()));
-            m_filter.instanceDetach();
-        }
-    }
+void instanceDetach(const scene::Path &path)
+{
+	if (--m_instanceCounter.m_count == 0) {
+		m_entity.detach(m_keyObservers);
+		m_traverse.instanceDetach(path_find_mapfile(path.begin(), path.end()));
+		m_entity.instanceDetach(path_find_mapfile(path.begin(), path.end()));
+		m_filter.instanceDetach();
+	}
+}
 
-    EntityKeyValues &getEntity()
-    {
-        return m_entity;
-    }
+EntityKeyValues &getEntity()
+{
+	return m_entity;
+}
 
-    const EntityKeyValues &getEntity() const
-    {
-        return m_entity;
-    }
+const EntityKeyValues &getEntity() const
+{
+	return m_entity;
+}
 
-    scene::Traversable &getTraversable()
-    {
-        return m_traverse;
-    }
+scene::Traversable &getTraversable()
+{
+	return m_traverse;
+}
 
-    Namespaced &getNamespaced()
-    {
-        return m_nameKeys;
-    }
+Namespaced &getNamespaced()
+{
+	return m_nameKeys;
+}
 
-    Nameable &getNameable()
-    {
-        return m_named;
-    }
+Nameable &getNameable()
+{
+	return m_named;
+}
 
-    TransformNode &getTransformNode()
-    {
-        return m_transform;
-    }
+TransformNode &getTransformNode()
+{
+	return m_transform;
+}
 
-    void attach(scene::Traversable::Observer *observer)
-    {
-        m_traverse.attach(observer);
-    }
+void attach(scene::Traversable::Observer *observer)
+{
+	m_traverse.attach(observer);
+}
 
-    void detach(scene::Traversable::Observer *observer)
-    {
-        m_traverse.detach(observer);
-    }
+void detach(scene::Traversable::Observer *observer)
+{
+	m_traverse.detach(observer);
+}
 
-    void renderSolid(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld) const
-    {
-        renderer.SetState(m_entity.getEntityClass().m_state_wire, Renderer::eWireframeOnly);
-    }
+void renderSolid(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld) const
+{
+	renderer.SetState(m_entity.getEntityClass().m_state_wire, Renderer::eWireframeOnly);
+}
 
-    void renderWireframe(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld,
-                         const AABB &childBounds) const
-    {
-        renderSolid(renderer, volume, localToWorld);
+void renderWireframe(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld,
+                     const AABB &childBounds) const
+{
+	renderSolid(renderer, volume, localToWorld);
 
-        if (g_showNames) {
-            // don't draw the name for worldspawn
-            if (!strcmp(m_entity.getEntityClass().name(), "worldspawn")) {
-                return;
-            }
+	if (g_showNames) {
+		// don't draw the name for worldspawn
+		if (!strcmp(m_entity.getEntityClass().name(), "worldspawn")) {
+			return;
+		}
 
-            // place name in the middle of the "children cloud"
-            m_name_origin = childBounds.origin;
+		// place name in the middle of the "children cloud"
+		m_name_origin = childBounds.origin;
 
-            renderer.addRenderable(m_renderName, localToWorld);
-        }
-    }
+		renderer.addRenderable(m_renderName, localToWorld);
+	}
+}
 
-    void updateTransform()
-    {
-        m_transform.localToParent() = g_matrix4_identity;
-        matrix4_translate_by_vec3(m_transform.localToParent(), m_origin);
-        m_transformChanged();
-    }
+void updateTransform()
+{
+	m_transform.localToParent() = g_matrix4_identity;
+	matrix4_translate_by_vec3(m_transform.localToParent(), m_origin);
+	m_transformChanged();
+}
 
-    typedef MemberCaller<Group, void(), &Group::updateTransform> UpdateTransformCaller;
+typedef MemberCaller<Group, void (), &Group::updateTransform> UpdateTransformCaller;
 
-    void originChanged()
-    {
-        m_origin = m_originKey.m_origin;
-        updateTransform();
-    }
+void originChanged()
+{
+	m_origin = m_originKey.m_origin;
+	updateTransform();
+}
 
-    typedef MemberCaller<Group, void(), &Group::originChanged> OriginChangedCaller;
+typedef MemberCaller<Group, void (), &Group::originChanged> OriginChangedCaller;
 
-    void translate(const Vector3 &translation)
-    {
-        m_origin = origin_translated(m_origin, translation);
-    }
+void translate(const Vector3 &translation)
+{
+	m_origin = origin_translated(m_origin, translation);
+}
 
-    void revertTransform()
-    {
-        m_origin = m_originKey.m_origin;
-    }
+void revertTransform()
+{
+	m_origin = m_originKey.m_origin;
+}
 
-    void freezeTransform()
-    {
-        m_originKey.m_origin = m_origin;
-        m_originKey.write(&m_entity);
-    }
+void freezeTransform()
+{
+	m_originKey.m_origin = m_origin;
+	m_originKey.write(&m_entity);
+}
 
-    void transformChanged()
-    {
-        revertTransform();
-        m_evaluateTransform();
-        updateTransform();
-    }
+void transformChanged()
+{
+	revertTransform();
+	m_evaluateTransform();
+	updateTransform();
+}
 
-    typedef MemberCaller<Group, void(), &Group::transformChanged> TransformChangedCaller;
+typedef MemberCaller<Group, void (), &Group::transformChanged> TransformChangedCaller;
 };
 
 #if 0
@@ -243,7 +243,7 @@ public:
 TransformableSetTranslation( const Translation& value ) : m_value( value ){
 }
 void operator()( Transformable& transformable ) const {
-    transformable.setTranslation( m_value );
+	transformable.setTranslation( m_value );
 }
 };
 
@@ -254,7 +254,7 @@ public:
 TransformableSetRotation( const Rotation& value ) : m_value( value ){
 }
 void operator()( Transformable& transformable ) const {
-    transformable.setRotation( m_value );
+	transformable.setRotation( m_value );
 }
 };
 
@@ -265,7 +265,7 @@ public:
 TransformableSetScale( const Scale& value ) : m_value( value ){
 }
 void operator()( Transformable& transformable ) const {
-    transformable.setScale( m_value );
+	transformable.setScale( m_value );
 }
 };
 
@@ -276,7 +276,7 @@ public:
 TransformableSetType( const TransformModifierType& value ) : m_value( value ){
 }
 void operator()( Transformable& transformable ) const {
-    transformable.setType( m_value );
+	transformable.setType( m_value );
 }
 };
 
@@ -285,251 +285,251 @@ class TransformableFreezeTransform
 TransformModifierType m_value;
 public:
 void operator()( Transformable& transformable ) const {
-    transformable.freezeTransform();
+	transformable.freezeTransform();
 }
 };
 
 template<typename Functor>
 inline void Scene_forEachChildTransformable( const Functor& functor, const scene::Path& path ){
-    GlobalSceneGraph().traverse_subgraph( ChildInstanceWalker< InstanceApply<Transformable, Functor> >( functor ), path );
+	GlobalSceneGraph().traverse_subgraph( ChildInstanceWalker< InstanceApply<Transformable, Functor> >( functor ), path );
 }
 #endif
 
 class GroupInstance :
-        public TargetableInstance,
-        public TransformModifier,
+	public TargetableInstance,
+	public TransformModifier,
 #if 0
-        public Transformable,
+	public Transformable,
 #endif
-        public Renderable {
-    class TypeCasts {
-        InstanceTypeCastTable m_casts;
-    public:
-        TypeCasts()
-        {
-            m_casts = TargetableInstance::StaticTypeCasts::instance().get();
-            InstanceStaticCast<GroupInstance, Renderable>::install(m_casts);
-#if 0
-            InstanceStaticCast<GroupInstance, Transformable>::install( m_casts );
-#endif
-        }
-
-        InstanceTypeCastTable &get()
-        {
-            return m_casts;
-        }
-    };
-
-    Group &m_contained;
+	public Renderable {
+class TypeCasts {
+InstanceTypeCastTable m_casts;
 public:
-    typedef LazyStatic<TypeCasts> StaticTypeCasts;
+TypeCasts()
+{
+	m_casts = TargetableInstance::StaticTypeCasts::instance().get();
+	InstanceStaticCast<GroupInstance, Renderable>::install(m_casts);
+#if 0
+	InstanceStaticCast<GroupInstance, Transformable>::install( m_casts );
+#endif
+}
 
-    GroupInstance(const scene::Path &path, scene::Instance *parent, Group &group) :
-            TargetableInstance(path, parent, this, StaticTypeCasts::instance().get(), group.getEntity(), *this),
-            TransformModifier(Group::TransformChangedCaller(group), ApplyTransformCaller(*this)),
-            m_contained(group)
-    {
-        m_contained.instanceAttach(Instance::path());
-        StaticRenderableConnectionLines::instance().attach(*this);
-    }
+InstanceTypeCastTable &get()
+{
+	return m_casts;
+}
+};
 
-    ~GroupInstance()
-    {
-        StaticRenderableConnectionLines::instance().detach(*this);
-        m_contained.instanceDetach(Instance::path());
-    }
+Group &m_contained;
+public:
+typedef LazyStatic<TypeCasts> StaticTypeCasts;
 
-    void renderSolid(Renderer &renderer, const VolumeTest &volume) const
-    {
-        m_contained.renderSolid(renderer, volume, Instance::localToWorld());
-    }
+GroupInstance(const scene::Path &path, scene::Instance *parent, Group &group) :
+	TargetableInstance(path, parent, this, StaticTypeCasts::instance().get(), group.getEntity(), *this),
+	TransformModifier(Group::TransformChangedCaller(group), ApplyTransformCaller(*this)),
+	m_contained(group)
+{
+	m_contained.instanceAttach(Instance::path());
+	StaticRenderableConnectionLines::instance().attach(*this);
+}
 
-    void renderWireframe(Renderer &renderer, const VolumeTest &volume) const
-    {
-        m_contained.renderWireframe(renderer, volume, Instance::localToWorld(), Instance::childBounds());
-    }
+~GroupInstance()
+{
+	StaticRenderableConnectionLines::instance().detach(*this);
+	m_contained.instanceDetach(Instance::path());
+}
 
-    STRING_CONSTANT(Name, "GroupInstance");
+void renderSolid(Renderer &renderer, const VolumeTest &volume) const
+{
+	m_contained.renderSolid(renderer, volume, Instance::localToWorld());
+}
+
+void renderWireframe(Renderer &renderer, const VolumeTest &volume) const
+{
+	m_contained.renderWireframe(renderer, volume, Instance::localToWorld(), Instance::childBounds());
+}
+
+STRING_CONSTANT(Name, "GroupInstance");
 
 #if 0
-    void setType( TransformModifierType type ){
-        Scene_forEachChildTransformable( TransformableSetType( type ), Instance::path() );
-    }
-    void setTranslation( const Translation& value ){
-        Scene_forEachChildTransformable( TransformableSetTranslation( value ), Instance::path() );
-    }
-    void setRotation( const Rotation& value ){
-        Scene_forEachChildTransformable( TransformableSetRotation( value ), Instance::path() );
-    }
-    void setScale( const Scale& value ){
-        Scene_forEachChildTransformable( TransformableSetScale( value ), Instance::path() );
-    }
-    void freezeTransform(){
-        Scene_forEachChildTransformable( TransformableFreezeTransform(), Instance::path() );
-    }
+void setType( TransformModifierType type ){
+	Scene_forEachChildTransformable( TransformableSetType( type ), Instance::path() );
+}
+void setTranslation( const Translation& value ){
+	Scene_forEachChildTransformable( TransformableSetTranslation( value ), Instance::path() );
+}
+void setRotation( const Rotation& value ){
+	Scene_forEachChildTransformable( TransformableSetRotation( value ), Instance::path() );
+}
+void setScale( const Scale& value ){
+	Scene_forEachChildTransformable( TransformableSetScale( value ), Instance::path() );
+}
+void freezeTransform(){
+	Scene_forEachChildTransformable( TransformableFreezeTransform(), Instance::path() );
+}
 
-    void evaluateTransform(){
-    }
+void evaluateTransform(){
+}
 #endif
 
-    void evaluateTransform()
-    {
-        if (getType() == TRANSFORM_PRIMITIVE) {
-            m_contained.translate(getTranslation());
-        }
-    }
+void evaluateTransform()
+{
+	if (getType() == TRANSFORM_PRIMITIVE) {
+		m_contained.translate(getTranslation());
+	}
+}
 
-    void applyTransform()
-    {
-        m_contained.revertTransform();
-        evaluateTransform();
-        m_contained.freezeTransform();
-    }
+void applyTransform()
+{
+	m_contained.revertTransform();
+	evaluateTransform();
+	m_contained.freezeTransform();
+}
 
-    typedef MemberCaller<GroupInstance, void(), &GroupInstance::applyTransform> ApplyTransformCaller;
+typedef MemberCaller<GroupInstance, void (), &GroupInstance::applyTransform> ApplyTransformCaller;
 };
 
 class GroupNode :
-        public scene::Node::Symbiot,
-        public scene::Instantiable,
-        public scene::Cloneable,
-        public scene::Traversable::Observer {
-    class TypeCasts {
-        NodeTypeCastTable m_casts;
-    public:
-        TypeCasts()
-        {
-            NodeStaticCast<GroupNode, scene::Instantiable>::install(m_casts);
-            NodeStaticCast<GroupNode, scene::Cloneable>::install(m_casts);
-            NodeContainedCast<GroupNode, scene::Traversable>::install(m_casts);
-            NodeContainedCast<GroupNode, TransformNode>::install(m_casts);
-            NodeContainedCast<GroupNode, Entity>::install(m_casts);
-            NodeContainedCast<GroupNode, Nameable>::install(m_casts);
-            NodeContainedCast<GroupNode, Namespaced>::install(m_casts);
-        }
+	public scene::Node::Symbiot,
+	public scene::Instantiable,
+	public scene::Cloneable,
+	public scene::Traversable::Observer {
+class TypeCasts {
+NodeTypeCastTable m_casts;
+public:
+TypeCasts()
+{
+	NodeStaticCast<GroupNode, scene::Instantiable>::install(m_casts);
+	NodeStaticCast<GroupNode, scene::Cloneable>::install(m_casts);
+	NodeContainedCast<GroupNode, scene::Traversable>::install(m_casts);
+	NodeContainedCast<GroupNode, TransformNode>::install(m_casts);
+	NodeContainedCast<GroupNode, Entity>::install(m_casts);
+	NodeContainedCast<GroupNode, Nameable>::install(m_casts);
+	NodeContainedCast<GroupNode, Namespaced>::install(m_casts);
+}
 
-        NodeTypeCastTable &get()
-        {
-            return m_casts;
-        }
-    };
+NodeTypeCastTable &get()
+{
+	return m_casts;
+}
+};
 
 
-    scene::Node m_node;
-    InstanceSet m_instances;
-    Group m_contained;
+scene::Node m_node;
+InstanceSet m_instances;
+Group m_contained;
 
-    void construct()
-    {
-        m_contained.attach(this);
-    }
+void construct()
+{
+	m_contained.attach(this);
+}
 
-    void destroy()
-    {
-        m_contained.detach(this);
-    }
+void destroy()
+{
+	m_contained.detach(this);
+}
 
 public:
 
-    typedef LazyStatic<TypeCasts> StaticTypeCasts;
+typedef LazyStatic<TypeCasts> StaticTypeCasts;
 
-    scene::Traversable &get(NullType<scene::Traversable>)
-    {
-        return m_contained.getTraversable();
-    }
+scene::Traversable &get(NullType<scene::Traversable>)
+{
+	return m_contained.getTraversable();
+}
 
-    TransformNode &get(NullType<TransformNode>)
-    {
-        return m_contained.getTransformNode();
-    }
+TransformNode &get(NullType<TransformNode>)
+{
+	return m_contained.getTransformNode();
+}
 
-    Entity &get(NullType<Entity>)
-    {
-        return m_contained.getEntity();
-    }
+Entity &get(NullType<Entity>)
+{
+	return m_contained.getEntity();
+}
 
-    Nameable &get(NullType<Nameable>)
-    {
-        return m_contained.getNameable();
-    }
+Nameable &get(NullType<Nameable>)
+{
+	return m_contained.getNameable();
+}
 
-    Namespaced &get(NullType<Namespaced>)
-    {
-        return m_contained.getNamespaced();
-    }
+Namespaced &get(NullType<Namespaced>)
+{
+	return m_contained.getNamespaced();
+}
 
-    GroupNode(EntityClass *eclass) :
-            m_node(this, this, StaticTypeCasts::instance().get()),
-            m_contained(eclass, m_node, InstanceSet::TransformChangedCaller(m_instances),
-                        InstanceSetEvaluateTransform<GroupInstance>::Caller(m_instances))
-    {
-        construct();
-    }
+GroupNode(EntityClass *eclass) :
+	m_node(this, this, StaticTypeCasts::instance().get()),
+	m_contained(eclass, m_node, InstanceSet::TransformChangedCaller(m_instances),
+	            InstanceSetEvaluateTransform<GroupInstance>::Caller(m_instances))
+{
+	construct();
+}
 
-    GroupNode(const GroupNode &other) :
-            scene::Node::Symbiot(other),
-            scene::Instantiable(other),
-            scene::Cloneable(other),
-            scene::Traversable::Observer(other),
-            m_node(this, this, StaticTypeCasts::instance().get()),
-            m_contained(other.m_contained, m_node, InstanceSet::TransformChangedCaller(m_instances),
-                        InstanceSetEvaluateTransform<GroupInstance>::Caller(m_instances))
-    {
-        construct();
-    }
+GroupNode(const GroupNode &other) :
+	scene::Node::Symbiot(other),
+	scene::Instantiable(other),
+	scene::Cloneable(other),
+	scene::Traversable::Observer(other),
+	m_node(this, this, StaticTypeCasts::instance().get()),
+	m_contained(other.m_contained, m_node, InstanceSet::TransformChangedCaller(m_instances),
+	            InstanceSetEvaluateTransform<GroupInstance>::Caller(m_instances))
+{
+	construct();
+}
 
-    ~GroupNode()
-    {
-        destroy();
-    }
+~GroupNode()
+{
+	destroy();
+}
 
-    void release()
-    {
-        delete this;
-    }
+void release()
+{
+	delete this;
+}
 
-    scene::Node &node()
-    {
-        return m_node;
-    }
+scene::Node &node()
+{
+	return m_node;
+}
 
-    scene::Node &clone() const
-    {
-        return (new GroupNode(*this))->node();
-    }
+scene::Node &clone() const
+{
+	return (new GroupNode(*this))->node();
+}
 
-    void insert(scene::Node &child)
-    {
-        m_instances.insert(child);
-    }
+void insert(scene::Node &child)
+{
+	m_instances.insert(child);
+}
 
-    void erase(scene::Node &child)
-    {
-        m_instances.erase(child);
-    }
+void erase(scene::Node &child)
+{
+	m_instances.erase(child);
+}
 
-    scene::Instance *create(const scene::Path &path, scene::Instance *parent)
-    {
-        return new GroupInstance(path, parent, m_contained);
-    }
+scene::Instance *create(const scene::Path &path, scene::Instance *parent)
+{
+	return new GroupInstance(path, parent, m_contained);
+}
 
-    void forEachInstance(const scene::Instantiable::Visitor &visitor)
-    {
-        m_instances.forEachInstance(visitor);
-    }
+void forEachInstance(const scene::Instantiable::Visitor &visitor)
+{
+	m_instances.forEachInstance(visitor);
+}
 
-    void insert(scene::Instantiable::Observer *observer, const scene::Path &path, scene::Instance *instance)
-    {
-        m_instances.insert(observer, path, instance);
-    }
+void insert(scene::Instantiable::Observer *observer, const scene::Path &path, scene::Instance *instance)
+{
+	m_instances.insert(observer, path, instance);
+}
 
-    scene::Instance *erase(scene::Instantiable::Observer *observer, const scene::Path &path)
-    {
-        return m_instances.erase(observer, path);
-    }
+scene::Instance *erase(scene::Instantiable::Observer *observer, const scene::Path &path)
+{
+	return m_instances.erase(observer, path);
+}
 };
 
 scene::Node &New_Group(EntityClass *eclass)
 {
-    return (new GroupNode(eclass))->node();
+	return (new GroupNode(eclass))->node();
 }

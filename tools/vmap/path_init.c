@@ -69,8 +69,8 @@ char *LokiGetHomeDir( void ){
 	#ifndef Q_UNIX
 	return NULL;
 	#else
-	static char	buf[ 4096 ];
-	struct passwd   pw, *pwp;
+	static char buf[ 4096 ];
+	struct passwd pw, *pwp;
 	char            *home;
 	static char homeBuf[MAX_OS_PATH];
 
@@ -153,7 +153,7 @@ void LokiInitPaths( char *argv0 ){
 		   and if "/opt/radiant/tools/q3ma2" is a symbolic link to "/opt/radiant/tools/q3map2.x86_64",
 		   it will use "dirname("/opt/radiant/tools/q3map2.x86_64")/../" as path,
 		   so it will use "/opt/radiant/" as installPath, which will be expanded later to "/opt/radiant/baseq3" to find paks.
-		*/
+		 */
 
 		found = qfalse;
 		last = path;
@@ -199,7 +199,7 @@ void LokiInitPaths( char *argv0 ){
 		/*
 		   if "q3map2" is "/opt/radiant/tools/q3map2",
 		   installPath is "/opt/radiant"
-		*/
+		 */
 		*( strrchr( installPath, '/' ) ) = '\0';
 		*( strrchr( installPath, '/' ) ) = '\0';
 	}
@@ -242,12 +242,12 @@ game_t *GetGame( char *arg ){
 
 	/* joke */
 	if ( !Q_stricmp( arg, "quake1" ) ||
-		 !Q_stricmp( arg, "quake2" ) ||
-		 !Q_stricmp( arg, "unreal" ) ||
-		 !Q_stricmp( arg, "ut2k3" ) ||
-		 !Q_stricmp( arg, "dn3d" ) ||
-		 !Q_stricmp( arg, "dnf" ) ||
-		 !Q_stricmp( arg, "hl" ) ) {
+	     !Q_stricmp( arg, "quake2" ) ||
+	     !Q_stricmp( arg, "unreal" ) ||
+	     !Q_stricmp( arg, "ut2k3" ) ||
+	     !Q_stricmp( arg, "dn3d" ) ||
+	     !Q_stricmp( arg, "dnf" ) ||
+	     !Q_stricmp( arg, "hl" ) ) {
 		Sys_Printf( "April fools, silly rabbit!\n" );
 		exit( 0 );
 	}
@@ -432,16 +432,16 @@ void InitPaths( int *argc, char **argv ){
 
 		/* -game */
 		/*if ( strcmp( argv[ i ], "-game" ) == 0 ) {
-			if ( ++i >= *argc ) {
-				Error( "Out of arguments: No game specified after %s", argv[ i - 1 ] );
-			}
-			argv[ i - 1 ] = NULL;
-			game = GetGame( argv[ i ] );
-			if ( game == NULL ) {
-				game = &games[ 0 ];
-			}
-			argv[ i ] = NULL;
-		}*/
+		        if ( ++i >= *argc ) {
+		                Error( "Out of arguments: No game specified after %s", argv[ i - 1 ] );
+		        }
+		        argv[ i - 1 ] = NULL;
+		        game = GetGame( argv[ i ] );
+		        if ( game == NULL ) {
+		                game = &games[ 0 ];
+		        }
+		        argv[ i ] = NULL;
+		   }*/
 
 		/* -fs_forbiddenpath */
 		else if ( strcmp( argv[ i ], "-fs_forbiddenpath" ) == 0 ) {
@@ -463,7 +463,7 @@ void InitPaths( int *argc, char **argv ){
 			// we don't want any basepath, neither guessed ones
 			noMagicPath = 1;
 			argv[ i ] = NULL;
-		}		
+		}
 
 		/* -fs_nomagicpath */
 		else if ( strcmp( argv[ i ], "-fs_nomagicpath") == 0) {
@@ -505,7 +505,7 @@ void InitPaths( int *argc, char **argv ){
 		else if ( strcmp( argv[ i ], "-fs_nohomepath" ) == 0 ) {
 			noHomePath = 1;
 			argv[ i ] = NULL;
-		}		
+		}
 
 		/* -fs_homebase */
 		else if ( strcmp( argv[ i ], "-fs_homebase" ) == 0 ) {
@@ -542,7 +542,7 @@ void InitPaths( int *argc, char **argv ){
 	/* remove processed arguments */
 	for ( i = 0, j = 0, k = 0; i < *argc && j < *argc; i++, j++ )
 	{
-		for ( ; j < *argc && argv[ j ] == NULL; j++ ) ;
+		for ( ; j < *argc && argv[ j ] == NULL; j++ );
 		argv[ i ] = argv[ j ];
 		if ( argv[ i ] != NULL ) {
 			k++;
@@ -571,7 +571,7 @@ void InitPaths( int *argc, char **argv ){
 				/* check for the game's magic word */
 				if ( Q_strncasecmp( &temp[ j ], game->magic, len2 ) == 0 ) {
 					/* now find the next slash and nuke everything after it */
-					while ( temp[ ++j ] != '/' && temp[ j ] != '\0' ) ;
+					while ( temp[ ++j ] != '/' && temp[ j ] != '\0' );
 					temp[ j ] = '\0';
 
 					/* add this as a base path */

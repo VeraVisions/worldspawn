@@ -252,7 +252,7 @@ static char *Com_ParseExt( const char *( *data_p ), qboolean allowLineBreaks ) {
 	// check for a number
 	// is this parsing of negative numbers going to cause expression problems
 	if ( ( c >= '0' && c <= '9' ) || ( c == '-' && data[ 1 ] >= '0' && data[ 1 ] <= '9' ) ||
-		 ( c == '.' && data[ 1 ] >= '0' && data[ 1 ] <= '9' ) ) {
+	     ( c == '.' && data[ 1 ] >= '0' && data[ 1 ] <= '9' ) ) {
 		do  {
 
 			if ( len < MAX_TOKEN_CHARS - 1 ) {
@@ -315,7 +315,7 @@ static char *Com_ParseExt( const char *( *data_p ), qboolean allowLineBreaks ) {
 
 			c = *data;
 		} while ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) || c == '_'
-				  || ( c >= '0' && c <= '9' ) || c == '/' || c == '\\' || c == ':' || c == '.' );
+		          || ( c >= '0' && c <= '9' ) || c == '/' || c == '\\' || c == ':' || c == '.' );
 
 		if ( len == MAX_TOKEN_CHARS ) {
 			len = 0;
@@ -327,12 +327,12 @@ static char *Com_ParseExt( const char *( *data_p ), qboolean allowLineBreaks ) {
 	}
 
 	// check for multi-character punctuation token
-	for ( punc = punctuation ; *punc ; punc++ ) {
+	for ( punc = punctuation; *punc; punc++ ) {
 		int l;
 		int j;
 
 		l = strlen( *punc );
-		for ( j = 0 ; j < l ; j++ ) {
+		for ( j = 0; j < l; j++ ) {
 			if ( data[j] != ( *punc )[j] ) {
 				break;
 			}
@@ -504,7 +504,7 @@ void Com_Parse1DMatrix( const char *( *buf_p ), int x, float *m ) {
 
 	Com_MatchToken( buf_p, "(" );
 
-	for ( i = 0 ; i < x ; i++ ) {
+	for ( i = 0; i < x; i++ ) {
 		token = Com_Parse( buf_p );
 		m[i] = atof( token );
 	}
@@ -517,7 +517,7 @@ void Com_Parse2DMatrix( const char *( *buf_p ), int y, int x, float *m ) {
 
 	Com_MatchToken( buf_p, "(" );
 
-	for ( i = 0 ; i < y ; i++ ) {
+	for ( i = 0; i < y; i++ ) {
 		Com_Parse1DMatrix( buf_p, x, m + i * x );
 	}
 
@@ -529,7 +529,7 @@ void Com_Parse3DMatrix( const char *( *buf_p ), int z, int y, int x, float *m ) 
 
 	Com_MatchToken( buf_p, "(" );
 
-	for ( i = 0 ; i < z ; i++ ) {
+	for ( i = 0; i < z; i++ ) {
 		Com_Parse2DMatrix( buf_p, y, x, m + i * x * y );
 	}
 

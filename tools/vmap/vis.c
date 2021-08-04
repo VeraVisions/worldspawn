@@ -79,7 +79,7 @@ void prl( leaf_t *l ){
 	vportal_t   *p;
 	visPlane_t pl;
 
-	for ( i = 0 ; i < l->numportals ; i++ )
+	for ( i = 0; i < l->numportals; i++ )
 	{
 		p = l->portals[i];
 		pl = p->plane;
@@ -110,7 +110,7 @@ int PComp( const void *a, const void *b ){
 void SortPortals( void ){
 	int i;
 
-	for ( i = 0 ; i < numportals * 2 ; i++ )
+	for ( i = 0; i < numportals * 2; i++ )
 		sorted_portals[i] = &portals[i];
 
 	if ( nosort ) {
@@ -131,7 +131,7 @@ int LeafVectorFromPortalVector( byte *portalbits, byte *leafbits ){
 	int c_leafs;
 
 
-	for ( i = 0 ; i < numportals * 2 ; i++ )
+	for ( i = 0; i < numportals * 2; i++ )
 	{
 		if ( portalbits[i >> 3] & ( 1 << ( i & 7 ) ) ) {
 			p = portals + i;
@@ -193,7 +193,7 @@ void ClusterMerge( int leafnum ){
 		if ( p->status != stat_done ) {
 			Error( "portal not done" );
 		}
-		for ( j = 0 ; j < portallongs ; j++ )
+		for ( j = 0; j < portallongs; j++ )
 			( (long *)portalvector )[j] |= ( (long *)p->portalvis )[j];
 		pnum = p - portals;
 		portalvector[pnum >> 3] |= 1 << ( pnum & 7 );
@@ -291,7 +291,7 @@ void CalcFastVis( void ){
 	int i;
 
 	// fastvis just uses mightsee for a very loose bound
-	for ( i = 0 ; i < numportals * 2 ; i++ )
+	for ( i = 0; i < numportals * 2; i++ )
 	{
 		portals[i].portalvis = portals[i].portalflood;
 		portals[i].status = stat_done;
@@ -353,7 +353,7 @@ void CalcVis( void ){
 	// assemble the leaf vis lists by oring and compressing the portal lists
 	//
 	Sys_Printf( "creating leaf vis...\n" );
-	for ( i = 0 ; i < portalclusters ; i++ )
+	for ( i = 0; i < portalclusters; i++ )
 		ClusterMerge( i );
 
 	totalvis = 0;
@@ -399,16 +399,16 @@ void SetPortalSphere( vportal_t *p ){
 
 	w = p->winding;
 	VectorCopy( vec3_origin, total );
-	for ( i = 0 ; i < w->numpoints ; i++ )
+	for ( i = 0; i < w->numpoints; i++ )
 	{
 		VectorAdd( total, w->points[i], total );
 	}
 
-	for ( i = 0 ; i < 3 ; i++ )
+	for ( i = 0; i < 3; i++ )
 		total[i] /= w->numpoints;
 
 	bestr = 0;
-	for ( i = 0 ; i < w->numpoints ; i++ )
+	for ( i = 0; i < w->numpoints; i++ )
 	{
 		VectorSubtract( w->points[i], total, dist );
 		r = VectorLength( dist );
@@ -428,8 +428,8 @@ void SetPortalSphere( vportal_t *p ){
 #define WCONVEX_EPSILON     0.2
 
 int Winding_PlanesConcave( fixedWinding_t *w1, fixedWinding_t *w2,
-						   vec3_t normal1, vec3_t normal2,
-						   float dist1, float dist2 ){
+                           vec3_t normal1, vec3_t normal2,
+                           float dist1, float dist2 ){
 	int i;
 
 	if ( !w1 || !w2 ) {
@@ -699,7 +699,7 @@ fixedWinding_t *TryMergeWinding( fixedWinding_t *f1, fixedWinding_t *f2, vec3_t 
 	newf = NewFixedWinding( f1->numpoints + f2->numpoints );
 
 	// copy first polygon
-	for ( k = ( i + 1 ) % f1->numpoints ; k != i ; k = ( k + 1 ) % f1->numpoints )
+	for ( k = ( i + 1 ) % f1->numpoints; k != i; k = ( k + 1 ) % f1->numpoints )
 	{
 		if ( k == ( i + 1 ) % f1->numpoints && !keep2 ) {
 			continue;
@@ -710,7 +710,7 @@ fixedWinding_t *TryMergeWinding( fixedWinding_t *f1, fixedWinding_t *f2, vec3_t 
 	}
 
 	// copy second polygon
-	for ( l = ( j + 1 ) % f2->numpoints ; l != j ; l = ( l + 1 ) % f2->numpoints )
+	for ( l = ( j + 1 ) % f2->numpoints; l != j; l = ( l + 1 ) % f2->numpoints )
 	{
 		if ( l == ( j + 1 ) % f2->numpoints && !keep1 ) {
 			continue;
@@ -854,7 +854,7 @@ void WritePortals( char *portalpathfile ){
 		w = p->winding;
 		fprintf( pf,"%i %i %i ",w->numpoints, 0, 0 );
 		fprintf( pf, "%d ", p->hint );
-		for ( i = 0 ; i < w->numpoints ; i++ )
+		for ( i = 0; i < w->numpoints; i++ )
 		{
 			fprintf( pf,"(" );
 			WriteFloat( pf, w->points[i][0] );
@@ -954,7 +954,7 @@ void LoadPortals( char *name ){
 	( (int *)bspVisBytes )[0] = portalclusters;
 	( (int *)bspVisBytes )[1] = leafbytes;
 
-	for ( i = 0, p = portals ; i < numportals ; i++ )
+	for ( i = 0, p = portals; i < numportals; i++ )
 	{
 		if ( fscanf( f, "%i %i %i ", &numpoints, &leafnums[0], &leafnums[1] ) != 3 ) {
 			Error( "LoadPortals: reading portal %i", i );
@@ -963,7 +963,7 @@ void LoadPortals( char *name ){
 			Error( "LoadPortals: portal %i has too many points", i );
 		}
 		if ( leafnums[0] > portalclusters
-			 || leafnums[1] > portalclusters ) {
+		     || leafnums[1] > portalclusters ) {
 			Error( "LoadPortals: reading portal %i", i );
 		}
 		if ( fscanf( f, "%i ", &flags ) != 1 ) {
@@ -973,7 +973,7 @@ void LoadPortals( char *name ){
 		w = p->winding = NewFixedWinding( numpoints );
 		w->numpoints = numpoints;
 
-		for ( j = 0 ; j < numpoints ; j++ )
+		for ( j = 0; j < numpoints; j++ )
 		{
 			double v[3];
 			int k;
@@ -981,10 +981,10 @@ void LoadPortals( char *name ){
 			// scanf into double, then assign to vec_t
 			// so we don't care what size vec_t is
 			if ( fscanf( f, "(%lf %lf %lf ) "
-						 , &v[0], &v[1], &v[2] ) != 3 ) {
+			             , &v[0], &v[1], &v[2] ) != 3 ) {
 				Error( "LoadPortals: reading portal %i", i );
 			}
-			for ( k = 0 ; k < 3 ; k++ )
+			for ( k = 0; k < 3; k++ )
 				w->points[j][k] = v[k];
 		}
 		if ( fscanf( f, "\n" ) != 0 ) {
@@ -1024,7 +1024,7 @@ void LoadPortals( char *name ){
 		p->hint = hint;
 		p->winding = NewFixedWinding( w->numpoints );
 		p->winding->numpoints = w->numpoints;
-		for ( j = 0 ; j < w->numpoints ; j++ )
+		for ( j = 0; j < w->numpoints; j++ )
 		{
 			VectorCopy( w->points[w->numpoints - 1 - j], p->winding->points[j] );
 		}
@@ -1051,7 +1051,7 @@ void LoadPortals( char *name ){
 		w = p->winding = NewFixedWinding( numpoints );
 		w->numpoints = numpoints;
 
-		for ( j = 0 ; j < numpoints ; j++ )
+		for ( j = 0; j < numpoints; j++ )
 		{
 			double v[3];
 			int k;
@@ -1059,10 +1059,10 @@ void LoadPortals( char *name ){
 			// scanf into double, then assign to vec_t
 			// so we don't care what size vec_t is
 			if ( fscanf( f, "(%lf %lf %lf ) "
-						 , &v[0], &v[1], &v[2] ) != 3 ) {
+			             , &v[0], &v[1], &v[2] ) != 3 ) {
 				Error( "LoadPortals: reading portal %i", i );
 			}
-			for ( k = 0 ; k < 3 ; k++ )
+			for ( k = 0; k < 3; k++ )
 				w->points[j][k] = v[k];
 		}
 		if ( fscanf( f, "\n" ) != 0 ) {
@@ -1110,7 +1110,7 @@ int VisMain( int argc, char **argv ){
 	Sys_Printf( "--- Vis ---\n" );
 
 	/* process arguments */
-	for ( i = 1 ; i < ( argc - 1 ) ; i++ )
+	for ( i = 1; i < ( argc - 1 ); i++ )
 	{
 		if ( !strcmp( argv[i], "-fast" ) ) {
 			Sys_Printf( "fastvis = true\n" );

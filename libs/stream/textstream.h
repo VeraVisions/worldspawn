@@ -61,7 +61,7 @@ inline char* write_size_t_nonzero_decimal_backward( char* ptr, size_t decimal ){
   #endif
 
 inline char* write_signed_nonzero_decimal_backward( char* ptr, int decimal, bool show_positive ){
-	const bool negative = decimal < 0 ;
+	const bool negative = decimal < 0;
 	ptr = write_unsigned_nonzero_decimal_backward( ptr, negative ? -decimal : decimal );
 	if ( negative ) {
 		*--ptr = '-';

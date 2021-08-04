@@ -71,7 +71,7 @@ void RadFreeLights( void ){
  */
 
 static void RadClipWindingEpsilon( radWinding_t *in, vec3_t normal, vec_t dist,
-								   vec_t epsilon, radWinding_t *front, radWinding_t *back, clipWork_t *cw ){
+                                   vec_t epsilon, radWinding_t *front, radWinding_t *back, clipWork_t *cw ){
 	vec_t           *dists;
 	int             *sides;
 	int counts[ 3 ];
@@ -425,7 +425,7 @@ static void RadSample( int lightmapNum, bspDrawSurface_t *ds, rawLightmap_t *lm,
 #define RADIOSITY_CLIP_EPSILON      0.125f
 
 static void RadSubdivideDiffuseLight( int lightmapNum, bspDrawSurface_t *ds, rawLightmap_t *lm, shaderInfo_t *si,
-									  float scale, float subdivide, qboolean original, radWinding_t *rw, clipWork_t *cw ){
+                                      float scale, float subdivide, qboolean original, radWinding_t *rw, clipWork_t *cw ){
 	int i, style = 0;
 	float dist, area, value;
 	vec3_t mins, maxs, normal, d1, d2, cross, color, gradient;
@@ -485,7 +485,7 @@ static void RadSubdivideDiffuseLight( int lightmapNum, bspDrawSurface_t *ds, raw
 
 		/* if color gradient is too high, subdivide again */
 		if ( subdivide > minDiffuseSubdivide &&
-			 ( gradient[ 0 ] > RADIOSITY_MAX_GRADIENT || gradient[ 1 ] > RADIOSITY_MAX_GRADIENT || gradient[ 2 ] > RADIOSITY_MAX_GRADIENT ) ) {
+		     ( gradient[ 0 ] > RADIOSITY_MAX_GRADIENT || gradient[ 1 ] > RADIOSITY_MAX_GRADIENT || gradient[ 2 ] > RADIOSITY_MAX_GRADIENT ) ) {
 			RadSubdivideDiffuseLight( lightmapNum, ds, lm, si, scale, ( subdivide / 2.0f ), qfalse, rw, cw );
 			return;
 		}
@@ -555,7 +555,7 @@ static void RadSubdivideDiffuseLight( int lightmapNum, bspDrawSurface_t *ds, raw
 	/* bouncing light? */
 	if ( bouncing == qfalse ) {
 		/* This is weird. This actually handles surfacelight and not
- 		 * bounces. */
+		 * bounces. */
 
 		/* handle first-pass lights in normal q3a style */
 		value = si->value;
@@ -871,8 +871,8 @@ void RadLight( int num ){
 
 	/* early outs? */
 	if ( scale <= 0.0f || ( si->compileFlags & C_SKY ) || si->autosprite ||
-		 ( bspShaders[ ds->shaderNum ].contentFlags & contentFlags ) || ( bspShaders[ ds->shaderNum ].surfaceFlags & surfaceFlags ) ||
-		 ( si->compileFlags & compileFlags ) ) {
+	     ( bspShaders[ ds->shaderNum ].contentFlags & contentFlags ) || ( bspShaders[ ds->shaderNum ].surfaceFlags & surfaceFlags ) ||
+	     ( si->compileFlags & compileFlags ) ) {
 		return;
 	}
 
@@ -949,22 +949,22 @@ void RadCreateDiffuseLights( void ){
 			for ( light = lights; light; light = light->next )
 			{
 				fprintf( file,
-						 "{\n"
-						 "\"classname\" \"light\"\n"
-						 "\"light\" \"%d\"\n"
-						 "\"origin\" \"%.0f %.0f %.0f\"\n"
-						 "\"_color\" \"%.3f %.3f %.3f\"\n"
-						 "}\n",
+				         "{\n"
+				         "\"classname\" \"light\"\n"
+				         "\"light\" \"%d\"\n"
+				         "\"origin\" \"%.0f %.0f %.0f\"\n"
+				         "\"_color\" \"%.3f %.3f %.3f\"\n"
+				         "}\n",
 
-						 (int) light->add,
+				         (int) light->add,
 
-						 light->origin[ 0 ],
-						 light->origin[ 1 ],
-						 light->origin[ 2 ],
+				         light->origin[ 0 ],
+				         light->origin[ 1 ],
+				         light->origin[ 2 ],
 
-						 light->color[ 0 ],
-						 light->color[ 1 ],
-						 light->color[ 2 ] );
+				         light->color[ 0 ],
+				         light->color[ 1 ],
+				         light->color[ 2 ] );
 			}
 			fclose( file );
 		}

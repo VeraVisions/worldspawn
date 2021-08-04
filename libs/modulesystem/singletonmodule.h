@@ -88,7 +88,7 @@ explicit SingletonModule( const APIConstructor& constructor )
 
 void selfRegister(){
 	globalModuleServer().registerModule( typename Type::Name(), typename Type::Version(), APIConstructor::getName(), *this );
-	}
+}
 
 Dependencies& getDependencies(){
 	return *m_dependencies;

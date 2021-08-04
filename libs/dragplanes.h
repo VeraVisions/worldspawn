@@ -30,21 +30,21 @@
 // local must be a pure rotation
 inline Vector3 translation_to_local( const Vector3& translation, const Matrix4& local ){
 	return matrix4_get_translation_vec3(
-			   matrix4_multiplied_by_matrix4(
-				   matrix4_translated_by_vec3( matrix4_transposed( local ), translation ),
-				   local
-				   )
-			   );
+		matrix4_multiplied_by_matrix4(
+			matrix4_translated_by_vec3( matrix4_transposed( local ), translation ),
+			local
+			)
+		);
 }
 
 // local must be a pure rotation
 inline Vector3 translation_from_local( const Vector3& translation, const Matrix4& local ){
 	return matrix4_get_translation_vec3(
-			   matrix4_multiplied_by_matrix4(
-				   matrix4_translated_by_vec3( local, translation ),
-				   matrix4_transposed( local )
-				   )
-			   );
+		matrix4_multiplied_by_matrix4(
+			matrix4_translated_by_vec3( local, translation ),
+			matrix4_transposed( local )
+			)
+		);
 }
 
 class DragPlanes
@@ -68,11 +68,11 @@ DragPlanes( const SelectionChangeCallback& onchanged ) :
 }
 bool isSelected() const {
 	return m_selectable_right.isSelected()
-		   || m_selectable_left.isSelected()
-		   || m_selectable_front.isSelected()
-		   || m_selectable_back.isSelected()
-		   || m_selectable_top.isSelected()
-		   || m_selectable_bottom.isSelected();
+	       || m_selectable_left.isSelected()
+	       || m_selectable_front.isSelected()
+	       || m_selectable_back.isSelected()
+	       || m_selectable_top.isSelected()
+	       || m_selectable_bottom.isSelected();
 }
 void setSelected( bool selected ){
 	m_selectable_right.setSelected( selected );
@@ -96,49 +96,49 @@ void selectPlanes( const AABB& aabb, Selector& selector, SelectionTest& test, co
 	}
 
 	if ( vector3_dot( planes[0].normal(), corners[1] ) > 0
-		 && vector3_dot( planes[0].normal(), corners[2] ) > 0
-		 && vector3_dot( planes[0].normal(), corners[5] ) > 0
-		 && vector3_dot( planes[0].normal(), corners[6] ) > 0 ) {
+	     && vector3_dot( planes[0].normal(), corners[2] ) > 0
+	     && vector3_dot( planes[0].normal(), corners[5] ) > 0
+	     && vector3_dot( planes[0].normal(), corners[6] ) > 0 ) {
 		Selector_add( selector, m_selectable_right );
 		selectedPlaneCallback( planes[0] );
 		//globalOutputStream() << "right\n";
 	}
 	if ( vector3_dot( planes[1].normal(), corners[0] ) > 0
-		 && vector3_dot( planes[1].normal(), corners[3] ) > 0
-		 && vector3_dot( planes[1].normal(), corners[4] ) > 0
-		 && vector3_dot( planes[1].normal(), corners[7] ) > 0 ) {
+	     && vector3_dot( planes[1].normal(), corners[3] ) > 0
+	     && vector3_dot( planes[1].normal(), corners[4] ) > 0
+	     && vector3_dot( planes[1].normal(), corners[7] ) > 0 ) {
 		Selector_add( selector, m_selectable_left );
 		selectedPlaneCallback( planes[1] );
 		//globalOutputStream() << "left\n";
 	}
 	if ( vector3_dot( planes[2].normal(), corners[0] ) > 0
-		 && vector3_dot( planes[2].normal(), corners[1] ) > 0
-		 && vector3_dot( planes[2].normal(), corners[4] ) > 0
-		 && vector3_dot( planes[2].normal(), corners[5] ) > 0 ) {
+	     && vector3_dot( planes[2].normal(), corners[1] ) > 0
+	     && vector3_dot( planes[2].normal(), corners[4] ) > 0
+	     && vector3_dot( planes[2].normal(), corners[5] ) > 0 ) {
 		Selector_add( selector, m_selectable_front );
 		selectedPlaneCallback( planes[2] );
 		//globalOutputStream() << "front\n";
 	}
 	if ( vector3_dot( planes[3].normal(), corners[2] ) > 0
-		 && vector3_dot( planes[3].normal(), corners[3] ) > 0
-		 && vector3_dot( planes[3].normal(), corners[6] ) > 0
-		 && vector3_dot( planes[3].normal(), corners[7] ) > 0 ) {
+	     && vector3_dot( planes[3].normal(), corners[3] ) > 0
+	     && vector3_dot( planes[3].normal(), corners[6] ) > 0
+	     && vector3_dot( planes[3].normal(), corners[7] ) > 0 ) {
 		Selector_add( selector, m_selectable_back );
 		selectedPlaneCallback( planes[3] );
 		//globalOutputStream() << "back\n";
 	}
 	if ( vector3_dot( planes[4].normal(), corners[0] ) > 0
-		 && vector3_dot( planes[4].normal(), corners[1] ) > 0
-		 && vector3_dot( planes[4].normal(), corners[2] ) > 0
-		 && vector3_dot( planes[4].normal(), corners[3] ) > 0 ) {
+	     && vector3_dot( planes[4].normal(), corners[1] ) > 0
+	     && vector3_dot( planes[4].normal(), corners[2] ) > 0
+	     && vector3_dot( planes[4].normal(), corners[3] ) > 0 ) {
 		Selector_add( selector, m_selectable_top );
 		selectedPlaneCallback( planes[4] );
 		//globalOutputStream() << "top\n";
 	}
 	if ( vector3_dot( planes[5].normal(), corners[4] ) > 0
-		 && vector3_dot( planes[5].normal(), corners[5] ) > 0
-		 && vector3_dot( planes[5].normal(), corners[6] ) > 0
-		 && vector3_dot( planes[5].normal(), corners[7] ) > 0 ) {
+	     && vector3_dot( planes[5].normal(), corners[5] ) > 0
+	     && vector3_dot( planes[5].normal(), corners[6] ) > 0
+	     && vector3_dot( planes[5].normal(), corners[7] ) > 0 ) {
 		Selector_add( selector, m_selectable_bottom );
 		selectedPlaneCallback( planes[5] );
 		//globalOutputStream() << "bottom\n";

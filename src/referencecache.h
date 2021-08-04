@@ -34,7 +34,7 @@ void RefreshReferences();
 #include "iscenegraph.h"
 
 namespace scene {
-    class Node;
+class Node;
 }
 class MapFormat;
 

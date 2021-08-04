@@ -27,9 +27,9 @@ class EntityCreator;
 EntityCreator &GetEntityCreator();
 
 enum EGameType {
-    eGameTypeQuake3,
-    eGameTypeRTCW,
-    eGameTypeDoom3,
+	eGameTypeQuake3,
+	eGameTypeRTCW,
+	eGameTypeDoom3,
 };
 
 extern EGameType g_gameType;

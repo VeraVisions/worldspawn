@@ -27,51 +27,51 @@
 
 inline void closure_destroy(gpointer data, GClosure *closure)
 {
-    delete reinterpret_cast<Callback<void()> *>( data );
+	delete reinterpret_cast<Callback<void()> *>( data );
 }
 
 inline GClosure *create_cclosure(GCallback func, const Callback<void()> &callback)
 {
-    return g_cclosure_new(func, new Callback<void()>(callback), closure_destroy);
+	return g_cclosure_new(func, new Callback<void()>(callback), closure_destroy);
 }
 
 inline GValue GValue_default()
 {
-    GValue value;
-    value.g_type = 0;
-    return value;
+	GValue value;
+	value.g_type = 0;
+	return value;
 }
 
 inline gint object_get_int_property(GObject *object, const char *property)
 {
-    GValue gvalue = GValue_default();
-    g_value_init(&gvalue, G_TYPE_INT);
-    g_object_get_property(object, property, &gvalue);
-    return g_value_get_int(&gvalue);
+	GValue gvalue = GValue_default();
+	g_value_init(&gvalue, G_TYPE_INT);
+	g_object_get_property(object, property, &gvalue);
+	return g_value_get_int(&gvalue);
 }
 
 inline void object_set_int_property(GObject *object, const char *property, gint value)
 {
-    GValue gvalue = GValue_default();
-    g_value_init(&gvalue, G_TYPE_INT);
-    g_value_set_int(&gvalue, value);
-    g_object_set_property(object, property, &gvalue);
+	GValue gvalue = GValue_default();
+	g_value_init(&gvalue, G_TYPE_INT);
+	g_value_set_int(&gvalue, value);
+	g_object_set_property(object, property, &gvalue);
 }
 
 inline gboolean object_get_boolean_property(GObject *object, const char *property)
 {
-    GValue gvalue = GValue_default();
-    g_value_init(&gvalue, G_TYPE_BOOLEAN);
-    g_object_get_property(object, property, &gvalue);
-    return g_value_get_boolean(&gvalue);
+	GValue gvalue = GValue_default();
+	g_value_init(&gvalue, G_TYPE_BOOLEAN);
+	g_object_get_property(object, property, &gvalue);
+	return g_value_get_boolean(&gvalue);
 }
 
 inline void object_set_boolean_property(GObject *object, const char *property, gboolean value)
 {
-    GValue gvalue = GValue_default();
-    g_value_init(&gvalue, G_TYPE_BOOLEAN);
-    g_value_set_boolean(&gvalue, value);
-    g_object_set_property(object, property, &gvalue);
+	GValue gvalue = GValue_default();
+	g_value_init(&gvalue, G_TYPE_BOOLEAN);
+	g_value_set_boolean(&gvalue, value);
+	g_object_set_property(object, property, &gvalue);
 }
 
 #endif

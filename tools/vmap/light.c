@@ -263,8 +263,8 @@ void CreateEntityLights( void ){
 				} else {
 					/* default to white color values */
 					sun->color[ 0 ] =
-					sun->color[ 1 ] =
-					sun->color[ 2 ] = 1.0f;
+						sun->color[ 1 ] =
+							sun->color[ 2 ] = 1.0f;
 				}
 			}
 
@@ -288,8 +288,8 @@ void CreateEntityLights( void ){
 				} else {
 					/* default to white color values */
 					ambientColor[ 0 ] =
-					ambientColor[ 1 ] =
-					ambientColor[ 2 ] = 1.0f;
+						ambientColor[ 1 ] =
+							ambientColor[ 2 ] = 1.0f;
 				}
 			}
 
@@ -333,7 +333,7 @@ void CreateEntityLights( void ){
 			bspDrawSurface_t    *ds;
 			surfaceInfo_t       *info;
 			shaderInfo_t        *si;
-			
+
 			float subdivide;
 			vec3_t origin;
 			clipWork_t cw;
@@ -365,7 +365,7 @@ void CreateEntityLights( void ){
 				/* 0.05 is a default */
 				bsfrac = FloatForKey( e, "backsplash_fraction" ) * 0.01f;
 
-				 /* 23 units apparently is the default */
+				/* 23 units apparently is the default */
 				bsdist = FloatForKey( e, "backsplash_distance" );
 
 				/* only apply when things are set. */
@@ -438,7 +438,7 @@ void CreateEntityLights( void ){
 		if ( spawnflags & 2 ) {
 			flags &= ~LIGHT_ATTEN_ANGLE;
 		}
-	
+
 
 		/* other flags (borrowed from wolf) */
 		/* wolf dark light? */
@@ -459,8 +459,8 @@ void CreateEntityLights( void ){
 
 		/* vortex: unnormalized? */
 		/*if ( spawnflags & 32 ) {
-			flags |= LIGHT_UNNORMALIZED;
-		}*/
+		        flags |= LIGHT_UNNORMALIZED;
+		   }*/
 
 		/* vortex: distance atten? */
 		if ( spawnflags & 64 ) {
@@ -481,7 +481,7 @@ void CreateEntityLights( void ){
 
 		/* ydnar: set angle scaling (from vlight) */
 		light->angleScale = FloatForKey( e, "anglescale" );
-		
+
 		if ( light->angleScale != 0.0f ) {
 			light->angleScale = FloatForKey( e, "_anglescale" );
 		}
@@ -572,8 +572,8 @@ void CreateEntityLights( void ){
 				light->color[2] = Image_LinearFloatFromsRGBFloat( light->color[2] );
 			}
 			/*if ( !( light->flags & LIGHT_UNNORMALIZED ) ) {
-				ColorNormalize( light->color, light->color );
-			}*/
+			        ColorNormalize( light->color, light->color );
+			   }*/
 		} else {
 			/* alternative: read color in RGB8 values -eukara */
 			_color = ValueForKey( e, "color255" );
@@ -588,13 +588,13 @@ void CreateEntityLights( void ){
 				light->color[1] /= 255;
 				light->color[2] /= 255;
 				/*if ( !( light->flags & LIGHT_UNNORMALIZED ) ) {
-					ColorNormalize( light->color, light->color );
-				}*/
+				        ColorNormalize( light->color, light->color );
+				   }*/
 			} else {
 				/* default to white color values */
 				light->color[ 0 ] =
-				light->color[ 1 ] =
-				light->color[ 2 ] = 1.0f;
+					light->color[ 1 ] =
+						light->color[ 2 ] = 1.0f;
 			}
 		}
 
@@ -627,7 +627,7 @@ void CreateEntityLights( void ){
 			e2 = FindTargetEntity( target );
 			if ( e2 == NULL ) {
 				Sys_FPrintf( SYS_WRN, "WARNING: light at (%i %i %i) has missing target\n",
-							(int) light->origin[ 0 ], (int) light->origin[ 1 ], (int) light->origin[ 2 ] );
+				             (int) light->origin[ 0 ], (int) light->origin[ 1 ], (int) light->origin[ 2 ] );
 				light->photons *= pointScale;
 			}
 			else
@@ -1053,7 +1053,7 @@ int LightContributionToSample( trace_t *trace ){
 				return 0;
 			}
 			else if ( angle < 0.0f &&
-					  ( trace->twoSided || ( light->flags & LIGHT_TWOSIDED ) ) ) {
+			          ( trace->twoSided || ( light->flags & LIGHT_TWOSIDED ) ) ) {
 				angle = -angle;
 
 				/* no deluxemap contribution from "other side" light */
@@ -1438,7 +1438,7 @@ void LightingAtSample( trace_t *trace, byte styles[ MAX_LIGHTMAPS ], vec3_t colo
 		for ( lightmapNum = 0; lightmapNum < MAX_LIGHTMAPS; lightmapNum++ )
 		{
 			if ( styles[ lightmapNum ] == trace->light->style ||
-				 styles[ lightmapNum ] == LS_NONE ) {
+			     styles[ lightmapNum ] == LS_NONE ) {
 				break;
 			}
 		}
@@ -1467,9 +1467,9 @@ void LightingAtSample( trace_t *trace, byte styles[ MAX_LIGHTMAPS ], vec3_t colo
 
 		/* cheap mode */
 		if ( cheap &&
-			 colors[ 0 ][ 0 ] >= 255.0f &&
-			 colors[ 0 ][ 1 ] >= 255.0f &&
-			 colors[ 0 ][ 2 ] >= 255.0f ) {
+		     colors[ 0 ][ 0 ] >= 255.0f &&
+		     colors[ 0 ][ 1 ] >= 255.0f &&
+		     colors[ 0 ][ 2 ] >= 255.0f ) {
 			break;
 		}
 	}
@@ -1514,8 +1514,8 @@ int LightContributionToPoint( trace_t *trace ){
 
 	/* ydnar: check origin against light's pvs envelope */
 	if ( trace->origin[ 0 ] > light->maxs[ 0 ] || trace->origin[ 0 ] < light->mins[ 0 ] ||
-		 trace->origin[ 1 ] > light->maxs[ 1 ] || trace->origin[ 1 ] < light->mins[ 1 ] ||
-		 trace->origin[ 2 ] > light->maxs[ 2 ] || trace->origin[ 2 ] < light->mins[ 2 ] ) {
+	     trace->origin[ 1 ] > light->maxs[ 1 ] || trace->origin[ 1 ] < light->mins[ 1 ] ||
+	     trace->origin[ 2 ] > light->maxs[ 2 ] || trace->origin[ 2 ] < light->mins[ 2 ] ) {
 		gridBoundsCulled++;
 		return qfalse;
 	}
@@ -1967,9 +1967,9 @@ void TraceGrid( int num ){
 	#if 0
 	//%	Sys_FPrintf( SYS_VRB, "%10d %10d %10d ", &gp->ambient[ 0 ][ 0 ], &gp->ambient[ 0 ][ 1 ], &gp->ambient[ 0 ][ 2 ] );
 	Sys_FPrintf( SYS_VRB, "%9d Amb: (%03.1f %03.1f %03.1f) Dir: (%03.1f %03.1f %03.1f)\n",
-				 num,
-				 gp->ambient[ 0 ][ 0 ], gp->ambient[ 0 ][ 1 ], gp->ambient[ 0 ][ 2 ],
-				 gp->directed[ 0 ][ 0 ], gp->directed[ 0 ][ 1 ], gp->directed[ 0 ][ 2 ] );
+	             num,
+	             gp->ambient[ 0 ][ 0 ], gp->ambient[ 0 ][ 1 ], gp->ambient[ 0 ][ 2 ],
+	             gp->directed[ 0 ][ 0 ], gp->directed[ 0 ][ 1 ], gp->directed[ 0 ][ 2 ] );
 	#endif
 
 	/* store direction */
@@ -2149,10 +2149,10 @@ void LightWorld( const char *BSPFilePath, qboolean fastAllocate ){
 	if ( value[ 0 ] != '\0' ) {
 		f = atof( value );
 		/*pointScale *= f;
-		spotScale *= f;
-		areaScale *= f;
-		skyScale *= f;
-		bounceScale *= f;*/
+		   spotScale *= f;
+		   areaScale *= f;
+		   skyScale *= f;
+		   bounceScale *= f;*/
 		color[0] *= f;
 		color[1] *= f;
 		color[2] *= f;
@@ -2177,7 +2177,7 @@ void LightWorld( const char *BSPFilePath, qboolean fastAllocate ){
 		RunThreadsOnIndividual( numRawGridPoints, qtrue, TraceGrid );
 		inGrid = qfalse;
 		Sys_Printf( "%d x %d x %d = %d grid\n",
-					gridBounds[ 0 ], gridBounds[ 1 ], gridBounds[ 2 ], numBSPGridPoints );
+		            gridBounds[ 0 ], gridBounds[ 1 ], gridBounds[ 2 ], numBSPGridPoints );
 
 		/* ydnar: emit statistics on light culling */
 		Sys_FPrintf( SYS_VRB, "%9d grid points envelope culled\n", gridEnvelopeCulled );

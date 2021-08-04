@@ -36,169 +36,169 @@
 
 const int MRU_MAX = 4;
 namespace {
-    GtkMenuItem *MRU_items[MRU_MAX];
-    std::size_t MRU_used;
-    typedef CopiedString MRU_filename_t;
-    MRU_filename_t MRU_filenames[MRU_MAX];
-    typedef const char *MRU_key_t;
-    MRU_key_t MRU_keys[MRU_MAX] = {"File0", "File1", "File2", "File3"};
+GtkMenuItem *MRU_items[MRU_MAX];
+std::size_t MRU_used;
+typedef CopiedString MRU_filename_t;
+MRU_filename_t MRU_filenames[MRU_MAX];
+typedef const char *MRU_key_t;
+MRU_key_t MRU_keys[MRU_MAX] = {"File0", "File1", "File2", "File3"};
 }
 
 inline const char *MRU_GetText(std::size_t index)
 {
-    return MRU_filenames[index].c_str();
+	return MRU_filenames[index].c_str();
 }
 
 class EscapedMnemonic {
-    StringBuffer m_buffer;
+StringBuffer m_buffer;
 public:
-    EscapedMnemonic(std::size_t capacity) : m_buffer(capacity)
-    {
-        m_buffer.push_back('_');
-    }
+EscapedMnemonic(std::size_t capacity) : m_buffer(capacity)
+{
+	m_buffer.push_back('_');
+}
 
-    const char *c_str() const
-    {
-        return m_buffer.c_str();
-    }
+const char *c_str() const
+{
+	return m_buffer.c_str();
+}
 
-    void push_back(char c)
-    { // not escaped
-        m_buffer.push_back(c);
-    }
+void push_back(char c)
+{     // not escaped
+	m_buffer.push_back(c);
+}
 
-    std::size_t write(const char *buffer, std::size_t length)
-    {
-        for (const char *end = buffer + length; buffer != end; ++buffer) {
-            if (*buffer == '_') {
-                m_buffer.push_back('_');
-            }
+std::size_t write(const char *buffer, std::size_t length)
+{
+	for (const char *end = buffer + length; buffer != end; ++buffer) {
+		if (*buffer == '_') {
+			m_buffer.push_back('_');
+		}
 
-            m_buffer.push_back(*buffer);
-        }
-        return length;
-    }
+		m_buffer.push_back(*buffer);
+	}
+	return length;
+}
 };
 
 template<typename T>
 inline EscapedMnemonic &operator<<(EscapedMnemonic &ostream, const T &t)
 {
-    return ostream_write(ostream, t);
+	return ostream_write(ostream, t);
 }
 
 
 void MRU_updateWidget(std::size_t index, const char *filename)
 {
-    EscapedMnemonic mnemonic(64);
-    mnemonic << Unsigned(index + 1) << "- " << filename;
-    gtk_label_set_text_with_mnemonic(GTK_LABEL(gtk_bin_get_child(GTK_BIN(MRU_items[index]))), mnemonic.c_str());
+	EscapedMnemonic mnemonic(64);
+	mnemonic << Unsigned(index + 1) << "- " << filename;
+	gtk_label_set_text_with_mnemonic(GTK_LABEL(gtk_bin_get_child(GTK_BIN(MRU_items[index]))), mnemonic.c_str());
 }
 
 void MRU_SetText(std::size_t index, const char *filename)
 {
-    MRU_filenames[index] = filename;
-    MRU_updateWidget(index, filename);
+	MRU_filenames[index] = filename;
+	MRU_updateWidget(index, filename);
 }
 
 void MRU_AddFile(const char *str)
 {
-    std::size_t i;
-    const char *text;
+	std::size_t i;
+	const char *text;
 
-    // check if file is already in our list
-    for (i = 0; i < MRU_used; i++) {
-        text = MRU_GetText(i);
+	// check if file is already in our list
+	for (i = 0; i < MRU_used; i++) {
+		text = MRU_GetText(i);
 
-        if (strcmp(text, str) == 0) {
-            // reorder menu
-            for (; i > 0; i--) {
-                MRU_SetText(i, MRU_GetText(i - 1));
-            }
+		if (strcmp(text, str) == 0) {
+			// reorder menu
+			for (; i > 0; i--) {
+				MRU_SetText(i, MRU_GetText(i - 1));
+			}
 
-            MRU_SetText(0, str);
+			MRU_SetText(0, str);
 
-            return;
-        }
-    }
+			return;
+		}
+	}
 
-    if (MRU_used < MRU_MAX) {
-        MRU_used++;
-    }
+	if (MRU_used < MRU_MAX) {
+		MRU_used++;
+	}
 
-    // move items down
-    for (i = MRU_used - 1; i > 0; i--) {
-        MRU_SetText(i, MRU_GetText(i - 1));
-    }
+	// move items down
+	for (i = MRU_used - 1; i > 0; i--) {
+		MRU_SetText(i, MRU_GetText(i - 1));
+	}
 
-    MRU_SetText(0, str);
-    gtk_widget_set_sensitive(ui::MenuItem::from(MRU_items[0]), TRUE);
-    ui::MenuItem::from(MRU_items[MRU_used - 1]).show();
+	MRU_SetText(0, str);
+	gtk_widget_set_sensitive(ui::MenuItem::from(MRU_items[0]), TRUE);
+	ui::MenuItem::from(MRU_items[MRU_used - 1]).show();
 }
 
 void MRU_Init()
 {
-    if (MRU_used > MRU_MAX) {
-        MRU_used = MRU_MAX;
-    }
+	if (MRU_used > MRU_MAX) {
+		MRU_used = MRU_MAX;
+	}
 }
 
 void MRU_AddWidget(ui::MenuItem widget, std::size_t pos)
 {
-    if (pos < MRU_MAX) {
-        MRU_items[pos] = widget;
-        if (pos < MRU_used) {
-            MRU_updateWidget(pos, MRU_GetText(pos));
-            gtk_widget_set_sensitive(ui::MenuItem::from(MRU_items[0]), TRUE);
-            ui::MenuItem::from(MRU_items[pos]).show();
-        }
-    }
+	if (pos < MRU_MAX) {
+		MRU_items[pos] = widget;
+		if (pos < MRU_used) {
+			MRU_updateWidget(pos, MRU_GetText(pos));
+			gtk_widget_set_sensitive(ui::MenuItem::from(MRU_items[0]), TRUE);
+			ui::MenuItem::from(MRU_items[pos]).show();
+		}
+	}
 }
 
 void MRU_Activate(std::size_t index)
 {
-    char text[1024];
-    strcpy(text, MRU_GetText(index));
+	char text[1024];
+	strcpy(text, MRU_GetText(index));
 
-    if (file_readable(text)) { //\todo Test 'map load succeeds' instead of 'file is readable'.
-        MRU_AddFile(text);
-        Map_RegionOff();
-        Map_Free();
-        Map_LoadFile(text);
-    } else {
-        MRU_used--;
+	if (file_readable(text)) { //\todo Test 'map load succeeds' instead of 'file is readable'.
+		MRU_AddFile(text);
+		Map_RegionOff();
+		Map_Free();
+		Map_LoadFile(text);
+	} else {
+		MRU_used--;
 
-        for (std::size_t i = index; i < MRU_used; i++) {
-            MRU_SetText(i, MRU_GetText(i + 1));
-        }
+		for (std::size_t i = index; i < MRU_used; i++) {
+			MRU_SetText(i, MRU_GetText(i + 1));
+		}
 
-        if (MRU_used == 0) {
-            auto label = ui::Label::from(gtk_bin_get_child(GTK_BIN(MRU_items[0])));
-            label.text("Recent Files");
-            gtk_widget_set_sensitive(ui::MenuItem::from(MRU_items[0]), FALSE);
-        } else {
-            ui::MenuItem::from(MRU_items[MRU_used]).hide();
-        }
-    }
+		if (MRU_used == 0) {
+			auto label = ui::Label::from(gtk_bin_get_child(GTK_BIN(MRU_items[0])));
+			label.text("Recent Files");
+			gtk_widget_set_sensitive(ui::MenuItem::from(MRU_items[0]), FALSE);
+		} else {
+			ui::MenuItem::from(MRU_items[MRU_used]).hide();
+		}
+	}
 }
 
 
 class LoadMRU {
-    std::size_t m_number;
+std::size_t m_number;
 public:
-    LoadMRU(std::size_t number)
-            : m_number(number)
-    {
-    }
+LoadMRU(std::size_t number)
+	: m_number(number)
+{
+}
 
-    void load()
-    {
-        if (ConfirmModified("Open Map")) {
-            MRU_Activate(m_number - 1);
-        }
-    }
+void load()
+{
+	if (ConfirmModified("Open Map")) {
+		MRU_Activate(m_number - 1);
+	}
+}
 };
 
-typedef MemberCaller<LoadMRU, void(), &LoadMRU::load> LoadMRUCaller;
+typedef MemberCaller<LoadMRU, void (), &LoadMRU::load> LoadMRUCaller;
 
 LoadMRU g_load_mru1(1);
 LoadMRU g_load_mru2(2);
@@ -207,26 +207,26 @@ LoadMRU g_load_mru4(4);
 
 void MRU_constructMenu(ui::Menu menu)
 {
-    {
-        auto item = create_menu_item_with_mnemonic(menu, "_1", LoadMRUCaller(g_load_mru1));
-        gtk_widget_set_sensitive(item, FALSE);
-        MRU_AddWidget(item, 0);
-    }
-    {
-        auto item = create_menu_item_with_mnemonic(menu, "_2", LoadMRUCaller(g_load_mru2));
-        item.hide();
-        MRU_AddWidget(item, 1);
-    }
-    {
-        auto item = create_menu_item_with_mnemonic(menu, "_3", LoadMRUCaller(g_load_mru3));
-        item.hide();
-        MRU_AddWidget(item, 2);
-    }
-    {
-        auto item = create_menu_item_with_mnemonic(menu, "_4", LoadMRUCaller(g_load_mru4));
-        item.hide();
-        MRU_AddWidget(item, 3);
-    }
+	{
+		auto item = create_menu_item_with_mnemonic(menu, "_1", LoadMRUCaller(g_load_mru1));
+		gtk_widget_set_sensitive(item, FALSE);
+		MRU_AddWidget(item, 0);
+	}
+	{
+		auto item = create_menu_item_with_mnemonic(menu, "_2", LoadMRUCaller(g_load_mru2));
+		item.hide();
+		MRU_AddWidget(item, 1);
+	}
+	{
+		auto item = create_menu_item_with_mnemonic(menu, "_3", LoadMRUCaller(g_load_mru3));
+		item.hide();
+		MRU_AddWidget(item, 2);
+	}
+	{
+		auto item = create_menu_item_with_mnemonic(menu, "_4", LoadMRUCaller(g_load_mru4));
+		item.hide();
+		MRU_AddWidget(item, 3);
+	}
 }
 
 #include "preferencesystem.h"
@@ -234,13 +234,13 @@ void MRU_constructMenu(ui::Menu menu)
 
 void MRU_Construct()
 {
-    GlobalPreferenceSystem().registerPreference("Count", make_property_string(MRU_used));
+	GlobalPreferenceSystem().registerPreference("Count", make_property_string(MRU_used));
 
-    for (std::size_t i = 0; i != MRU_MAX; ++i) {
-        GlobalPreferenceSystem().registerPreference(MRU_keys[i], make_property_string(MRU_filenames[i]));
-    }
+	for (std::size_t i = 0; i != MRU_MAX; ++i) {
+		GlobalPreferenceSystem().registerPreference(MRU_keys[i], make_property_string(MRU_filenames[i]));
+	}
 
-    MRU_Init();
+	MRU_Init();
 }
 
 void MRU_Destroy()

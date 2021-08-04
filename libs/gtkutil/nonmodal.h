@@ -33,58 +33,58 @@ gboolean escape_clear_focus_widget(ui::Widget widget, GdkEventKey *event, gpoint
 void widget_connect_escape_clear_focus_widget(ui::Widget widget);
 
 class NonModalEntry {
-    bool m_editing;
-    Callback<void()> m_apply;
-    Callback<void()> m_cancel;
+bool m_editing;
+Callback<void()> m_apply;
+Callback<void()> m_cancel;
 
-    static gboolean focus_in(ui::Entry entry, GdkEventFocus *event, NonModalEntry *self);
+static gboolean focus_in(ui::Entry entry, GdkEventFocus *event, NonModalEntry *self);
 
-    static gboolean focus_out(ui::Entry entry, GdkEventFocus *event, NonModalEntry *self);
+static gboolean focus_out(ui::Entry entry, GdkEventFocus *event, NonModalEntry *self);
 
-    static gboolean changed(ui::Entry entry, NonModalEntry *self);
+static gboolean changed(ui::Entry entry, NonModalEntry *self);
 
-    static gboolean enter(ui::Entry entry, GdkEventKey *event, NonModalEntry *self);
+static gboolean enter(ui::Entry entry, GdkEventKey *event, NonModalEntry *self);
 
-    static gboolean escape(ui::Entry entry, GdkEventKey *event, NonModalEntry *self);
+static gboolean escape(ui::Entry entry, GdkEventKey *event, NonModalEntry *self);
 
 public:
-    NonModalEntry(const Callback<void()> &apply, const Callback<void()> &cancel) : m_editing(false), m_apply(apply),
-                                                                                   m_cancel(cancel)
-    {
-    }
+NonModalEntry(const Callback<void()> &apply, const Callback<void()> &cancel) : m_editing(false), m_apply(apply),
+	m_cancel(cancel)
+{
+}
 
-    void connect(ui::Entry entry);
+void connect(ui::Entry entry);
 };
 
 
 class NonModalSpinner {
-    Callback<void()> m_apply;
-    Callback<void()> m_cancel;
+Callback<void()> m_apply;
+Callback<void()> m_cancel;
 
-    static gboolean changed(ui::SpinButton spin, NonModalSpinner *self);
+static gboolean changed(ui::SpinButton spin, NonModalSpinner *self);
 
-    static gboolean enter(ui::SpinButton spin, GdkEventKey *event, NonModalSpinner *self);
+static gboolean enter(ui::SpinButton spin, GdkEventKey *event, NonModalSpinner *self);
 
-    static gboolean escape(ui::SpinButton spin, GdkEventKey *event, NonModalSpinner *self);
+static gboolean escape(ui::SpinButton spin, GdkEventKey *event, NonModalSpinner *self);
 
 public:
-    NonModalSpinner(const Callback<void()> &apply, const Callback<void()> &cancel) : m_apply(apply), m_cancel(cancel)
-    {
-    }
+NonModalSpinner(const Callback<void()> &apply, const Callback<void()> &cancel) : m_apply(apply), m_cancel(cancel)
+{
+}
 
-    void connect(ui::SpinButton spin);
+void connect(ui::SpinButton spin);
 };
 
 
 class NonModalRadio {
-    Callback<void()> m_changed;
+Callback<void()> m_changed;
 
 public:
-    NonModalRadio(const Callback<void()> &changed) : m_changed(changed)
-    {
-    }
+NonModalRadio(const Callback<void()> &changed) : m_changed(changed)
+{
+}
 
-    void connect(ui::RadioButton radio);
+void connect(ui::RadioButton radio);
 };
 
 

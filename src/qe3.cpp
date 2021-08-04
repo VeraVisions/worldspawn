@@ -102,25 +102,25 @@ int g_numhidden = 0;
 
 void QE_UpdateStatusBar()
 {
-    char buffer[128];
-    sprintf(buffer, "Brushes: %d Entities: %d Hidden: %d", g_numbrushes, g_numentities, g_numhidden);
-    g_pParentWnd->SetStatusText(g_pParentWnd->m_brushcount_status, buffer);
+	char buffer[128];
+	sprintf(buffer, "Brushes: %d Entities: %d Hidden: %d", g_numbrushes, g_numentities, g_numhidden);
+	g_pParentWnd->SetStatusText(g_pParentWnd->m_brushcount_status, buffer);
 }
 
 SimpleCounter g_brushCount;
 
 void QE_brushCountChanged()
 {
-    g_numbrushes = int(g_brushCount.get());
-    QE_UpdateStatusBar();
+	g_numbrushes = int(g_brushCount.get());
+	QE_UpdateStatusBar();
 }
 
 SimpleCounter g_entityCount;
 
 void QE_entityCountChanged()
 {
-    g_numentities = int(g_entityCount.get());
-    QE_UpdateStatusBar();
+	g_numentities = int(g_entityCount.get());
+	QE_UpdateStatusBar();
 }
 
 std::size_t Scene_countHiddenBrushes(scene::Graph &graph);
@@ -132,185 +132,185 @@ void QE_hiddenCountChanged()
 
 bool ConfirmModified(const char *title)
 {
-    if (!Map_Modified(g_map)) {
-        return true;
-    }
+	if (!Map_Modified(g_map)) {
+		return true;
+	}
 
-    auto result = ui::alert(MainFrame_getWindow(),
-                            "The current map has changed since it was last saved.\nDo you want to save the current map before continuing?",
-                            title, ui::alert_type::YESNOCANCEL, ui::alert_icon::Question);
-    if (result == ui::alert_response::CANCEL) {
-        return false;
-    }
-    if (result == ui::alert_response::YES) {
-        if (Map_Unnamed(g_map)) {
-            return Map_SaveAs();
-        } else {
-            return Map_Save();
-        }
-    }
-    return true;
+	auto result = ui::alert(MainFrame_getWindow(),
+	                        "The current map has changed since it was last saved.\nDo you want to save the current map before continuing?",
+	                        title, ui::alert_type::YESNOCANCEL, ui::alert_icon::Question);
+	if (result == ui::alert_response::CANCEL) {
+		return false;
+	}
+	if (result == ui::alert_response::YES) {
+		if (Map_Unnamed(g_map)) {
+			return Map_SaveAs();
+		} else {
+			return Map_Save();
+		}
+	}
+	return true;
 }
 
 void bsp_init()
 {
-    build_set_variable("RadiantPath", AppPath_get());
-    build_set_variable("EnginePath", EnginePath_get());
-    build_set_variable("UserEnginePath", g_qeglobals.m_userEnginePath.c_str());
-    build_set_variable("MonitorAddress", (g_WatchBSP_Enabled) ? "127.0.0.1:39000" : "");
-    build_set_variable("GameName", gamename_get());
+	build_set_variable("RadiantPath", AppPath_get());
+	build_set_variable("EnginePath", EnginePath_get());
+	build_set_variable("UserEnginePath", g_qeglobals.m_userEnginePath.c_str());
+	build_set_variable("MonitorAddress", (g_WatchBSP_Enabled) ? "127.0.0.1:39000" : "");
+	build_set_variable("GameName", gamename_get());
 
-    const char *mapname = Map_Name(g_map);
-    StringOutputStream name(256);
-    name << StringRange(mapname, path_get_filename_base_end(mapname)) << ".bsp";
+	const char *mapname = Map_Name(g_map);
+	StringOutputStream name(256);
+	name << StringRange(mapname, path_get_filename_base_end(mapname)) << ".bsp";
 
-    build_set_variable("MapFile", mapname);
-    build_set_variable("BspFile", name.c_str());
+	build_set_variable("MapFile", mapname);
+	build_set_variable("BspFile", name.c_str());
 }
 
 void bsp_shutdown()
 {
-    build_clear_variables();
+	build_clear_variables();
 }
 
 class ArrayCommandListener : public CommandListener {
-    GPtrArray *m_array;
+GPtrArray *m_array;
 public:
-    ArrayCommandListener()
-    {
-        m_array = g_ptr_array_new();
-    }
+ArrayCommandListener()
+{
+	m_array = g_ptr_array_new();
+}
 
-    ~ArrayCommandListener()
-    {
-        g_ptr_array_free(m_array, TRUE);
-    }
+~ArrayCommandListener()
+{
+	g_ptr_array_free(m_array, TRUE);
+}
 
-    void execute(const char *command)
-    {
-        g_ptr_array_add(m_array, g_strdup(command));
-    }
+void execute(const char *command)
+{
+	g_ptr_array_add(m_array, g_strdup(command));
+}
 
-    GPtrArray *array() const
-    {
-        return m_array;
-    }
+GPtrArray *array() const
+{
+	return m_array;
+}
 };
 
 class BatchCommandListener : public CommandListener {
-    TextOutputStream &m_file;
-    std::size_t m_commandCount;
-    const char *m_outputRedirect;
+TextOutputStream &m_file;
+std::size_t m_commandCount;
+const char *m_outputRedirect;
 public:
-    BatchCommandListener(TextOutputStream &file, const char *outputRedirect) : m_file(file), m_commandCount(0),
-                                                                               m_outputRedirect(outputRedirect)
-    {
-    }
+BatchCommandListener(TextOutputStream &file, const char *outputRedirect) : m_file(file), m_commandCount(0),
+	m_outputRedirect(outputRedirect)
+{
+}
 
-    void execute(const char *command)
-    {
-        m_file << command;
-        if (m_commandCount == 0) {
-            m_file << " > ";
-        } else {
-            m_file << " >> ";
-        }
-        m_file << "\"" << m_outputRedirect << "\"";
-        m_file << "\n";
-        ++m_commandCount;
-    }
+void execute(const char *command)
+{
+	m_file << command;
+	if (m_commandCount == 0) {
+		m_file << " > ";
+	} else {
+		m_file << " >> ";
+	}
+	m_file << "\"" << m_outputRedirect << "\"";
+	m_file << "\n";
+	++m_commandCount;
+}
 };
 
 bool Region_cameraValid()
 {
-    Vector3 vOrig(vector3_snapped(Camera_getOrigin(*g_pParentWnd->GetCamWnd())));
+	Vector3 vOrig(vector3_snapped(Camera_getOrigin(*g_pParentWnd->GetCamWnd())));
 
-    for (int i = 0; i < 3; i++) {
-        if (vOrig[i] > region_maxs[i] || vOrig[i] < region_mins[i]) {
-            return false;
-        }
-    }
-    return true;
+	for (int i = 0; i < 3; i++) {
+		if (vOrig[i] > region_maxs[i] || vOrig[i] < region_mins[i]) {
+			return false;
+		}
+	}
+	return true;
 }
 
 
 void RunBSP(const char *name)
 {
-    // http://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=503
-    // make sure we don't attempt to region compile a map with the camera outside the region
-    if (region_active && !Region_cameraValid()) {
-        globalErrorStream() << "The camera must be in the region to start a region compile.\n";
-        return;
-    }
+	// http://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=503
+	// make sure we don't attempt to region compile a map with the camera outside the region
+	if (region_active && !Region_cameraValid()) {
+		globalErrorStream() << "The camera must be in the region to start a region compile.\n";
+		return;
+	}
 
-    SaveMap();
+	SaveMap();
 
-    if (Map_Unnamed(g_map)) {
-        globalOutputStream() << "build cancelled\n";
-        return;
-    }
+	if (Map_Unnamed(g_map)) {
+		globalOutputStream() << "build cancelled\n";
+		return;
+	}
 
-    if (g_SnapShots_Enabled && !Map_Unnamed(g_map) && Map_Modified(g_map)) {
-        Map_Snapshot();
-    }
+	if (g_SnapShots_Enabled && !Map_Unnamed(g_map) && Map_Modified(g_map)) {
+		Map_Snapshot();
+	}
 
-    if (region_active) {
-        const char *mapname = Map_Name(g_map);
-        StringOutputStream name(256);
-        name << StringRange(mapname, path_get_filename_base_end(mapname)) << ".reg";
-        Map_SaveRegion(name.c_str());
-    }
+	if (region_active) {
+		const char *mapname = Map_Name(g_map);
+		StringOutputStream name(256);
+		name << StringRange(mapname, path_get_filename_base_end(mapname)) << ".reg";
+		Map_SaveRegion(name.c_str());
+	}
 
-    Pointfile_Delete();
+	Pointfile_Delete();
 
-    bsp_init();
+	bsp_init();
 
-    if (g_WatchBSP_Enabled) {
-        ArrayCommandListener listener;
-        build_run(name, listener);
-        // grab the file name for engine running
-        const char *fullname = Map_Name(g_map);
-        StringOutputStream bspname(64);
-        bspname << StringRange(path_get_filename_start(fullname), path_get_filename_base_end(fullname));
-        BuildMonitor_Run(listener.array(), bspname.c_str());
-    } else {
-        char junkpath[PATH_MAX];
-        strcpy(junkpath, SettingsPath_get());
-        strcat(junkpath, "junk.txt");
+	if (g_WatchBSP_Enabled) {
+		ArrayCommandListener listener;
+		build_run(name, listener);
+		// grab the file name for engine running
+		const char *fullname = Map_Name(g_map);
+		StringOutputStream bspname(64);
+		bspname << StringRange(path_get_filename_start(fullname), path_get_filename_base_end(fullname));
+		BuildMonitor_Run(listener.array(), bspname.c_str());
+	} else {
+		char junkpath[PATH_MAX];
+		strcpy(junkpath, SettingsPath_get());
+		strcat(junkpath, "junk.txt");
 
-        char batpath[PATH_MAX];
+		char batpath[PATH_MAX];
 #if GDEF_OS_POSIX
-        strcpy(batpath, SettingsPath_get());
-        strcat(batpath, "qe3bsp.sh");
+		strcpy(batpath, SettingsPath_get());
+		strcat(batpath, "qe3bsp.sh");
 #elif GDEF_OS_WINDOWS
-        strcpy( batpath, SettingsPath_get() );
-        strcat( batpath, "qe3bsp.bat" );
+		strcpy( batpath, SettingsPath_get() );
+		strcat( batpath, "qe3bsp.bat" );
 #else
 #error "unsupported platform"
 #endif
-        bool written = false;
-        {
-            TextFileOutputStream batchFile(batpath);
-            if (!batchFile.failed()) {
+		bool written = false;
+		{
+			TextFileOutputStream batchFile(batpath);
+			if (!batchFile.failed()) {
 #if GDEF_OS_POSIX
-                batchFile << "#!/bin/sh \n\n";
+				batchFile << "#!/bin/sh \n\n";
 #endif
-                BatchCommandListener listener(batchFile, junkpath);
-                build_run(name, listener);
-                written = true;
-            }
-        }
-        if (written) {
+				BatchCommandListener listener(batchFile, junkpath);
+				build_run(name, listener);
+				written = true;
+			}
+		}
+		if (written) {
 #if GDEF_OS_POSIX
-            chmod(batpath, 0744);
+			chmod(batpath, 0744);
 #endif
-            globalOutputStream() << "Writing the compile script to '" << batpath << "'\n";
-            globalOutputStream() << "The build output will be saved in '" << junkpath << "'\n";
-            Q_Exec(batpath, NULL, NULL, true, false);
-        }
-    }
+			globalOutputStream() << "Writing the compile script to '" << batpath << "'\n";
+			globalOutputStream() << "The build output will be saved in '" << junkpath << "'\n";
+			Q_Exec(batpath, NULL, NULL, true, false);
+		}
+	}
 
-    bsp_shutdown();
+	bsp_shutdown();
 }
 
 // =============================================================================
@@ -334,21 +334,21 @@ bool g_bWaitCursor = false;
 
 void Sys_BeginWait(void)
 {
-    ScreenUpdates_Disable("Processing...", "Please Wait");
-    GdkCursor *cursor = gdk_cursor_new(GDK_WATCH);
-    gdk_window_set_cursor(gtk_widget_get_window(MainFrame_getWindow()), cursor);
-    gdk_cursor_unref(cursor);
-    g_bWaitCursor = true;
+	ScreenUpdates_Disable("Processing...", "Please Wait");
+	GdkCursor *cursor = gdk_cursor_new(GDK_WATCH);
+	gdk_window_set_cursor(gtk_widget_get_window(MainFrame_getWindow()), cursor);
+	gdk_cursor_unref(cursor);
+	g_bWaitCursor = true;
 }
 
 void Sys_EndWait(void)
 {
-    ScreenUpdates_Enable();
-    gdk_window_set_cursor(gtk_widget_get_window(MainFrame_getWindow()), 0);
-    g_bWaitCursor = false;
+	ScreenUpdates_Enable();
+	gdk_window_set_cursor(gtk_widget_get_window(MainFrame_getWindow()), 0);
+	g_bWaitCursor = false;
 }
 
 void Sys_Beep(void)
 {
-    gdk_beep();
+	gdk_beep();
 }

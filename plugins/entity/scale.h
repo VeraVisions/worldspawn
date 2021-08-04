@@ -32,92 +32,92 @@ const Vector3 SCALEKEY_IDENTITY = Vector3(1, 1, 1);
 
 inline void default_scale(Vector3 &scale)
 {
-    scale = SCALEKEY_IDENTITY;
+	scale = SCALEKEY_IDENTITY;
 }
 
 inline void read_scale(Vector3 &scalevec, const char *value)
 {
-    float scale;
-    if (!string_parse_float(value, scale)
-        || scale == 0) {
-        default_scale(scalevec);
-    } else {
-        scalevec = Vector3(scale, scale, scale);
-    }
+	float scale;
+	if (!string_parse_float(value, scale)
+	    || scale == 0) {
+		default_scale(scalevec);
+	} else {
+		scalevec = Vector3(scale, scale, scale);
+	}
 }
 
 inline void read_scalevec(Vector3 &scale, const char *value)
 {
-    if (!string_parse_vector3(value, scale)
-        || scale[0] == 0
-        || scale[1] == 0
-        || scale[2] == 0) {
-        default_scale(scale);
-    }
+	if (!string_parse_vector3(value, scale)
+	    || scale[0] == 0
+	    || scale[1] == 0
+	    || scale[2] == 0) {
+		default_scale(scale);
+	}
 }
 
 inline void write_scale(const Vector3 &scale, Entity *entity)
 {
-    if (scale[0] == 1 && scale[1] == 1 && scale[2] == 1) {
-        entity->setKeyValue("modelscale", "");
-        entity->setKeyValue("modelscale_vec", "");
-    } else {
-        char value[64];
+	if (scale[0] == 1 && scale[1] == 1 && scale[2] == 1) {
+		entity->setKeyValue("modelscale", "");
+		entity->setKeyValue("modelscale_vec", "");
+	} else {
+		char value[64];
 
-        if (scale[0] == scale[1] && scale[0] == scale[2]) {
-            sprintf(value, "%f", scale[0]);
-            entity->setKeyValue("modelscale_vec", "");
-            entity->setKeyValue("modelscale", value);
-        } else {
-            sprintf(value, "%f %f %f", scale[0], scale[1], scale[2]);
-            entity->setKeyValue("modelscale", "");
-            entity->setKeyValue("modelscale_vec", value);
-        }
-    }
+		if (scale[0] == scale[1] && scale[0] == scale[2]) {
+			sprintf(value, "%f", scale[0]);
+			entity->setKeyValue("modelscale_vec", "");
+			entity->setKeyValue("modelscale", value);
+		} else {
+			sprintf(value, "%f %f %f", scale[0], scale[1], scale[2]);
+			entity->setKeyValue("modelscale", "");
+			entity->setKeyValue("modelscale_vec", value);
+		}
+	}
 }
 
 inline Vector3 scale_scaled(const Vector3 &scale, const Vector3 &scaling)
 {
-    return matrix4_get_scale_vec3(
-            matrix4_multiplied_by_matrix4(
-                    matrix4_scale_for_vec3(scale),
-                    matrix4_scale_for_vec3(scaling)
-            )
-    );
+	return matrix4_get_scale_vec3(
+		matrix4_multiplied_by_matrix4(
+			matrix4_scale_for_vec3(scale),
+			matrix4_scale_for_vec3(scaling)
+			)
+		);
 }
 
 
 class ScaleKey {
-    Callback<void()> m_scaleChanged;
+Callback<void()> m_scaleChanged;
 public:
-    Vector3 m_scale;
+Vector3 m_scale;
 
 
-    ScaleKey(const Callback<void()> &scaleChanged)
-            : m_scaleChanged(scaleChanged), m_scale(SCALEKEY_IDENTITY)
-    {
-    }
+ScaleKey(const Callback<void()> &scaleChanged)
+	: m_scaleChanged(scaleChanged), m_scale(SCALEKEY_IDENTITY)
+{
+}
 
-    void uniformScaleChanged(const char *value)
-    {
-        read_scale(m_scale, value);
-        m_scaleChanged();
-    }
+void uniformScaleChanged(const char *value)
+{
+	read_scale(m_scale, value);
+	m_scaleChanged();
+}
 
-    typedef MemberCaller<ScaleKey, void(const char *), &ScaleKey::uniformScaleChanged> UniformScaleChangedCaller;
+typedef MemberCaller<ScaleKey, void (const char *), &ScaleKey::uniformScaleChanged> UniformScaleChangedCaller;
 
-    void scaleChanged(const char *value)
-    {
-        read_scalevec(m_scale, value);
-        m_scaleChanged();
-    }
+void scaleChanged(const char *value)
+{
+	read_scalevec(m_scale, value);
+	m_scaleChanged();
+}
 
-    typedef MemberCaller<ScaleKey, void(const char *), &ScaleKey::scaleChanged> ScaleChangedCaller;
+typedef MemberCaller<ScaleKey, void (const char *), &ScaleKey::scaleChanged> ScaleChangedCaller;
 
-    void write(Entity *entity) const
-    {
-        write_scale(m_scale, entity);
-    }
+void write(Entity *entity) const
+{
+	write_scale(m_scale, entity);
+}
 };
 
 

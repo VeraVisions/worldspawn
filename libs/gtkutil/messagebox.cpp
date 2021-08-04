@@ -29,167 +29,167 @@
 
 ui::Widget create_padding(int width, int height)
 {
-    ui::Alignment widget = ui::Alignment(0.0, 0.0, 0.0, 0.0);
-    widget.show();
-    widget.dimensions(width, height);
-    return widget;
+	ui::Alignment widget = ui::Alignment(0.0, 0.0, 0.0, 0.0);
+	widget.show();
+	widget.dimensions(width, height);
+	return widget;
 }
 
 const char *messagebox_stock_icon(EMessageBoxIcon type)
 {
-    switch (type) {
-        default:
-        case eMB_ICONDEFAULT:
-            return GTK_STOCK_DIALOG_INFO;
-        case eMB_ICONERROR:
-            return GTK_STOCK_DIALOG_ERROR;
-        case eMB_ICONWARNING:
-            return GTK_STOCK_DIALOG_WARNING;
-        case eMB_ICONQUESTION:
-            return GTK_STOCK_DIALOG_QUESTION;
-        case eMB_ICONASTERISK:
-            return GTK_STOCK_DIALOG_INFO;
-    }
+	switch (type) {
+	default:
+	case eMB_ICONDEFAULT:
+		return GTK_STOCK_DIALOG_INFO;
+	case eMB_ICONERROR:
+		return GTK_STOCK_DIALOG_ERROR;
+	case eMB_ICONWARNING:
+		return GTK_STOCK_DIALOG_WARNING;
+	case eMB_ICONQUESTION:
+		return GTK_STOCK_DIALOG_QUESTION;
+	case eMB_ICONASTERISK:
+		return GTK_STOCK_DIALOG_INFO;
+	}
 }
 
 EMessageBoxReturn
 gtk_MessageBox(ui::Window parentWindow, const char *text, const char *title, EMessageBoxType type, EMessageBoxIcon icon)
 {
-    ModalDialog dialog;
-    ModalDialogButton ok_button(dialog, eIDOK);
-    ModalDialogButton cancel_button(dialog, eIDCANCEL);
-    ModalDialogButton yes_button(dialog, eIDYES);
-    ModalDialogButton no_button(dialog, eIDNO);
+	ModalDialog dialog;
+	ModalDialogButton ok_button(dialog, eIDOK);
+	ModalDialogButton cancel_button(dialog, eIDCANCEL);
+	ModalDialogButton yes_button(dialog, eIDYES);
+	ModalDialogButton no_button(dialog, eIDNO);
 
-    ui::Window window = create_fixedsize_modal_dialog_window(parentWindow, title, dialog, 400, 100);
+	ui::Window window = create_fixedsize_modal_dialog_window(parentWindow, title, dialog, 400, 100);
 
-    if (parentWindow) {
-        //window.connect( "delete_event", G_CALLBACK(floating_window_delete_present), parent);
-        gtk_window_deiconify(parentWindow);
-    }
+	if (parentWindow) {
+		//window.connect( "delete_event", G_CALLBACK(floating_window_delete_present), parent);
+		gtk_window_deiconify(parentWindow);
+	}
 
-    auto accel = ui::AccelGroup(ui::New);
-    window.add_accel_group(accel);
+	auto accel = ui::AccelGroup(ui::New);
+	window.add_accel_group(accel);
 
-    auto vbox = create_dialog_vbox(8, 8);
-    window.add(vbox);
-
-
-    auto hboxDummy = create_dialog_hbox(0, 0);
-    vbox.pack_start(hboxDummy, FALSE, FALSE, 0);
-
-    hboxDummy.pack_start(create_padding(0, 50), FALSE, FALSE, 0); // HACK to force minimum height
-
-    auto iconBox = create_dialog_hbox(16, 0);
-    hboxDummy.pack_start(iconBox, FALSE, FALSE, 0);
-
-    auto image = ui::Image::from(gtk_image_new_from_stock(messagebox_stock_icon(icon), GTK_ICON_SIZE_DIALOG));
-    image.show();
-    iconBox.pack_start(image, FALSE, FALSE, 0);
-
-    auto label = ui::Label(text);
-    label.show();
-    gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
-    gtk_label_set_justify(label, GTK_JUSTIFY_LEFT);
-    gtk_label_set_line_wrap(label, TRUE);
-    iconBox.pack_start(label, TRUE, TRUE, 0);
+	auto vbox = create_dialog_vbox(8, 8);
+	window.add(vbox);
 
 
-    auto vboxDummy = create_dialog_vbox(0, 0);
-    vbox.pack_start(vboxDummy, FALSE, FALSE, 0);
+	auto hboxDummy = create_dialog_hbox(0, 0);
+	vbox.pack_start(hboxDummy, FALSE, FALSE, 0);
 
-    auto alignment = ui::Alignment(0.5, 0.0, 0.0, 0.0);
-    alignment.show();
-    vboxDummy.pack_start(alignment, FALSE, FALSE, 0);
+	hboxDummy.pack_start(create_padding(0, 50), FALSE, FALSE, 0); // HACK to force minimum height
 
-    auto hbox = create_dialog_hbox(8, 0);
-    alignment.add(hbox);
+	auto iconBox = create_dialog_hbox(16, 0);
+	hboxDummy.pack_start(iconBox, FALSE, FALSE, 0);
 
-    vboxDummy.pack_start(create_padding(400, 0), FALSE, FALSE, 0); // HACK to force minimum width
+	auto image = ui::Image::from(gtk_image_new_from_stock(messagebox_stock_icon(icon), GTK_ICON_SIZE_DIALOG));
+	image.show();
+	iconBox.pack_start(image, FALSE, FALSE, 0);
+
+	auto label = ui::Label(text);
+	label.show();
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_justify(label, GTK_JUSTIFY_LEFT);
+	gtk_label_set_line_wrap(label, TRUE);
+	iconBox.pack_start(label, TRUE, TRUE, 0);
 
 
-    if (type == eMB_OK) {
-        auto button = create_modal_dialog_button("OK", ok_button);
-        hbox.pack_start(button, TRUE, FALSE, 0);
-        gtk_widget_add_accelerator(button, "clicked", accel, GDK_KEY_Escape, (GdkModifierType) 0, (GtkAccelFlags) 0);
-        gtk_widget_add_accelerator(button, "clicked", accel, GDK_KEY_Return, (GdkModifierType) 0, (GtkAccelFlags) 0);
-        widget_make_default(button);
-        button.show();
+	auto vboxDummy = create_dialog_vbox(0, 0);
+	vbox.pack_start(vboxDummy, FALSE, FALSE, 0);
 
-        dialog.ret = eIDOK;
-    } else if (type == eMB_OKCANCEL) {
-        {
-            auto button = create_modal_dialog_button("OK", ok_button);
-            hbox.pack_start(button, TRUE, FALSE, 0);
-            gtk_widget_add_accelerator(button, "clicked", accel, GDK_KEY_Return, (GdkModifierType) 0,
-                                       (GtkAccelFlags) 0);
-            widget_make_default(button);
-            button.show();
-        }
+	auto alignment = ui::Alignment(0.5, 0.0, 0.0, 0.0);
+	alignment.show();
+	vboxDummy.pack_start(alignment, FALSE, FALSE, 0);
 
-        {
-            auto button = create_modal_dialog_button("OK", cancel_button);
-            hbox.pack_start(button, TRUE, FALSE, 0);
-            gtk_widget_add_accelerator(button, "clicked", accel, GDK_KEY_Escape, (GdkModifierType) 0,
-                                       (GtkAccelFlags) 0);
-            button.show();
-        }
+	auto hbox = create_dialog_hbox(8, 0);
+	alignment.add(hbox);
 
-        dialog.ret = eIDCANCEL;
-    } else if (type == eMB_YESNOCANCEL) {
-        {
-            auto button = create_modal_dialog_button("Yes", yes_button);
-            hbox.pack_start(button, TRUE, FALSE, 0);
-            widget_make_default(button);
-            button.show();
-        }
+	vboxDummy.pack_start(create_padding(400, 0), FALSE, FALSE, 0); // HACK to force minimum width
 
-        {
-            auto button = create_modal_dialog_button("No", no_button);
-            hbox.pack_start(button, TRUE, FALSE, 0);
-            button.show();
-        }
-        {
-            auto button = create_modal_dialog_button("Cancel", cancel_button);
-            hbox.pack_start(button, TRUE, FALSE, 0);
-            button.show();
-        }
 
-        dialog.ret = eIDCANCEL;
-    } else if (type == eMB_NOYES) {
-        {
-            auto button = create_modal_dialog_button("No", no_button);
-            hbox.pack_start(button, TRUE, FALSE, 0);
-            widget_make_default(button);
-            button.show();
-        }
-        {
-            auto button = create_modal_dialog_button("Yes", yes_button);
-            hbox.pack_start(button, TRUE, FALSE, 0);
-            button.show();
-        }
+	if (type == eMB_OK) {
+		auto button = create_modal_dialog_button("OK", ok_button);
+		hbox.pack_start(button, TRUE, FALSE, 0);
+		gtk_widget_add_accelerator(button, "clicked", accel, GDK_KEY_Escape, (GdkModifierType) 0, (GtkAccelFlags) 0);
+		gtk_widget_add_accelerator(button, "clicked", accel, GDK_KEY_Return, (GdkModifierType) 0, (GtkAccelFlags) 0);
+		widget_make_default(button);
+		button.show();
 
-        dialog.ret = eIDNO;
-    } else /* if (type == eMB_YESNO) */
-    {
-        {
-            auto button = create_modal_dialog_button("Yes", yes_button);
-            hbox.pack_start(button, TRUE, FALSE, 0);
-            widget_make_default(button);
-            button.show();
-        }
+		dialog.ret = eIDOK;
+	} else if (type == eMB_OKCANCEL) {
+		{
+			auto button = create_modal_dialog_button("OK", ok_button);
+			hbox.pack_start(button, TRUE, FALSE, 0);
+			gtk_widget_add_accelerator(button, "clicked", accel, GDK_KEY_Return, (GdkModifierType) 0,
+			                           (GtkAccelFlags) 0);
+			widget_make_default(button);
+			button.show();
+		}
 
-        {
-            auto button = create_modal_dialog_button("No", no_button);
-            hbox.pack_start(button, TRUE, FALSE, 0);
-            button.show();
-        }
-        dialog.ret = eIDNO;
-    }
+		{
+			auto button = create_modal_dialog_button("OK", cancel_button);
+			hbox.pack_start(button, TRUE, FALSE, 0);
+			gtk_widget_add_accelerator(button, "clicked", accel, GDK_KEY_Escape, (GdkModifierType) 0,
+			                           (GtkAccelFlags) 0);
+			button.show();
+		}
 
-    modal_dialog_show(window, dialog);
+		dialog.ret = eIDCANCEL;
+	} else if (type == eMB_YESNOCANCEL) {
+		{
+			auto button = create_modal_dialog_button("Yes", yes_button);
+			hbox.pack_start(button, TRUE, FALSE, 0);
+			widget_make_default(button);
+			button.show();
+		}
 
-    window.destroy();
+		{
+			auto button = create_modal_dialog_button("No", no_button);
+			hbox.pack_start(button, TRUE, FALSE, 0);
+			button.show();
+		}
+		{
+			auto button = create_modal_dialog_button("Cancel", cancel_button);
+			hbox.pack_start(button, TRUE, FALSE, 0);
+			button.show();
+		}
 
-    return dialog.ret;
+		dialog.ret = eIDCANCEL;
+	} else if (type == eMB_NOYES) {
+		{
+			auto button = create_modal_dialog_button("No", no_button);
+			hbox.pack_start(button, TRUE, FALSE, 0);
+			widget_make_default(button);
+			button.show();
+		}
+		{
+			auto button = create_modal_dialog_button("Yes", yes_button);
+			hbox.pack_start(button, TRUE, FALSE, 0);
+			button.show();
+		}
+
+		dialog.ret = eIDNO;
+	} else /* if (type == eMB_YESNO) */
+	{
+		{
+			auto button = create_modal_dialog_button("Yes", yes_button);
+			hbox.pack_start(button, TRUE, FALSE, 0);
+			widget_make_default(button);
+			button.show();
+		}
+
+		{
+			auto button = create_modal_dialog_button("No", no_button);
+			hbox.pack_start(button, TRUE, FALSE, 0);
+			button.show();
+		}
+		dialog.ret = eIDNO;
+	}
+
+	modal_dialog_show(window, dialog);
+
+	window.destroy();
+
+	return dialog.ret;
 }

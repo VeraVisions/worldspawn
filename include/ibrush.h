@@ -95,7 +95,7 @@ int flags;
 int value;
 };
 
-typedef Callback<void(const _QERFaceData&)> BrushFaceDataCallback;
+typedef Callback<void (const _QERFaceData&)> BrushFaceDataCallback;
 
 class BrushCreator
 {

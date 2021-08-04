@@ -63,7 +63,7 @@ int CountBits( byte *bits, int numbits ){
 	int c;
 
 	c = 0;
-	for ( i = 0 ; i < numbits ; i++ )
+	for ( i = 0; i < numbits; i++ )
 		if ( bits[i >> 3] & ( 1 << ( i & 7 ) ) ) {
 			c++;
 		}
@@ -80,13 +80,13 @@ int active;
 void CheckStack( leaf_t *leaf, threaddata_t *thread ){
 	pstack_t    *p, *p2;
 
-	for ( p = thread->pstack_head.next ; p ; p = p->next )
+	for ( p = thread->pstack_head.next; p; p = p->next )
 	{
 //		Sys_Printf ("=");
 		if ( p->leaf == leaf ) {
 			Error( "CheckStack: leaf recursion" );
 		}
-		for ( p2 = thread->pstack_head.next ; p2 != p ; p2 = p2->next )
+		for ( p2 = thread->pstack_head.next; p2 != p; p2 = p2->next )
 			if ( p2->leaf == p->leaf ) {
 				Error( "CheckStack: late leaf recursion" );
 			}
@@ -98,7 +98,7 @@ void CheckStack( leaf_t *leaf, threaddata_t *thread ){
 fixedWinding_t *AllocStackWinding( pstack_t *stack ){
 	int i;
 
-	for ( i = 0 ; i < 3 ; i++ )
+	for ( i = 0; i < 3; i++ )
 	{
 		if ( stack->freewindings[i] ) {
 			stack->freewindings[i] = 0;
@@ -145,7 +145,7 @@ fixedWinding_t  *VisChopWinding( fixedWinding_t *in, pstack_t *stack, visPlane_t
 	counts[0] = counts[1] = counts[2] = 0;
 
 	// determine sides for each point
-	for ( i = 0 ; i < in->numpoints ; i++ )
+	for ( i = 0; i < in->numpoints; i++ )
 	{
 		dot = DotProduct( in->points[i], split->normal );
 		dot -= split->dist;
@@ -179,7 +179,7 @@ fixedWinding_t  *VisChopWinding( fixedWinding_t *in, pstack_t *stack, visPlane_t
 
 	neww->numpoints = 0;
 
-	for ( i = 0 ; i < in->numpoints ; i++ )
+	for ( i = 0; i < in->numpoints; i++ )
 	{
 		p1 = in->points[i];
 
@@ -212,7 +212,7 @@ fixedWinding_t  *VisChopWinding( fixedWinding_t *in, pstack_t *stack, visPlane_t
 		p2 = in->points[( i + 1 ) % in->numpoints];
 
 		dot = dists[i] / ( dists[i] - dists[i + 1] );
-		for ( j = 0 ; j < 3 ; j++ )
+		for ( j = 0; j < 3; j++ )
 		{   // avoid round off error when possible
 			if ( split->normal[j] == 1 ) {
 				mid[j] = split->dist;
@@ -261,7 +261,7 @@ fixedWinding_t  *ClipToSeperators( fixedWinding_t *source, fixedWinding_t *pass,
 	qboolean fliptest;
 
 	// check all combinations
-	for ( i = 0 ; i < source->numpoints ; i++ )
+	for ( i = 0; i < source->numpoints; i++ )
 	{
 		l = ( i + 1 ) % source->numpoints;
 		VectorSubtract( source->points[l], source->points[i], v1 );
@@ -269,7 +269,7 @@ fixedWinding_t  *ClipToSeperators( fixedWinding_t *source, fixedWinding_t *pass,
 		// find a vertex of pass that makes a plane that puts all of the
 		// vertexes of pass on the front side and all of the vertexes of
 		// source on the back side
-		for ( j = 0 ; j < pass->numpoints ; j++ )
+		for ( j = 0; j < pass->numpoints; j++ )
 		{
 			VectorSubtract( pass->points[j], source->points[i], v2 );
 
@@ -280,8 +280,8 @@ fixedWinding_t  *ClipToSeperators( fixedWinding_t *source, fixedWinding_t *pass,
 			// if points don't make a valid plane, skip it
 
 			length = plane.normal[0] * plane.normal[0]
-					 + plane.normal[1] * plane.normal[1]
-					 + plane.normal[2] * plane.normal[2];
+			         + plane.normal[1] * plane.normal[1]
+			         + plane.normal[2] * plane.normal[2];
 
 			if ( length < ON_EPSILON ) {
 				continue;
@@ -301,19 +301,19 @@ fixedWinding_t  *ClipToSeperators( fixedWinding_t *source, fixedWinding_t *pass,
 			//
 #if 1
 			fliptest = qfalse;
-			for ( k = 0 ; k < source->numpoints ; k++ )
+			for ( k = 0; k < source->numpoints; k++ )
 			{
 				if ( k == i || k == l ) {
 					continue;
 				}
 				d = DotProduct( source->points[k], plane.normal ) - plane.dist;
 				if ( d < -ON_EPSILON ) { // source is on the negative side, so we want all
-					                    // pass and target on the positive side
+					                 // pass and target on the positive side
 					fliptest = qfalse;
 					break;
 				}
 				else if ( d > ON_EPSILON ) { // source is on the positive side, so we want all
-					                        // pass and target on the negative side
+					                     // pass and target on the negative side
 					fliptest = qtrue;
 					break;
 				}
@@ -337,7 +337,7 @@ fixedWinding_t  *ClipToSeperators( fixedWinding_t *source, fixedWinding_t *pass,
 			// this is the seperating plane
 			//
 			counts[0] = counts[1] = counts[2] = 0;
-			for ( k = 0 ; k < pass->numpoints ; k++ )
+			for ( k = 0; k < pass->numpoints; k++ )
 			{
 				if ( k == j ) {
 					continue;
@@ -492,14 +492,14 @@ void RecursiveLeafFlow( int leafnum, threaddata_t *thread, pstack_t *prevstack )
 
 		more = 0;
 		prevmight = (long *)prevstack->mightsee;
-		for ( j = 0 ; j < portallongs ; j++ )
+		for ( j = 0; j < portallongs; j++ )
 		{
 			might[j] = prevmight[j] & test[j];
 			more |= ( might[j] & ~vis[j] );
 		}
 
 		if ( !more &&
-			 ( thread->base->portalvis[pnum >> 3] & ( 1 << ( pnum & 7 ) ) ) ) { // can't see anything new
+		     ( thread->base->portalvis[pnum >> 3] & ( 1 << ( pnum & 7 ) ) ) ) {     // can't see anything new
 			continue;
 		}
 
@@ -675,7 +675,7 @@ void PortalFlow( int portalnum ){
 	data.pstack_head.source = p->winding;
 	data.pstack_head.portalplane = p->plane;
 	data.pstack_head.depth = 0;
-	for ( i = 0 ; i < portallongs ; i++ )
+	for ( i = 0; i < portallongs; i++ )
 		( (long *)data.pstack_head.mightsee )[i] = ( (long *)p->portalflood )[i];
 
 	RecursiveLeafFlow( p->leaf, &data, &data.pstack_head );
@@ -685,7 +685,7 @@ void PortalFlow( int portalnum ){
 	c_can = CountBits( p->portalvis, numportals * 2 );
 
 	Sys_FPrintf( SYS_VRB,"portal:%4i  mightsee:%4i  cansee:%4i (%i chains)\n",
-				 (int)( p - portals ), c_might, c_can, data.c_chains );
+	             (int)( p - portals ), c_might, c_can, data.c_chains );
 }
 
 /*
@@ -800,7 +800,7 @@ void PassageFlow( int portalnum ){
 	data.pstack_head.source = p->winding;
 	data.pstack_head.portalplane = p->plane;
 	data.pstack_head.depth = 0;
-	for ( i = 0 ; i < portallongs ; i++ )
+	for ( i = 0; i < portallongs; i++ )
 		( (long *)data.pstack_head.mightsee )[i] = ( (long *)p->portalflood )[i];
 
 	RecursivePassageFlow( p, &data, &data.pstack_head );
@@ -1064,7 +1064,7 @@ void PassagePortalFlow( int portalnum ){
 	data.pstack_head.source = p->winding;
 	data.pstack_head.portalplane = p->plane;
 	data.pstack_head.depth = 0;
-	for ( i = 0 ; i < portallongs ; i++ )
+	for ( i = 0; i < portallongs; i++ )
 		( (long *)data.pstack_head.mightsee )[i] = ( (long *)p->portalflood )[i];
 
 	RecursivePassagePortalFlow( p, &data, &data.pstack_head );
@@ -1092,7 +1092,7 @@ fixedWinding_t *PassageChopWinding( fixedWinding_t *in, fixedWinding_t *out, vis
 	counts[0] = counts[1] = counts[2] = 0;
 
 	// determine sides for each point
-	for ( i = 0 ; i < in->numpoints ; i++ )
+	for ( i = 0; i < in->numpoints; i++ )
 	{
 		dot = DotProduct( in->points[i], split->normal );
 		dot -= split->dist;
@@ -1125,7 +1125,7 @@ fixedWinding_t *PassageChopWinding( fixedWinding_t *in, fixedWinding_t *out, vis
 
 	neww->numpoints = 0;
 
-	for ( i = 0 ; i < in->numpoints ; i++ )
+	for ( i = 0; i < in->numpoints; i++ )
 	{
 		p1 = in->points[i];
 
@@ -1156,7 +1156,7 @@ fixedWinding_t *PassageChopWinding( fixedWinding_t *in, fixedWinding_t *out, vis
 		p2 = in->points[( i + 1 ) % in->numpoints];
 
 		dot = dists[i] / ( dists[i] - dists[i + 1] );
-		for ( j = 0 ; j < 3 ; j++ )
+		for ( j = 0; j < 3; j++ )
 		{   // avoid round off error when possible
 			if ( split->normal[j] == 1 ) {
 				mid[j] = split->dist;
@@ -1192,7 +1192,7 @@ int AddSeperators( fixedWinding_t *source, fixedWinding_t *pass, qboolean flipcl
 
 	numseperators = 0;
 	// check all combinations
-	for ( i = 0 ; i < source->numpoints ; i++ )
+	for ( i = 0; i < source->numpoints; i++ )
 	{
 		l = ( i + 1 ) % source->numpoints;
 		VectorSubtract( source->points[l], source->points[i], v1 );
@@ -1200,7 +1200,7 @@ int AddSeperators( fixedWinding_t *source, fixedWinding_t *pass, qboolean flipcl
 		// find a vertex of pass that makes a plane that puts all of the
 		// vertexes of pass on the front side and all of the vertexes of
 		// source on the back side
-		for ( j = 0 ; j < pass->numpoints ; j++ )
+		for ( j = 0; j < pass->numpoints; j++ )
 		{
 			VectorSubtract( pass->points[j], source->points[i], v2 );
 
@@ -1211,8 +1211,8 @@ int AddSeperators( fixedWinding_t *source, fixedWinding_t *pass, qboolean flipcl
 			// if points don't make a valid plane, skip it
 
 			length = plane.normal[0] * plane.normal[0]
-					 + plane.normal[1] * plane.normal[1]
-					 + plane.normal[2] * plane.normal[2];
+			         + plane.normal[1] * plane.normal[1]
+			         + plane.normal[2] * plane.normal[2];
 
 			if ( length < ON_EPSILON ) {
 				continue;
@@ -1232,19 +1232,19 @@ int AddSeperators( fixedWinding_t *source, fixedWinding_t *pass, qboolean flipcl
 			//
 #if 1
 			fliptest = qfalse;
-			for ( k = 0 ; k < source->numpoints ; k++ )
+			for ( k = 0; k < source->numpoints; k++ )
 			{
 				if ( k == i || k == l ) {
 					continue;
 				}
 				d = DotProduct( source->points[k], plane.normal ) - plane.dist;
 				if ( d < -ON_EPSILON ) { // source is on the negative side, so we want all
-					                    // pass and target on the positive side
+					                 // pass and target on the positive side
 					fliptest = qfalse;
 					break;
 				}
 				else if ( d > ON_EPSILON ) { // source is on the positive side, so we want all
-					                        // pass and target on the negative side
+					                     // pass and target on the negative side
 					fliptest = qtrue;
 					break;
 				}
@@ -1268,7 +1268,7 @@ int AddSeperators( fixedWinding_t *source, fixedWinding_t *pass, qboolean flipcl
 			// this is the seperating plane
 			//
 			counts[0] = counts[1] = counts[2] = 0;
-			for ( k = 0 ; k < pass->numpoints ; k++ )
+			for ( k = 0; k < pass->numpoints; k++ )
 			{
 				if ( k == j ) {
 					continue;
@@ -1543,7 +1543,7 @@ void SimpleFlood( vportal_t *srcportal, int leafnum ){
 
 	leaf = &leafs[leafnum];
 
-	for ( i = 0 ; i < leaf->numportals ; i++ )
+	for ( i = 0; i < leaf->numportals; i++ )
 	{
 		p = leaf->portals[i];
 		if ( p->removed ) {
@@ -1592,7 +1592,7 @@ void BasePortalVis( int portalnum ){
 	p->portalvis = safe_malloc( portalbytes );
 	memset( p->portalvis, 0, portalbytes );
 
-	for ( j = 0, tp = portals ; j < numportals * 2 ; j++, tp++ )
+	for ( j = 0, tp = portals; j < numportals * 2; j++, tp++ )
 	{
 		if ( j == portalnum ) {
 			continue;
@@ -1622,10 +1622,10 @@ void BasePortalVis( int portalnum ){
 
 
 		w = tp->winding;
-		for ( k = 0 ; k < w->numpoints ; k++ )
+		for ( k = 0; k < w->numpoints; k++ )
 		{
 			d = DotProduct( w->points[k], p->plane.normal )
-				- p->plane.dist;
+			    - p->plane.dist;
 			if ( d > ON_EPSILON ) {
 				break;
 			}
@@ -1635,10 +1635,10 @@ void BasePortalVis( int portalnum ){
 
 		}
 		w = p->winding;
-		for ( k = 0 ; k < w->numpoints ; k++ )
+		for ( k = 0; k < w->numpoints; k++ )
 		{
 			d = DotProduct( w->points[k], tp->plane.normal )
-				- tp->plane.dist;
+			    - tp->plane.dist;
 			if ( d < -ON_EPSILON ) {
 				break;
 			}
@@ -1690,7 +1690,7 @@ void RecursiveLeafBitFlow( int leafnum, byte *mightsee, byte *cansee ){
 	leaf = &leafs[leafnum];
 
 	// check all portals for flowing into other leafs
-	for ( i = 0 ; i < leaf->numportals ; i++ )
+	for ( i = 0; i < leaf->numportals; i++ )
 	{
 		p = leaf->portals[i];
 		if ( p->removed ) {
@@ -1705,10 +1705,10 @@ void RecursiveLeafBitFlow( int leafnum, byte *mightsee, byte *cansee ){
 
 		// if this portal can see some portals we mightsee, recurse
 		more = 0;
-		for ( j = 0 ; j < portallongs ; j++ )
+		for ( j = 0; j < portallongs; j++ )
 		{
 			( (long *)newmight )[j] = ( (long *)mightsee )[j]
-									  & ( (long *)p->portalflood )[j];
+			                          & ( (long *)p->portalflood )[j];
 			more |= ( (long *)newmight )[j] & ~( (long *)cansee )[j];
 		}
 

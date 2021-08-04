@@ -64,7 +64,7 @@ typedef struct {
 static void ByteSwapTri( tf_triangle *tri ){
 	unsigned int i;
 
-	for ( i = 0 ; i < sizeof( tf_triangle ) / 4 ; i++ )
+	for ( i = 0; i < sizeof( tf_triangle ) / 4; i++ )
 	{
 		( (int *)tri )[i] = BigLong( ( (int *)tri )[i] );
 	}
@@ -79,11 +79,11 @@ static void ReadPolysetGeometry( triangle_t *tripool, FILE *input, int count, tr
 
 		fread( &tri, sizeof( tf_triangle ), 1, input );
 		ByteSwapTri( &tri );
-		for ( j = 0 ; j < 3 ; j++ )
+		for ( j = 0; j < 3; j++ )
 		{
 			int k;
 
-			for ( k = 0 ; k < 3 ; k++ )
+			for ( k = 0; k < 3; k++ )
 			{
 				ptri->verts[j][k] = tri.pt[j].p.v[k];
 				ptri->normals[j][k] = tri.pt[j].n.v[k];

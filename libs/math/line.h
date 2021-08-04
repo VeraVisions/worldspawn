@@ -115,20 +115,20 @@ inline void ray_transform( Ray& ray, const Matrix4& matrix ){
 // closest-point-on-line
 inline double ray_squared_distance_to_point( const Ray& ray, const Vector3& point ){
 	return vector3_length_squared(
-			   vector3_subtracted(
-				   point,
-				   vector3_added(
-					   ray.origin,
-					   vector3_scaled(
-						   ray.direction,
-						   vector3_dot(
-							   vector3_subtracted( point, ray.origin ),
-							   ray.direction
-							   )
-						   )
-					   )
-				   )
-			   );
+		vector3_subtracted(
+			point,
+			vector3_added(
+				ray.origin,
+				vector3_scaled(
+					ray.direction,
+					vector3_dot(
+						vector3_subtracted( point, ray.origin ),
+						ray.direction
+						)
+					)
+				)
+			)
+		);
 }
 
 inline double ray_distance_to_plane( const Ray& ray, const Plane3& plane ){

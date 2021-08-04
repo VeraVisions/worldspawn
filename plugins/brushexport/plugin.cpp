@@ -50,79 +50,80 @@ void DestroyWindow(void);
 bool IsWindowOpen(void);
 
 namespace BrushExport {
-    ui::Window g_mainwnd{ui::null};
+ui::Window g_mainwnd{ui::null};
 
-    const char *init(void *hApp, void *pMainWidget)
-    {
-        g_mainwnd = ui::Window::from(pMainWidget);
-        ASSERT_TRUE(g_mainwnd);
-        return "";
-    }
+const char *init(void *hApp, void *pMainWidget)
+{
+	g_mainwnd = ui::Window::from(pMainWidget);
+	ASSERT_TRUE(g_mainwnd);
+	return "";
+}
 
-    const char *getName()
-    {
-        return "Brush export Plugin";
-    }
+const char *getName()
+{
+	return "Brush export Plugin";
+}
 
-    const char *getCommandList()
-    {
-        return "About;Export selected as Wavefront OBJ";
-    }
+const char *getCommandList()
+{
+	return "About;Export selected as Wavefront OBJ";
+}
 
-    const char *getCommandTitleList()
-    {
-        return "";
-    }
+const char *getCommandTitleList()
+{
+	return "";
+}
 
-    void dispatch(const char *command, float *vMin, float *vMax, bool bSingleBrush)
-    {
-        if (string_equal(command, "About")) {
-            GlobalRadiant().m_pfnMessageBox(g_mainwnd, "Brushexport plugin v 2.0 by namespace (www.codecreator.net)\n"
-                                                    "Enjoy!\n\nSend feedback to spam@codecreator.net", "About me...",
-                                            eMB_OK,
-                                            eMB_ICONDEFAULT);
-        } else if (string_equal(command, "Export selected as Wavefront OBJ")) {
-            if (IsWindowOpen()) {
-                DestroyWindow();
-            }
-            CreateWindow();
-        }
-    }
+void dispatch(const char *command, float *vMin, float *vMax, bool bSingleBrush)
+{
+	if (string_equal(command, "About")) {
+		GlobalRadiant().m_pfnMessageBox(g_mainwnd, "Brushexport plugin v 2.0 by namespace (www.codecreator.net)\n"
+		                                "Enjoy!\n\nSend feedback to spam@codecreator.net", "About me...",
+		                                eMB_OK,
+		                                eMB_ICONDEFAULT);
+	} else if (string_equal(command, "Export selected as Wavefront OBJ")) {
+		if (IsWindowOpen()) {
+			DestroyWindow();
+		}
+		CreateWindow();
+	}
+}
 }
 
 class BrushExportDependencies :
-        public GlobalRadiantModuleRef,
-        public GlobalFiletypesModuleRef,
-        public GlobalBrushModuleRef,
-        public GlobalFileSystemModuleRef,
-        public GlobalSceneGraphModuleRef,
-        public GlobalSelectionModuleRef {
+	public GlobalRadiantModuleRef,
+	public GlobalFiletypesModuleRef,
+	public GlobalBrushModuleRef,
+	public GlobalFileSystemModuleRef,
+	public GlobalSceneGraphModuleRef,
+	public GlobalSelectionModuleRef {
 public:
-    BrushExportDependencies(void)
-            : GlobalBrushModuleRef(GlobalRadiant().getRequiredGameDescriptionKeyValue("brushtypes"))
-    {}
+BrushExportDependencies(void)
+	: GlobalBrushModuleRef(GlobalRadiant().getRequiredGameDescriptionKeyValue("brushtypes"))
+{
+}
 };
 
 class BrushExportModule : public TypeSystemRef {
-    _QERPluginTable m_plugin;
+_QERPluginTable m_plugin;
 public:
-    typedef _QERPluginTable Type;
+typedef _QERPluginTable Type;
 
-    STRING_CONSTANT(Name, "Export Brushes");
+STRING_CONSTANT(Name, "Export Brushes");
 
-    BrushExportModule()
-    {
-        m_plugin.m_pfnQERPlug_Init = &BrushExport::init;
-        m_plugin.m_pfnQERPlug_GetName = &BrushExport::getName;
-        m_plugin.m_pfnQERPlug_GetCommandList = &BrushExport::getCommandList;
-        m_plugin.m_pfnQERPlug_GetCommandTitleList = &BrushExport::getCommandTitleList;
-        m_plugin.m_pfnQERPlug_Dispatch = &BrushExport::dispatch;
-    }
+BrushExportModule()
+{
+	m_plugin.m_pfnQERPlug_Init = &BrushExport::init;
+	m_plugin.m_pfnQERPlug_GetName = &BrushExport::getName;
+	m_plugin.m_pfnQERPlug_GetCommandList = &BrushExport::getCommandList;
+	m_plugin.m_pfnQERPlug_GetCommandTitleList = &BrushExport::getCommandTitleList;
+	m_plugin.m_pfnQERPlug_Dispatch = &BrushExport::dispatch;
+}
 
-    _QERPluginTable *getTable()
-    {
-        return &m_plugin;
-    }
+_QERPluginTable *getTable()
+{
+	return &m_plugin;
+}
 };
 
 typedef SingletonModule<BrushExportModule, BrushExportDependencies> SingletonBrushExportModule;
@@ -136,6 +137,6 @@ __attribute__((visibility("default")))
 #endif
 Radiant_RegisterModules(ModuleServer &server)
 {
-    initialiseModule(server);
-    g_BrushExportModule.selfRegister();
+	initialiseModule(server);
+	g_BrushExportModule.selfRegister();
 }

@@ -303,9 +303,9 @@ struct PropertyImpl<bool, const char *> {
 		returnz(self ? "true" : "false");
 	}
 
-    static void Import(bool &self, const char *value) {
-        self = string_equal(value, "true");
-    }
+	static void Import(bool &self, const char *value) {
+		self = string_equal(value, "true");
+	}
 };
 
 template<>
@@ -316,11 +316,11 @@ struct PropertyImpl<int, const char *> {
 		returnz(buffer);
 	}
 
-    static void Import(int &self, const char *value) {
-        if (!string_parse_int(value, self)) {
-            self = 0;
-        }
-    }
+	static void Import(int &self, const char *value) {
+		if (!string_parse_int(value, self)) {
+			self = 0;
+		}
+	}
 };
 
 template<>
@@ -331,14 +331,14 @@ struct PropertyImpl<std::size_t, const char *> {
 		returnz(buffer);
 	}
 
-    static void Import(std::size_t &self, const char *value) {
-        int i;
-        if (string_parse_int(value, i) && i >= 0) {
-            self = i;
-        } else {
-            self = 0;
-        }
-    }
+	static void Import(std::size_t &self, const char *value) {
+		int i;
+		if (string_parse_int(value, i) && i >= 0) {
+			self = i;
+		} else {
+			self = 0;
+		}
+	}
 };
 
 template<>
@@ -349,11 +349,11 @@ struct PropertyImpl<float, const char *> {
 		returnz(buffer);
 	}
 
-    static void Import(float &self, const char *value) {
-        if (!string_parse_float(value, self)) {
-            self = 0;
-        }
-    }
+	static void Import(float &self, const char *value) {
+		if (!string_parse_float(value, self)) {
+			self = 0;
+		}
+	}
 };
 
 template<>
@@ -364,11 +364,11 @@ struct PropertyImpl<Vector3, const char *> {
 		returnz(buffer);
 	}
 
-    static void Import(Vector3 &self, const char *value) {
-        if (!string_parse_vector3(value, self)) {
-            self = Vector3(0, 0, 0);
-        }
-    }
+	static void Import(Vector3 &self, const char *value) {
+		if (!string_parse_vector3(value, self)) {
+			self = Vector3(0, 0, 0);
+		}
+	}
 };
 
 #endif

@@ -89,7 +89,7 @@ inline bool path_equal_n( const char* path, const char* other, std::size_t n ){
 inline bool path_is_absolute( const char* path ){
 #if GDEF_OS_WINDOWS
 	return path[0] == '/'
-		   || ( path[0] != '\0' && path[1] == ':' ); // local drive
+	       || ( path[0] != '\0' && path[1] == ':' );     // local drive
 #elif GDEF_OS_POSIX
 	return path[0] == '/';
 #endif

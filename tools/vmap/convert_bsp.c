@@ -138,8 +138,8 @@ int ConvertBSPMain( int argc, char **argv ){
 	int ( *convertFunc )( char * );
 	game_t  *convertGame;
 	char ext[1024];
-	char BSPFilePath [ 1024 ];
-	char surfaceFilePath [ 1024 ];
+	char BSPFilePath[ 1024 ];
+	char surfaceFilePath[ 1024 ];
 	qboolean map_allowed, force_bsp, force_map;
 
 

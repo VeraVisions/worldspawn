@@ -38,7 +38,7 @@
 
 extern const picoModule_t picoModuleIQM;
 
-#define IQM_MAGIC "INTERQUAKEMODEL"	//15+null
+#define IQM_MAGIC "INTERQUAKEMODEL"     //15+null
 
 /*
    ========================================================================
@@ -342,7 +342,7 @@ static picoModel_t *_iqm_load( PM_PARAMS_LOAD ){
 			case IQM_BLENDINDEXES:
 			case IQM_BLENDWEIGHTS:
 			case IQM_CUSTOM:
-				break;	//these attributes are not relevant.
+				break;  //these attributes are not relevant.
 			}
 		}
 	}
@@ -356,15 +356,15 @@ static picoModel_t *_iqm_load( PM_PARAMS_LOAD ){
 /* pico file format module definition */
 const picoModule_t picoModuleIQM =
 {
-	"0.001",						/* module version string */
-	"Vera Visions Model",			/* module display name */
-	"Spoike",						/* author's name */
-	"2018 Spoike",					/* module copyright */
+	"0.001",                                                /* module version string */
+	"Vera Visions Model",                   /* module display name */
+	"Spoike",                                               /* author's name */
+	"2018 Spoike",                                  /* module copyright */
 	{
-		"vvm", NULL, NULL, NULL	/* default extensions to use */
+		"vvm", NULL, NULL, NULL /* default extensions to use */
 	},
-	_iqm_canload,					/* validation routine */
-	_iqm_load,						/* load routine */
-	NULL,							/* save validation routine */
-	NULL							/* save routine */
+	_iqm_canload,                                   /* validation routine */
+	_iqm_load,                                              /* load routine */
+	NULL,                                                   /* save validation routine */
+	NULL                                                    /* save routine */
 };

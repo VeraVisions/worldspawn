@@ -29,7 +29,7 @@ static void ETC_DecodeETC1SubBlock( byte *out, qboolean outRGBA, int r, int g, i
 		47, 183, -47, -183
 	};
 	const int *table = modifierTable + tableIndex * 4;
-	int i;	
+	int i;
 
 	if ( second ) {
 		if ( flipped ) {

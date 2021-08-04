@@ -175,7 +175,7 @@ mapDrawSurface_t *MakeCelSurface( mapDrawSurface_t *src, shaderInfo_t *si ){
 
 	/* don't create cel surfaces for certain types of shaders */
 	if ( ( src->shaderInfo->compileFlags & C_TRANSLUCENT ) ||
-		 ( src->shaderInfo->compileFlags & C_SKY ) ) {
+	     ( src->shaderInfo->compileFlags & C_SKY ) ) {
 		return NULL;
 	}
 
@@ -320,7 +320,7 @@ void TidyEntitySurfaces( entity_t *e ){
 
 			/* this surface ok? */
 			if ( in->type == SURFACE_FLARE || in->type == SURFACE_SHADER ||
-				 ( in->type != SURFACE_BAD && in->numVerts > 0 ) ) {
+			     ( in->type != SURFACE_BAD && in->numVerts > 0 ) ) {
 				break;
 			}
 
@@ -783,8 +783,8 @@ byte GetShaderIndexForPoint( indexMap_t *im, vec3_t eMins, vec3_t eMaxs, vec3_t 
 
 
 #define snprintf_ignore(s, n, format, ...) do { \
-    size_t __n = snprintf(s, n, format, __VA_ARGS__); \
-    if (n >= n) {} /* truncated, ignore */ \
+		size_t __n = snprintf(s, n, format, __VA_ARGS__); \
+		if (n >= n) {} /* truncated, ignore */ \
 } while (0)
 
 /*
@@ -982,7 +982,7 @@ mapDrawSurface_t *DrawSurfaceForSide( entity_t *e, brush_t *b, side_t *s, windin
 		}
 
 		/* round the xyz to a given precision and translate by origin */
-		for ( i = 0 ; i < 3 ; i++ )
+		for ( i = 0; i < 3; i++ )
 			dv->xyz[ i ] = SNAP_INT_TO_FLOAT * floor( dv->xyz[ i ] * SNAP_FLOAT_TO_INT + 0.5f );
 		VectorAdd( dv->xyz, e->origin, vTranslated );
 
@@ -1483,7 +1483,7 @@ void ClipSideIntoTree_r( winding_t *w, side_t *side, node_t *node ){
 
 		plane = &mapplanes[ node->planenum ];
 		ClipWindingEpsilonStrict( w, plane->normal, plane->dist,
-								  ON_EPSILON, &front, &back ); /* strict, we handle the "winding disappeared" case */
+		                          ON_EPSILON, &front, &back );                         /* strict, we handle the "winding disappeared" case */
 		if ( !front && !back ) {
 			/* in doubt, register it in both nodes */
 			front = CopyWinding( w );
@@ -1680,11 +1680,11 @@ void CullSides( entity_t *e ){
 
 					/* get autosprite and polygonoffset status */
 					if ( side1->shaderInfo &&
-						 ( side1->shaderInfo->autosprite || side1->shaderInfo->polygonOffset ) ) {
+					     ( side1->shaderInfo->autosprite || side1->shaderInfo->polygonOffset ) ) {
 						continue;
 					}
 					if ( side2->shaderInfo &&
-						 ( side2->shaderInfo->autosprite || side2->shaderInfo->polygonOffset ) ) {
+					     ( side2->shaderInfo->autosprite || side2->shaderInfo->polygonOffset ) ) {
 						continue;
 					}
 
@@ -2058,9 +2058,9 @@ int FilterWindingIntoTree_r( winding_t *w, mapDrawSurface_t *ds, node_t *node ){
 
 	/* ydnar: is this the head node? */
 	if ( node->parent == NULL && si != NULL &&
-		 ( si->mins[ 0 ] != 0.0f || si->maxs[ 0 ] != 0.0f ||
-		   si->mins[ 1 ] != 0.0f || si->maxs[ 1 ] != 0.0f ||
-		   si->mins[ 2 ] != 0.0f || si->maxs[ 2 ] != 0.0f ) ) {
+	     ( si->mins[ 0 ] != 0.0f || si->maxs[ 0 ] != 0.0f ||
+	       si->mins[ 1 ] != 0.0f || si->maxs[ 1 ] != 0.0f ||
+	       si->mins[ 2 ] != 0.0f || si->maxs[ 2 ] != 0.0f ) ) {
 		static qboolean warned = qfalse;
 		if ( !warned ) {
 			Sys_FPrintf( SYS_WRN, "WARNING: this map uses the deformVertexes move hack\n" );
@@ -2232,8 +2232,8 @@ static int FilterTrianglesIntoTree( mapDrawSurface_t *ds, tree_t *tree ){
 	{
 		/* error check */
 		if ( ds->indexes[ i ] >= ds->numVerts ||
-			 ds->indexes[ i + 1 ] >= ds->numVerts ||
-			 ds->indexes[ i + 2 ] >= ds->numVerts ) {
+		     ds->indexes[ i + 1 ] >= ds->numVerts ||
+		     ds->indexes[ i + 2 ] >= ds->numVerts ) {
 			Error( "Index %d greater than vertex count %d", ds->indexes[ i ], ds->numVerts );
 		}
 
@@ -2279,8 +2279,8 @@ static int FilterFoliageIntoTree( mapDrawSurface_t *ds, tree_t *tree ){
 		{
 			/* error check */
 			if ( ds->indexes[ i ] >= ds->numVerts ||
-				 ds->indexes[ i + 1 ] >= ds->numVerts ||
-				 ds->indexes[ i + 2 ] >= ds->numVerts ) {
+			     ds->indexes[ i + 1 ] >= ds->numVerts ||
+			     ds->indexes[ i + 2 ] >= ds->numVerts ) {
 				Error( "Index %d greater than vertex count %d", ds->indexes[ i ], ds->numVerts );
 			}
 
@@ -2380,8 +2380,8 @@ int FindDrawIndexes( int numIndexes, int *indexes ){
 		{
 			/* test 3 indexes */
 			if ( indexes[ 0 ] == bspDrawIndexes[ i ] &&
-				 indexes[ 1 ] == bspDrawIndexes[ i + 1 ] &&
-				 indexes[ 2 ] == bspDrawIndexes[ i + 2 ] ) {
+			     indexes[ 1 ] == bspDrawIndexes[ i + 1 ] &&
+			     indexes[ 2 ] == bspDrawIndexes[ i + 2 ] ) {
 				numRedundantIndexes += numIndexes;
 				return i;
 			}
@@ -2396,9 +2396,9 @@ int FindDrawIndexes( int numIndexes, int *indexes ){
 	{
 		/* test first 4 indexes */
 		if ( indexes[ 0 ] == bspDrawIndexes[ i ] &&
-			 indexes[ 1 ] == bspDrawIndexes[ i + 1 ] &&
-			 indexes[ 2 ] == bspDrawIndexes[ i + 2 ] &&
-			 indexes[ 3 ] == bspDrawIndexes[ i + 3 ] ) {
+		     indexes[ 1 ] == bspDrawIndexes[ i + 1 ] &&
+		     indexes[ 2 ] == bspDrawIndexes[ i + 2 ] &&
+		     indexes[ 3 ] == bspDrawIndexes[ i + 3 ] ) {
 			/* handle 4 indexes */
 			if ( numIndexes == 4 ) {
 				return i;
@@ -2447,10 +2447,10 @@ void EmitDrawIndexes( mapDrawSurface_t *ds, bspDrawSurface_t *out ){
 			if ( ds->type != SURFACE_PATCH ) {
 				if ( bspDrawIndexes[ numBSPDrawIndexes ] < 0 || bspDrawIndexes[ numBSPDrawIndexes ] >= ds->numVerts ) {
 					Sys_FPrintf( SYS_WRN, "WARNING: %d %s has invalid index %d (%d)\n",
-								numBSPDrawSurfaces,
-								ds->shaderInfo->shader,
-								bspDrawIndexes[ numBSPDrawIndexes ],
-								i );
+					             numBSPDrawSurfaces,
+					             ds->shaderInfo->shader,
+					             bspDrawIndexes[ numBSPDrawIndexes ],
+					             i );
 					bspDrawIndexes[ numBSPDrawIndexes ] = 0;
 				}
 			}
@@ -2577,7 +2577,7 @@ void EmitPatchSurface( entity_t *e, mapDrawSurface_t *ds ){
 	else
 		out->surfaceType = MST_PATCH;
 
-	
+
 	surfaceFlags = ds->shaderInfo->surfaceFlags;
 	contentFlags = ds->shaderInfo->contentFlags;
 
@@ -2608,7 +2608,7 @@ void EmitPatchSurface( entity_t *e, mapDrawSurface_t *ds ){
 	out->patchHeight = ds->patchHeight;
 
 	if (out->surfaceType == MST_PATCHFIXED)
-	{	// report subdivisions in the high bits
+	{       // report subdivisions in the high bits
 		out->patchWidth |= ds->subdiv_x << 16;
 		out->patchHeight |= ds->subdiv_y << 16;
 	}
@@ -2663,7 +2663,7 @@ static void OptimizeTriangleSurface( mapDrawSurface_t *ds ){
 
 	/* certain surfaces don't get optimized */
 	if ( ds->numIndexes <= VERTEX_CACHE_SIZE ||
-		 ds->shaderInfo->autosprite ) {
+	     ds->shaderInfo->autosprite ) {
 		return;
 	}
 
@@ -2811,10 +2811,10 @@ void EmitTriangleSurface( mapDrawSurface_t *ds ){
 	/* ydnar: gs mods: handle lightmapped terrain (force to planar type) */
 	//%	else if( VectorLength( ds->lightmapAxis ) <= 0.0f || ds->type == SURFACE_TRIANGLES || ds->type == SURFACE_FOGHULL || debugSurfaces )
 	else if ( ( VectorLength( ds->lightmapAxis ) <= 0.0f && ds->planar == qfalse ) ||
-			  ds->type == SURFACE_TRIANGLES ||
-			  ds->type == SURFACE_FOGHULL ||
-			  ds->numVerts > maxLMSurfaceVerts ||
-			  debugSurfaces ) {
+	          ds->type == SURFACE_TRIANGLES ||
+	          ds->type == SURFACE_FOGHULL ||
+	          ds->numVerts > maxLMSurfaceVerts ||
+	          debugSurfaces ) {
 		out->surfaceType = MST_TRIANGLE_SOUP;
 	}
 
@@ -3478,8 +3478,8 @@ static void VolumeColorMods( entity_t *e, mapDrawSurface_t *ds ){
 
 		/* test bbox */
 		if ( b->mins[ 0 ] > ds->maxs[ 0 ] || b->maxs[ 0 ] < ds->mins[ 0 ] ||
-			 b->mins[ 1 ] > ds->maxs[ 1 ] || b->maxs[ 1 ] < ds->mins[ 1 ] ||
-			 b->mins[ 2 ] > ds->maxs[ 2 ] || b->maxs[ 2 ] < ds->mins[ 2 ] ) {
+		     b->mins[ 1 ] > ds->maxs[ 1 ] || b->maxs[ 1 ] < ds->mins[ 1 ] ||
+		     b->mins[ 2 ] > ds->maxs[ 2 ] || b->maxs[ 2 ] < ds->mins[ 2 ] ) {
 			continue;
 		}
 
@@ -3696,8 +3696,8 @@ void FilterDrawsurfsIntoTree( entity_t *e, tree_t *tree ){
 				out = &bspDrawSurfaces[ numBSPDrawSurfaces - 1 ];
 				if ( out->numVerts == 3 && out->numIndexes > 3 ) {
 					Sys_FPrintf( SYS_WRN, "WARNING: Potentially bad %s surface (%d: %d, %d)\n     %s\n",
-								surfaceTypes[ ds->type ],
-								numBSPDrawSurfaces - 1, out->numVerts, out->numIndexes, si->shader );
+					             surfaceTypes[ ds->type ],
+					             numBSPDrawSurfaces - 1, out->numVerts, out->numIndexes, si->shader );
 				}
 			}
 

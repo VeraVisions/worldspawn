@@ -38,7 +38,7 @@
 
 /* disable warnings */
 #if GDEF_COMPILER_MSVC
-#pragma warning( disable:4100 )		/* unref param */
+#pragma warning( disable:4100 )         /* unref param */
 #endif
 
 /* remarks:
@@ -113,7 +113,7 @@ typedef struct SMsMaterial
 	float shininess;                    /* range 0..128 */
 	float transparency;                 /* range 0..1 */
 	unsigned char mode;
-	char texture [128];                 /* texture.bmp */
+	char texture[128];                  /* texture.bmp */
 	char alphamap[128];                 /* alpha.bmp */
 }
 TMsMaterial;
@@ -178,7 +178,7 @@ static int _ms3d_canload( PM_PARAMS_CANLOAD ){
 
 	/* check ms3d version */
 	if ( _pico_little_long( hdr->version ) < 3 ||
-		 _pico_little_long( hdr->version ) > 4 ) {
+	     _pico_little_long( hdr->version ) > 4 ) {
 		_pico_printf( PICO_ERROR,"MS3D file ignored. Only MS3D 1.3 and 1.4 is supported." );
 		return PICO_PMV_ERROR_VERSION;
 	}
@@ -246,9 +246,9 @@ static picoModel_t *_ms3d_load( PM_PARAMS_LOAD ){
 
 #ifdef DEBUG_PM_MS3D_EX_
 		printf( "Vertex: x: %f y: %f z: %f\n",
-				msvd[i]->vertex[0],
-				msvd[i]->vertex[1],
-				msvd[i]->vertex[2] );
+		        msvd[i]->vertex[0],
+		        msvd[i]->vertex[1],
+		        msvd[i]->vertex[2] );
 #endif
 	}
 	/* get number of triangles */
@@ -449,7 +449,7 @@ static picoModel_t *_ms3d_load( PM_PARAMS_LOAD ){
 
 		/* sanity check */
 		if ( shaderRefs[ i ] >= MS3D_MAX_MATERIALS ||
-			 shaderRefs[ i ] < 0 ) {
+		     shaderRefs[ i ] < 0 ) {
 			continue;
 		}
 
@@ -470,7 +470,7 @@ static picoModel_t *_ms3d_load( PM_PARAMS_LOAD ){
 
 #ifdef DEBUG_PM_MS3D
 		printf( "Mapped: %d ('%s') to %d (%s)\n",
-				shaderRefs[i],shader->name,i,surface->name );
+		        shaderRefs[i],shader->name,i,surface->name );
 #endif
 	}
 	/* return allocated pico model */

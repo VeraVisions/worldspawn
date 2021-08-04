@@ -461,7 +461,7 @@ typedef enum {
 	MST_PATCH,
 	MST_TRIANGLE_SOUP,
 	MST_FLARE,
-	MST_PATCHFIXED=256,	//FTE extension
+	MST_PATCHFIXED=256,     //FTE extension
 } mapSurfaceType_t;
 
 typedef struct {

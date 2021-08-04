@@ -30,7 +30,7 @@
 #include <gdk/gdkwin32.h>
 #include <shellapi.h>
 bool open_url( const char* url ){
-    return ShellExecute( (HWND)GDK_WINDOW_HWND( gtk_widget_get_window( MainFrame_getWindow() ) ), "open", url, 0, 0, SW_SHOW ) > (HINSTANCE)32;
+	return ShellExecute( (HWND)GDK_WINDOW_HWND( gtk_widget_get_window( MainFrame_getWindow() ) ), "open", url, 0, 0, SW_SHOW ) > (HINSTANCE)32;
 }
 #endif
 
@@ -40,10 +40,10 @@ bool open_url( const char* url ){
 
 bool open_url(const char *url)
 {
-    char command[2 * PATH_MAX];
-    snprintf(command, sizeof(command),
-             "xdg-open \"%s\" &", url);
-    return system(command) == 0;
+	char command[2 * PATH_MAX];
+	snprintf(command, sizeof(command),
+	         "xdg-open \"%s\" &", url);
+	return system(command) == 0;
 }
 
 #endif
@@ -51,17 +51,17 @@ bool open_url(const char *url)
 #if GDEF_OS_MACOS
 #include <stdlib.h>
 bool open_url( const char* url ){
-    char command[2 * PATH_MAX];
-    snprintf( command, sizeof( command ), "open \"%s\" &", url );
-    return system( command ) == 0;
+	char command[2 * PATH_MAX];
+	snprintf( command, sizeof( command ), "open \"%s\" &", url );
+	return system( command ) == 0;
 }
 #endif
 
 void OpenURL(const char *url)
 {
-    // let's put a little comment
-    globalOutputStream() << "OpenURL: " << url << "\n";
-    if (!open_url(url)) {
-        ui::alert(MainFrame_getWindow(), "Failed to launch browser!");
-    }
+	// let's put a little comment
+	globalOutputStream() << "OpenURL: " << url << "\n";
+	if (!open_url(url)) {
+		ui::alert(MainFrame_getWindow(), "Failed to launch browser!");
+	}
 }

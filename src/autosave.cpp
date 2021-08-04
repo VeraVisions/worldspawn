@@ -44,57 +44,57 @@
 
 bool DoesFileExist(const char *name, std::size_t &size)
 {
-    if (file_exists(name)) {
-        size += file_size(name);
-        return true;
-    }
-    return false;
+	if (file_exists(name)) {
+		size += file_size(name);
+		return true;
+	}
+	return false;
 }
 
 void Map_Snapshot()
 {
-    // we need to do the following
-    // 1. make sure the snapshot directory exists (create it if it doesn't)
-    // 2. find out what the lastest save is based on number
-    // 3. inc that and save the map
-    const char *path = Map_Name(g_map);
-    const char *name = path_get_filename_start(path);
+	// we need to do the following
+	// 1. make sure the snapshot directory exists (create it if it doesn't)
+	// 2. find out what the lastest save is based on number
+	// 3. inc that and save the map
+	const char *path = Map_Name(g_map);
+	const char *name = path_get_filename_start(path);
 
-    StringOutputStream snapshotsDir(256);
-    snapshotsDir << StringRange(path, name) << "snapshots";
+	StringOutputStream snapshotsDir(256);
+	snapshotsDir << StringRange(path, name) << "snapshots";
 
-    if (file_exists(snapshotsDir.c_str()) || Q_mkdir(snapshotsDir.c_str())) {
-        std::size_t lSize = 0;
-        StringOutputStream strNewPath(256);
-        strNewPath << snapshotsDir.c_str() << '/' << name;
+	if (file_exists(snapshotsDir.c_str()) || Q_mkdir(snapshotsDir.c_str())) {
+		std::size_t lSize = 0;
+		StringOutputStream strNewPath(256);
+		strNewPath << snapshotsDir.c_str() << '/' << name;
 
-        StringOutputStream snapshotFilename(256);
+		StringOutputStream snapshotFilename(256);
 
-        for (int nCount = 0;; ++nCount) {
-            // The original map's filename is "<path>/<name>.<ext>"
-            // The snapshot's filename will be "<path>/snapshots/<name>.<count>.<ext>"
-            const char *end = path_get_filename_base_end(strNewPath.c_str());
-            snapshotFilename << StringRange(strNewPath.c_str(), end) << '.' << nCount << end;
+		for (int nCount = 0;; ++nCount) {
+			// The original map's filename is "<path>/<name>.<ext>"
+			// The snapshot's filename will be "<path>/snapshots/<name>.<count>.<ext>"
+			const char *end = path_get_filename_base_end(strNewPath.c_str());
+			snapshotFilename << StringRange(strNewPath.c_str(), end) << '.' << nCount << end;
 
-            if (!DoesFileExist(snapshotFilename.c_str(), lSize)) {
-                break;
-            }
+			if (!DoesFileExist(snapshotFilename.c_str(), lSize)) {
+				break;
+			}
 
-            snapshotFilename.clear();
-        }
+			snapshotFilename.clear();
+		}
 
-        // save in the next available slot
-        Map_SaveFile(snapshotFilename.c_str());
+		// save in the next available slot
+		Map_SaveFile(snapshotFilename.c_str());
 
-        if (lSize > 50 * 1024 * 1024) { // total size of saves > 50 mb
-            globalOutputStream() << "The snapshot files in " << snapshotsDir.c_str()
-                                 << " total more than 50 megabytes. You might consider cleaning up.";
-        }
-    } else {
-        StringOutputStream strMsg(256);
-        strMsg << "Snapshot save failed.. unabled to create directory\n" << snapshotsDir.c_str();
-        ui::alert(MainFrame_getWindow(), strMsg.c_str());
-    }
+		if (lSize > 50 * 1024 * 1024) { // total size of saves > 50 mb
+			globalOutputStream() << "The snapshot files in " << snapshotsDir.c_str()
+			                     << " total more than 50 megabytes. You might consider cleaning up.";
+		}
+	} else {
+		StringOutputStream strMsg(256);
+		strMsg << "Snapshot save failed.. unabled to create directory\n" << snapshotsDir.c_str();
+		ui::alert(MainFrame_getWindow(), strMsg.c_str());
+	}
 }
 
 /*
@@ -111,85 +111,85 @@ int m_AutoSave_Frequency = 5;
 bool g_SnapShots_Enabled = false;
 
 namespace {
-    time_t s_start = 0;
-    std::size_t s_changes = 0;
+time_t s_start = 0;
+std::size_t s_changes = 0;
 }
 
 void AutoSave_clear()
 {
-    s_changes = 0;
+	s_changes = 0;
 }
 
 scene::Node &Map_Node()
 {
-    return GlobalSceneGraph().root();
+	return GlobalSceneGraph().root();
 }
 
 void QE_CheckAutoSave(void)
 {
-    if (!Map_Valid(g_map) || !ScreenUpdates_Enabled()) {
-        return;
-    }
+	if (!Map_Valid(g_map) || !ScreenUpdates_Enabled()) {
+		return;
+	}
 
-    time_t now;
-    time(&now);
+	time_t now;
+	time(&now);
 
-    if (s_start == 0 || s_changes == Node_getMapFile(Map_Node())->changes()) {
-        s_start = now;
-    }
+	if (s_start == 0 || s_changes == Node_getMapFile(Map_Node())->changes()) {
+		s_start = now;
+	}
 
-    if ((now - s_start) > (60 * m_AutoSave_Frequency)) {
-        s_start = now;
-        s_changes = Node_getMapFile(Map_Node())->changes();
+	if ((now - s_start) > (60 * m_AutoSave_Frequency)) {
+		s_start = now;
+		s_changes = Node_getMapFile(Map_Node())->changes();
 
-        if (g_AutoSave_Enabled) {
-            const char *strMsg = g_SnapShots_Enabled ? "Autosaving snapshot..." : "Autosaving...";
-            globalOutputStream() << strMsg << "\n";
-            //Sys_Status(strMsg);
+		if (g_AutoSave_Enabled) {
+			const char *strMsg = g_SnapShots_Enabled ? "Autosaving snapshot..." : "Autosaving...";
+			globalOutputStream() << strMsg << "\n";
+			//Sys_Status(strMsg);
 
-            // only snapshot if not working on a default map
-            if (g_SnapShots_Enabled && !Map_Unnamed(g_map)) {
-                Map_Snapshot();
-            } else {
-                if (Map_Unnamed(g_map)) {
-                    StringOutputStream autosave(256);
-                    autosave << g_qeglobals.m_userGamePath.c_str() << "maps/";
-                    Q_mkdir(autosave.c_str());
-                    autosave << "autosave.map";
-                    Map_SaveFile(autosave.c_str());
-                } else {
-                    const char *name = Map_Name(g_map);
-                    const char *extension = path_get_filename_base_end(name);
-                    StringOutputStream autosave(256);
-                    autosave << StringRange(name, extension) << ".autosave" << extension;
-                    Map_SaveFile(autosave.c_str());
-                }
-            }
-        } else {
-            globalOutputStream() << "Autosave skipped...\n";
-            //Sys_Status ("Autosave skipped...");
-        }
-    }
+			// only snapshot if not working on a default map
+			if (g_SnapShots_Enabled && !Map_Unnamed(g_map)) {
+				Map_Snapshot();
+			} else {
+				if (Map_Unnamed(g_map)) {
+					StringOutputStream autosave(256);
+					autosave << g_qeglobals.m_userGamePath.c_str() << "maps/";
+					Q_mkdir(autosave.c_str());
+					autosave << "autosave.map";
+					Map_SaveFile(autosave.c_str());
+				} else {
+					const char *name = Map_Name(g_map);
+					const char *extension = path_get_filename_base_end(name);
+					StringOutputStream autosave(256);
+					autosave << StringRange(name, extension) << ".autosave" << extension;
+					Map_SaveFile(autosave.c_str());
+				}
+			}
+		} else {
+			globalOutputStream() << "Autosave skipped...\n";
+			//Sys_Status ("Autosave skipped...");
+		}
+	}
 }
 
 void Autosave_constructPreferences(PreferencesPage &page)
 {
-    ui::CheckButton autosave_enabled = page.appendCheckBox("Autosave", "Enable Autosave", g_AutoSave_Enabled);
-    ui::SpinButton autosave_frequency = page.appendSpinner("Autosave Frequency (minutes)", m_AutoSave_Frequency, 1, 1,
-                                                           60);
-    Widget_connectToggleDependency(autosave_frequency, autosave_enabled);
-    page.appendCheckBox("", "Save Snapshots", g_SnapShots_Enabled);
+	ui::CheckButton autosave_enabled = page.appendCheckBox("Autosave", "Enable Autosave", g_AutoSave_Enabled);
+	ui::SpinButton autosave_frequency = page.appendSpinner("Autosave Frequency (minutes)", m_AutoSave_Frequency, 1, 1,
+	                                                       60);
+	Widget_connectToggleDependency(autosave_frequency, autosave_enabled);
+	page.appendCheckBox("", "Save Snapshots", g_SnapShots_Enabled);
 }
 
 void Autosave_constructPage(PreferenceGroup &group)
 {
-    PreferencesPage page(group.createPage("Autosave", "Autosave Preferences"));
-    Autosave_constructPreferences(page);
+	PreferencesPage page(group.createPage("Autosave", "Autosave Preferences"));
+	Autosave_constructPreferences(page);
 }
 
 void Autosave_registerPreferencesPage()
 {
-    PreferencesDialog_addSettingsPage(makeCallbackF(Autosave_constructPage));
+	PreferencesDialog_addSettingsPage(makeCallbackF(Autosave_constructPage));
 }
 
 
@@ -198,11 +198,11 @@ void Autosave_registerPreferencesPage()
 
 void Autosave_Construct()
 {
-    GlobalPreferenceSystem().registerPreference("Autosave", make_property_string(g_AutoSave_Enabled));
-    GlobalPreferenceSystem().registerPreference("AutosaveMinutes", make_property_string(m_AutoSave_Frequency));
-    GlobalPreferenceSystem().registerPreference("Snapshots", make_property_string(g_SnapShots_Enabled));
+	GlobalPreferenceSystem().registerPreference("Autosave", make_property_string(g_AutoSave_Enabled));
+	GlobalPreferenceSystem().registerPreference("AutosaveMinutes", make_property_string(m_AutoSave_Frequency));
+	GlobalPreferenceSystem().registerPreference("Snapshots", make_property_string(g_SnapShots_Enabled));
 
-    Autosave_registerPreferencesPage();
+	Autosave_registerPreferencesPage();
 }
 
 void Autosave_Destroy()

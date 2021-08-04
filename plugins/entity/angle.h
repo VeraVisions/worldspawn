@@ -32,67 +32,67 @@ const float ANGLEKEY_IDENTITY = 0;
 
 inline void default_angle(float &angle)
 {
-    angle = ANGLEKEY_IDENTITY;
+	angle = ANGLEKEY_IDENTITY;
 }
 
 inline void normalise_angle(float &angle)
 {
-    angle = static_cast<float>( float_mod(angle, 360.0));
+	angle = static_cast<float>( float_mod(angle, 360.0));
 }
 
 inline void read_angle(float &angle, const char *value)
 {
-    if (!string_parse_float(value, angle)) {
-        angle = 0;
-    } else {
-        normalise_angle(angle);
-    }
+	if (!string_parse_float(value, angle)) {
+		angle = 0;
+	} else {
+		normalise_angle(angle);
+	}
 }
 
 inline void write_angle(float angle, Entity *entity)
 {
-    if (angle == 0) {
-        entity->setKeyValue("angle", "");
-    } else {
-        char value[64];
-        sprintf(value, "%f", angle);
-        entity->setKeyValue("angle", value);
-    }
+	if (angle == 0) {
+		entity->setKeyValue("angle", "");
+	} else {
+		char value[64];
+		sprintf(value, "%f", angle);
+		entity->setKeyValue("angle", value);
+	}
 }
 
 class AngleKey {
-    Callback<void()> m_angleChanged;
+Callback<void()> m_angleChanged;
 public:
-    float m_angle;
+float m_angle;
 
 
-    AngleKey(const Callback<void()> &angleChanged)
-            : m_angleChanged(angleChanged), m_angle(ANGLEKEY_IDENTITY)
-    {
-    }
+AngleKey(const Callback<void()> &angleChanged)
+	: m_angleChanged(angleChanged), m_angle(ANGLEKEY_IDENTITY)
+{
+}
 
-    void angleChanged(const char *value)
-    {
-        read_angle(m_angle, value);
-        m_angleChanged();
-    }
+void angleChanged(const char *value)
+{
+	read_angle(m_angle, value);
+	m_angleChanged();
+}
 
-    typedef MemberCaller<AngleKey, void(const char *), &AngleKey::angleChanged> AngleChangedCaller;
+typedef MemberCaller<AngleKey, void (const char *), &AngleKey::angleChanged> AngleChangedCaller;
 
-    void write(Entity *entity) const
-    {
-        write_angle(m_angle, entity);
-    }
+void write(Entity *entity) const
+{
+	write_angle(m_angle, entity);
+}
 };
 
 inline float angle_rotated(float angle, const Quaternion &rotation)
 {
-    return matrix4_get_rotation_euler_xyz_degrees(
-            matrix4_multiplied_by_matrix4(
-                    matrix4_rotation_for_z_degrees(angle),
-                    matrix4_rotation_for_quaternion_quantised(rotation)
-            )
-    ).z();
+	return matrix4_get_rotation_euler_xyz_degrees(
+		matrix4_multiplied_by_matrix4(
+			matrix4_rotation_for_z_degrees(angle),
+			matrix4_rotation_for_quaternion_quantised(rotation)
+			)
+		).z();
 }
 
 #endif

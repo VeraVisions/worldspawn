@@ -32,7 +32,7 @@ void GlobalShortcuts_reportUnregistered();
 
 class CommandVisitor {
 public:
-    virtual void visit(const char *name, Accelerator &accelerator) = 0;
+virtual void visit(const char *name, Accelerator &accelerator) = 0;
 };
 
 void GlobalCommands_insert(const char *name, const Callback<void()> &callback,

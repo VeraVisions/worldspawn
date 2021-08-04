@@ -30,251 +30,251 @@
 #include <map>
 
 class PreferenceDictionary : public PreferenceSystem {
-    class PreferenceEntry {
-        Property<const char *> m_cb;
-    public:
-        PreferenceEntry(const Property<const char *> &cb)
-                : m_cb(cb)
-        {
-        }
+class PreferenceEntry {
+Property<const char *> m_cb;
+public:
+PreferenceEntry(const Property<const char *> &cb)
+	: m_cb(cb)
+{
+}
 
-        void importString(const char *string)
-        {
-            m_cb.set(string);
-        }
+void importString(const char *string)
+{
+	m_cb.set(string);
+}
 
-        void exportString(const Callback<void(const char *)> &importer)
-        {
-            m_cb.get(importer);
-        }
-    };
+void exportString(const Callback<void(const char *)> &importer)
+{
+	m_cb.get(importer);
+}
+};
 
-    typedef std::map<CopiedString, PreferenceEntry> PreferenceEntries;
-    PreferenceEntries m_preferences;
+typedef std::map<CopiedString, PreferenceEntry> PreferenceEntries;
+PreferenceEntries m_preferences;
 
-    typedef std::map<CopiedString, CopiedString> PreferenceCache;
-    PreferenceCache m_cache;
+typedef std::map<CopiedString, CopiedString> PreferenceCache;
+PreferenceCache m_cache;
 
 public:
-    typedef PreferenceEntries::iterator iterator;
+typedef PreferenceEntries::iterator iterator;
 
-    iterator begin()
-    {
-        return m_preferences.begin();
-    }
+iterator begin()
+{
+	return m_preferences.begin();
+}
 
-    iterator end()
-    {
-        return m_preferences.end();
-    }
+iterator end()
+{
+	return m_preferences.end();
+}
 
-    iterator find(const char *name)
-    {
-        return m_preferences.find(name);
-    }
+iterator find(const char *name)
+{
+	return m_preferences.find(name);
+}
 
-    void registerPreference(const char *name, const Property<const char *> &cb)
-    {
-        m_preferences.insert(PreferenceEntries::value_type(name, PreferenceEntry(cb)));
-        PreferenceCache::iterator i = m_cache.find(name);
-        if (i != m_cache.end()) {
-            cb.set(i->second.c_str());
-            m_cache.erase(i);
-        }
-    }
+void registerPreference(const char *name, const Property<const char *> &cb)
+{
+	m_preferences.insert(PreferenceEntries::value_type(name, PreferenceEntry(cb)));
+	PreferenceCache::iterator i = m_cache.find(name);
+	if (i != m_cache.end()) {
+		cb.set(i->second.c_str());
+		m_cache.erase(i);
+	}
+}
 
-    void importPref(const char *name, const char *value)
-    {
-        PreferenceEntries::iterator i = m_preferences.find(name);
-        if (i != m_preferences.end()) {
-            (*i).second.importString(value);
-        } else {
-            m_cache.erase(name);
-            m_cache.insert(PreferenceCache::value_type(name, value));
-        }
-    }
+void importPref(const char *name, const char *value)
+{
+	PreferenceEntries::iterator i = m_preferences.find(name);
+	if (i != m_preferences.end()) {
+		(*i).second.importString(value);
+	} else {
+		m_cache.erase(name);
+		m_cache.insert(PreferenceCache::value_type(name, value));
+	}
+}
 };
 
 inline void XMLPreference_importString(XMLImporter &importer, const char *value)
 {
-    importer.write(value, string_length(value));
+	importer.write(value, string_length(value));
 }
 
-typedef ReferenceCaller<XMLImporter, void(const char *), XMLPreference_importString> XMLPreferenceImportStringCaller;
+typedef ReferenceCaller<XMLImporter, void (const char *), XMLPreference_importString> XMLPreferenceImportStringCaller;
 
 class XMLPreferenceDictionaryExporter : public XMLExporter {
-    class XMLQPrefElement : public XMLElement {
-        const char *m_version;
-    public:
-        XMLQPrefElement(const char *version) : m_version(version)
-        {
-        }
-
-        const char *name() const
-        {
-            return "qpref";
-        }
-
-        const char *attribute(const char *name) const
-        {
-            if (string_equal(name, "version")) {
-                return m_version;
-            }
-            return "";
-        }
-
-        void forEachAttribute(XMLAttrVisitor &visitor) const
-        {
-            visitor.visit("version", m_version);
-        }
-    };
-
-    class XMLPreferenceElement : public XMLElement {
-        const char *m_name;
-    public:
-        XMLPreferenceElement(const char *name)
-                : m_name(name)
-        {
-        }
-
-        const char *name() const
-        {
-            return "epair";
-        }
-
-        const char *attribute(const char *name) const
-        {
-            if (string_equal(name, "name")) {
-                return m_name;
-            }
-            return "";
-        }
-
-        void forEachAttribute(XMLAttrVisitor &visitor) const
-        {
-            visitor.visit("name", m_name);
-        }
-    };
-
-    typedef PreferenceDictionary PreferenceEntries;
-    PreferenceEntries &m_preferences;
-    const char *m_version;
+class XMLQPrefElement : public XMLElement {
+const char *m_version;
 public:
-    XMLPreferenceDictionaryExporter(PreferenceDictionary &preferences, const char *version)
-            : m_preferences(preferences), m_version(version)
-    {
-    }
+XMLQPrefElement(const char *version) : m_version(version)
+{
+}
 
-    void exportXML(XMLImporter &importer)
-    {
-        importer.write("\n", 1);
+const char *name() const
+{
+	return "qpref";
+}
 
-        XMLQPrefElement qpref_element(m_version);
-        importer.pushElement(qpref_element);
-        importer.write("\n", 1);
+const char *attribute(const char *name) const
+{
+	if (string_equal(name, "version")) {
+		return m_version;
+	}
+	return "";
+}
 
-        for (PreferenceEntries::iterator i = m_preferences.begin(); i != m_preferences.end(); ++i) {
-            XMLPreferenceElement epair_element((*i).first.c_str());
+void forEachAttribute(XMLAttrVisitor &visitor) const
+{
+	visitor.visit("version", m_version);
+}
+};
 
-            importer.pushElement(epair_element);
+class XMLPreferenceElement : public XMLElement {
+const char *m_name;
+public:
+XMLPreferenceElement(const char *name)
+	: m_name(name)
+{
+}
 
-            (*i).second.exportString(XMLPreferenceImportStringCaller(importer));
+const char *name() const
+{
+	return "epair";
+}
 
-            importer.popElement(epair_element.name());
-            importer.write("\n", 1);
-        }
+const char *attribute(const char *name) const
+{
+	if (string_equal(name, "name")) {
+		return m_name;
+	}
+	return "";
+}
 
-        importer.popElement(qpref_element.name());
-        importer.write("\n", 1);
-    }
+void forEachAttribute(XMLAttrVisitor &visitor) const
+{
+	visitor.visit("name", m_name);
+}
+};
+
+typedef PreferenceDictionary PreferenceEntries;
+PreferenceEntries &m_preferences;
+const char *m_version;
+public:
+XMLPreferenceDictionaryExporter(PreferenceDictionary &preferences, const char *version)
+	: m_preferences(preferences), m_version(version)
+{
+}
+
+void exportXML(XMLImporter &importer)
+{
+	importer.write("\n", 1);
+
+	XMLQPrefElement qpref_element(m_version);
+	importer.pushElement(qpref_element);
+	importer.write("\n", 1);
+
+	for (PreferenceEntries::iterator i = m_preferences.begin(); i != m_preferences.end(); ++i) {
+		XMLPreferenceElement epair_element((*i).first.c_str());
+
+		importer.pushElement(epair_element);
+
+		(*i).second.exportString(XMLPreferenceImportStringCaller(importer));
+
+		importer.popElement(epair_element.name());
+		importer.write("\n", 1);
+	}
+
+	importer.popElement(qpref_element.name());
+	importer.write("\n", 1);
+}
 };
 
 class XMLPreferenceDictionaryImporter : public XMLImporter {
-    struct xml_state_t {
-        enum ETag {
-            tag_qpref,
-            tag_qpref_ignore,
-            tag_epair,
-            tag_epair_ignore
-        };
+struct xml_state_t {
+	enum ETag {
+		tag_qpref,
+		tag_qpref_ignore,
+		tag_epair,
+		tag_epair_ignore
+	};
 
-        xml_state_t(ETag tag)
-                : m_tag(tag)
-        {
-        }
+	xml_state_t(ETag tag)
+		: m_tag(tag)
+	{
+	}
 
-        ETag m_tag;
-        CopiedString m_name;
-        StringOutputStream m_ostream;
-    };
+	ETag m_tag;
+	CopiedString m_name;
+	StringOutputStream m_ostream;
+};
 
-    typedef std::vector<xml_state_t> xml_stack_t;
-    xml_stack_t m_xml_stack;
+typedef std::vector<xml_state_t> xml_stack_t;
+xml_stack_t m_xml_stack;
 
-    typedef PreferenceDictionary PreferenceEntries;
-    PreferenceEntries &m_preferences;
-    Version m_version;
+typedef PreferenceDictionary PreferenceEntries;
+PreferenceEntries &m_preferences;
+Version m_version;
 public:
-    XMLPreferenceDictionaryImporter(PreferenceDictionary &preferences, const char *version)
-            : m_preferences(preferences), m_version(version_parse(version))
-    {
-    }
+XMLPreferenceDictionaryImporter(PreferenceDictionary &preferences, const char *version)
+	: m_preferences(preferences), m_version(version_parse(version))
+{
+}
 
-    void pushElement(const XMLElement &element)
-    {
-        if (m_xml_stack.empty()) {
-            if (string_equal(element.name(), "qpref")) {
-                Version dataVersion(version_parse(element.attribute("version")));
-                if (!version_compatible(m_version, dataVersion)) {
-                    globalOutputStream() << "qpref import: data version " << dataVersion
-                                         << " is not compatible with code version " << m_version << "\n";
-                    m_xml_stack.push_back(xml_state_t::tag_qpref_ignore);
-                } else {
-                    globalOutputStream() << "qpref import: data version " << dataVersion
-                                         << " is compatible with code version " << m_version << "\n";
-                    m_xml_stack.push_back(xml_state_t::tag_qpref);
-                }
-            } else {
-                // not valid
-            }
-        } else {
-            switch (m_xml_stack.back().m_tag) {
-                case xml_state_t::tag_qpref:
-                    if (string_equal(element.name(), "epair")) {
-                        m_xml_stack.push_back(xml_state_t::tag_epair);
-                        m_xml_stack.back().m_name = element.attribute("name");
-                    } else {
-                        // not valid
-                    }
-                    break;
-                case xml_state_t::tag_qpref_ignore:
-                    if (string_equal(element.name(), "epair")) {
-                        m_xml_stack.push_back(xml_state_t::tag_epair_ignore);
-                    } else {
-                        // not valid
-                    }
-                    break;
-                case xml_state_t::tag_epair:
-                case xml_state_t::tag_epair_ignore:
-                    // not valid
-                    break;
-            }
-        }
+void pushElement(const XMLElement &element)
+{
+	if (m_xml_stack.empty()) {
+		if (string_equal(element.name(), "qpref")) {
+			Version dataVersion(version_parse(element.attribute("version")));
+			if (!version_compatible(m_version, dataVersion)) {
+				globalOutputStream() << "qpref import: data version " << dataVersion
+				                     << " is not compatible with code version " << m_version << "\n";
+				m_xml_stack.push_back(xml_state_t::tag_qpref_ignore);
+			} else {
+				globalOutputStream() << "qpref import: data version " << dataVersion
+				                     << " is compatible with code version " << m_version << "\n";
+				m_xml_stack.push_back(xml_state_t::tag_qpref);
+			}
+		} else {
+			// not valid
+		}
+	} else {
+		switch (m_xml_stack.back().m_tag) {
+		case xml_state_t::tag_qpref:
+			if (string_equal(element.name(), "epair")) {
+				m_xml_stack.push_back(xml_state_t::tag_epair);
+				m_xml_stack.back().m_name = element.attribute("name");
+			} else {
+				// not valid
+			}
+			break;
+		case xml_state_t::tag_qpref_ignore:
+			if (string_equal(element.name(), "epair")) {
+				m_xml_stack.push_back(xml_state_t::tag_epair_ignore);
+			} else {
+				// not valid
+			}
+			break;
+		case xml_state_t::tag_epair:
+		case xml_state_t::tag_epair_ignore:
+			// not valid
+			break;
+		}
+	}
 
-    }
+}
 
-    void popElement(const char *name)
-    {
-        if (m_xml_stack.back().m_tag == xml_state_t::tag_epair) {
-            m_preferences.importPref(m_xml_stack.back().m_name.c_str(), m_xml_stack.back().m_ostream.c_str());
-        }
-        m_xml_stack.pop_back();
-    }
+void popElement(const char *name)
+{
+	if (m_xml_stack.back().m_tag == xml_state_t::tag_epair) {
+		m_preferences.importPref(m_xml_stack.back().m_name.c_str(), m_xml_stack.back().m_ostream.c_str());
+	}
+	m_xml_stack.pop_back();
+}
 
-    std::size_t write(const char *buffer, std::size_t length)
-    {
-        return m_xml_stack.back().m_ostream.write(buffer, length);
-    }
+std::size_t write(const char *buffer, std::size_t length)
+{
+	return m_xml_stack.back().m_ostream.write(buffer, length);
+}
 };
 
 #endif

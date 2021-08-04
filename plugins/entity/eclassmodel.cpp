@@ -55,488 +55,488 @@
 #include "entity.h"
 
 class EclassModel :
-        public Snappable {
-    MatrixTransform m_transform;
-    EntityKeyValues m_entity;
-    KeyObserverMap m_keyObservers;
+	public Snappable {
+MatrixTransform m_transform;
+EntityKeyValues m_entity;
+KeyObserverMap m_keyObservers;
 
-    OriginKey m_originKey;
-    Vector3 m_origin;
-    AnglesKey m_anglesKey;
-	Vector3 m_angles;
-    RotationKey m_rotationKey;
-    Float9 m_rotation;
-    SingletonModel m_model;
+OriginKey m_originKey;
+Vector3 m_origin;
+AnglesKey m_anglesKey;
+Vector3 m_angles;
+RotationKey m_rotationKey;
+Float9 m_rotation;
+SingletonModel m_model;
 
-    ClassnameFilter m_filter;
-    NamedEntity m_named;
-    NameKeys m_nameKeys;
-    RenderablePivot m_renderOrigin;
-    RenderableNamedEntity m_renderName;
-    ModelSkinKey m_skin;
+ClassnameFilter m_filter;
+NamedEntity m_named;
+NameKeys m_nameKeys;
+RenderablePivot m_renderOrigin;
+RenderableNamedEntity m_renderName;
+ModelSkinKey m_skin;
 
-    Callback<void()> m_transformChanged;
-    Callback<void()> m_evaluateTransform;
+Callback<void()> m_transformChanged;
+Callback<void()> m_evaluateTransform;
 
-    void construct()
-    {
-        default_rotation(m_rotation);
-		m_keyObservers.insert("classname", ClassnameFilter::ClassnameChangedCaller(m_filter));
-		m_keyObservers.insert(Static<KeyIsName>::instance().m_nameKey, NamedEntity::IdentifierChangedCaller(m_named));
-		m_keyObservers.insert("angle", AnglesKey::AngleChangedCaller(m_anglesKey));
-		m_keyObservers.insert("angles", AnglesKey::AnglesChangedCaller(m_anglesKey));
-		m_keyObservers.insert("origin", OriginKey::OriginChangedCaller(m_originKey));
-    }
+void construct()
+{
+	default_rotation(m_rotation);
+	m_keyObservers.insert("classname", ClassnameFilter::ClassnameChangedCaller(m_filter));
+	m_keyObservers.insert(Static<KeyIsName>::instance().m_nameKey, NamedEntity::IdentifierChangedCaller(m_named));
+	m_keyObservers.insert("angle", AnglesKey::AngleChangedCaller(m_anglesKey));
+	m_keyObservers.insert("angles", AnglesKey::AnglesChangedCaller(m_anglesKey));
+	m_keyObservers.insert("origin", OriginKey::OriginChangedCaller(m_originKey));
+}
 
 // vc 2k5 compiler fix
 #if _MSC_VER >= 1400
-    public:
+public:
 #endif
 
-    void updateTransform()
-    {
-        m_transform.localToParent() = g_matrix4_identity;
-        matrix4_translate_by_vec3(m_transform.localToParent(), m_origin);
+void updateTransform()
+{
+	m_transform.localToParent() = g_matrix4_identity;
+	matrix4_translate_by_vec3(m_transform.localToParent(), m_origin);
 	matrix4_multiply_by_matrix4(m_transform.localToParent(), matrix4_rotation_for_euler_xyz_degrees(m_angles));
-        m_transformChanged();
-    }
+	m_transformChanged();
+}
 
-    typedef MemberCaller<EclassModel, void(), &EclassModel::updateTransform> UpdateTransformCaller;
+typedef MemberCaller<EclassModel, void (), &EclassModel::updateTransform> UpdateTransformCaller;
 
-    void originChanged()
-    {
-        m_origin = m_originKey.m_origin;
-        updateTransform();
-    }
+void originChanged()
+{
+	m_origin = m_originKey.m_origin;
+	updateTransform();
+}
 
-    typedef MemberCaller<EclassModel, void(), &EclassModel::originChanged> OriginChangedCaller;
+typedef MemberCaller<EclassModel, void (), &EclassModel::originChanged> OriginChangedCaller;
 
-	void anglesChanged()
-	{
-		m_angles = m_anglesKey.m_angles;
-		updateTransform();
+void anglesChanged()
+{
+	m_angles = m_anglesKey.m_angles;
+	updateTransform();
+}
+
+typedef MemberCaller<EclassModel, void (), &EclassModel::anglesChanged> AnglesChangedCaller;
+
+void rotationChanged()
+{
+	rotation_assign(m_rotation, m_rotationKey.m_rotation);
+	updateTransform();
+}
+
+typedef MemberCaller<EclassModel, void (), &EclassModel::rotationChanged> RotationChangedCaller;
+
+void skinChanged()
+{
+	scene::Node *node = m_model.getNode();
+	if (node != 0) {
+		Node_modelSkinChanged(*node);
 	}
+}
 
-    typedef MemberCaller<EclassModel, void(), &EclassModel::anglesChanged> AnglesChangedCaller;
-
-    void rotationChanged()
-    {
-        rotation_assign(m_rotation, m_rotationKey.m_rotation);
-        updateTransform();
-    }
-
-    typedef MemberCaller<EclassModel, void(), &EclassModel::rotationChanged> RotationChangedCaller;
-
-    void skinChanged()
-    {
-        scene::Node *node = m_model.getNode();
-        if (node != 0) {
-            Node_modelSkinChanged(*node);
-        }
-    }
-
-    typedef MemberCaller<EclassModel, void(), &EclassModel::skinChanged> SkinChangedCaller;
+typedef MemberCaller<EclassModel, void (), &EclassModel::skinChanged> SkinChangedCaller;
 
 public:
 
-    EclassModel(EntityClass *eclass, scene::Node &node, const Callback<void()> &transformChanged,
-                const Callback<void()> &evaluateTransform) :
-            m_entity(eclass),
-            m_originKey(OriginChangedCaller(*this)),
-            m_origin(ORIGINKEY_IDENTITY),
-            m_anglesKey(AnglesChangedCaller(*this)),
-            m_angles(ANGLESKEY_IDENTITY),
-            m_rotationKey(RotationChangedCaller(*this)),
-            m_filter(m_entity, node),
-            m_named(m_entity),
-            m_nameKeys(m_entity),
-            m_renderName(m_named, g_vector3_identity),
-            m_skin(SkinChangedCaller(*this)),
-            m_transformChanged(transformChanged),
-            m_evaluateTransform(evaluateTransform)
-    {
-        construct();
-    }
+EclassModel(EntityClass *eclass, scene::Node &node, const Callback<void()> &transformChanged,
+            const Callback<void()> &evaluateTransform) :
+	m_entity(eclass),
+	m_originKey(OriginChangedCaller(*this)),
+	m_origin(ORIGINKEY_IDENTITY),
+	m_anglesKey(AnglesChangedCaller(*this)),
+	m_angles(ANGLESKEY_IDENTITY),
+	m_rotationKey(RotationChangedCaller(*this)),
+	m_filter(m_entity, node),
+	m_named(m_entity),
+	m_nameKeys(m_entity),
+	m_renderName(m_named, g_vector3_identity),
+	m_skin(SkinChangedCaller(*this)),
+	m_transformChanged(transformChanged),
+	m_evaluateTransform(evaluateTransform)
+{
+	construct();
+}
 
-    EclassModel(const EclassModel &other, scene::Node &node, const Callback<void()> &transformChanged,
-                const Callback<void()> &evaluateTransform) :
-            m_entity(other.m_entity),
-            m_originKey(OriginChangedCaller(*this)),
-            m_origin(ORIGINKEY_IDENTITY),
-            m_anglesKey(AnglesChangedCaller(*this)),
-            m_angles(ANGLESKEY_IDENTITY),
-            m_rotationKey(RotationChangedCaller(*this)),
-            m_filter(m_entity, node),
-            m_named(m_entity),
-            m_nameKeys(m_entity),
-            m_renderName(m_named, g_vector3_identity),
-            m_skin(SkinChangedCaller(*this)),
-            m_transformChanged(transformChanged),
-            m_evaluateTransform(evaluateTransform)
-    {
-        construct();
-    }
+EclassModel(const EclassModel &other, scene::Node &node, const Callback<void()> &transformChanged,
+            const Callback<void()> &evaluateTransform) :
+	m_entity(other.m_entity),
+	m_originKey(OriginChangedCaller(*this)),
+	m_origin(ORIGINKEY_IDENTITY),
+	m_anglesKey(AnglesChangedCaller(*this)),
+	m_angles(ANGLESKEY_IDENTITY),
+	m_rotationKey(RotationChangedCaller(*this)),
+	m_filter(m_entity, node),
+	m_named(m_entity),
+	m_nameKeys(m_entity),
+	m_renderName(m_named, g_vector3_identity),
+	m_skin(SkinChangedCaller(*this)),
+	m_transformChanged(transformChanged),
+	m_evaluateTransform(evaluateTransform)
+{
+	construct();
+}
 
-    InstanceCounter m_instanceCounter;
+InstanceCounter m_instanceCounter;
 
-    void instanceAttach(const scene::Path &path)
-    {
-        if (++m_instanceCounter.m_count == 1) {
-            m_filter.instanceAttach();
-            m_entity.instanceAttach(path_find_mapfile(path.begin(), path.end()));
-            m_entity.attach(m_keyObservers);
-            m_model.modelChanged(m_entity.getEntityClass().modelpath());
-            m_skin.skinChanged(m_entity.getEntityClass().skin());
-        }
-    }
+void instanceAttach(const scene::Path &path)
+{
+	if (++m_instanceCounter.m_count == 1) {
+		m_filter.instanceAttach();
+		m_entity.instanceAttach(path_find_mapfile(path.begin(), path.end()));
+		m_entity.attach(m_keyObservers);
+		m_model.modelChanged(m_entity.getEntityClass().modelpath());
+		m_skin.skinChanged(m_entity.getEntityClass().skin());
+	}
+}
 
-    void instanceDetach(const scene::Path &path)
-    {
-        if (--m_instanceCounter.m_count == 0) {
-            m_skin.skinChanged("");
-            m_model.modelChanged("");
-            m_entity.detach(m_keyObservers);
-            m_entity.instanceDetach(path_find_mapfile(path.begin(), path.end()));
-            m_filter.instanceDetach();
-        }
-    }
+void instanceDetach(const scene::Path &path)
+{
+	if (--m_instanceCounter.m_count == 0) {
+		m_skin.skinChanged("");
+		m_model.modelChanged("");
+		m_entity.detach(m_keyObservers);
+		m_entity.instanceDetach(path_find_mapfile(path.begin(), path.end()));
+		m_filter.instanceDetach();
+	}
+}
 
-    EntityKeyValues &getEntity()
-    {
-        return m_entity;
-    }
+EntityKeyValues &getEntity()
+{
+	return m_entity;
+}
 
-    const EntityKeyValues &getEntity() const
-    {
-        return m_entity;
-    }
+const EntityKeyValues &getEntity() const
+{
+	return m_entity;
+}
 
-    scene::Traversable &getTraversable()
-    {
-        return m_model.getTraversable();
-    }
+scene::Traversable &getTraversable()
+{
+	return m_model.getTraversable();
+}
 
-    Namespaced &getNamespaced()
-    {
-        return m_nameKeys;
-    }
+Namespaced &getNamespaced()
+{
+	return m_nameKeys;
+}
 
-    Nameable &getNameable()
-    {
-        return m_named;
-    }
+Nameable &getNameable()
+{
+	return m_named;
+}
 
-    TransformNode &getTransformNode()
-    {
-        return m_transform;
-    }
+TransformNode &getTransformNode()
+{
+	return m_transform;
+}
 
-    ModelSkin &getModelSkin()
-    {
-        return m_skin.get();
-    }
+ModelSkin &getModelSkin()
+{
+	return m_skin.get();
+}
 
-    void attach(scene::Traversable::Observer *observer)
-    {
-        m_model.attach(observer);
-    }
+void attach(scene::Traversable::Observer *observer)
+{
+	m_model.attach(observer);
+}
 
-    void detach(scene::Traversable::Observer *observer)
-    {
-        m_model.detach(observer);
-    }
+void detach(scene::Traversable::Observer *observer)
+{
+	m_model.detach(observer);
+}
 
-    void renderSolid(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld, bool selected) const
-    {
-        if (selected) {
-            m_renderOrigin.render(renderer, volume, localToWorld);
-        }
+void renderSolid(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld, bool selected) const
+{
+	if (selected) {
+		m_renderOrigin.render(renderer, volume, localToWorld);
+	}
 
-        renderer.SetState(m_entity.getEntityClass().m_state_wire, Renderer::eWireframeOnly);
-    }
+	renderer.SetState(m_entity.getEntityClass().m_state_wire, Renderer::eWireframeOnly);
+}
 
-    void renderWireframe(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld, bool selected) const
-    {
-        renderSolid(renderer, volume, localToWorld, selected);
-        if (g_showNames) {
-            renderer.addRenderable(m_renderName, localToWorld);
-        }
-    }
+void renderWireframe(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld, bool selected) const
+{
+	renderSolid(renderer, volume, localToWorld, selected);
+	if (g_showNames) {
+		renderer.addRenderable(m_renderName, localToWorld);
+	}
+}
 
-    void translate(const Vector3 &translation)
-    {
-        m_origin = origin_translated(m_origin, translation);
-    }
+void translate(const Vector3 &translation)
+{
+	m_origin = origin_translated(m_origin, translation);
+}
 
-    void rotate(const Quaternion &rotation)
-    {
-        if (g_gameType == eGameTypeDoom3) {
-            rotation_rotate(m_rotation, rotation);
-        } else {
-            m_angles = angles_rotated(m_angles, rotation);
-        }
-    }
+void rotate(const Quaternion &rotation)
+{
+	if (g_gameType == eGameTypeDoom3) {
+		rotation_rotate(m_rotation, rotation);
+	} else {
+		m_angles = angles_rotated(m_angles, rotation);
+	}
+}
 
-    void snapto(float snap)
-    {
-        m_originKey.m_origin = origin_snapped(m_originKey.m_origin, snap);
-        m_originKey.write(&m_entity);
-    }
+void snapto(float snap)
+{
+	m_originKey.m_origin = origin_snapped(m_originKey.m_origin, snap);
+	m_originKey.write(&m_entity);
+}
 
-    void revertTransform()
-    {
-        m_origin = m_originKey.m_origin;
-        if (g_gameType == eGameTypeDoom3) {
-            rotation_assign(m_rotation, m_rotationKey.m_rotation);
-        } else {
+void revertTransform()
+{
+	m_origin = m_originKey.m_origin;
+	if (g_gameType == eGameTypeDoom3) {
+		rotation_assign(m_rotation, m_rotationKey.m_rotation);
+	} else {
 		m_angles = m_anglesKey.m_angles;
-        }
-    }
+	}
+}
 
-    void freezeTransform()
-    {
-        m_originKey.m_origin = m_origin;
-        m_originKey.write(&m_entity);
-        if (g_gameType == eGameTypeDoom3) {
-            rotation_assign(m_rotationKey.m_rotation, m_rotation);
-            m_rotationKey.write(&m_entity);
-        } else {
+void freezeTransform()
+{
+	m_originKey.m_origin = m_origin;
+	m_originKey.write(&m_entity);
+	if (g_gameType == eGameTypeDoom3) {
+		rotation_assign(m_rotationKey.m_rotation, m_rotation);
+		m_rotationKey.write(&m_entity);
+	} else {
 		m_anglesKey.m_angles = m_angles;
 		m_anglesKey.write(&m_entity);
-        }
-    }
+	}
+}
 
-    void transformChanged()
-    {
-        revertTransform();
-        m_evaluateTransform();
-        updateTransform();
-    }
+void transformChanged()
+{
+	revertTransform();
+	m_evaluateTransform();
+	updateTransform();
+}
 
-    typedef MemberCaller<EclassModel, void(), &EclassModel::transformChanged> TransformChangedCaller;
+typedef MemberCaller<EclassModel, void (), &EclassModel::transformChanged> TransformChangedCaller;
 };
 
 class EclassModelInstance : public TargetableInstance, public TransformModifier, public Renderable {
-    class TypeCasts {
-        InstanceTypeCastTable m_casts;
-    public:
-        TypeCasts()
-        {
-            m_casts = TargetableInstance::StaticTypeCasts::instance().get();
-            InstanceStaticCast<EclassModelInstance, Renderable>::install(m_casts);
-            InstanceStaticCast<EclassModelInstance, Transformable>::install(m_casts);
-            InstanceIdentityCast<EclassModelInstance>::install(m_casts);
-        }
-
-        InstanceTypeCastTable &get()
-        {
-            return m_casts;
-        }
-    };
-
-    EclassModel &m_contained;
+class TypeCasts {
+InstanceTypeCastTable m_casts;
 public:
-    typedef LazyStatic<TypeCasts> StaticTypeCasts;
+TypeCasts()
+{
+	m_casts = TargetableInstance::StaticTypeCasts::instance().get();
+	InstanceStaticCast<EclassModelInstance, Renderable>::install(m_casts);
+	InstanceStaticCast<EclassModelInstance, Transformable>::install(m_casts);
+	InstanceIdentityCast<EclassModelInstance>::install(m_casts);
+}
 
-    STRING_CONSTANT(Name, "EclassModelInstance");
+InstanceTypeCastTable &get()
+{
+	return m_casts;
+}
+};
 
-    EclassModelInstance(const scene::Path &path, scene::Instance *parent, EclassModel &contained) :
-            TargetableInstance(path, parent, this, StaticTypeCasts::instance().get(), contained.getEntity(), *this),
-            TransformModifier(EclassModel::TransformChangedCaller(contained), ApplyTransformCaller(*this)),
-            m_contained(contained)
-    {
-        m_contained.instanceAttach(Instance::path());
+EclassModel &m_contained;
+public:
+typedef LazyStatic<TypeCasts> StaticTypeCasts;
 
-        StaticRenderableConnectionLines::instance().attach(*this);
-    }
+STRING_CONSTANT(Name, "EclassModelInstance");
 
-    ~EclassModelInstance()
-    {
-        StaticRenderableConnectionLines::instance().detach(*this);
+EclassModelInstance(const scene::Path &path, scene::Instance *parent, EclassModel &contained) :
+	TargetableInstance(path, parent, this, StaticTypeCasts::instance().get(), contained.getEntity(), *this),
+	TransformModifier(EclassModel::TransformChangedCaller(contained), ApplyTransformCaller(*this)),
+	m_contained(contained)
+{
+	m_contained.instanceAttach(Instance::path());
 
-        m_contained.instanceDetach(Instance::path());
-    }
+	StaticRenderableConnectionLines::instance().attach(*this);
+}
 
-    void renderSolid(Renderer &renderer, const VolumeTest &volume) const
-    {
-        m_contained.renderSolid(renderer, volume, Instance::localToWorld(), getSelectable().isSelected());
-    }
+~EclassModelInstance()
+{
+	StaticRenderableConnectionLines::instance().detach(*this);
 
-    void renderWireframe(Renderer &renderer, const VolumeTest &volume) const
-    {
-        m_contained.renderWireframe(renderer, volume, Instance::localToWorld(), getSelectable().isSelected());
-    }
+	m_contained.instanceDetach(Instance::path());
+}
 
-    void evaluateTransform()
-    {
-        if (getType() == TRANSFORM_PRIMITIVE) {
-            m_contained.translate(getTranslation());
-            m_contained.rotate(getRotation());
-        }
-    }
+void renderSolid(Renderer &renderer, const VolumeTest &volume) const
+{
+	m_contained.renderSolid(renderer, volume, Instance::localToWorld(), getSelectable().isSelected());
+}
 
-    void applyTransform()
-    {
-        m_contained.revertTransform();
-        evaluateTransform();
-        m_contained.freezeTransform();
-    }
+void renderWireframe(Renderer &renderer, const VolumeTest &volume) const
+{
+	m_contained.renderWireframe(renderer, volume, Instance::localToWorld(), getSelectable().isSelected());
+}
 
-    typedef MemberCaller<EclassModelInstance, void(), &EclassModelInstance::applyTransform> ApplyTransformCaller;
+void evaluateTransform()
+{
+	if (getType() == TRANSFORM_PRIMITIVE) {
+		m_contained.translate(getTranslation());
+		m_contained.rotate(getRotation());
+	}
+}
+
+void applyTransform()
+{
+	m_contained.revertTransform();
+	evaluateTransform();
+	m_contained.freezeTransform();
+}
+
+typedef MemberCaller<EclassModelInstance, void (), &EclassModelInstance::applyTransform> ApplyTransformCaller;
 };
 
 class EclassModelNode :
-        public scene::Node::Symbiot,
-        public scene::Instantiable,
-        public scene::Cloneable,
-        public scene::Traversable::Observer {
-    class TypeCasts {
-        NodeTypeCastTable m_casts;
-    public:
-        TypeCasts()
-        {
-            NodeStaticCast<EclassModelNode, scene::Instantiable>::install(m_casts);
-            NodeStaticCast<EclassModelNode, scene::Cloneable>::install(m_casts);
-            NodeContainedCast<EclassModelNode, scene::Traversable>::install(m_casts);
-            NodeContainedCast<EclassModelNode, Snappable>::install(m_casts);
-            NodeContainedCast<EclassModelNode, TransformNode>::install(m_casts);
-            NodeContainedCast<EclassModelNode, Entity>::install(m_casts);
-            NodeContainedCast<EclassModelNode, Nameable>::install(m_casts);
-            NodeContainedCast<EclassModelNode, Namespaced>::install(m_casts);
-            NodeContainedCast<EclassModelNode, ModelSkin>::install(m_casts);
-        }
+	public scene::Node::Symbiot,
+	public scene::Instantiable,
+	public scene::Cloneable,
+	public scene::Traversable::Observer {
+class TypeCasts {
+NodeTypeCastTable m_casts;
+public:
+TypeCasts()
+{
+	NodeStaticCast<EclassModelNode, scene::Instantiable>::install(m_casts);
+	NodeStaticCast<EclassModelNode, scene::Cloneable>::install(m_casts);
+	NodeContainedCast<EclassModelNode, scene::Traversable>::install(m_casts);
+	NodeContainedCast<EclassModelNode, Snappable>::install(m_casts);
+	NodeContainedCast<EclassModelNode, TransformNode>::install(m_casts);
+	NodeContainedCast<EclassModelNode, Entity>::install(m_casts);
+	NodeContainedCast<EclassModelNode, Nameable>::install(m_casts);
+	NodeContainedCast<EclassModelNode, Namespaced>::install(m_casts);
+	NodeContainedCast<EclassModelNode, ModelSkin>::install(m_casts);
+}
 
-        NodeTypeCastTable &get()
-        {
-            return m_casts;
-        }
-    };
+NodeTypeCastTable &get()
+{
+	return m_casts;
+}
+};
 
 
-    scene::Node m_node;
-    InstanceSet m_instances;
-    EclassModel m_contained;
+scene::Node m_node;
+InstanceSet m_instances;
+EclassModel m_contained;
 
-    void construct()
-    {
-        m_contained.attach(this);
-    }
+void construct()
+{
+	m_contained.attach(this);
+}
 
-    void destroy()
-    {
-        m_contained.detach(this);
-    }
+void destroy()
+{
+	m_contained.detach(this);
+}
 
 public:
-    typedef LazyStatic<TypeCasts> StaticTypeCasts;
+typedef LazyStatic<TypeCasts> StaticTypeCasts;
 
-    scene::Traversable &get(NullType<scene::Traversable>)
-    {
-        return m_contained.getTraversable();
-    }
+scene::Traversable &get(NullType<scene::Traversable>)
+{
+	return m_contained.getTraversable();
+}
 
-    Snappable &get(NullType<Snappable>)
-    {
-        return m_contained;
-    }
+Snappable &get(NullType<Snappable>)
+{
+	return m_contained;
+}
 
-    TransformNode &get(NullType<TransformNode>)
-    {
-        return m_contained.getTransformNode();
-    }
+TransformNode &get(NullType<TransformNode>)
+{
+	return m_contained.getTransformNode();
+}
 
-    Entity &get(NullType<Entity>)
-    {
-        return m_contained.getEntity();
-    }
+Entity &get(NullType<Entity>)
+{
+	return m_contained.getEntity();
+}
 
-    Nameable &get(NullType<Nameable>)
-    {
-        return m_contained.getNameable();
-    }
+Nameable &get(NullType<Nameable>)
+{
+	return m_contained.getNameable();
+}
 
-    Namespaced &get(NullType<Namespaced>)
-    {
-        return m_contained.getNamespaced();
-    }
+Namespaced &get(NullType<Namespaced>)
+{
+	return m_contained.getNamespaced();
+}
 
-    ModelSkin &get(NullType<ModelSkin>)
-    {
-        return m_contained.getModelSkin();
-    }
+ModelSkin &get(NullType<ModelSkin>)
+{
+	return m_contained.getModelSkin();
+}
 
-    EclassModelNode(EntityClass *eclass) :
-            m_node(this, this, StaticTypeCasts::instance().get()),
-            m_contained(eclass, m_node, InstanceSet::TransformChangedCaller(m_instances),
-                        InstanceSetEvaluateTransform<EclassModelInstance>::Caller(m_instances))
-    {
-        construct();
-    }
+EclassModelNode(EntityClass *eclass) :
+	m_node(this, this, StaticTypeCasts::instance().get()),
+	m_contained(eclass, m_node, InstanceSet::TransformChangedCaller(m_instances),
+	            InstanceSetEvaluateTransform<EclassModelInstance>::Caller(m_instances))
+{
+	construct();
+}
 
-    EclassModelNode(const EclassModelNode &other) :
-            scene::Node::Symbiot(other),
-            scene::Instantiable(other),
-            scene::Cloneable(other),
-            scene::Traversable::Observer(other),
-            m_node(this, this, StaticTypeCasts::instance().get()),
-            m_contained(other.m_contained, m_node, InstanceSet::TransformChangedCaller(m_instances),
-                        InstanceSetEvaluateTransform<EclassModelInstance>::Caller(m_instances))
-    {
-        construct();
-    }
+EclassModelNode(const EclassModelNode &other) :
+	scene::Node::Symbiot(other),
+	scene::Instantiable(other),
+	scene::Cloneable(other),
+	scene::Traversable::Observer(other),
+	m_node(this, this, StaticTypeCasts::instance().get()),
+	m_contained(other.m_contained, m_node, InstanceSet::TransformChangedCaller(m_instances),
+	            InstanceSetEvaluateTransform<EclassModelInstance>::Caller(m_instances))
+{
+	construct();
+}
 
-    ~EclassModelNode()
-    {
-        destroy();
-    }
+~EclassModelNode()
+{
+	destroy();
+}
 
-    void release()
-    {
-        delete this;
-    }
+void release()
+{
+	delete this;
+}
 
-    scene::Node &node()
-    {
-        return m_node;
-    }
+scene::Node &node()
+{
+	return m_node;
+}
 
-    void insert(scene::Node &child)
-    {
-        m_instances.insert(child);
-    }
+void insert(scene::Node &child)
+{
+	m_instances.insert(child);
+}
 
-    void erase(scene::Node &child)
-    {
-        m_instances.erase(child);
-    }
+void erase(scene::Node &child)
+{
+	m_instances.erase(child);
+}
 
-    scene::Node &clone() const
-    {
-        return (new EclassModelNode(*this))->node();
-    }
+scene::Node &clone() const
+{
+	return (new EclassModelNode(*this))->node();
+}
 
-    scene::Instance *create(const scene::Path &path, scene::Instance *parent)
-    {
-        return new EclassModelInstance(path, parent, m_contained);
-    }
+scene::Instance *create(const scene::Path &path, scene::Instance *parent)
+{
+	return new EclassModelInstance(path, parent, m_contained);
+}
 
-    void forEachInstance(const scene::Instantiable::Visitor &visitor)
-    {
-        m_instances.forEachInstance(visitor);
-    }
+void forEachInstance(const scene::Instantiable::Visitor &visitor)
+{
+	m_instances.forEachInstance(visitor);
+}
 
-    void insert(scene::Instantiable::Observer *observer, const scene::Path &path, scene::Instance *instance)
-    {
-        m_instances.insert(observer, path, instance);
-    }
+void insert(scene::Instantiable::Observer *observer, const scene::Path &path, scene::Instance *instance)
+{
+	m_instances.insert(observer, path, instance);
+}
 
-    scene::Instance *erase(scene::Instantiable::Observer *observer, const scene::Path &path)
-    {
-        return m_instances.erase(observer, path);
-    }
+scene::Instance *erase(scene::Instantiable::Observer *observer, const scene::Path &path)
+{
+	return m_instances.erase(observer, path);
+}
 };
 
 scene::Node &New_EclassModel(EntityClass *eclass)
 {
-    return (new EclassModelNode(eclass))->node();
+	return (new EclassModelNode(eclass))->node();
 }

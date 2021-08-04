@@ -135,14 +135,14 @@ void transformChanged(){
 		( *i ).second->transformChanged();
 	}
 }
-typedef MemberCaller<InstanceSet, void(), &InstanceSet::transformChanged> TransformChangedCaller;
+typedef MemberCaller<InstanceSet, void (), &InstanceSet::transformChanged> TransformChangedCaller;
 void boundsChanged(){
 	for ( InstanceMap::iterator i = m_instances.begin(); i != m_instances.end(); ++i )
 	{
 		( *i ).second->boundsChanged();
 	}
 }
-typedef MemberCaller<InstanceSet, void(), &InstanceSet::boundsChanged> BoundsChangedCaller;
+typedef MemberCaller<InstanceSet, void (), &InstanceSet::boundsChanged> BoundsChangedCaller;
 };
 
 template<typename Functor>
@@ -159,10 +159,10 @@ class InstanceSetEvaluateTransform
 public:
 static void apply( InstanceSet& instances ){
 	InstanceSet_forEach(instances, [&](scene::Instance &instance) {
-		InstanceTypeCast<Type>::cast(instance)->evaluateTransform();
-	});
+			InstanceTypeCast<Type>::cast(instance)->evaluateTransform();
+		});
 }
-typedef ReferenceCaller<InstanceSet, void(), &InstanceSetEvaluateTransform<Type>::apply> Caller;
+typedef ReferenceCaller<InstanceSet, void (), &InstanceSetEvaluateTransform<Type>::apply> Caller;
 };
 
 #endif

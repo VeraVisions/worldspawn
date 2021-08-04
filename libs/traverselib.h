@@ -54,9 +54,15 @@ TraversableObserverInsertOutputIterator& operator=( const NodeSmartReference& no
 	m_observer->insert( node );
 	return *this;
 }
-TraversableObserverInsertOutputIterator& operator*() { return *this; }
-TraversableObserverInsertOutputIterator& operator++() { return *this; }
-TraversableObserverInsertOutputIterator& operator++( int ) { return *this; }
+TraversableObserverInsertOutputIterator& operator*() {
+	return *this;
+}
+TraversableObserverInsertOutputIterator& operator++() {
+	return *this;
+}
+TraversableObserverInsertOutputIterator& operator++( int ) {
+	return *this;
+}
 };
 
 class TraversableObserverEraseOutputIterator
@@ -81,9 +87,15 @@ TraversableObserverEraseOutputIterator& operator=( const NodeSmartReference& nod
 	m_observer->erase( node );
 	return *this;
 }
-TraversableObserverEraseOutputIterator& operator*() { return *this; }
-TraversableObserverEraseOutputIterator& operator++() { return *this; }
-TraversableObserverEraseOutputIterator& operator++( int ) { return *this; }
+TraversableObserverEraseOutputIterator& operator*() {
+	return *this;
+}
+TraversableObserverEraseOutputIterator& operator++() {
+	return *this;
+}
+TraversableObserverEraseOutputIterator& operator++( int ) {
+	return *this;
+}
 };
 typedef UnsortedSet<NodeSmartReference> UnsortedNodeSet;
 

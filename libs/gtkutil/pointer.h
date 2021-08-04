@@ -29,12 +29,12 @@ typedef void *gpointer;
 
 inline gint gpointer_to_int(gpointer p)
 {
-    return gint(std::size_t(p));
+	return gint(std::size_t(p));
 }
 
 inline gpointer gint_to_pointer(gint i)
 {
-    return gpointer(std::size_t(i));
+	return gpointer(std::size_t(i));
 }
 
 #endif

@@ -150,7 +150,7 @@ void xml_Select( char *msg, int entitynum, int brushnum, qboolean bError ){
 	sprintf( buf, "Entity %i, Brush %i: %s", entitynum, brushnum, msg );
 	node = xmlNewNode( NULL, (xmlChar*)"select" );
 	xmlNodeSetContent( node, (xmlChar*)buf );
-	level[0] = (int)'0' + ( bError ? SYS_ERR : SYS_WRN )  ;
+	level[0] = (int)'0' + ( bError ? SYS_ERR : SYS_WRN );
 	level[1] = 0;
 	xmlSetProp( node, (xmlChar*)"level", (xmlChar*)&level );
 	// a 'select' information

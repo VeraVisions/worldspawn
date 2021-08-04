@@ -49,20 +49,26 @@ floatSwapUnion;
 
 #if GDEF_ARCH_ENDIAN_BIG
 
-int   DDSBigLong( int src ) { return src; }
-short DDSBigShort( short src ) { return src; }
-float DDSBigFloat( float src ) { return src; }
+int   DDSBigLong( int src ) {
+	return src;
+}
+short DDSBigShort( short src ) {
+	return src;
+}
+float DDSBigFloat( float src ) {
+	return src;
+}
 
 int DDSLittleLong( int src ){
 	return ( ( src & 0xFF000000 ) >> 24 ) |
-		   ( ( src & 0x00FF0000 ) >> 8 ) |
-		   ( ( src & 0x0000FF00 ) << 8 ) |
-		   ( ( src & 0x000000FF ) << 24 );
+	       ( ( src & 0x00FF0000 ) >> 8 ) |
+	       ( ( src & 0x0000FF00 ) << 8 ) |
+	       ( ( src & 0x000000FF ) << 24 );
 }
 
 short DDSLittleShort( short src ){
 	return ( ( src & 0xFF00 ) >> 8 ) |
-		   ( ( src & 0x00FF ) << 8 );
+	       ( ( src & 0x00FF ) << 8 );
 }
 
 float DDSLittleFloat( float src ){
@@ -77,20 +83,26 @@ float DDSLittleFloat( float src ){
 
 #else /*__BIG_ENDIAN__*/
 
-int   DDSLittleLong( int src ) { return src; }
-short DDSLittleShort( short src ) { return src; }
-float DDSLittleFloat( float src ) { return src; }
+int   DDSLittleLong( int src ) {
+	return src;
+}
+short DDSLittleShort( short src ) {
+	return src;
+}
+float DDSLittleFloat( float src ) {
+	return src;
+}
 
 int DDSBigLong( int src ){
 	return ( ( src & 0xFF000000 ) >> 24 ) |
-		   ( ( src & 0x00FF0000 ) >> 8 ) |
-		   ( ( src & 0x0000FF00 ) << 8 ) |
-		   ( ( src & 0x000000FF ) << 24 );
+	       ( ( src & 0x00FF0000 ) >> 8 ) |
+	       ( ( src & 0x0000FF00 ) << 8 ) |
+	       ( ( src & 0x000000FF ) << 24 );
 }
 
 short DDSBigShort( short src ){
 	return ( ( src & 0xFF00 ) >> 8 ) |
-		   ( ( src & 0x00FF ) << 8 );
+	       ( ( src & 0x00FF ) << 8 );
 }
 
 float DDSBigFloat( float src ){

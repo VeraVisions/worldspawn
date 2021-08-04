@@ -23,13 +23,13 @@
 #define INCLUDED_ITEXDEF_H
 
 enum EBrushType {
-    eBrushTypeQuake,
-    eBrushTypeQuake2,
-    eBrushTypeQuake3,
-    eBrushTypeQuake3BP,
-    eBrushTypeDoom3,
-    eBrushTypeQuake4,
-    eBrushTypeHalfLife,
+	eBrushTypeQuake,
+	eBrushTypeQuake2,
+	eBrushTypeQuake3,
+	eBrushTypeQuake3BP,
+	eBrushTypeDoom3,
+	eBrushTypeQuake4,
+	eBrushTypeHalfLife,
 	eBrushTypeQuake3Valve
 };
 

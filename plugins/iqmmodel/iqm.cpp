@@ -270,9 +270,9 @@ void IQMSurface_read( Model &model, const byte *buffer, ArchiveFile &file ){
 			istream_read_iqmTriangle( triangleStream, triangle );
 			for ( int j = 0; j < 3; j++ ) {
 				surface.indices().insert( inserter.insert( IQMVertex_construct(
-															   &iqmPos[triangle.indices[j]],
-															   &iqmNorm[triangle.indices[j]],
-															   &iqmSt[triangle.indices[j]] ) ) );
+										   &iqmPos[triangle.indices[j]],
+										   &iqmNorm[triangle.indices[j]],
+										   &iqmSt[triangle.indices[j]] ) ) );
 			}
 		}
 

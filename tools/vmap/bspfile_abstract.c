@@ -201,7 +201,7 @@ void BSPX_Setup(void *filebase, size_t filelen, bspLump_t *lumps, size_t stdlump
 	i = LittleLong(h->numlumps);
 	/*verify the header*/
 	if (*(int*)h->id != (('B'<<0)|('S'<<8)|('P'<<16)|('X'<<24)) ||
-		offs + sizeof(*h) + sizeof(h->lumps[0])*(i-1) > filelen)
+	    offs + sizeof(*h) + sizeof(h->lumps[0])*(i-1) > filelen)
 		return;
 	h->numlumps = i;
 	while(i-->0)
@@ -209,7 +209,7 @@ void BSPX_Setup(void *filebase, size_t filelen, bspLump_t *lumps, size_t stdlump
 		h->lumps[i].fileofs = LittleLong(h->lumps[i].fileofs);
 		h->lumps[i].filelen = LittleLong(h->lumps[i].filelen);
 		if ((unsigned int)h->lumps[i].fileofs + (unsigned int)h->lumps[i].filelen > filelen)
-			return;	//truncated or something
+			return; //truncated or something
 	}
 
 	bspx = safe_malloc_info( sizeof(*bspx)-sizeof(*bspx->lumps) + h->numlumps*sizeof(*bspx->lumps), "bspx" );
@@ -240,7 +240,7 @@ void BSPX_CopyOut(const char *lumpname, void *lumpdata, size_t lumpsize)
 	if (!lumpsize)
 	{
 		if (bspx && i < nl)
-		{	//remove the lump if it exists...
+		{       //remove the lump if it exists...
 			bspx->numlumps--;
 			memcpy(&bspx->lumps[i], &bspx->lumps[i+1], sizeof(*bspx->lumps)*(bspx->numlumps-i));
 		}
@@ -248,7 +248,7 @@ void BSPX_CopyOut(const char *lumpname, void *lumpdata, size_t lumpsize)
 	}
 
 	if (i == nl)
-	{	//expand the size, if needed
+	{       //expand the size, if needed
 		n = safe_malloc_info( sizeof(*bspx)-sizeof(bspx->lumps) + sizeof(*bspx->lumps)*(nl+1), "bspx" );
 		memcpy(n->lumps, bspx->lumps, sizeof(*bspx->lumps)*nl);
 		strncpy(n->lumps[nl].lumpname, lumpname, sizeof(n->lumps[nl].lumpname));
@@ -263,7 +263,7 @@ void BSPX_CopyOut(const char *lumpname, void *lumpdata, size_t lumpsize)
 	f = bspx->lumps[i].data;
 	bspx->lumps[i].data = safe_malloc_info( lumpsize+4, bspx->lumps[i].lumpname );
 	memcpy(bspx->lumps[i].data, lumpdata, lumpsize);
-	memset((char*)bspx->lumps[i].data+lumpsize, 0, 4);	//make sure any padding bytes are 0, to avoid weirdness and boost reproducibility
+	memset((char*)bspx->lumps[i].data+lumpsize, 0, 4);      //make sure any padding bytes are 0, to avoid weirdness and boost reproducibility
 	bspx->lumps[i].lumpsize = lumpsize;
 	free(f);
 }
@@ -287,7 +287,7 @@ void BSPX_WriteLumps(FILE *file, bspLump_t *lumps, size_t stdlumps)
 	BSPX_GenerateSurfExtensions();
 
 	if (!bspx || !bspx->numlumps)
-		return;	//nothing to write
+		return; //nothing to write
 
 	//write our bspx header
 	SafeWrite(file, "BSPX", 4);
@@ -300,7 +300,7 @@ void BSPX_WriteLumps(FILE *file, bspLump_t *lumps, size_t stdlumps)
 		SafeWrite(file, bspx->lumps[l].lumpname, sizeof(bspx->lumps[l].lumpname));
 		tmp = LittleLong(offset);
 		SafeWrite(file, &tmp, sizeof(tmp));
-		offset = (offset+bspx->lumps[l].lumpsize+3)&~3u;	//we're guessing here...
+		offset = (offset+bspx->lumps[l].lumpsize+3)&~3u;        //we're guessing here...
 		tmp = LittleLong(bspx->lumps[l].lumpsize);
 		SafeWrite(file, &tmp, sizeof(tmp));
 	}
@@ -346,7 +346,7 @@ void SwapBSPFile( void ){
 	SwapBlock( (int*) bspModels, numBSPModels * sizeof( bspModels[ 0 ] ) );
 
 	/* shaders (don't swap the name) */
-	for ( i = 0; i < numBSPShaders ; i++ )
+	for ( i = 0; i < numBSPShaders; i++ )
 	{
 		bspShaders[ i ].contentFlags = LittleLong( bspShaders[ i ].contentFlags );
 		bspShaders[ i ].surfaceFlags = LittleLong( bspShaders[ i ].surfaceFlags );
@@ -571,52 +571,52 @@ void PrintBSPFileSizes( void ){
 
 	/* print various and sundry bits */
 	Sys_Printf( "%9d models        %9d\n",
-				numBSPModels, (int) ( numBSPModels * sizeof( bspModel_t ) ) );
+	            numBSPModels, (int) ( numBSPModels * sizeof( bspModel_t ) ) );
 	Sys_Printf( "%9d shaders       %9d\n",
-				numBSPShaders, (int) ( numBSPShaders * sizeof( bspShader_t ) ) );
+	            numBSPShaders, (int) ( numBSPShaders * sizeof( bspShader_t ) ) );
 	Sys_Printf( "%9d brushes       %9d\n",
-				numBSPBrushes, (int) ( numBSPBrushes * sizeof( bspBrush_t ) ) );
+	            numBSPBrushes, (int) ( numBSPBrushes * sizeof( bspBrush_t ) ) );
 	Sys_Printf( "%9d brushsides    %9d *\n",
-				numBSPBrushSides, (int) ( numBSPBrushSides * sizeof( bspBrushSide_t ) ) );
+	            numBSPBrushSides, (int) ( numBSPBrushSides * sizeof( bspBrushSide_t ) ) );
 	Sys_Printf( "%9d fogs          %9d\n",
-				numBSPFogs, (int) ( numBSPFogs * sizeof( bspFog_t ) ) );
+	            numBSPFogs, (int) ( numBSPFogs * sizeof( bspFog_t ) ) );
 	Sys_Printf( "%9d planes        %9d\n",
-				numBSPPlanes, (int) ( numBSPPlanes * sizeof( bspPlane_t ) ) );
+	            numBSPPlanes, (int) ( numBSPPlanes * sizeof( bspPlane_t ) ) );
 	Sys_Printf( "%9d entdata       %9d\n",
-				numEntities, bspEntDataSize );
+	            numEntities, bspEntDataSize );
 	Sys_Printf( "\n" );
 
 	Sys_Printf( "%9d nodes         %9d\n",
-				numBSPNodes, (int) ( numBSPNodes * sizeof( bspNode_t ) ) );
+	            numBSPNodes, (int) ( numBSPNodes * sizeof( bspNode_t ) ) );
 	Sys_Printf( "%9d leafs         %9d\n",
-				numBSPLeafs, (int) ( numBSPLeafs * sizeof( bspLeaf_t ) ) );
+	            numBSPLeafs, (int) ( numBSPLeafs * sizeof( bspLeaf_t ) ) );
 	Sys_Printf( "%9d leafsurfaces  %9d\n",
-				numBSPLeafSurfaces, (int) ( numBSPLeafSurfaces * sizeof( *bspLeafSurfaces ) ) );
+	            numBSPLeafSurfaces, (int) ( numBSPLeafSurfaces * sizeof( *bspLeafSurfaces ) ) );
 	Sys_Printf( "%9d leafbrushes   %9d\n",
-				numBSPLeafBrushes, (int) ( numBSPLeafBrushes * sizeof( *bspLeafBrushes ) ) );
+	            numBSPLeafBrushes, (int) ( numBSPLeafBrushes * sizeof( *bspLeafBrushes ) ) );
 	Sys_Printf( "\n" );
 
 	Sys_Printf( "%9d drawsurfaces  %9d *\n",
-				numBSPDrawSurfaces, (int) ( numBSPDrawSurfaces * sizeof( *bspDrawSurfaces ) ) );
+	            numBSPDrawSurfaces, (int) ( numBSPDrawSurfaces * sizeof( *bspDrawSurfaces ) ) );
 	Sys_Printf( "%9d drawverts     %9d *\n",
-				numBSPDrawVerts, (int) ( numBSPDrawVerts * sizeof( *bspDrawVerts ) ) );
+	            numBSPDrawVerts, (int) ( numBSPDrawVerts * sizeof( *bspDrawVerts ) ) );
 	Sys_Printf( "%9d drawindexes   %9d\n",
-				numBSPDrawIndexes, (int) ( numBSPDrawIndexes * sizeof( *bspDrawIndexes ) ) );
+	            numBSPDrawIndexes, (int) ( numBSPDrawIndexes * sizeof( *bspDrawIndexes ) ) );
 	Sys_Printf( "\n" );
 
 	Sys_Printf( "%9d lightmaps     %9d\n",
-				numBSPLightBytes / ( game->lightmapSize * game->lightmapSize * 3 ), numBSPLightBytes );
+	            numBSPLightBytes / ( game->lightmapSize * game->lightmapSize * 3 ), numBSPLightBytes );
 	Sys_Printf( "%9d lightgrid     %9d *\n",
-				numBSPGridPoints, (int) ( numBSPGridPoints * sizeof( *bspGridPoints ) ) );
+	            numBSPGridPoints, (int) ( numBSPGridPoints * sizeof( *bspGridPoints ) ) );
 	Sys_Printf( "          visibility    %9d\n",
-				numBSPVisBytes );
+	            numBSPVisBytes );
 
 	if (bspx)
 	{
 		size_t i;
 		Sys_Printf( "\n" );
 		for (i = 0; i < bspx->numlumps; i++)
-		{	//print counts only for known lumps
+		{       //print counts only for known lumps
 			if (!strcmp(bspx->lumps[i].lumpname, "ENVMAP"))
 				Sys_Printf( "%9d %-13s %9d\n", bspx->lumps[i].lumpsize/sizeof(denvmap_t), bspx->lumps[i].lumpname, bspx->lumps[i].lumpsize);
 			else if (!strcmp(bspx->lumps[i].lumpname, "SURFENVMAP"))
@@ -743,7 +743,7 @@ qboolean ParseEntity( void ){
 void ParseEntities( void ){
 	numEntities = 0;
 	ParseFromMemory( bspEntData, bspEntDataSize );
-	while ( ParseEntity() ) ;
+	while ( ParseEntity() );
 
 	/* ydnar: set number of bsp entities in case a map is loaded on top */
 	numBSPEntities = numEntities;
@@ -834,9 +834,9 @@ void UnparseEntities( void ){
 		/* ydnar: certain entities get stripped from bsp file */
 		value2 = ValueForKey( &entities[ i ], "classname" );
 		if ( !Q_stricmp( value2, "misc_model" ) ||
-			 !Q_stricmp( value2, "prop_static" ) ||
-			 !Q_stricmp( value2, "_decal" ) ||
-			 !Q_stricmp( value2, "_skybox" ) ) {
+		     !Q_stricmp( value2, "prop_static" ) ||
+		     !Q_stricmp( value2, "_decal" ) ||
+		     !Q_stricmp( value2, "_skybox" ) ) {
 			continue;
 		}
 

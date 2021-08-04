@@ -13,7 +13,7 @@
 
 /* disable warnings */
 #if GDEF_COMPILER_MSVC
-#pragma warning( disable:4018 )		/* signed/unsigned mismatch */
+#pragma warning( disable:4018 )         /* signed/unsigned mismatch */
 #endif
 
 
@@ -188,7 +188,7 @@ lwObject *lwGetObject( const char *filename, picoMemStream_t *fp, unsigned int *
 
 		case ID_POLS:
 			if ( !lwGetPolygons( fp, cksize, &layer->polygon,
-								 layer->point.offset ) ) {
+			                     layer->point.offset ) ) {
 				goto Fail;
 			}
 			break;
@@ -196,7 +196,7 @@ lwObject *lwGetObject( const char *filename, picoMemStream_t *fp, unsigned int *
 		case ID_VMAP:
 		case ID_VMAD:
 			node = ( lwNode * ) lwGetVMap( fp, cksize, layer->point.offset,
-										   layer->polygon.offset, id == ID_VMAD );
+			                               layer->polygon.offset, id == ID_VMAD );
 			if ( !node ) {
 				goto Fail;
 			}
@@ -206,7 +206,7 @@ lwObject *lwGetObject( const char *filename, picoMemStream_t *fp, unsigned int *
 
 		case ID_PTAG:
 			if ( !lwGetPolygonTags( fp, cksize, &object->taglist,
-									&layer->polygon ) ) {
+			                        &layer->polygon ) ) {
 				goto Fail;
 			}
 			break;
@@ -293,7 +293,7 @@ lwObject *lwGetObject( const char *filename, picoMemStream_t *fp, unsigned int *
 			goto Fail;
 		}
 		if ( !lwResolvePolySurfaces( &layer->polygon, &object->taglist,
-									 &object->surf, &object->nsurfs ) ) {
+		                             &object->surf, &object->nsurfs ) ) {
 			goto Fail;
 		}
 		lwGetVertNormals( &layer->point, &layer->polygon );

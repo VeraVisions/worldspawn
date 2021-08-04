@@ -26,43 +26,43 @@
 template<class StringList>
 void EntryCompletion<StringList>::connect(ui::Entry entry)
 {
-    if (!m_store) {
-        m_store = ui::ListStore::from(gtk_list_store_new(1, G_TYPE_STRING));
+	if (!m_store) {
+		m_store = ui::ListStore::from(gtk_list_store_new(1, G_TYPE_STRING));
 
-        fill();
+		fill();
 
-        StringList().connect(IdleDraw::QueueDrawCaller(m_idleUpdate));
-    }
+		StringList().connect(IdleDraw::QueueDrawCaller(m_idleUpdate));
+	}
 
-    auto completion = ui::EntryCompletion::from(gtk_entry_completion_new());
-    gtk_entry_set_completion(entry, completion);
-    gtk_entry_completion_set_model(completion, m_store);
-    gtk_entry_completion_set_text_column(completion, 0);
+	auto completion = ui::EntryCompletion::from(gtk_entry_completion_new());
+	gtk_entry_set_completion(entry, completion);
+	gtk_entry_completion_set_model(completion, m_store);
+	gtk_entry_completion_set_text_column(completion, 0);
 }
 
 template<class StringList>
 void EntryCompletion<StringList>::append(const char *string)
 {
-    m_store.append(0, string);
+	m_store.append(0, string);
 }
 
 template<class StringList>
 void EntryCompletion<StringList>::fill()
 {
-    StringList().forEach(AppendCaller(*this));
+	StringList().forEach(AppendCaller(*this));
 }
 
 template<class StringList>
 void EntryCompletion<StringList>::clear()
 {
-    m_store.clear();
+	m_store.clear();
 }
 
 template<class StringList>
 void EntryCompletion<StringList>::update()
 {
-    clear();
-    fill();
+	clear();
+	fill();
 }
 
 template

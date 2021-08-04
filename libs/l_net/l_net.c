@@ -522,9 +522,9 @@ int NMSG_ReadLong( netmessage_t *msg ){
 		return 0;
 	} //end if
 	c = msg->data[msg->read]
-		+ ( msg->data[msg->read + 1] << 8 )
-		+ ( msg->data[msg->read + 2] << 16 )
-		+ ( msg->data[msg->read + 3] << 24 );
+	    + ( msg->data[msg->read + 1] << 8 )
+	    + ( msg->data[msg->read + 2] << 16 )
+	    + ( msg->data[msg->read + 3] << 24 );
 	msg->read += 4;
 	return c;
 } //end of the function NMSG_ReadLong
@@ -543,9 +543,9 @@ float NMSG_ReadFloat( netmessage_t *msg ){
 		return 0;
 	} //end if
 	c = msg->data[msg->read]
-		+ ( msg->data[msg->read + 1] << 8 )
-		+ ( msg->data[msg->read + 2] << 16 )
-		+ ( msg->data[msg->read + 3] << 24 );
+	    + ( msg->data[msg->read + 1] << 8 )
+	    + ( msg->data[msg->read + 2] << 16 )
+	    + ( msg->data[msg->read + 3] << 24 );
 	msg->read += 4;
 	return *(float *)&c;
 } //end of the function NMSG_ReadFloat

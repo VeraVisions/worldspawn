@@ -30,81 +30,81 @@
 #include <set>
 
 class NameCallbackSet {
-    typedef std::set<NameCallback> NameCallbacks;
-    NameCallbacks m_callbacks;
+typedef std::set<NameCallback> NameCallbacks;
+NameCallbacks m_callbacks;
 public:
-    void insert(const NameCallback &callback)
-    {
-        m_callbacks.insert(callback);
-    }
+void insert(const NameCallback &callback)
+{
+	m_callbacks.insert(callback);
+}
 
-    void erase(const NameCallback &callback)
-    {
-        m_callbacks.erase(callback);
-    }
+void erase(const NameCallback &callback)
+{
+	m_callbacks.erase(callback);
+}
 
-    void changed(const char *name) const
-    {
-        for (NameCallbacks::const_iterator i = m_callbacks.begin(); i != m_callbacks.end(); ++i) {
-            (*i)(name);
-        }
-    }
+void changed(const char *name) const
+{
+	for (NameCallbacks::const_iterator i = m_callbacks.begin(); i != m_callbacks.end(); ++i) {
+		(*i)(name);
+	}
+}
 };
 
 class NamedEntity : public Nameable {
-    EntityKeyValues &m_entity;
-    NameCallbackSet m_changed;
-    CopiedString m_name;
+EntityKeyValues &m_entity;
+NameCallbackSet m_changed;
+CopiedString m_name;
 public:
-    NamedEntity(EntityKeyValues &entity) : m_entity(entity)
-    {
-    }
+NamedEntity(EntityKeyValues &entity) : m_entity(entity)
+{
+}
 
-    const char *name() const
-    {
+const char *name() const
+{
 	if (string_empty(m_name.c_str())) {
 		return m_entity.getEntityClass().name();
 	}
 	return m_name.c_str();
-    }
+}
 
-    void attach(const NameCallback &callback)
-    {
-        m_changed.insert(callback);
-    }
+void attach(const NameCallback &callback)
+{
+	m_changed.insert(callback);
+}
 
-    void detach(const NameCallback &callback)
-    {
-        m_changed.erase(callback);
-    }
+void detach(const NameCallback &callback)
+{
+	m_changed.erase(callback);
+}
 
-    void identifierChanged(const char *value)
-    {
-        if (string_empty(value)) {
-            m_changed.changed(m_entity.getEntityClass().name());
-        } else {
-            m_changed.changed(value);
-        }
-        m_name = value;
-    }
+void identifierChanged(const char *value)
+{
+	if (string_empty(value)) {
+		m_changed.changed(m_entity.getEntityClass().name());
+	} else {
+		m_changed.changed(value);
+	}
+	m_name = value;
+}
 
-    typedef MemberCaller<NamedEntity, void(const char *), &NamedEntity::identifierChanged> IdentifierChangedCaller;
+typedef MemberCaller<NamedEntity, void (const char *), &NamedEntity::identifierChanged> IdentifierChangedCaller;
 };
 
 class RenderableNamedEntity : public OpenGLRenderable {
-    const NamedEntity &m_named;
-    const Vector3 &m_position;
+const NamedEntity &m_named;
+const Vector3 &m_position;
 public:
-    RenderableNamedEntity(const NamedEntity &named, const Vector3 &position)
-            : m_named(named), m_position(position)
-    {
-    }
+RenderableNamedEntity(const NamedEntity &named, const Vector3 &position)
+	: m_named(named), m_position(position)
+{
+}
 
-    void render(RenderStateFlags state) const
-    {
-        glRasterPos3fv(vector3_to_array(m_position));
-        GlobalOpenGL().drawString(m_named.name());
-    }
+void render(RenderStateFlags state) const
+{
+	glRasterPos3fv(vector3_to_array(m_position));
+	GlobalOpenGL().drawString(m_named.name());
+}
 };
 
 

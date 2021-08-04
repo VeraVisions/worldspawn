@@ -555,18 +555,18 @@ int lwGetPolygons( picoMemStream_t *fp, int cksize, lwPolygonList *plist, int pt
 void lwGetPolyNormals( lwPointList *point, lwPolygonList *polygon );
 int lwGetPointPolygons( lwPointList *point, lwPolygonList *polygon );
 int lwResolvePolySurfaces( lwPolygonList *polygon, lwTagList *tlist,
-						   lwSurface **surf, int *nsurfs );
+                           lwSurface **surf, int *nsurfs );
 void lwGetVertNormals( lwPointList *point, lwPolygonList *polygon );
 void lwFreeTags( lwTagList *tlist );
 int lwGetTags( picoMemStream_t *fp, int cksize, lwTagList *tlist );
 int lwGetPolygonTags( picoMemStream_t *fp, int cksize, lwTagList *tlist,
-					  lwPolygonList *plist );
+                      lwPolygonList *plist );
 
 /* vmap.c */
 
 void lwFreeVMap( lwVMap *vmap );
 lwVMap *lwGetVMap( picoMemStream_t *fp, int cksize, int ptoffset, int poloffset,
-				   int perpoly );
+                   int perpoly );
 int lwGetPointVMaps( lwPointList *point, lwVMap *vmap );
 int lwGetPolyVMaps( lwPolygonList *polygon, lwVMap *vmap );
 
@@ -610,7 +610,7 @@ int lwValidateObject5( const char *filename, picoMemStream_t *fp, unsigned int *
 void lwListFree( void *list, void ( *freeNode )( void * ) );
 void lwListAdd( void **list, void *node );
 void lwListInsert( void **vlist, void *vitem,
-				   int ( *compare )( void *, void * ) );
+                   int ( *compare )( void *, void * ) );
 
 /* vecmath.c */
 

@@ -35,7 +35,7 @@
 
 inline MapImporter *Node_getMapImporter(scene::Node &node)
 {
-    return NodeTypeCast<MapImporter>::cast(node);
+	return NodeTypeCast<MapImporter>::cast(node);
 }
 
 
@@ -46,94 +46,94 @@ NodeSmartReference g_nullNode(NewNullNode());
 
 NodeSmartReference Entity_create(EntityCreator &entityTable, EntityClass *entityClass, const KeyValues &keyValues)
 {
-    scene::Node &entity(entityTable.createEntity(entityClass));
-    for (KeyValues::const_iterator i = keyValues.begin(); i != keyValues.end(); ++i) {
-        Node_getEntity(entity)->setKeyValue((*i).first.c_str(), (*i).second.c_str());
-    }
-    return NodeSmartReference(entity);
+	scene::Node &entity(entityTable.createEntity(entityClass));
+	for (KeyValues::const_iterator i = keyValues.begin(); i != keyValues.end(); ++i) {
+		Node_getEntity(entity)->setKeyValue((*i).first.c_str(), (*i).second.c_str());
+	}
+	return NodeSmartReference(entity);
 }
 
 NodeSmartReference
 Entity_parseTokens(Tokeniser &tokeniser, EntityCreator &entityTable, const PrimitiveParser &parser, int index)
 {
-    NodeSmartReference entity(g_nullNode);
-    KeyValues keyValues;
-    const char *classname = "";
+	NodeSmartReference entity(g_nullNode);
+	KeyValues keyValues;
+	const char *classname = "";
 
-    int count_primitives = 0;
-    while (1) {
-        tokeniser.nextLine();
-        const char *token = tokeniser.getToken();
-        if (token == 0) {
-            Tokeniser_unexpectedError(tokeniser, token, "#entity-token");
-            return g_nullNode;
-        }
-        if (!strcmp(token, "}")) { // end entity
-            if (entity == g_nullNode) {
-                // entity does not have brushes
-                entity = Entity_create(entityTable, GlobalEntityClassManager().findOrInsert(classname, false),
-                                       keyValues);
-            }
-            return entity;
-        } else if (!strcmp(token, "{")) { // begin primitive
-            if (entity == g_nullNode) {
-                // entity has brushes
-                entity = Entity_create(entityTable, GlobalEntityClassManager().findOrInsert(classname, true),
-                                       keyValues);
-            }
+	int count_primitives = 0;
+	while (1) {
+		tokeniser.nextLine();
+		const char *token = tokeniser.getToken();
+		if (token == 0) {
+			Tokeniser_unexpectedError(tokeniser, token, "#entity-token");
+			return g_nullNode;
+		}
+		if (!strcmp(token, "}")) { // end entity
+			if (entity == g_nullNode) {
+				// entity does not have brushes
+				entity = Entity_create(entityTable, GlobalEntityClassManager().findOrInsert(classname, false),
+				                       keyValues);
+			}
+			return entity;
+		} else if (!strcmp(token, "{")) { // begin primitive
+			if (entity == g_nullNode) {
+				// entity has brushes
+				entity = Entity_create(entityTable, GlobalEntityClassManager().findOrInsert(classname, true),
+				                       keyValues);
+			}
 
-            tokeniser.nextLine();
+			tokeniser.nextLine();
 
-            NodeSmartReference primitive(parser.parsePrimitive(tokeniser));
-            if (primitive == g_nullNode || !Node_getMapImporter(primitive)->importTokens(tokeniser)) {
-                globalErrorStream() << "brush " << count_primitives << ": parse error\n";
-                return g_nullNode;
-            }
+			NodeSmartReference primitive(parser.parsePrimitive(tokeniser));
+			if (primitive == g_nullNode || !Node_getMapImporter(primitive)->importTokens(tokeniser)) {
+				globalErrorStream() << "brush " << count_primitives << ": parse error\n";
+				return g_nullNode;
+			}
 
-            scene::Traversable *traversable = Node_getTraversable(entity);
-            if (Node_getEntity(entity)->isContainer() && traversable != 0) {
-                traversable->insert(primitive);
-            } else {
-                globalErrorStream() << "entity " << index << ": type " << classname << ": discarding brush "
-                                    << count_primitives << "\n";
-            }
-            ++count_primitives;
-        } else // epair
-        {
-            CopiedString key(token);
-            token = tokeniser.getToken();
-            if (token == 0) {
-                Tokeniser_unexpectedError(tokeniser, token, "#epair-value");
-                return g_nullNode;
-            }
-            keyValues.push_back(KeyValues::value_type(key, token));
-            if (string_equal(key.c_str(), "classname")) {
-                classname = keyValues.back().second.c_str();
-            }
-        }
-    }
-    // unreachable code
-    return g_nullNode;
+			scene::Traversable *traversable = Node_getTraversable(entity);
+			if (Node_getEntity(entity)->isContainer() && traversable != 0) {
+				traversable->insert(primitive);
+			} else {
+				globalErrorStream() << "entity " << index << ": type " << classname << ": discarding brush "
+				                    << count_primitives << "\n";
+			}
+			++count_primitives;
+		} else // epair
+		{
+			CopiedString key(token);
+			token = tokeniser.getToken();
+			if (token == 0) {
+				Tokeniser_unexpectedError(tokeniser, token, "#epair-value");
+				return g_nullNode;
+			}
+			keyValues.push_back(KeyValues::value_type(key, token));
+			if (string_equal(key.c_str(), "classname")) {
+				classname = keyValues.back().second.c_str();
+			}
+		}
+	}
+	// unreachable code
+	return g_nullNode;
 }
 
 void Map_Read(scene::Node &root, Tokeniser &tokeniser, EntityCreator &entityTable, const PrimitiveParser &parser)
 {
-    int count_entities = 0;
-    for (;;) {
-        tokeniser.nextLine();
-        if (!tokeniser.getToken()) { // { or 0
-            break;
-        }
+	int count_entities = 0;
+	for (;;) {
+		tokeniser.nextLine();
+		if (!tokeniser.getToken()) { // { or 0
+			break;
+		}
 
-        NodeSmartReference entity(Entity_parseTokens(tokeniser, entityTable, parser, count_entities));
+		NodeSmartReference entity(Entity_parseTokens(tokeniser, entityTable, parser, count_entities));
 
-        if (entity == g_nullNode) {
-            globalErrorStream() << "entity " << count_entities << ": parse error\n";
-            return;
-        }
+		if (entity == g_nullNode) {
+			globalErrorStream() << "entity " << count_entities << ": parse error\n";
+			return;
+		}
 
-        Node_getTraversable(root)->insert(entity);
+		Node_getTraversable(root)->insert(entity);
 
-        ++count_entities;
-    }
+		++count_entities;
+	}
 }

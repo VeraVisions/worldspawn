@@ -34,99 +34,99 @@ const Vector3 ANGLESKEY_IDENTITY = Vector3(0, 0, 0);
 
 inline void default_angles(Vector3 &angles)
 {
-    angles = ANGLESKEY_IDENTITY;
+	angles = ANGLESKEY_IDENTITY;
 }
 
 inline void normalise_angles(Vector3 &angles)
 {
-    angles[0] = static_cast<float>( float_mod(angles[0], 360));
-    angles[1] = static_cast<float>( float_mod(angles[1], 360));
-    angles[2] = static_cast<float>( float_mod(angles[2], 360));
+	angles[0] = static_cast<float>( float_mod(angles[0], 360));
+	angles[1] = static_cast<float>( float_mod(angles[1], 360));
+	angles[2] = static_cast<float>( float_mod(angles[2], 360));
 }
 
 inline void read_angle(Vector3 &angles, const char *value)
 {
-    if (!string_parse_float(value, angles[2])) {
-        default_angles(angles);
-    } else {
-        angles[0] = 0;
-        angles[1] = 0;
-        normalise_angles(angles);
-    }
+	if (!string_parse_float(value, angles[2])) {
+		default_angles(angles);
+	} else {
+		angles[0] = 0;
+		angles[1] = 0;
+		normalise_angles(angles);
+	}
 }
 
 inline void read_angles(Vector3 &angles, const char *value)
 {
-    if (!string_parse_vector3(value, angles)) {
-        default_angles(angles);
-    } else {
-        angles = Vector3(angles[2], angles[0], angles[1]);
-        normalise_angles(angles);
-    }
+	if (!string_parse_vector3(value, angles)) {
+		default_angles(angles);
+	} else {
+		angles = Vector3(angles[2], angles[0], angles[1]);
+		normalise_angles(angles);
+	}
 }
 
 inline void write_angles(const Vector3 &angles, Entity *entity)
 {
-    if (angles[0] == 0
-        && angles[1] == 0
-        && angles[2] == 0) {
-        entity->setKeyValue("angle", "");
-        entity->setKeyValue("angles", "");
-    } else {
-        char value[64];
+	if (angles[0] == 0
+	    && angles[1] == 0
+	    && angles[2] == 0) {
+		entity->setKeyValue("angle", "");
+		entity->setKeyValue("angles", "");
+	} else {
+		char value[64];
 
-        if (angles[0] == 0 && angles[1] == 0) {
-            entity->setKeyValue("angles", "");
-            write_angle(angles[2], entity);
-        } else {
-            sprintf(value, "%f %f %f", angles[1], angles[2], angles[0]);
-            entity->setKeyValue("angle", "");
-            entity->setKeyValue("angles", value);
-        }
-    }
+		if (angles[0] == 0 && angles[1] == 0) {
+			entity->setKeyValue("angles", "");
+			write_angle(angles[2], entity);
+		} else {
+			sprintf(value, "%f %f %f", angles[1], angles[2], angles[0]);
+			entity->setKeyValue("angle", "");
+			entity->setKeyValue("angles", value);
+		}
+	}
 }
 
 inline Vector3 angles_rotated(const Vector3 &angles, const Quaternion &rotation)
 {
-    return matrix4_get_rotation_euler_xyz_degrees(
-            matrix4_multiplied_by_matrix4(
-                    matrix4_rotation_for_euler_xyz_degrees(angles),
-                    matrix4_rotation_for_quaternion_quantised(rotation)
-            )
-    );
+	return matrix4_get_rotation_euler_xyz_degrees(
+		matrix4_multiplied_by_matrix4(
+			matrix4_rotation_for_euler_xyz_degrees(angles),
+			matrix4_rotation_for_quaternion_quantised(rotation)
+			)
+		);
 }
 
 class AnglesKey {
-    Callback<void()> m_anglesChanged;
+Callback<void()> m_anglesChanged;
 public:
-    Vector3 m_angles;
+Vector3 m_angles;
 
 
-    AnglesKey(const Callback<void()> &anglesChanged)
-            : m_anglesChanged(anglesChanged), m_angles(ANGLESKEY_IDENTITY)
-    {
-    }
+AnglesKey(const Callback<void()> &anglesChanged)
+	: m_anglesChanged(anglesChanged), m_angles(ANGLESKEY_IDENTITY)
+{
+}
 
-    void angleChanged(const char *value)
-    {
-        read_angle(m_angles, value);
-        m_anglesChanged();
-    }
+void angleChanged(const char *value)
+{
+	read_angle(m_angles, value);
+	m_anglesChanged();
+}
 
-    typedef MemberCaller<AnglesKey, void(const char *), &AnglesKey::angleChanged> AngleChangedCaller;
+typedef MemberCaller<AnglesKey, void (const char *), &AnglesKey::angleChanged> AngleChangedCaller;
 
-    void anglesChanged(const char *value)
-    {
-        read_angles(m_angles, value);
-        m_anglesChanged();
-    }
+void anglesChanged(const char *value)
+{
+	read_angles(m_angles, value);
+	m_anglesChanged();
+}
 
-    typedef MemberCaller<AnglesKey, void(const char *), &AnglesKey::anglesChanged> AnglesChangedCaller;
+typedef MemberCaller<AnglesKey, void (const char *), &AnglesKey::anglesChanged> AnglesChangedCaller;
 
-    void write(Entity *entity) const
-    {
-        write_angles(m_angles, entity);
-    }
+void write(Entity *entity) const
+{
+	write_angles(m_angles, entity);
+}
 };
 
 

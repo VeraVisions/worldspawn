@@ -40,7 +40,7 @@ void setValue(){
 	value = 3;
 }
 // a typedef to make things more readable
-typedef MemberCaller<Integer, void(), &Integer::setValue> SetValueCaller;
+typedef MemberCaller<Integer, void (), &Integer::setValue> SetValueCaller;
 };
 
 void example(){
@@ -77,7 +77,7 @@ void Int_setValue( int& value ){
 }
 
 // a typedef to make things more readable
-typedef ReferenceCaller<int, void(), Int_setValue> IntSetValueCaller;
+typedef ReferenceCaller<int, void (), Int_setValue> IntSetValueCaller;
 
 void example(){
 	int foo = 0;
@@ -123,32 +123,32 @@ class Test
 public:
 void test0(){
 }
-typedef Member<Test, void(), &Test::test0> Test0;
-typedef MemberCaller<Test, void(), &Test::test0> Test0Caller;
+typedef Member<Test, void (), &Test::test0> Test0;
+typedef MemberCaller<Test, void (), &Test::test0> Test0Caller;
 void test0const() const {
 }
-typedef ConstMember<Test, void(), &Test::test0const> Test0Const;
-typedef ConstMemberCaller<Test, void(), &Test::test0const> Test0ConstCaller;
+typedef ConstMember<Test, void (), &Test::test0const> Test0Const;
+typedef ConstMemberCaller<Test, void (), &Test::test0const> Test0ConstCaller;
 void test1( A1 ){
 }
-typedef Member<Test, void(A1), &Test::test1> Test1;
-typedef MemberCaller<Test, void(A1), &Test::test1> Test1Caller;
+typedef Member<Test, void (A1), &Test::test1> Test1;
+typedef MemberCaller<Test, void (A1), &Test::test1> Test1Caller;
 void test1const( A1 ) const {
 }
-typedef ConstMember<Test, void(A1), &Test::test1const> Test1Const;
-typedef ConstMemberCaller<Test, void(A1), &Test::test1const> Test1ConstCaller;
+typedef ConstMember<Test, void (A1), &Test::test1const> Test1Const;
+typedef ConstMemberCaller<Test, void (A1), &Test::test1const> Test1ConstCaller;
 void test2( A1, A2 ){
 }
-typedef Member<Test, void(A1, A2), &Test::test2> Test2;
+typedef Member<Test, void (A1, A2), &Test::test2> Test2;
 void test2const( A1, A2 ) const {
 }
-typedef ConstMember<Test, void(A1, A2), &Test::test2const> Test2Const;
+typedef ConstMember<Test, void (A1, A2), &Test::test2const> Test2Const;
 void test3( A1, A2, A3 ){
 }
-typedef Member<Test, void(A1, A2, A3), &Test::test3> Test3;
+typedef Member<Test, void (A1, A2, A3), &Test::test3> Test3;
 void test3const( A1, A2, A3 ) const {
 }
-typedef ConstMember<Test, void(A1, A2, A3), &Test::test3const> Test3Const;
+typedef ConstMember<Test, void (A1, A2, A3), &Test::test3const> Test3Const;
 };
 
 void test0free(){
@@ -157,51 +157,51 @@ void test1free( A1 ){
 }
 void test2free( A1, A2 ){
 }
-typedef Function<void(A1, A2), &test2free> Test2Free;
+typedef Function<void (A1, A2), &test2free> Test2Free;
 void test3free( A1, A2, A3 ){
 }
-typedef Function<void(A1, A2, A3), &test3free> Test3Free;
+typedef Function<void (A1, A2, A3), &test3free> Test3Free;
 
 
 void test0( Test& test ){
 }
-typedef ReferenceCaller<Test, void(), &test0> Test0Caller;
+typedef ReferenceCaller<Test, void (), &test0> Test0Caller;
 
 void test0const( const Test& test ){
 }
-typedef ConstReferenceCaller<Test, void(), &test0const> Test0ConstCaller;
+typedef ConstReferenceCaller<Test, void (), &test0const> Test0ConstCaller;
 
 void test0p( Test* test ){
 }
-typedef PointerCaller<Test, void(), &test0p> Test0PCaller;
+typedef PointerCaller<Test, void (), &test0p> Test0PCaller;
 
 void test0constp( const Test* test ){
 }
-typedef ConstPointerCaller<Test, void(), &test0constp> Test0ConstPCaller;
+typedef ConstPointerCaller<Test, void (), &test0constp> Test0ConstPCaller;
 
 void test1( Test& test, A1 ){
 }
-typedef ReferenceCaller<Test, void(A1), &test1> Test1Caller;
+typedef ReferenceCaller<Test, void (A1), &test1> Test1Caller;
 
 void test1const( const Test& test, A1 ){
 }
-typedef ConstReferenceCaller<Test, void(A1), &test1const> Test1ConstCaller;
+typedef ConstReferenceCaller<Test, void (A1), &test1const> Test1ConstCaller;
 
 void test1p( Test* test, A1 ){
 }
-typedef PointerCaller<Test, void(A1), &test1p> Test1PCaller;
+typedef PointerCaller<Test, void (A1), &test1p> Test1PCaller;
 
 void test1constp( const Test* test, A1 ){
 }
-typedef ConstPointerCaller<Test, void(A1), &test1constp> Test1ConstPCaller;
+typedef ConstPointerCaller<Test, void (A1), &test1constp> Test1ConstPCaller;
 
 void test2( Test& test, A1, A2 ){
 }
-typedef Function<void(Test&, A1, A2), &test2> Test2;
+typedef Function<void (Test&, A1, A2), &test2> Test2;
 
 void test3( Test& test, A1, A2, A3 ){
 }
-typedef Function<void(Test&, A1, A2, A3), &test3> Test3;
+typedef Function<void (Test&, A1, A2, A3), &test3> Test3;
 
 void instantiate(){
 	Test test;
@@ -220,7 +220,7 @@ void instantiate(){
 		bool u = a != b;
 	}
 	{
-		typedef Callback<void(A1)> TestCallback1;
+		typedef Callback<void (A1)> TestCallback1;
 		TestCallback1 a = makeCallbackF(&test1free);
 		TestCallback1 b = Test::Test1Caller( test );
 		b = makeCallback( Test::Test1(), test );
@@ -234,7 +234,7 @@ void instantiate(){
 		bool u = a != b;
 	}
 	{
-		typedef Callback<void(A1, A2)> TestCallback2;
+		typedef Callback<void (A1, A2)> TestCallback2;
 		TestCallback2 a = makeStatelessCallback( Test2Free() );
 		TestCallback2 b = makeCallback( Test2(), test );
 		makeCallback( Test::Test2(), test );
@@ -243,7 +243,7 @@ void instantiate(){
 		bool u = a != b;
 	}
 	{
-		typedef Callback<void(A1, A2, A3)> TestCallback3;
+		typedef Callback<void (A1, A2, A3)> TestCallback3;
 		TestCallback3 a = makeStatelessCallback( Test3Free() );
 		TestCallback3 b = makeCallback( Test3(), test );
 		makeCallback( Test::Test3(), test );

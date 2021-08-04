@@ -29,41 +29,41 @@
 #include "vfs.h"
 
 class FileSystemDependencies : public GlobalRadiantModuleRef {
-    ArchiveModulesRef m_archive_modules;
+ArchiveModulesRef m_archive_modules;
 public:
-    FileSystemDependencies() :
-            m_archive_modules(GlobalRadiant().getRequiredGameDescriptionKeyValue("archivetypes"))
-    {
-    }
+FileSystemDependencies() :
+	m_archive_modules(GlobalRadiant().getRequiredGameDescriptionKeyValue("archivetypes"))
+{
+}
 
-    ArchiveModules &getArchiveModules()
-    {
-        return m_archive_modules.get();
-    }
+ArchiveModules &getArchiveModules()
+{
+	return m_archive_modules.get();
+}
 };
 
 class FileSystemQ3API {
-    VirtualFileSystem *m_filesystemq3;
+VirtualFileSystem *m_filesystemq3;
 public:
-    typedef VirtualFileSystem Type;
+typedef VirtualFileSystem Type;
 
-    STRING_CONSTANT(Name, "*");
+STRING_CONSTANT(Name, "*");
 
-    FileSystemQ3API()
-    {
-        FileSystem_Init();
-        m_filesystemq3 = &GetFileSystem();
-    }
+FileSystemQ3API()
+{
+	FileSystem_Init();
+	m_filesystemq3 = &GetFileSystem();
+}
 
-    ~FileSystemQ3API()
-    {
-        FileSystem_Shutdown();
-    }
+~FileSystemQ3API()
+{
+	FileSystem_Shutdown();
+}
 
-    VirtualFileSystem *getTable()
-    {
-        return m_filesystemq3;
-    }
+VirtualFileSystem *getTable()
+{
+	return m_filesystemq3;
+}
 };
 
 typedef SingletonModule<FileSystemQ3API, FileSystemDependencies> FileSystemQ3Module;
@@ -72,7 +72,7 @@ FileSystemQ3Module g_FileSystemQ3Module;
 
 ArchiveModules &FileSystemQ3API_getArchiveModules()
 {
-    return g_FileSystemQ3Module.getDependencies().getArchiveModules();
+	return g_FileSystemQ3Module.getDependencies().getArchiveModules();
 }
 
 
@@ -84,7 +84,7 @@ __attribute__((visibility("default")))
 #endif
 Radiant_RegisterModules(ModuleServer &server)
 {
-    initialiseModule(server);
+	initialiseModule(server);
 
-    g_FileSystemQ3Module.selfRegister();
+	g_FileSystemQ3Module.selfRegister();
 }

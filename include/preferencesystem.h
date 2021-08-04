@@ -28,15 +28,15 @@
 
 class PreferenceSystem {
 public:
-	INTEGER_CONSTANT(Version, 1);
-	STRING_CONSTANT(Name, "preferences");
+INTEGER_CONSTANT(Version, 1);
+STRING_CONSTANT(Name, "preferences");
 
-	virtual void registerPreference(const char *name, const Property<const char *> &cb) = 0;
+virtual void registerPreference(const char *name, const Property<const char *> &cb) = 0;
 };
 
 template<class Self>
 Property<const char *> make_property_string(Self &it) {
-	return make_property<PropertyAdaptor<Self, const char *>>(it);
+	return make_property<PropertyAdaptor<Self, const char *> >(it);
 }
 
 template<class I, class Self>

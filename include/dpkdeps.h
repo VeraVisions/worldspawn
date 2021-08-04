@@ -78,7 +78,7 @@ inline bool DpkReadDepsLine( const char *line, char **pakname, char **pakversion
 	while ( !std::isspace( *c ) && *c != '\0' ) ++c;
 	p_version_end = c;
 
-	if ( p_name_end - p_name > 0 ){
+	if ( p_name_end - p_name > 0 ) {
 		*pakname = string_clone_range( StringRange( p_name, p_name_end ) );
 	} else return false;
 

@@ -37,14 +37,17 @@ void TestStringClass();
 class strdata
 {
 public:
-strdata () : len( 0 ), refcount( 0 ), data( NULL ), alloced( 0 ) {}
+strdata () : len( 0 ), refcount( 0 ), data( NULL ), alloced( 0 ) {
+}
 ~strdata (){
 	if ( data ) {
 		delete [] data;
 	}
 }
 
-void AddRef() { refcount++; }
+void AddRef() {
+	refcount++;
+}
 bool DelRef(){       // True if killed
 	refcount--;
 	if ( refcount < 0 ) {

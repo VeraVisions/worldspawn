@@ -38,15 +38,15 @@ void GlobalWindowObservers_connectTopLevel(ui::Window window);
 
 inline ButtonIdentifier button_for_button(unsigned int button)
 {
-    switch (button) {
-        case 1:
-            return c_buttonLeft;
-        case 2:
-            return c_buttonMiddle;
-        case 3:
-            return c_buttonRight;
-    }
-    return c_buttonInvalid;
+	switch (button) {
+	case 1:
+		return c_buttonLeft;
+	case 2:
+		return c_buttonMiddle;
+	case 3:
+		return c_buttonRight;
+	}
+	return c_buttonInvalid;
 }
 
 ModifierFlags modifiers_for_state(unsigned int state);
@@ -54,7 +54,7 @@ ModifierFlags modifiers_for_state_cam(unsigned int state);
 
 inline WindowVector WindowVector_forDouble(double x, double y)
 {
-    return WindowVector(static_cast<float>( x ), static_cast<float>( y ));
+	return WindowVector(static_cast<float>( x ), static_cast<float>( y ));
 }
 
 #endif

@@ -415,21 +415,51 @@ Str& operator +=( const char *pStr ){
 }
 
 
-bool operator ==( const Str& rhs ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, rhs.m_pStr ) == 0 : strcmp( m_pStr, rhs.m_pStr ) == 0; }
-bool operator ==( char* pStr ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) == 0 : strcmp( m_pStr, pStr ) == 0; }
-bool operator ==( const char* pStr ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) == 0 : strcmp( m_pStr, pStr ) == 0; }
-bool operator !=( Str& rhs ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, rhs.m_pStr ) != 0 : strcmp( m_pStr, rhs.m_pStr ) != 0; }
-bool operator !=( char* pStr ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) != 0 : strcmp( m_pStr, pStr ) != 0; }
-bool operator !=( const char* pStr ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) != 0 : strcmp( m_pStr, pStr ) != 0; }
-bool operator <( const Str& rhs ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, rhs.m_pStr ) < 0 : strcmp( m_pStr, rhs.m_pStr ) < 0; }
-bool operator <( char* pStr ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) < 0 : strcmp( m_pStr, pStr ) < 0; }
-bool operator <( const char* pStr ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) < 0 : strcmp( m_pStr, pStr ) < 0; }
-bool operator >( const Str& rhs ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, rhs.m_pStr ) > 0 : strcmp( m_pStr, rhs.m_pStr ) > 0; }
-bool operator >( char* pStr ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) > 0 : strcmp( m_pStr, pStr ) > 0; }
-bool operator >( const char* pStr ) const { return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) > 0 : strcmp( m_pStr, pStr ) > 0; }
-char& operator []( std::size_t nIndex ) { return m_pStr[nIndex]; }
-const char& operator []( std::size_t nIndex ) const { return m_pStr[nIndex]; }
-char GetAt( std::size_t nIndex ) { return m_pStr[nIndex]; }
+bool operator ==( const Str& rhs ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, rhs.m_pStr ) == 0 : strcmp( m_pStr, rhs.m_pStr ) == 0;
+}
+bool operator ==( char* pStr ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) == 0 : strcmp( m_pStr, pStr ) == 0;
+}
+bool operator ==( const char* pStr ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) == 0 : strcmp( m_pStr, pStr ) == 0;
+}
+bool operator !=( Str& rhs ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, rhs.m_pStr ) != 0 : strcmp( m_pStr, rhs.m_pStr ) != 0;
+}
+bool operator !=( char* pStr ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) != 0 : strcmp( m_pStr, pStr ) != 0;
+}
+bool operator !=( const char* pStr ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) != 0 : strcmp( m_pStr, pStr ) != 0;
+}
+bool operator <( const Str& rhs ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, rhs.m_pStr ) < 0 : strcmp( m_pStr, rhs.m_pStr ) < 0;
+}
+bool operator <( char* pStr ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) < 0 : strcmp( m_pStr, pStr ) < 0;
+}
+bool operator <( const char* pStr ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) < 0 : strcmp( m_pStr, pStr ) < 0;
+}
+bool operator >( const Str& rhs ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, rhs.m_pStr ) > 0 : strcmp( m_pStr, rhs.m_pStr ) > 0;
+}
+bool operator >( char* pStr ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) > 0 : strcmp( m_pStr, pStr ) > 0;
+}
+bool operator >( const char* pStr ) const {
+	return ( m_bIgnoreCase ) ? stricmp( m_pStr, pStr ) > 0 : strcmp( m_pStr, pStr ) > 0;
+}
+char& operator []( std::size_t nIndex ) {
+	return m_pStr[nIndex];
+}
+const char& operator []( std::size_t nIndex ) const {
+	return m_pStr[nIndex];
+}
+char GetAt( std::size_t nIndex ) {
+	return m_pStr[nIndex];
+}
 };
 
 
@@ -442,7 +472,7 @@ inline TextOutputStreamType& ostream_write( TextOutputStreamType& ostream, const
 inline void AddSlash( Str& strPath ){
 	if ( strPath.GetLength() > 0 ) {
 		if ( ( strPath.GetAt( strPath.GetLength() - 1 ) != '/' ) &&
-			 ( strPath.GetAt( strPath.GetLength() - 1 ) != '\\' ) ) {
+		     ( strPath.GetAt( strPath.GetLength() - 1 ) != '\\' ) ) {
 			strPath += '/';
 		}
 	}

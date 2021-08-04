@@ -29,68 +29,68 @@
 // Timo
 // new brush primitive texdef
 struct brushprimit_texdef_t {
-    brushprimit_texdef_t()
-    {
-        coords[0][0] = 2.0f;
-        coords[0][1] = 0.f;
-        coords[0][2] = 0.f;
-        coords[1][0] = 0.f;
-        coords[1][1] = 2.0f;
-        coords[1][2] = 0.f;
-    }
+	brushprimit_texdef_t()
+	{
+		coords[0][0] = 2.0f;
+		coords[0][1] = 0.f;
+		coords[0][2] = 0.f;
+		coords[1][0] = 0.f;
+		coords[1][1] = 2.0f;
+		coords[1][2] = 0.f;
+	}
 
-    void removeScale(std::size_t width, std::size_t height)
-    {
+	void removeScale(std::size_t width, std::size_t height)
+	{
 #if 1
-        coords[0][0] *= width;
-        coords[0][1] *= width;
-        coords[0][2] *= width;
-        coords[1][0] *= height;
-        coords[1][1] *= height;
-        coords[1][2] *= height;
+		coords[0][0] *= width;
+		coords[0][1] *= width;
+		coords[0][2] *= width;
+		coords[1][0] *= height;
+		coords[1][1] *= height;
+		coords[1][2] *= height;
 #endif
-    }
+	}
 
-    void addScale(std::size_t width, std::size_t height)
-    {
+	void addScale(std::size_t width, std::size_t height)
+	{
 #if 1
-        ASSERT_MESSAGE(width > 0, "shader-width is 0");
-        ASSERT_MESSAGE(height > 0, "shader-height is 0");
-        coords[0][0] /= width;
-        coords[0][1] /= width;
-        coords[0][2] /= width;
-        coords[1][0] /= height;
-        coords[1][1] /= height;
-        coords[1][2] /= height;
+		ASSERT_MESSAGE(width > 0, "shader-width is 0");
+		ASSERT_MESSAGE(height > 0, "shader-height is 0");
+		coords[0][0] /= width;
+		coords[0][1] /= width;
+		coords[0][2] /= width;
+		coords[1][0] /= height;
+		coords[1][1] /= height;
+		coords[1][2] /= height;
 #endif
-    }
+	}
 
-    float coords[2][3];
+	float coords[2][3];
 };
 
 class TextureProjection {
 public:
-    texdef_t m_texdef;
-    brushprimit_texdef_t m_brushprimit_texdef;
-    Vector3 m_basis_s;
-    Vector3 m_basis_t;
+texdef_t m_texdef;
+brushprimit_texdef_t m_brushprimit_texdef;
+Vector3 m_basis_s;
+Vector3 m_basis_t;
 
-    TextureProjection()
-    {
-    }
+TextureProjection()
+{
+}
 
-    TextureProjection(
-            const texdef_t &texdef,
-            const brushprimit_texdef_t &brushprimit_texdef,
-            const Vector3 &basis_s,
-            const Vector3 &basis_t
-    ) :
-            m_texdef(texdef),
-            m_brushprimit_texdef(brushprimit_texdef),
-            m_basis_s(basis_s),
-            m_basis_t(basis_t)
-    {
-    }
+TextureProjection(
+	const texdef_t &texdef,
+	const brushprimit_texdef_t &brushprimit_texdef,
+	const Vector3 &basis_s,
+	const Vector3 &basis_t
+	) :
+	m_texdef(texdef),
+	m_brushprimit_texdef(brushprimit_texdef),
+	m_basis_s(basis_s),
+	m_basis_t(basis_t)
+{
+}
 };
 
 float Texdef_getDefaultTextureScale();
@@ -143,16 +143,16 @@ void Texdef_transformLocked(TextureProjection &projection, std::size_t width, st
 void Texdef_normalise(TextureProjection &projection, float width, float height);
 
 enum TexdefTypeId {
-    TEXDEFTYPEID_QUAKE,
-    TEXDEFTYPEID_BRUSHPRIMITIVES,
-    TEXDEFTYPEID_HALFLIFE,
+	TEXDEFTYPEID_QUAKE,
+	TEXDEFTYPEID_BRUSHPRIMITIVES,
+	TEXDEFTYPEID_HALFLIFE,
 };
 
 struct bp_globals_t {
-    // tells if we are internally using brush primitive (texture coordinates and map format)
-    // this is a shortcut for IntForKey( g_qeglobals.d_project_entity, "brush_primit" )
-    // NOTE: must keep the two ones in sync
-    TexdefTypeId m_texdefTypeId;
+	// tells if we are internally using brush primitive (texture coordinates and map format)
+	// this is a shortcut for IntForKey( g_qeglobals.d_project_entity, "brush_primit" )
+	// NOTE: must keep the two ones in sync
+	TexdefTypeId m_texdefTypeId;
 };
 
 extern bp_globals_t g_bp_globals;

@@ -29,54 +29,54 @@
 
 
 namespace {
-    CopiedString g_bitmapsPath;
+CopiedString g_bitmapsPath;
 }
 
 void BitmapsPath_set(const char *path)
 {
-    g_bitmapsPath = path;
+	g_bitmapsPath = path;
 }
 
 GdkPixbuf *pixbuf_new_from_file_with_mask(const char *filename)
 {
-    GdkPixbuf *rgb = gdk_pixbuf_new_from_file(filename, 0);
-    if (rgb == 0) {
-        return 0;
-    } else {
-        GdkPixbuf *rgba = gdk_pixbuf_add_alpha(rgb, FALSE, 255, 0, 255);
-        g_object_unref(rgb);
-        return rgba;
-    }
+	GdkPixbuf *rgb = gdk_pixbuf_new_from_file(filename, 0);
+	if (rgb == 0) {
+		return 0;
+	} else {
+		GdkPixbuf *rgba = gdk_pixbuf_add_alpha(rgb, FALSE, 255, 0, 255);
+		g_object_unref(rgb);
+		return rgba;
+	}
 }
 
 ui::Image image_new_from_file_with_mask(const char *filename)
 {
-    GdkPixbuf *rgba = pixbuf_new_from_file_with_mask(filename);
-    if (rgba == 0) {
-        return ui::Image(ui::null);
-    } else {
-        auto image = ui::Image::from(gtk_image_new_from_pixbuf(rgba));
-        g_object_unref(rgba);
-        return image;
-    }
+	GdkPixbuf *rgba = pixbuf_new_from_file_with_mask(filename);
+	if (rgba == 0) {
+		return ui::Image(ui::null);
+	} else {
+		auto image = ui::Image::from(gtk_image_new_from_pixbuf(rgba));
+		g_object_unref(rgba);
+		return image;
+	}
 }
 
 ui::Image image_new_missing()
 {
-    return ui::Image::from(gtk_image_new_from_stock(GTK_STOCK_MISSING_IMAGE, GTK_ICON_SIZE_SMALL_TOOLBAR));
+	return ui::Image::from(gtk_image_new_from_stock(GTK_STOCK_MISSING_IMAGE, GTK_ICON_SIZE_SMALL_TOOLBAR));
 }
 
 ui::Image new_image(const char *filename)
 {
-    if (auto image = image_new_from_file_with_mask(filename)) {
-        return image;
-    }
-    return image_new_missing();
+	if (auto image = image_new_from_file_with_mask(filename)) {
+		return image;
+	}
+	return image_new_missing();
 }
 
 ui::Image new_local_image(const char *filename)
 {
-    StringOutputStream fullPath(256);
-    fullPath << g_bitmapsPath.c_str() << filename;
-    return new_image(fullPath.c_str());
+	StringOutputStream fullPath(256);
+	fullPath << g_bitmapsPath.c_str() << filename;
+	return new_image(fullPath.c_str());
 }

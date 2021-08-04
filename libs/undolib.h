@@ -49,7 +49,7 @@ const Copyable& get() const {
 template<typename Copyable>
 class ObservedUndoableObject : public Undoable
 {
-typedef Callback<void(const Copyable&)> ImportCallback;
+typedef Callback<void (const Copyable&)> ImportCallback;
 
 Copyable& m_object;
 ImportCallback m_importCallback;
@@ -106,7 +106,8 @@ MapFile* m_map;
 public:
 UndoableObject( Copyable& object )
 	: m_object( object ), m_undoQueue( 0 ), m_map( 0 )
-{}
+{
+}
 ~UndoableObject(){
 }
 

@@ -98,109 +98,109 @@ void hide_splash();
 
 void error_redirect(const gchar *domain, GLogLevelFlags log_level, const gchar *message, gpointer user_data)
 {
-    gboolean in_recursion;
-    gboolean is_fatal;
-    char buf[256];
+	gboolean in_recursion;
+	gboolean is_fatal;
+	char buf[256];
 
-    in_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
-    is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
-    log_level = (GLogLevelFlags) (log_level & G_LOG_LEVEL_MASK);
+	in_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
+	is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
+	log_level = (GLogLevelFlags) (log_level & G_LOG_LEVEL_MASK);
 
-    if (!message) {
-        message = "(0) message";
-    }
+	if (!message) {
+		message = "(0) message";
+	}
 
-    if (domain) {
-        strcpy(buf, domain);
-    } else {
-        strcpy(buf, "**");
-    }
-    strcat(buf, "-");
+	if (domain) {
+		strcpy(buf, domain);
+	} else {
+		strcpy(buf, "**");
+	}
+	strcat(buf, "-");
 
-    switch (log_level) {
-        case G_LOG_LEVEL_ERROR:
-            if (in_recursion) {
-                strcat(buf, "ERROR (recursed) **: ");
-            } else {
-                strcat(buf, "ERROR **: ");
-            }
-            break;
-        case G_LOG_LEVEL_CRITICAL:
-            if (in_recursion) {
-                strcat(buf, "CRITICAL (recursed) **: ");
-            } else {
-                strcat(buf, "CRITICAL **: ");
-            }
-            break;
-        case G_LOG_LEVEL_WARNING:
-            if (in_recursion) {
-                strcat(buf, "WARNING (recursed) **: ");
-            } else {
-                strcat(buf, "WARNING **: ");
-            }
-            break;
-        case G_LOG_LEVEL_MESSAGE:
-            if (in_recursion) {
-                strcat(buf, "Message (recursed): ");
-            } else {
-                strcat(buf, "Message: ");
-            }
-            break;
-        case G_LOG_LEVEL_INFO:
-            if (in_recursion) {
-                strcat(buf, "INFO (recursed): ");
-            } else {
-                strcat(buf, "INFO: ");
-            }
-            break;
-        case G_LOG_LEVEL_DEBUG:
-            if (in_recursion) {
-                strcat(buf, "DEBUG (recursed): ");
-            } else {
-                strcat(buf, "DEBUG: ");
-            }
-            break;
-        default:
-            /* we are used for a log level that is not defined by GLib itself,
-             * try to make the best out of it.
-             */
-            if (in_recursion) {
-                strcat(buf, "LOG (recursed:");
-            } else {
-                strcat(buf, "LOG (");
-            }
-            if (log_level) {
-                gchar string[] = "0x00): ";
-                gchar *p = string + 2;
-                guint i;
+	switch (log_level) {
+	case G_LOG_LEVEL_ERROR:
+		if (in_recursion) {
+			strcat(buf, "ERROR (recursed) **: ");
+		} else {
+			strcat(buf, "ERROR **: ");
+		}
+		break;
+	case G_LOG_LEVEL_CRITICAL:
+		if (in_recursion) {
+			strcat(buf, "CRITICAL (recursed) **: ");
+		} else {
+			strcat(buf, "CRITICAL **: ");
+		}
+		break;
+	case G_LOG_LEVEL_WARNING:
+		if (in_recursion) {
+			strcat(buf, "WARNING (recursed) **: ");
+		} else {
+			strcat(buf, "WARNING **: ");
+		}
+		break;
+	case G_LOG_LEVEL_MESSAGE:
+		if (in_recursion) {
+			strcat(buf, "Message (recursed): ");
+		} else {
+			strcat(buf, "Message: ");
+		}
+		break;
+	case G_LOG_LEVEL_INFO:
+		if (in_recursion) {
+			strcat(buf, "INFO (recursed): ");
+		} else {
+			strcat(buf, "INFO: ");
+		}
+		break;
+	case G_LOG_LEVEL_DEBUG:
+		if (in_recursion) {
+			strcat(buf, "DEBUG (recursed): ");
+		} else {
+			strcat(buf, "DEBUG: ");
+		}
+		break;
+	default:
+		/* we are used for a log level that is not defined by GLib itself,
+		 * try to make the best out of it.
+		 */
+		if (in_recursion) {
+			strcat(buf, "LOG (recursed:");
+		} else {
+			strcat(buf, "LOG (");
+		}
+		if (log_level) {
+			gchar string[] = "0x00): ";
+			gchar *p = string + 2;
+			guint i;
 
-                i = g_bit_nth_msf(log_level, -1);
-                *p = i >> 4;
-                p++;
-                *p = '0' + (i & 0xf);
-                if (*p > '9') {
-                    *p += 'A' - '9' - 1;
-                }
+			i = g_bit_nth_msf(log_level, -1);
+			*p = i >> 4;
+			p++;
+			*p = '0' + (i & 0xf);
+			if (*p > '9') {
+				*p += 'A' - '9' - 1;
+			}
 
-                strcat(buf, string);
-            } else {
-                strcat(buf, "): ");
-            }
-    }
+			strcat(buf, string);
+		} else {
+			strcat(buf, "): ");
+		}
+	}
 
-    strcat(buf, message);
-    if (is_fatal) {
-        strcat(buf, "\naborting...\n");
-    } else {
-        strcat(buf, "\n");
-    }
+	strcat(buf, message);
+	if (is_fatal) {
+		strcat(buf, "\naborting...\n");
+	} else {
+		strcat(buf, "\n");
+	}
 
-    // spam it...
-    globalErrorStream() << buf << "\n";
+	// spam it...
+	globalErrorStream() << buf << "\n";
 
-    if (is_fatal) {
-        ERROR_MESSAGE("GTK+ error: " << buf);
-    }
+	if (is_fatal) {
+		ERROR_MESSAGE("GTK+ error: " << buf);
+	}
 }
 
 #if GDEF_COMPILER_MSVC && GDEF_DEBUG
@@ -210,209 +210,209 @@ void error_redirect(const gchar *domain, GLogLevelFlags log_level, const gchar *
 void crt_init()
 {
 #if GDEF_COMPILER_MSVC && GDEF_DEBUG
-    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 }
 
 class Lock {
-    bool m_locked;
+bool m_locked;
 public:
-    Lock() : m_locked(false)
-    {
-    }
+Lock() : m_locked(false)
+{
+}
 
-    void lock()
-    {
-        m_locked = true;
-    }
+void lock()
+{
+	m_locked = true;
+}
 
-    void unlock()
-    {
-        m_locked = false;
-    }
+void unlock()
+{
+	m_locked = false;
+}
 
-    bool locked() const
-    {
-        return m_locked;
-    }
+bool locked() const
+{
+	return m_locked;
+}
 };
 
 class ScopedLock {
-    Lock &m_lock;
+Lock &m_lock;
 public:
-    ScopedLock(Lock &lock) : m_lock(lock)
-    {
-        m_lock.lock();
-    }
+ScopedLock(Lock &lock) : m_lock(lock)
+{
+	m_lock.lock();
+}
 
-    ~ScopedLock()
-    {
-        m_lock.unlock();
-    }
+~ScopedLock()
+{
+	m_lock.unlock();
+}
 };
 
 class LineLimitedTextOutputStream : public TextOutputStream {
-    TextOutputStream &outputStream;
-    std::size_t count;
+TextOutputStream &outputStream;
+std::size_t count;
 public:
-    LineLimitedTextOutputStream(TextOutputStream &outputStream, std::size_t count)
-            : outputStream(outputStream), count(count)
-    {
-    }
+LineLimitedTextOutputStream(TextOutputStream &outputStream, std::size_t count)
+	: outputStream(outputStream), count(count)
+{
+}
 
-    std::size_t write(const char *buffer, std::size_t length)
-    {
-        if (count != 0) {
-            const char *p = buffer;
-            const char *end = buffer + length;
-            for (;;) {
-                p = std::find(p, end, '\n');
-                if (p == end) {
-                    break;
-                }
-                ++p;
-                if (--count == 0) {
-                    length = p - buffer;
-                    break;
-                }
-            }
-            outputStream.write(buffer, length);
-        }
-        return length;
-    }
+std::size_t write(const char *buffer, std::size_t length)
+{
+	if (count != 0) {
+		const char *p = buffer;
+		const char *end = buffer + length;
+		for (;;) {
+			p = std::find(p, end, '\n');
+			if (p == end) {
+				break;
+			}
+			++p;
+			if (--count == 0) {
+				length = p - buffer;
+				break;
+			}
+		}
+		outputStream.write(buffer, length);
+	}
+	return length;
+}
 };
 
 class PopupDebugMessageHandler : public DebugMessageHandler {
-    StringOutputStream m_buffer;
-    Lock m_lock;
+StringOutputStream m_buffer;
+Lock m_lock;
 public:
-    TextOutputStream &getOutputStream()
-    {
-        if (!m_lock.locked()) {
-            return m_buffer;
-        }
-        return globalErrorStream();
-    }
+TextOutputStream &getOutputStream()
+{
+	if (!m_lock.locked()) {
+		return m_buffer;
+	}
+	return globalErrorStream();
+}
 
-    bool handleMessage()
-    {
-        getOutputStream() << "----------------\n";
-        LineLimitedTextOutputStream outputStream(getOutputStream(), 24);
-        write_stack_trace(outputStream);
-        getOutputStream() << "----------------\n";
-        globalErrorStream() << m_buffer.c_str();
-        if (!m_lock.locked()) {
-            ScopedLock lock(m_lock);
-            if (GDEF_DEBUG) {
-                m_buffer << "Break into the debugger?\n";
-                bool handled = ui::alert(ui::root, m_buffer.c_str(), "Radiant - Runtime Error", ui::alert_type::YESNO,
-                                         ui::alert_icon::Error) == ui::alert_response::NO;
-                m_buffer.clear();
-                return handled;
-            } else {
-                m_buffer << "Please report this error to the developers\n";
-                ui::alert(ui::root, m_buffer.c_str(), "Radiant - Runtime Error", ui::alert_type::OK,
-                          ui::alert_icon::Error);
-                m_buffer.clear();
-            }
-        }
-        return true;
-    }
+bool handleMessage()
+{
+	getOutputStream() << "----------------\n";
+	LineLimitedTextOutputStream outputStream(getOutputStream(), 24);
+	write_stack_trace(outputStream);
+	getOutputStream() << "----------------\n";
+	globalErrorStream() << m_buffer.c_str();
+	if (!m_lock.locked()) {
+		ScopedLock lock(m_lock);
+		if (GDEF_DEBUG) {
+			m_buffer << "Break into the debugger?\n";
+			bool handled = ui::alert(ui::root, m_buffer.c_str(), "Radiant - Runtime Error", ui::alert_type::YESNO,
+			                         ui::alert_icon::Error) == ui::alert_response::NO;
+			m_buffer.clear();
+			return handled;
+		} else {
+			m_buffer << "Please report this error to the developers\n";
+			ui::alert(ui::root, m_buffer.c_str(), "Radiant - Runtime Error", ui::alert_type::OK,
+			          ui::alert_icon::Error);
+			m_buffer.clear();
+		}
+	}
+	return true;
+}
 };
 
 typedef Static<PopupDebugMessageHandler> GlobalPopupDebugMessageHandler;
 
 void streams_init()
 {
-    GlobalErrorStream::instance().setOutputStream(getSysPrintErrorStream());
-    GlobalOutputStream::instance().setOutputStream(getSysPrintOutputStream());
+	GlobalErrorStream::instance().setOutputStream(getSysPrintErrorStream());
+	GlobalOutputStream::instance().setOutputStream(getSysPrintOutputStream());
 }
 
 void paths_init()
 {
-    //g_strSettingsPath = environment_get_home_path();
+	//g_strSettingsPath = environment_get_home_path();
 	g_strSettingsPath = environment_get_app_path();
 
-    Q_mkdir(g_strSettingsPath.c_str());
+	Q_mkdir(g_strSettingsPath.c_str());
 
-    g_strAppPath = environment_get_app_path();
+	g_strAppPath = environment_get_app_path();
 
-    // radiant is installed in the parent dir of "tools/"
-    // NOTE: this is not very easy for debugging
-    // maybe add options to lookup in several places?
-    // (for now I had to create symlinks)
-    {
-        StringOutputStream path(256);
-        path << g_strAppPath.c_str() << "bitmaps/";
-        BitmapsPath_set(path.c_str());
-    }
+	// radiant is installed in the parent dir of "tools/"
+	// NOTE: this is not very easy for debugging
+	// maybe add options to lookup in several places?
+	// (for now I had to create symlinks)
+	{
+		StringOutputStream path(256);
+		path << g_strAppPath.c_str() << "bitmaps/";
+		BitmapsPath_set(path.c_str());
+	}
 
-    // we will set this right after the game selection is done
-    g_strGameToolsPath = g_strAppPath;
+	// we will set this right after the game selection is done
+	g_strGameToolsPath = g_strAppPath;
 }
 
 void create_global_pid()
 {
-    /*!
-       the global prefs loading / game selection dialog might fail for any reason we don't know about
-       we need to catch when it happens, to cleanup the stateful prefs which might be killing it
-       and to turn on console logging for lookup of the problem
-       this is the first part of the two step .pid system
-       http://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=297
-     */
-    StringOutputStream g_pidFile(256); ///< the global .pid file (only for global part of the startup)
+	/*!
+	   the global prefs loading / game selection dialog might fail for any reason we don't know about
+	   we need to catch when it happens, to cleanup the stateful prefs which might be killing it
+	   and to turn on console logging for lookup of the problem
+	   this is the first part of the two step .pid system
+	   http://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=297
+	 */
+	StringOutputStream g_pidFile(256); ///< the global .pid file (only for global part of the startup)
 
-    g_pidFile << SettingsPath_get() << "radiant.pid";
+	g_pidFile << SettingsPath_get() << "radiant.pid";
 
-    FILE *pid;
-    pid = fopen(g_pidFile.c_str(), "r");
-    if (pid != 0) {
-        fclose(pid);
+	FILE *pid;
+	pid = fopen(g_pidFile.c_str(), "r");
+	if (pid != 0) {
+		fclose(pid);
 
-        if (remove(g_pidFile.c_str()) == -1) {
-            StringOutputStream msg(256);
-            msg << "WARNING: Could not delete " << g_pidFile.c_str();
-            ui::alert(ui::root, msg.c_str(), "Radiant", ui::alert_type::OK, ui::alert_icon::Error);
-        }
+		if (remove(g_pidFile.c_str()) == -1) {
+			StringOutputStream msg(256);
+			msg << "WARNING: Could not delete " << g_pidFile.c_str();
+			ui::alert(ui::root, msg.c_str(), "Radiant", ui::alert_type::OK, ui::alert_icon::Error);
+		}
 
-        // in debug, never prompt to clean registry, turn console logging auto after a failed start
-        if (!GDEF_DEBUG) {
-            StringOutputStream msg(256);
-            msg << "Radiant failed to start properly the last time it was run.\n"
-                    "The failure may be related to current global preferences.\n"
-                    "Do you want to reset global preferences to defaults?";
+		// in debug, never prompt to clean registry, turn console logging auto after a failed start
+		if (!GDEF_DEBUG) {
+			StringOutputStream msg(256);
+			msg << "Radiant failed to start properly the last time it was run.\n"
+			        "The failure may be related to current global preferences.\n"
+			        "Do you want to reset global preferences to defaults?";
 
-            if (ui::alert(ui::root, msg.c_str(), "Radiant - Startup Failure", ui::alert_type::YESNO,
-                          ui::alert_icon::Question) == ui::alert_response::YES) {
-                g_GamesDialog.Reset();
-            }
+			if (ui::alert(ui::root, msg.c_str(), "Radiant - Startup Failure", ui::alert_type::YESNO,
+			              ui::alert_icon::Question) == ui::alert_response::YES) {
+				g_GamesDialog.Reset();
+			}
 
-            msg.clear();
-            msg << "Logging console output to " << SettingsPath_get()
-                << "radiant.log\nRefer to the log if Radiant fails to start again.";
+			msg.clear();
+			msg << "Logging console output to " << SettingsPath_get()
+			    << "radiant.log\nRefer to the log if Radiant fails to start again.";
 
-            ui::alert(ui::root, msg.c_str(), "Radiant - Console Log", ui::alert_type::OK);
-        }
-    }
+			ui::alert(ui::root, msg.c_str(), "Radiant - Console Log", ui::alert_type::OK);
+		}
+	}
 
-    // create a primary .pid for global init run
-    pid = fopen(g_pidFile.c_str(), "w");
-    if (pid) {
-        fclose(pid);
-    }
+	// create a primary .pid for global init run
+	pid = fopen(g_pidFile.c_str(), "w");
+	if (pid) {
+		fclose(pid);
+	}
 }
 
 void remove_global_pid()
 {
-    StringOutputStream g_pidFile(256);
-    g_pidFile << SettingsPath_get() << "radiant.pid";
+	StringOutputStream g_pidFile(256);
+	g_pidFile << SettingsPath_get() << "radiant.pid";
 
-    // close the primary
-    if (remove(g_pidFile.c_str()) == -1) {
-        StringOutputStream msg(256);
-        msg << "WARNING: Could not delete " << g_pidFile.c_str();
-        ui::alert(ui::root, msg.c_str(), "Radiant", ui::alert_type::OK, ui::alert_icon::Error);
-    }
+	// close the primary
+	if (remove(g_pidFile.c_str()) == -1) {
+		StringOutputStream msg(256);
+		msg << "WARNING: Could not delete " << g_pidFile.c_str();
+		ui::alert(ui::root, msg.c_str(), "Radiant", ui::alert_type::OK, ui::alert_icon::Error);
+	}
 }
 
 /*!
@@ -421,43 +421,43 @@ void remove_global_pid()
  */
 void create_local_pid()
 {
-    StringOutputStream g_pidGameFile(256); ///< the game-specific .pid file
-    g_pidGameFile << SettingsPath_get() << g_pGameDescription->mGameFile.c_str() << "/radiant-game.pid";
+	StringOutputStream g_pidGameFile(256); ///< the game-specific .pid file
+	g_pidGameFile << SettingsPath_get() << g_pGameDescription->mGameFile.c_str() << "/radiant-game.pid";
 
-    FILE *pid = fopen(g_pidGameFile.c_str(), "r");
-    if (pid != 0) {
-        fclose(pid);
-        if (remove(g_pidGameFile.c_str()) == -1) {
-            StringOutputStream msg;
-            msg << "WARNING: Could not delete " << g_pidGameFile.c_str();
-            ui::alert(ui::root, msg.c_str(), "Radiant", ui::alert_type::OK, ui::alert_icon::Error);
-        }
+	FILE *pid = fopen(g_pidGameFile.c_str(), "r");
+	if (pid != 0) {
+		fclose(pid);
+		if (remove(g_pidGameFile.c_str()) == -1) {
+			StringOutputStream msg;
+			msg << "WARNING: Could not delete " << g_pidGameFile.c_str();
+			ui::alert(ui::root, msg.c_str(), "Radiant", ui::alert_type::OK, ui::alert_icon::Error);
+		}
 
-        // in debug, never prompt to clean registry, turn console logging auto after a failed start
-        if (!GDEF_DEBUG) {
-            StringOutputStream msg;
-            msg << "Radiant failed to start properly the last time it was run.\n"
-                    "The failure may be caused by current preferences.\n"
-                    "Do you want to reset all preferences to defaults?";
+		// in debug, never prompt to clean registry, turn console logging auto after a failed start
+		if (!GDEF_DEBUG) {
+			StringOutputStream msg;
+			msg << "Radiant failed to start properly the last time it was run.\n"
+			        "The failure may be caused by current preferences.\n"
+			        "Do you want to reset all preferences to defaults?";
 
-            if (ui::alert(ui::root, msg.c_str(), "Radiant - Startup Failure", ui::alert_type::YESNO,
-                          ui::alert_icon::Question) == ui::alert_response::YES) {
-                Preferences_Reset();
-            }
+			if (ui::alert(ui::root, msg.c_str(), "Radiant - Startup Failure", ui::alert_type::YESNO,
+			              ui::alert_icon::Question) == ui::alert_response::YES) {
+				Preferences_Reset();
+			}
 
-            msg.clear();
-            msg << "Logging console output to " << SettingsPath_get()
-                << "radiant.log\nRefer to the log if Radiant fails to start again.";
+			msg.clear();
+			msg << "Logging console output to " << SettingsPath_get()
+			    << "radiant.log\nRefer to the log if Radiant fails to start again.";
 
-            ui::alert(ui::root, msg.c_str(), "Radiant - Console Log", ui::alert_type::OK);
-        }
-    } else {
-        // create one, will remove right after entering message loop
-        pid = fopen(g_pidGameFile.c_str(), "w");
-        if (pid) {
-            fclose(pid);
-        }
-    }
+			ui::alert(ui::root, msg.c_str(), "Radiant - Console Log", ui::alert_type::OK);
+		}
+	} else {
+		// create one, will remove right after entering message loop
+		pid = fopen(g_pidGameFile.c_str(), "w");
+		if (pid) {
+			fclose(pid);
+		}
+	}
 }
 
 
@@ -467,9 +467,9 @@ void create_local_pid()
  */
 void remove_local_pid()
 {
-    StringOutputStream g_pidGameFile(256);
-    g_pidGameFile << SettingsPath_get() << g_pGameDescription->mGameFile.c_str() << "/radiant-game.pid";
-    remove(g_pidGameFile.c_str());
+	StringOutputStream g_pidGameFile(256);
+	g_pidGameFile << SettingsPath_get() << g_pGameDescription->mGameFile.c_str() << "/radiant-game.pid";
+	remove(g_pidGameFile.c_str());
 }
 
 void user_shortcuts_init()
@@ -484,138 +484,138 @@ void user_shortcuts_init()
 
 void user_shortcuts_save()
 {
-    StringOutputStream path(256);
-    path << SettingsPath_get() << g_pGameDescription->mGameFile.c_str() << '/';
-    SaveCommandMap(path.c_str());
+	StringOutputStream path(256);
+	path << SettingsPath_get() << g_pGameDescription->mGameFile.c_str() << '/';
+	SaveCommandMap(path.c_str());
 }
 
 int main(int argc, char *argv[])
 {
-    crt_init();
+	crt_init();
 
-    streams_init();
+	streams_init();
 
 #if GDEF_OS_WINDOWS
-    HMODULE lib;
-    lib = LoadLibrary( "dwmapi.dll" );
-    if ( lib != 0 ) {
-        void ( WINAPI *qDwmEnableComposition )( bool bEnable ) = ( void (WINAPI *) ( bool bEnable ) )GetProcAddress( lib, "DwmEnableComposition" );
-        if ( qDwmEnableComposition ) {
-            qDwmEnableComposition( FALSE );
-        }
-        FreeLibrary( lib );
-    }
+	HMODULE lib;
+	lib = LoadLibrary( "dwmapi.dll" );
+	if ( lib != 0 ) {
+		void ( WINAPI *qDwmEnableComposition )( bool bEnable ) = ( void (WINAPI *) ( bool bEnable ) )GetProcAddress( lib, "DwmEnableComposition" );
+		if ( qDwmEnableComposition ) {
+			qDwmEnableComposition( FALSE );
+		}
+		FreeLibrary( lib );
+	}
 #endif
 
-    const char *mapname = NULL;
-    char const *error = NULL;
-    if (!ui::init(&argc, &argv, "<filename.map>", &error)) {
-        g_print("%s\n", error);
-        return -1;
-    }
+	const char *mapname = NULL;
+	char const *error = NULL;
+	if (!ui::init(&argc, &argv, "<filename.map>", &error)) {
+		g_print("%s\n", error);
+		return -1;
+	}
 
-    // Gtk already removed parsed `--options`
-    if (argc == 2) {
-        if (strlen(argv[1]) > 1) {
-            if (g_str_has_suffix(argv[1], ".map")) {
-                if (g_path_is_absolute(argv[1])) {
-                    mapname = argv[1];
-                } else {
-                    mapname = g_build_filename(g_get_current_dir(), argv[1], NULL);
-                }
-            } else {
-                g_print("bad file name, will not load: %s\n", argv[1]);
-            }
-        }
-    } else if (argc > 2) {
-        g_print("%s\n", "too many arguments");
-        return -1;
-    }
+	// Gtk already removed parsed `--options`
+	if (argc == 2) {
+		if (strlen(argv[1]) > 1) {
+			if (g_str_has_suffix(argv[1], ".map")) {
+				if (g_path_is_absolute(argv[1])) {
+					mapname = argv[1];
+				} else {
+					mapname = g_build_filename(g_get_current_dir(), argv[1], NULL);
+				}
+			} else {
+				g_print("bad file name, will not load: %s\n", argv[1]);
+			}
+		}
+	} else if (argc > 2) {
+		g_print("%s\n", "too many arguments");
+		return -1;
+	}
 
-    // redirect Gtk warnings to the console
-    g_log_set_handler("Gdk", (GLogLevelFlags) (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING |
-                                               G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG |
-                                               G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION), error_redirect, 0);
-    g_log_set_handler("Gtk", (GLogLevelFlags) (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING |
-                                               G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG |
-                                               G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION), error_redirect, 0);
-    g_log_set_handler("GtkGLExt", (GLogLevelFlags) (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING |
-                                                    G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG |
-                                                    G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION), error_redirect, 0);
-    g_log_set_handler("GLib", (GLogLevelFlags) (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING |
-                                                G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG |
-                                                G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION), error_redirect, 0);
-    g_log_set_handler(0, (GLogLevelFlags) (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING |
-                                           G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG |
-                                           G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION), error_redirect, 0);
+	// redirect Gtk warnings to the console
+	g_log_set_handler("Gdk", (GLogLevelFlags) (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING |
+	                                           G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG |
+	                                           G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION), error_redirect, 0);
+	g_log_set_handler("Gtk", (GLogLevelFlags) (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING |
+	                                           G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG |
+	                                           G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION), error_redirect, 0);
+	g_log_set_handler("GtkGLExt", (GLogLevelFlags) (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING |
+	                                                G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG |
+	                                                G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION), error_redirect, 0);
+	g_log_set_handler("GLib", (GLogLevelFlags) (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING |
+	                                            G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG |
+	                                            G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION), error_redirect, 0);
+	g_log_set_handler(0, (GLogLevelFlags) (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING |
+	                                       G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG |
+	                                       G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION), error_redirect, 0);
 
-    GlobalDebugMessageHandler::instance().setHandler(GlobalPopupDebugMessageHandler::instance());
+	GlobalDebugMessageHandler::instance().setHandler(GlobalPopupDebugMessageHandler::instance());
 
-    environment_init(argc, (char const **) argv);
+	environment_init(argc, (char const **) argv);
 
-    paths_init();
+	paths_init();
 
-    create_global_pid();
+	create_global_pid();
 
-    GlobalPreferences_Init();
+	GlobalPreferences_Init();
 
-    g_GamesDialog.Init();
-    
-    if (g_GamesDialog.m_bGamePrompt == false) {
-	show_splash();
-    }
+	g_GamesDialog.Init();
 
-    g_strGameToolsPath = g_pGameDescription->mGameToolsPath;
+	if (g_GamesDialog.m_bGamePrompt == false) {
+		show_splash();
+	}
 
-    remove_global_pid();
+	g_strGameToolsPath = g_pGameDescription->mGameToolsPath;
 
-    g_Preferences.Init(); // must occur before create_local_pid() to allow preferences to be reset
+	remove_global_pid();
 
-    create_local_pid();
+	g_Preferences.Init(); // must occur before create_local_pid() to allow preferences to be reset
 
-    Radiant_Initialise();
+	create_local_pid();
 
-    user_shortcuts_init();
+	Radiant_Initialise();
 
-    g_pParentWnd = 0;
-    g_pParentWnd = new MainFrame();
+	user_shortcuts_init();
 
-    hide_splash();
+	g_pParentWnd = 0;
+	g_pParentWnd = new MainFrame();
 
-    if (mapname != NULL) {
-        Map_LoadFile(mapname);
-    } else if (g_bLoadLastMap && !g_strLastMap.empty()) {
-        Map_LoadFile(g_strLastMap.c_str());
-    } else {
-        Map_New();
-    }
+	hide_splash();
 
-    // load up shaders now that we have the map loaded
-    // eviltypeguy
-    TextureBrowser_ShowStartupShaders(GlobalTextureBrowser());
+	if (mapname != NULL) {
+		Map_LoadFile(mapname);
+	} else if (g_bLoadLastMap && !g_strLastMap.empty()) {
+		Map_LoadFile(g_strLastMap.c_str());
+	} else {
+		Map_New();
+	}
+
+	// load up shaders now that we have the map loaded
+	// eviltypeguy
+	TextureBrowser_ShowStartupShaders(GlobalTextureBrowser());
 
 
-    remove_local_pid();
+	remove_local_pid();
 
-    ui::main();
+	ui::main();
 
-    // avoid saving prefs when the app is minimized
-    if (g_pParentWnd->IsSleeping()) {
-        globalOutputStream() << "Shutdown while sleeping, not saving prefs\n";
-        g_preferences_globals.disable_ini = true;
-    }
+	// avoid saving prefs when the app is minimized
+	if (g_pParentWnd->IsSleeping()) {
+		globalOutputStream() << "Shutdown while sleeping, not saving prefs\n";
+		g_preferences_globals.disable_ini = true;
+	}
 
-    Map_Free();
+	Map_Free();
 
-    if (!Map_Unnamed(g_map)) {
-        g_strLastMap = Map_Name(g_map);
-    }
+	if (!Map_Unnamed(g_map)) {
+		g_strLastMap = Map_Name(g_map);
+	}
 
-    delete g_pParentWnd;
+	delete g_pParentWnd;
 
-    user_shortcuts_save();
+	user_shortcuts_save();
 
-    Radiant_Shutdown();
+	Radiant_Shutdown();
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }

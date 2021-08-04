@@ -44,15 +44,15 @@ bool ConfirmModified(const char *title);
 
 // most of the QE globals are stored in this structure
 typedef struct {
-    /*!
-       win32: engine full path.
-       unix: user home full path + engine dir.
-     */
-    CopiedString m_userEnginePath;
-    /*!
-       cache for m_userEnginePath + mod subdirectory.
-     */
-    CopiedString m_userGamePath;
+	/*!
+	   win32: engine full path.
+	   unix: user home full path + engine dir.
+	 */
+	CopiedString m_userEnginePath;
+	/*!
+	   cache for m_userEnginePath + mod subdirectory.
+	 */
+	CopiedString m_userGamePath;
 
 } QEGlobals_t;
 

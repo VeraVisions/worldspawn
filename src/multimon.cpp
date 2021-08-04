@@ -33,13 +33,13 @@ LatchedValue<bool> g_Multimon_enableSysMenuPopups(false, "Floating windows sysme
 
 void MultiMonitor_constructPreferences(PreferencesPage &page)
 {
-    ui::CheckButton primary_monitor = page.appendCheckBox("Multi Monitor", "Start on Primary Monitor",
-                                                          g_multimon_globals.m_bStartOnPrimMon);
-    ui::CheckButton popup = page.appendCheckBox(
-            "", "Disable system menu on popup windows",
-            make_property(g_Multimon_enableSysMenuPopups)
-    );
-    Widget_connectToggleDependency(popup, primary_monitor);
+	ui::CheckButton primary_monitor = page.appendCheckBox("Multi Monitor", "Start on Primary Monitor",
+	                                                      g_multimon_globals.m_bStartOnPrimMon);
+	ui::CheckButton popup = page.appendCheckBox(
+		"", "Disable system menu on popup windows",
+		make_property(g_Multimon_enableSysMenuPopups)
+		);
+	Widget_connectToggleDependency(popup, primary_monitor);
 }
 
 #include "preferencesystem.h"
@@ -48,55 +48,55 @@ void MultiMonitor_constructPreferences(PreferencesPage &page)
 #include <gdk/gdk.h>
 
 namespace {
-    GdkRectangle primaryMonitor;
+GdkRectangle primaryMonitor;
 }
 
 void PositionWindowOnPrimaryScreen(WindowPosition &position)
 {
-    if (position.w >= primaryMonitor.width - 12) {
-        position.w = primaryMonitor.width - 12;
-    }
-    if (position.h >= primaryMonitor.height - 24) {
-        position.h = primaryMonitor.height - 48;
-    }
-    if (position.x <= primaryMonitor.x || position.x + position.w >= (primaryMonitor.x + primaryMonitor.width) - 12) {
-        position.x = primaryMonitor.x + 6;
-    }
-    if (position.y <= primaryMonitor.y || position.y + position.h >= (primaryMonitor.y + primaryMonitor.height) - 48) {
-        position.y = primaryMonitor.y + 24;
-    }
+	if (position.w >= primaryMonitor.width - 12) {
+		position.w = primaryMonitor.width - 12;
+	}
+	if (position.h >= primaryMonitor.height - 24) {
+		position.h = primaryMonitor.height - 48;
+	}
+	if (position.x <= primaryMonitor.x || position.x + position.w >= (primaryMonitor.x + primaryMonitor.width) - 12) {
+		position.x = primaryMonitor.x + 6;
+	}
+	if (position.y <= primaryMonitor.y || position.y + position.h >= (primaryMonitor.y + primaryMonitor.height) - 48) {
+		position.y = primaryMonitor.y + 24;
+	}
 }
 
 void MultiMon_Construct()
 {
-    // detect multiple monitors
+	// detect multiple monitors
 
-    GdkScreen *screen = gdk_display_get_default_screen(gdk_display_get_default());
-    gint m = gdk_screen_get_n_monitors(screen);
-    globalOutputStream() << "default screen has " << m << " monitors\n";
-    for (int j = 0; j != m; ++j) {
-        GdkRectangle geom;
-        gdk_screen_get_monitor_geometry(screen, j, &geom);
-        globalOutputStream() << "monitor " << j << " geometry: " << geom.x << ", " << geom.y << ", " << geom.width
-                             << ", " << geom.height << "\n";
-        if (j == 0) {
-            // I am making the assumption that monitor 0 is always the primary monitor on win32. Tested on WinXP with gtk+-2.4.
-            primaryMonitor = geom;
-        }
-    }
+	GdkScreen *screen = gdk_display_get_default_screen(gdk_display_get_default());
+	gint m = gdk_screen_get_n_monitors(screen);
+	globalOutputStream() << "default screen has " << m << " monitors\n";
+	for (int j = 0; j != m; ++j) {
+		GdkRectangle geom;
+		gdk_screen_get_monitor_geometry(screen, j, &geom);
+		globalOutputStream() << "monitor " << j << " geometry: " << geom.x << ", " << geom.y << ", " << geom.width
+		                     << ", " << geom.height << "\n";
+		if (j == 0) {
+			// I am making the assumption that monitor 0 is always the primary monitor on win32. Tested on WinXP with gtk+-2.4.
+			primaryMonitor = geom;
+		}
+	}
 
-    if (m > 1) {
-        g_multimon_globals.m_bStartOnPrimMon = true;
-    }
+	if (m > 1) {
+		g_multimon_globals.m_bStartOnPrimMon = true;
+	}
 
-    GlobalPreferenceSystem().registerPreference("StartOnPrimMon",
-                                                make_property_string(g_multimon_globals.m_bStartOnPrimMon));
-    GlobalPreferenceSystem().registerPreference("NoSysMenuPopups",
-                                                make_property_string(g_Multimon_enableSysMenuPopups.m_latched));
+	GlobalPreferenceSystem().registerPreference("StartOnPrimMon",
+	                                            make_property_string(g_multimon_globals.m_bStartOnPrimMon));
+	GlobalPreferenceSystem().registerPreference("NoSysMenuPopups",
+	                                            make_property_string(g_Multimon_enableSysMenuPopups.m_latched));
 
-    g_Multimon_enableSysMenuPopups.useLatched();
+	g_Multimon_enableSysMenuPopups.useLatched();
 
-    PreferencesDialog_addInterfacePreferences(makeCallbackF(MultiMonitor_constructPreferences));
+	PreferencesDialog_addInterfacePreferences(makeCallbackF(MultiMonitor_constructPreferences));
 }
 
 void MultiMon_Destroy()

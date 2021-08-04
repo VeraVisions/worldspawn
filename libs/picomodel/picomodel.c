@@ -497,7 +497,7 @@ picoShader_t *PicoFindShader( picoModel_t *model, char *name, int caseSensitive 
 	{
 		/* skip null shaders or shaders with null names */
 		if ( model->shader[ i ] == NULL ||
-			 model->shader[ i ]->name == NULL ) {
+		     model->shader[ i ]->name == NULL ) {
 			continue;
 		}
 
@@ -736,7 +736,7 @@ picoSurface_t *PicoFindSurface(
 	{
 		/* skip null surfaces or surfaces with null names */
 		if ( model->surface[ i ] == NULL ||
-			 model->surface[ i ]->name == NULL ) {
+		     model->surface[ i ]->name == NULL ) {
 			continue;
 		}
 
@@ -1533,21 +1533,21 @@ picoVertexCombinationHash_t *PicoFindVertexCombinationInHashTable( picoVertexCom
 #else
 		/* check xyz */
 		if ( ( fabs( xyz[ 0 ] - vertexCombinationHash->vcd.xyz[ 0 ] ) ) > HASH_XYZ_EPSILON ||
-			 ( fabs( xyz[ 1 ] - vertexCombinationHash->vcd.xyz[ 1 ] ) ) > HASH_XYZ_EPSILON ||
-			 ( fabs( xyz[ 2 ] - vertexCombinationHash->vcd.xyz[ 2 ] ) ) > HASH_XYZ_EPSILON ) {
+		     ( fabs( xyz[ 1 ] - vertexCombinationHash->vcd.xyz[ 1 ] ) ) > HASH_XYZ_EPSILON ||
+		     ( fabs( xyz[ 2 ] - vertexCombinationHash->vcd.xyz[ 2 ] ) ) > HASH_XYZ_EPSILON ) {
 			continue;
 		}
 
 		/* check normal */
 		if ( ( fabs( normal[ 0 ] - vertexCombinationHash->vcd.normal[ 0 ] ) ) > HASH_NORMAL_EPSILON ||
-			 ( fabs( normal[ 1 ] - vertexCombinationHash->vcd.normal[ 1 ] ) ) > HASH_NORMAL_EPSILON ||
-			 ( fabs( normal[ 2 ] - vertexCombinationHash->vcd.normal[ 2 ] ) ) > HASH_NORMAL_EPSILON ) {
+		     ( fabs( normal[ 1 ] - vertexCombinationHash->vcd.normal[ 1 ] ) ) > HASH_NORMAL_EPSILON ||
+		     ( fabs( normal[ 2 ] - vertexCombinationHash->vcd.normal[ 2 ] ) ) > HASH_NORMAL_EPSILON ) {
 			continue;
 		}
 
 		/* check st */
 		if ( ( fabs( st[ 0 ] - vertexCombinationHash->vcd.st[ 0 ] ) ) > HASH_ST_EPSILON ||
-			 ( fabs( st[ 1 ] - vertexCombinationHash->vcd.st[ 1 ] ) ) > HASH_ST_EPSILON ) {
+		     ( fabs( st[ 1 ] - vertexCombinationHash->vcd.st[ 1 ] ) ) > HASH_ST_EPSILON ) {
 			continue;
 		}
 #endif
@@ -1977,8 +1977,8 @@ void PicoFixSurfaceNormals( picoSurface_t* surface ){
 
 #define _prm_error_return \
 	{ \
-		_pico_free_parser( p );	\
-		_pico_free_file( remapBuffer );	\
+		_pico_free_parser( p ); \
+		_pico_free_file( remapBuffer ); \
 		return 0; \
 	}
 
@@ -2072,8 +2072,8 @@ int PicoRemapModel( picoModel_t *model, char *remapFile ){
 				}
 				/* skip assignment token (if present) */
 				if ( !strcmp( p->token,"=>" ) ||
-					 !strcmp( p->token,"->" ) ||
-					 !strcmp( p->token,"=" ) ) {
+				     !strcmp( p->token,"->" ) ||
+				     !strcmp( p->token,"=" ) ) {
 					/* simply grab the next token */
 					if ( !_pico_parse( p,0 ) ) {
 						_pico_free( materialName );
@@ -2248,14 +2248,14 @@ int PicoRemapModel( picoModel_t *model, char *remapFile ){
  */
 
 void PicoAddTriangleToModel( picoModel_t *model, picoVec3_t** xyz, picoVec3_t** normals,
-							 int numSTs, picoVec2_t **st, int numColors, picoColor_t **colors,
-							 picoShader_t* shader, const char *name, picoIndex_t* smoothingGroup ){
+                             int numSTs, picoVec2_t **st, int numColors, picoColor_t **colors,
+                             picoShader_t* shader, const char *name, picoIndex_t* smoothingGroup ){
 	int i,j;
 	int vertDataIndex;
 	picoSurface_t* workSurface = NULL;
 
 	/* see if a surface already has the shader */
-	for ( i = 0 ; i < model->numSurfaces ; i++ )
+	for ( i = 0; i < model->numSurfaces; i++ )
 	{
 		workSurface = model->surface[i];
 		if ( !name || !strcmp( workSurface->name, name ) ) {
@@ -2281,7 +2281,7 @@ void PicoAddTriangleToModel( picoModel_t *model, picoVec3_t** xyz, picoVec3_t** 
 	}
 
 	/* add the triangle data to the surface */
-	for ( i = 0 ; i < 3 ; i++ )
+	for ( i = 0; i < 3; i++ )
 	{
 		/* get the next free spot in the index array */
 		int newVertIndex = PicoGetSurfaceNumIndexes( workSurface );
@@ -2299,11 +2299,11 @@ void PicoAddTriangleToModel( picoModel_t *model, picoVec3_t** xyz, picoVec3_t** 
 			PicoSetSurfaceNormal( workSurface, vertDataIndex, *normals[i] );
 
 			/* make sure to copy over all available ST's and colors for the vertex */
-			for ( j = 0 ; j < numColors ; j++ )
+			for ( j = 0; j < numColors; j++ )
 			{
 				PicoSetSurfaceColor( workSurface, j, vertDataIndex, colors[i][j] );
 			}
-			for ( j = 0 ; j < numSTs ; j++ )
+			for ( j = 0; j < numSTs; j++ )
 			{
 				PicoSetSurfaceST( workSurface, j, vertDataIndex, st[i][j] );
 			}

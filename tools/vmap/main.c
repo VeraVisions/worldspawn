@@ -118,7 +118,7 @@ int main( int argc, char **argv ){
 	{
 		/* -help */
 		if ( !strcmp( argv[ i ], "-h" ) || !strcmp( argv[ i ], "--help" )
-			|| !strcmp( argv[ i ], "-help" ) ) {
+		     || !strcmp( argv[ i ], "-help" ) ) {
 			HelpMain(argv[i+1]);
 			return 0;
 		}

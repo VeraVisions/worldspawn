@@ -107,7 +107,7 @@ void InsertPointOnEdge( vec3_t v, edgeLine_t *e ) {
 	}
 
 	scan = e->chain->next;
-	for ( ; scan != e->chain ; scan = scan->next ) {
+	for ( ; scan != e->chain; scan = scan->next ) {
 		d = p->intercept - scan->intercept;
 		if ( d > -LINE_POSITION_EPSILON && d < LINE_POSITION_EPSILON ) {
 			free( p );
@@ -162,7 +162,7 @@ int AddEdge( vec3_t v1, vec3_t v2, qboolean createNonAxial ) {
 		}
 	}
 
-	for ( i = 0 ; i < numEdgeLines ; i++ ) {
+	for ( i = 0; i < numEdgeLines; i++ ) {
 		e = &edgeLines[i];
 
 		d = DotProduct( v1, e->normal1 ) - e->dist1;
@@ -274,7 +274,7 @@ void AddPatchEdges( mapDrawSurface_t *ds ) {
 	int i;
 	float   *v1, *v2, *v3;
 
-	for ( i = 0 ; i < ds->patchWidth - 2; i += 2 ) {
+	for ( i = 0; i < ds->patchWidth - 2; i += 2 ) {
 		v1 = ds->verts[ i ].xyz;
 		v2 = ds->verts[ i + 1 ].xyz;
 		v3 = ds->verts[ i + 2 ].xyz;
@@ -294,7 +294,7 @@ void AddPatchEdges( mapDrawSurface_t *ds ) {
 		}
 	}
 
-	for ( i = 0 ; i < ds->patchHeight - 2 ; i += 2 ) {
+	for ( i = 0; i < ds->patchHeight - 2; i += 2 ) {
 		v1 = ds->verts[ i * ds->patchWidth ].xyz;
 		v2 = ds->verts[ ( i + 1 ) * ds->patchWidth ].xyz;
 		v3 = ds->verts[ ( i + 2 ) * ds->patchWidth ].xyz;
@@ -337,7 +337,7 @@ void FixSurfaceJunctions( mapDrawSurface_t *ds ) {
 
 
 	numVerts = 0;
-	for ( i = 0 ; i < ds->numVerts ; i++ )
+	for ( i = 0; i < ds->numVerts; i++ )
 	{
 		counts[i] = 0;
 
@@ -373,7 +373,7 @@ void FixSurfaceJunctions( mapDrawSurface_t *ds ) {
 			p = e->chain->prev;
 		}
 
-		for ( ; p != e->chain ; ) {
+		for ( ; p != e->chain; ) {
 			if ( start < end ) {
 				if ( p->intercept > end - ON_EPSILON ) {
 					break;
@@ -398,9 +398,9 @@ void FixSurfaceJunctions( mapDrawSurface_t *ds ) {
 
 				/* interpolate the texture coordinates */
 				frac = ( p->intercept - start ) / ( end - start );
-				for ( j = 0 ; j < 2 ; j++ ) {
+				for ( j = 0; j < 2; j++ ) {
 					verts[ numVerts ].st[j] = v1->st[j] +
-											  frac * ( v2->st[j] - v1->st[j] );
+					                          frac * ( v2->st[j] - v1->st[j] );
 				}
 
 				/* copy the normal (FIXME: what about nonplanar surfaces? */
@@ -440,7 +440,7 @@ void FixSurfaceJunctions( mapDrawSurface_t *ds ) {
 
 	// rotate the points so that the initial vertex is between
 	// two non-subdivided edges
-	for ( i = 0 ; i < numVerts ; i++ ) {
+	for ( i = 0; i < numVerts; i++ ) {
 		if ( originals[ ( i + 1 ) % numVerts ] == originals[ i ] ) {
 			continue;
 		}
@@ -490,7 +490,7 @@ void FixSurfaceJunctions( mapDrawSurface_t *ds ) {
 	ds->numVerts = numVerts;
 	ds->verts = safe_malloc( numVerts * sizeof( *ds->verts ) );
 
-	for ( j = 0 ; j < ds->numVerts ; j++ ) {
+	for ( j = 0; j < ds->numVerts; j++ ) {
 		ds->verts[j] = verts[ ( j + i ) % ds->numVerts ];
 	}
 }
@@ -637,7 +637,7 @@ void FixTJunctions( entity_t *ent ){
 	// this actually creates axial edges, but it
 	// only creates originalEdge_t structures
 	// for non-axial edges
-	for ( i = ent->firstDrawSurf ; i < numMapDrawSurfs ; i++ )
+	for ( i = ent->firstDrawSurf; i < numMapDrawSurfs; i++ )
 	{
 		/* get surface and early out if possible */
 		ds = &mapDrawSurfs[ i ];
@@ -672,7 +672,7 @@ void FixTJunctions( entity_t *ent ){
 
 	// add the non-axial edges, longest first
 	// this gives the most accurate edge description
-	for ( i = 0 ; i < numOriginalEdges ; i++ ) {
+	for ( i = 0; i < numOriginalEdges; i++ ) {
 		e = &originalEdges[i];
 		dv = e->dv[0]; // e might change during AddEdge
 		dv->lightmap[ 0 ][ 0 ] = AddEdge( e->dv[ 0 ]->xyz, e->dv[ 1 ]->xyz, qtrue );
@@ -683,7 +683,7 @@ void FixTJunctions( entity_t *ent ){
 	Sys_FPrintf( SYS_VRB, "%9d degenerate edges\n", c_degenerateEdges );
 
 	// insert any needed vertexes
-	for ( i = ent->firstDrawSurf; i < numMapDrawSurfs ; i++ )
+	for ( i = ent->firstDrawSurf; i < numMapDrawSurfs; i++ )
 	{
 		/* get surface and early out if possible */
 		ds = &mapDrawSurfs[ i ];

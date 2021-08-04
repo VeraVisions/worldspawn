@@ -261,7 +261,7 @@ typedef aseFace_t* aseFacesIter_t;
 picoSurface_t* PicoModelFindOrAddSurface( picoModel_t *model, picoShader_t* shader ){
 	/* see if a surface already has the shader */
 	int i = 0;
-	for ( ; i < model->numSurfaces ; i++ )
+	for ( ; i < model->numSurfaces; i++ )
 	{
 		picoSurface_t* workSurface = model->surface[i];
 		if ( workSurface->shader == shader ) {
@@ -340,8 +340,8 @@ picoIndex_t aseFaces_getColorIndex( aseFace_t* faces, picoIndex_t index ){
 
 int aseUniqueIndex_equal( aseFace_t* faces, picoIndex_t index, picoIndex_t other ){
 	return aseFaces_getVertexIndex( faces, index ) == aseFaces_getVertexIndex( faces, other )
-		   && aseFaces_getTexCoordIndex( faces, index ) == aseFaces_getTexCoordIndex( faces, other )
-		   && aseFaces_getColorIndex( faces, index ) == aseFaces_getColorIndex( faces, other );
+	       && aseFaces_getTexCoordIndex( faces, index ) == aseFaces_getTexCoordIndex( faces, other )
+	       && aseFaces_getColorIndex( faces, index ) == aseFaces_getColorIndex( faces, other );
 }
 
 picoIndex_t aseUniqueIndices_insertUniqueVertex( aseUniqueIndices_t* self, picoIndex_t index ){
@@ -379,7 +379,7 @@ static void _ase_submit_triangles_unshared( picoModel_t* model, aseMaterial_t* m
 			picoSurface_t* surface = PicoModelFindOrAddSurface( model, subMtl->shader );
 			int j;
 			/* we pull the data from the vertex, color and texcoord arrays using the face index data */
-			for ( j = 0 ; j < 3 ; j++ )
+			for ( j = 0; j < 3; j++ )
 			{
 				picoIndex_t index = (picoIndex_t)( ( ( i - faces ) * 3 ) + j );
 				picoIndex_t size = (picoIndex_t)aseUniqueIndices_size( &indices );
@@ -435,7 +435,7 @@ static void _ase_submit_triangles( picoModel_t* model, aseMaterial_t* materials,
 			picoIndex_t smooth[3];
 			int j;
 			/* we pull the data from the vertex, color and texcoord arrays using the face index data */
-			for ( j = 0 ; j < 3 ; j++ )
+			for ( j = 0; j < 3; j++ )
 			{
 				xyz[j]    = &vertices[( *i ).indices[j]].xyz;
 				normal[j] = &vertices[( *i ).indices[j]].normal;
@@ -503,8 +503,8 @@ static picoModel_t *_ase_load( PM_PARAMS_LOAD ){
 	#define _ase_error_return( m ) \
 	{ \
 		_pico_printf( PICO_ERROR,"%s in ASE, line %d.",m,p->curLine ); \
-		_pico_free_parser( p );	\
-		PicoFreeModel( model );	\
+		_pico_free_parser( p ); \
+		PicoFreeModel( model ); \
 		return NULL; \
 	}
 	/* create a new pico parser */

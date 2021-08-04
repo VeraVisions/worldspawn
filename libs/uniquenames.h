@@ -246,8 +246,8 @@ class TestUniqueName
 {
 void name_check_equal( const name_t& name, const char* string, unsigned int postfix ){
 	ASSERT_MESSAGE( strcmp( name.first.c_str(), string ) == 0
-					&& name.second.number() == postfix,
-					"test failed!" );
+	                && name.second.number() == postfix,
+	                "test failed!" );
 }
 void test_refcount(){
 	Names names;

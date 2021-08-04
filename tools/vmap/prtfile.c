@@ -80,7 +80,7 @@ void CountVisportals_r( node_t *node ){
 		return;
 	}
 
-	for ( p = node->portals ; p ; p = p->next[s] )
+	for ( p = node->portals; p; p = p->next[s] )
 	{
 		w = p->winding;
 		s = ( p->nodes[1] == node );
@@ -119,7 +119,7 @@ void WritePortalFile_r( node_t *node ){
 		return;
 	}
 
-	for ( p = node->portals ; p ; p = p->next[s] )
+	for ( p = node->portals; p; p = p->next[s] )
 	{
 		w = p->winding;
 		s = ( p->nodes[1] == node );
@@ -161,7 +161,7 @@ void WritePortalFile_r( node_t *node ){
 			fprintf( pf, "%d ", flags );
 
 			/* write the winding */
-			for ( i = 0 ; i < w->numpoints ; i++ )
+			for ( i = 0; i < w->numpoints; i++ )
 			{
 				fprintf( pf,"(" );
 				WriteFloat( pf, w->p[i][0] );
@@ -191,7 +191,7 @@ void CountSolidFaces_r( node_t *node ){
 		return;
 	}
 
-	for ( p = node->portals ; p ; p = p->next[s] )
+	for ( p = node->portals; p; p = p->next[s] )
 	{
 		w = p->winding;
 		s = ( p->nodes[1] == node );
@@ -230,7 +230,7 @@ void WriteFaceFile_r( node_t *node ){
 		return;
 	}
 
-	for ( p = node->portals ; p ; p = p->next[s] )
+	for ( p = node->portals; p; p = p->next[s] )
 	{
 		w = p->winding;
 		s = ( p->nodes[1] == node );
@@ -245,7 +245,7 @@ void WriteFaceFile_r( node_t *node ){
 
 			if ( p->nodes[0] == node ) {
 				fprintf( pf,"%i %i ",w->numpoints, p->nodes[0]->cluster );
-				for ( i = 0 ; i < w->numpoints ; i++ )
+				for ( i = 0; i < w->numpoints; i++ )
 				{
 					fprintf( pf,"(" );
 					WriteFloat( pf, w->p[i][0] );
@@ -321,7 +321,7 @@ void NumberLeafs_r( node_t *node, int c ){
 
 #if 0
 	// count the portals
-	for ( p = node->portals ; p ; )
+	for ( p = node->portals; p; )
 	{
 		if ( p->nodes[0] == node ) {      // only write out from first leaf
 			if ( PortalPassable( p ) ) {

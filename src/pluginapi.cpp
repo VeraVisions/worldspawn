@@ -37,50 +37,50 @@
 // camera API
 void QERApp_GetCamera(Vector3 &origin, Vector3 &angles)
 {
-    CamWnd &camwnd = *g_pParentWnd->GetCamWnd();
-    origin = Camera_getOrigin(camwnd);
-    angles = Camera_getAngles(camwnd);
+	CamWnd &camwnd = *g_pParentWnd->GetCamWnd();
+	origin = Camera_getOrigin(camwnd);
+	angles = Camera_getAngles(camwnd);
 }
 
 void QERApp_SetCamera(const Vector3 &origin, const Vector3 &angles)
 {
-    CamWnd &camwnd = *g_pParentWnd->GetCamWnd();
-    Camera_setOrigin(camwnd, origin);
-    Camera_setAngles(camwnd, angles);
+	CamWnd &camwnd = *g_pParentWnd->GetCamWnd();
+	Camera_setOrigin(camwnd, origin);
+	Camera_setAngles(camwnd, angles);
 }
 
 void QERApp_GetCamWindowExtents(int *x, int *y, int *width, int *height)
 {
 #if 0
-    CamWnd* camwnd = g_pParentWnd->GetCamWnd();
+	CamWnd* camwnd = g_pParentWnd->GetCamWnd();
 
-    gtk_window_get_position( camwnd->m_window, x, y );
+	gtk_window_get_position( camwnd->m_window, x, y );
 
-    *width = camwnd->Camera()->width;
-    *height = camwnd->Camera()->height;
+	*width = camwnd->Camera()->width;
+	*height = camwnd->Camera()->height;
 #endif
 }
 
 #include "icamera.h"
 
 class CameraAPI {
-    _QERCameraTable m_camera;
+_QERCameraTable m_camera;
 public:
-    typedef _QERCameraTable Type;
+typedef _QERCameraTable Type;
 
-    STRING_CONSTANT(Name, "*");
+STRING_CONSTANT(Name, "*");
 
-    CameraAPI()
-    {
-        m_camera.m_pfnGetCamera = &QERApp_GetCamera;
-        m_camera.m_pfnSetCamera = &QERApp_SetCamera;
-        m_camera.m_pfnGetCamWindowExtents = &QERApp_GetCamWindowExtents;
-    }
+CameraAPI()
+{
+	m_camera.m_pfnGetCamera = &QERApp_GetCamera;
+	m_camera.m_pfnSetCamera = &QERApp_SetCamera;
+	m_camera.m_pfnGetCamWindowExtents = &QERApp_GetCamWindowExtents;
+}
 
-    _QERCameraTable *getTable()
-    {
-        return &m_camera;
-    }
+_QERCameraTable *getTable()
+{
+	return &m_camera;
+}
 };
 
 #include "modulesystem/singletonmodule.h"

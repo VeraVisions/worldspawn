@@ -23,7 +23,7 @@
 #define INCLUDED_LIGHT_H
 
 namespace scene {
-    class Node;
+class Node;
 }
 class EntityClass;
 

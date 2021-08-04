@@ -37,100 +37,100 @@
 #include "write.h"
 
 class MapDependencies :
-        public GlobalRadiantModuleRef,
-        public GlobalBrushModuleRef,
-        public GlobalPatchModuleRef,
-        public GlobalFiletypesModuleRef,
-        public GlobalScripLibModuleRef,
-        public GlobalEntityClassManagerModuleRef,
-        public GlobalSceneGraphModuleRef {
+	public GlobalRadiantModuleRef,
+	public GlobalBrushModuleRef,
+	public GlobalPatchModuleRef,
+	public GlobalFiletypesModuleRef,
+	public GlobalScripLibModuleRef,
+	public GlobalEntityClassManagerModuleRef,
+	public GlobalSceneGraphModuleRef {
 public:
-    MapDependencies() :
-            GlobalBrushModuleRef(GlobalRadiant().getRequiredGameDescriptionKeyValue("brushtypes")),
-            GlobalPatchModuleRef(GlobalRadiant().getRequiredGameDescriptionKeyValue("patchtypes")),
-            GlobalEntityClassManagerModuleRef(GlobalRadiant().getRequiredGameDescriptionKeyValue("entityclass"))
-    {
-    }
+MapDependencies() :
+	GlobalBrushModuleRef(GlobalRadiant().getRequiredGameDescriptionKeyValue("brushtypes")),
+	GlobalPatchModuleRef(GlobalRadiant().getRequiredGameDescriptionKeyValue("patchtypes")),
+	GlobalEntityClassManagerModuleRef(GlobalRadiant().getRequiredGameDescriptionKeyValue("entityclass"))
+{
+}
 };
 
 class MapQ3API : public TypeSystemRef, public MapFormat, public PrimitiveParser {
-    mutable bool detectedFormat;
+mutable bool detectedFormat;
 public:
-    typedef MapFormat Type;
+typedef MapFormat Type;
 
-    STRING_CONSTANT(Name, "worldspawn");
+STRING_CONSTANT(Name, "worldspawn");
 
-    MapQ3API()
-    {
-        GlobalFiletypesModule::getTable().addType(Type::Name(), Name(),
-                                                  filetype_t("WorldSpawn maps", "*.map", true, true, true));
-        GlobalFiletypesModule::getTable().addType(Type::Name(), Name(),
-                                                  filetype_t("WorldSpawn region", "*.reg", true, true, true));
-        GlobalFiletypesModule::getTable().addType(Type::Name(), Name(),
-                                                  filetype_t("WorldSpawn compiled maps", "*.bsp", false, true, false));
-    }
+MapQ3API()
+{
+	GlobalFiletypesModule::getTable().addType(Type::Name(), Name(),
+	                                          filetype_t("WorldSpawn maps", "*.map", true, true, true));
+	GlobalFiletypesModule::getTable().addType(Type::Name(), Name(),
+	                                          filetype_t("WorldSpawn region", "*.reg", true, true, true));
+	GlobalFiletypesModule::getTable().addType(Type::Name(), Name(),
+	                                          filetype_t("WorldSpawn compiled maps", "*.bsp", false, true, false));
+}
 
-    MapFormat *getTable()
-    {
-        return this;
-    }
+MapFormat *getTable()
+{
+	return this;
+}
 
-    scene::Node &parsePrimitive(Tokeniser &tokeniser) const
-    {
-        const char *primitive = tokeniser.getToken();
-        if (primitive != 0) {
-            if (string_equal(primitive, "patchDef2") || string_equal(primitive, "patchDef2WS")) {
-                return GlobalPatchModule::getTable().createPatch(false, false);
-            } if (string_equal(primitive, "patchDef3") || string_equal(primitive, "patchDef3WS")) {
-                return GlobalPatchModule::getTable().createPatch(true, false);
-            } if (string_equal(primitive, "patchDefWS")) {
-                return GlobalPatchModule::getTable().createPatch(false, true);
-            }
+scene::Node &parsePrimitive(Tokeniser &tokeniser) const
+{
+	const char *primitive = tokeniser.getToken();
+	if (primitive != 0) {
+		if (string_equal(primitive, "patchDef2") || string_equal(primitive, "patchDef2WS")) {
+			return GlobalPatchModule::getTable().createPatch(false, false);
+		} if (string_equal(primitive, "patchDef3") || string_equal(primitive, "patchDef3WS")) {
+			return GlobalPatchModule::getTable().createPatch(true, false);
+		} if (string_equal(primitive, "patchDefWS")) {
+			return GlobalPatchModule::getTable().createPatch(false, true);
+		}
 
-			if (!detectedFormat)
+		if (!detectedFormat)
+		{
+			EBrushType fmt;
+			if (string_equal(primitive, "brushDef"))
+				fmt = eBrushTypeQuake3BP;
+			else if (string_equal(primitive, "("))
 			{
-				EBrushType fmt;
-				if (string_equal(primitive, "brushDef"))
-					fmt = eBrushTypeQuake3BP;
-				else if (string_equal(primitive, "("))
-				{
-					if (1)//tokeniser.getLine
-						fmt = eBrushTypeQuake3Valve;
-					else
-						fmt = eBrushTypeQuake3;
-				}
-				if (fmt != GlobalBrushModule::getTable().getBrushType())
-					GlobalBrushModule::getTable().setBrushType(fmt);
+				if (1)        //tokeniser.getLine
+					fmt = eBrushTypeQuake3Valve;
+				else
+					fmt = eBrushTypeQuake3;
 			}
+			if (fmt != GlobalBrushModule::getTable().getBrushType())
+				GlobalBrushModule::getTable().setBrushType(fmt);
+		}
 
-			switch(GlobalBrushModule::getTable().getBrushType())
-			{
-			default:
-				tokeniser.ungetToken(); // (
-			case eBrushTypeQuake3BP:
-				return GlobalBrushModule::getTable().createBrush();
-			}
-        }
+		switch(GlobalBrushModule::getTable().getBrushType())
+		{
+		default:
+			tokeniser.ungetToken();         // (
+		case eBrushTypeQuake3BP:
+			return GlobalBrushModule::getTable().createBrush();
+		}
+	}
 
-        Tokeniser_unexpectedError(tokeniser, primitive, "#quake3-primitive");
-        return g_nullNode;
-    }
+	Tokeniser_unexpectedError(tokeniser, primitive, "#quake3-primitive");
+	return g_nullNode;
+}
 
-    void readGraph(scene::Node &root, TextInputStream &inputStream, EntityCreator &entityTable) const
-    {
-        detectedFormat = false;
-        wrongFormat = false;
-        Tokeniser &tokeniser = GlobalScripLibModule::getTable().m_pfnNewSimpleTokeniser(inputStream);
-        Map_Read(root, tokeniser, entityTable, *this);
-        tokeniser.release();
-    }
+void readGraph(scene::Node &root, TextInputStream &inputStream, EntityCreator &entityTable) const
+{
+	detectedFormat = false;
+	wrongFormat = false;
+	Tokeniser &tokeniser = GlobalScripLibModule::getTable().m_pfnNewSimpleTokeniser(inputStream);
+	Map_Read(root, tokeniser, entityTable, *this);
+	tokeniser.release();
+}
 
-    void writeGraph(scene::Node &root, GraphTraversalFunc traverse, TextOutputStream &outputStream) const
-    {
-        TokenWriter &writer = GlobalScripLibModule::getTable().m_pfnNewSimpleTokenWriter(outputStream);
-        Map_Write(root, traverse, writer, false);
-        writer.release();
-    }
+void writeGraph(scene::Node &root, GraphTraversalFunc traverse, TextOutputStream &outputStream) const
+{
+	TokenWriter &writer = GlobalScripLibModule::getTable().m_pfnNewSimpleTokenWriter(outputStream);
+	Map_Write(root, traverse, writer, false);
+	writer.release();
+}
 };
 
 typedef SingletonModule<MapQ3API, MapDependencies> MapQ3Module;
@@ -146,7 +146,7 @@ __attribute__((visibility("default")))
 #endif
 Radiant_RegisterModules(ModuleServer &server)
 {
-    initialiseModule(server);
+	initialiseModule(server);
 
-    g_MapQ3Module.selfRegister();
+	g_MapQ3Module.selfRegister();
 }

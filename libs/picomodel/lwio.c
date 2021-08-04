@@ -28,9 +28,13 @@ const int FLEN_ERROR = INT_MIN;
 
 static int flen;
 
-void set_flen( int i ) { flen = i; }
+void set_flen( int i ) {
+	flen = i;
+}
 
-int get_flen( void ) { return flen; }
+int get_flen( void ) {
+	return flen;
+}
 
 
 #if !GDEF_ARCH_ENDIAN_BIG

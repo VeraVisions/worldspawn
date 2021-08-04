@@ -108,8 +108,8 @@ inline byte *getPixel(byte *pixels, int width, int height, int x, int y)
 
 class KernelElement {
 public:
-	int x, y;
-	float w;
+int x, y;
+float w;
 };
 
 Image &convertHeightmapToNormalmap(Image &heightmap, float scale)
@@ -134,52 +134,52 @@ Image &convertHeightmapToNormalmap(Image &heightmap, float scale)
 		{0, -1, -0.5f}
 	};
 	#else
-																// 3x3 Prewitt
-		const int kernelSize = 6;
-		KernelElement kernel_du[kernelSize] = {
-			{-1, 1,-1.0f },
-			{-1, 0,-1.0f },
-			{-1,-1,-1.0f },
-			{ 1, 1, 1.0f },
-			{ 1, 0, 1.0f },
-			{ 1,-1, 1.0f }
-		};
-		KernelElement kernel_dv[kernelSize] = {
-			{-1, 1, 1.0f },
-			{ 0, 1, 1.0f },
-			{ 1, 1, 1.0f },
-			{-1,-1,-1.0f },
-			{ 0,-1,-1.0f },
-			{ 1,-1,-1.0f }
-		};
+	// 3x3 Prewitt
+	const int kernelSize = 6;
+	KernelElement kernel_du[kernelSize] = {
+		{-1, 1,-1.0f },
+		{-1, 0,-1.0f },
+		{-1,-1,-1.0f },
+		{ 1, 1, 1.0f },
+		{ 1, 0, 1.0f },
+		{ 1,-1, 1.0f }
+	};
+	KernelElement kernel_dv[kernelSize] = {
+		{-1, 1, 1.0f },
+		{ 0, 1, 1.0f },
+		{ 1, 1, 1.0f },
+		{-1,-1,-1.0f },
+		{ 0,-1,-1.0f },
+		{ 1,-1,-1.0f }
+	};
 	#endif
 
 	int x, y = 0;
 	while (y < h) {
 		x = 0;
 		while (x < w) {
-		float du = 0;
-		for (KernelElement *i = kernel_du; i != kernel_du + kernelSize; ++i) {
-			du += (getPixel(in, w, h, x + (*i).x, y + (*i).y)[0] / 255.0) * (*i).w;
-		}
-		float dv = 0;
-		for (KernelElement *i = kernel_dv; i != kernel_dv + kernelSize; ++i) {
-			dv += (getPixel(in, w, h, x + (*i).x, y + (*i).y)[0] / 255.0) * (*i).w;
-		}
+			float du = 0;
+			for (KernelElement *i = kernel_du; i != kernel_du + kernelSize; ++i) {
+				du += (getPixel(in, w, h, x + (*i).x, y + (*i).y)[0] / 255.0) * (*i).w;
+			}
+			float dv = 0;
+			for (KernelElement *i = kernel_dv; i != kernel_dv + kernelSize; ++i) {
+				dv += (getPixel(in, w, h, x + (*i).x, y + (*i).y)[0] / 255.0) * (*i).w;
+			}
 
-		float nx = -du * scale;
-		float ny = -dv * scale;
-		float nz = 1.0;
+			float nx = -du * scale;
+			float ny = -dv * scale;
+			float nz = 1.0;
 
-		// Normalize
-		float norm = 1.0 / sqrt(nx * nx + ny * ny + nz * nz);
-		out[0] = float_to_integer(((nx * norm) + 1) * 127.5);
-		out[1] = float_to_integer(((ny * norm) + 1) * 127.5);
-		out[2] = float_to_integer(((nz * norm) + 1) * 127.5);
-		out[3] = 255;
+			// Normalize
+			float norm = 1.0 / sqrt(nx * nx + ny * ny + nz * nz);
+			out[0] = float_to_integer(((nx * norm) + 1) * 127.5);
+			out[1] = float_to_integer(((ny * norm) + 1) * 127.5);
+			out[2] = float_to_integer(((nz * norm) + 1) * 127.5);
+			out[3] = 255;
 
-		x++;
-		out += 4;
+			x++;
+			out += 4;
 		}
 
 		y++;
@@ -206,7 +206,7 @@ Image *loadSpecial(void *environment, const char *name)
 		bitmapName << GlobalRadiant().getAppPath() << "bitmaps/" << name + 1 << ".tga";
 		Image *image = loadBitmap(environment, bitmapName.c_str());
 		if (image != 0) {
-		return image;
+			return image;
 		}
 	}
 	return GlobalTexturesCache().loadImage(name);
@@ -273,117 +273,117 @@ typedef std::list<ShaderVariable> ShaderArguments;
 typedef std::pair<ShaderVariable, ShaderVariable> BlendFuncExpression;
 
 class ShaderTemplate {
-	std::size_t m_refcount;
-	CopiedString m_Name;
+std::size_t m_refcount;
+CopiedString m_Name;
 public:
 
-	ShaderParameters m_params;
-	TextureExpression m_textureName;
-	TextureExpression m_diffuse;
-	TextureExpression m_bump;
-	ShaderValue m_heightmapScale;
-	TextureExpression m_specular;
-	TextureExpression m_lightFalloffImage;
+ShaderParameters m_params;
+TextureExpression m_textureName;
+TextureExpression m_diffuse;
+TextureExpression m_bump;
+ShaderValue m_heightmapScale;
+TextureExpression m_specular;
+TextureExpression m_lightFalloffImage;
 
-	int m_nFlags;
-	float m_fTrans;
-	int m_iPolygonOffset;
+int m_nFlags;
+float m_fTrans;
+int m_iPolygonOffset;
 
-	// alphafunc stuff
-	IShader::EAlphaFunc m_AlphaFunc;
-	float m_AlphaRef;
-	// cull stuff
-	IShader::ECull m_Cull;
+// alphafunc stuff
+IShader::EAlphaFunc m_AlphaFunc;
+float m_AlphaRef;
+// cull stuff
+IShader::ECull m_Cull;
 
-	ShaderTemplate() :
-		m_refcount(0)
-	{
-		m_nFlags = 0;
-		m_fTrans = 1.0f;
+ShaderTemplate() :
+	m_refcount(0)
+{
+	m_nFlags = 0;
+	m_fTrans = 1.0f;
+}
+
+void IncRef()
+{
+	++m_refcount;
+}
+
+void DecRef()
+{
+	ASSERT_MESSAGE(m_refcount != 0, "shader reference-count going below zero");
+	if (--m_refcount == 0) {
+		delete this;
 	}
+}
 
-	void IncRef()
-	{
-		++m_refcount;
-	}
+std::size_t refcount()
+{
+	return m_refcount;
+}
 
-	void DecRef()
-	{
-		ASSERT_MESSAGE(m_refcount != 0, "shader reference-count going below zero");
-		if (--m_refcount == 0) {
-			delete this;
-		}
-	}
+const char *getName() const
+{
+	return m_Name.c_str();
+}
 
-	std::size_t refcount()
-	{
-		return m_refcount;
-	}
-
-	const char *getName() const
-	{
-		return m_Name.c_str();
-	}
-
-	void setName(const char *name)
-	{
-		m_Name = name;
-	}
+void setName(const char *name)
+{
+	m_Name = name;
+}
 
 // -----------------------------------------
 
-	bool parseMaterial(Tokeniser &tokeniser);
-	bool parseTemplate(Tokeniser &tokeniser);
+bool parseMaterial(Tokeniser &tokeniser);
+bool parseTemplate(Tokeniser &tokeniser);
 
 
-	void CreateDefault(const char *name)
-	{
-		/*if (g_enableDefaultShaders) {
-		m_textureName = name;
-		} else {
-		m_textureName = "";
-		}*/
-		setName(name);
-	}
+void CreateDefault(const char *name)
+{
+	/*if (g_enableDefaultShaders) {
+	   m_textureName = name;
+	   } else {
+	   m_textureName = "";
+	   }*/
+	setName(name);
+}
 
-	class MapLayerTemplate {
-		TextureExpression m_texture;
-		BlendFuncExpression m_blendFunc;
-		bool m_clampToBorder;
-		ShaderValue m_alphaTest;
-	public:
-		MapLayerTemplate(const TextureExpression &texture, const BlendFuncExpression &blendFunc, bool clampToBorder,
-				const ShaderValue &alphaTest) :
-			m_texture(texture),
-			m_blendFunc(blendFunc),
-			m_clampToBorder(false),
-			m_alphaTest(alphaTest)
-		{
-		}
+class MapLayerTemplate {
+TextureExpression m_texture;
+BlendFuncExpression m_blendFunc;
+bool m_clampToBorder;
+ShaderValue m_alphaTest;
+public:
+MapLayerTemplate(const TextureExpression &texture, const BlendFuncExpression &blendFunc, bool clampToBorder,
+                 const ShaderValue &alphaTest) :
+	m_texture(texture),
+	m_blendFunc(blendFunc),
+	m_clampToBorder(false),
+	m_alphaTest(alphaTest)
+{
+}
 
-		const TextureExpression &texture() const
-		{
-			return m_texture;
-		}
+const TextureExpression &texture() const
+{
+	return m_texture;
+}
 
-		const BlendFuncExpression &blendFunc() const
-		{
-			return m_blendFunc;
-		}
+const BlendFuncExpression &blendFunc() const
+{
+	return m_blendFunc;
+}
 
-		bool clampToBorder() const
-		{
-			return m_clampToBorder;
-		}
+bool clampToBorder() const
+{
+	return m_clampToBorder;
+}
 
-		const ShaderValue &alphaTest() const
-		{
-			return m_alphaTest;
-		}
-	};
+const ShaderValue &alphaTest() const
+{
+	return m_alphaTest;
+}
+};
 
-	typedef std::vector<MapLayerTemplate> MapLayers;
-	MapLayers m_layers;
+typedef std::vector<MapLayerTemplate> MapLayers;
+MapLayers m_layers;
 };
 
 enum LayerTypeId {
@@ -396,17 +396,17 @@ enum LayerTypeId {
 
 class LayerTemplate {
 public:
-	LayerTypeId m_type;
-	TextureExpression m_texture;
-	BlendFuncExpression m_blendFunc;
-	bool m_clampToBorder;
-	ShaderValue m_alphaTest;
-	ShaderValue m_heightmapScale;
+LayerTypeId m_type;
+TextureExpression m_texture;
+BlendFuncExpression m_blendFunc;
+bool m_clampToBorder;
+ShaderValue m_alphaTest;
+ShaderValue m_heightmapScale;
 
-	LayerTemplate() : m_type(LAYER_NONE), m_blendFunc("GL_ONE", "GL_ZERO"), m_clampToBorder(false), m_alphaTest("-1"),
-			m_heightmapScale("0")
-	{
-	}
+LayerTemplate() : m_type(LAYER_NONE), m_blendFunc("GL_ONE", "GL_ZERO"), m_clampToBorder(false), m_alphaTest("-1"),
+	m_heightmapScale("0")
+{
+}
 };
 
 bool parseShaderParameters(Tokeniser &tokeniser, ShaderParameters &params)
@@ -458,14 +458,14 @@ ShaderTemplate *findTemplate(const char *name)
 
 class ShaderDefinition {
 public:
-	ShaderDefinition(ShaderTemplate *shaderTemplate, const ShaderArguments &args, const char *filename)
-		: shaderTemplate(shaderTemplate), args(args), filename(filename)
-	{
-	}
+ShaderDefinition(ShaderTemplate *shaderTemplate, const ShaderArguments &args, const char *filename)
+	: shaderTemplate(shaderTemplate), args(args), filename(filename)
+{
+}
 
-	ShaderTemplate *shaderTemplate;
-	ShaderArguments args;
-	const char *filename;
+ShaderTemplate *shaderTemplate;
+ShaderArguments args;
+const char *filename;
 };
 
 typedef std::map<CopiedString, ShaderDefinition> ShaderDefinitionMap;
@@ -479,7 +479,7 @@ bool parseTemplateInstance(Tokeniser &tokeniser, const char *filename)
 	ShaderTemplate *shaderTemplate = findTemplate(templateName);
 	if (shaderTemplate == 0) {
 		globalErrorStream() << "shader instance: " << makeQuoted(name.c_str()) << ": shader template not found: "
-			<< makeQuoted(templateName) << "\n";
+		                    << makeQuoted(templateName) << "\n";
 	}
 
 	ShaderArguments args;
@@ -490,9 +490,9 @@ bool parseTemplateInstance(Tokeniser &tokeniser, const char *filename)
 
 	if (shaderTemplate != 0) {
 		if (!g_shaderDefinitions.insert(
-			ShaderDefinitionMap::value_type(name, ShaderDefinition(shaderTemplate, args, filename))).second) {
+			    ShaderDefinitionMap::value_type(name, ShaderDefinition(shaderTemplate, args, filename))).second) {
 			globalErrorStream() << "shader instance: " << makeQuoted(name.c_str())
-					<< ": already exists, second definition ignored\n";
+			                    << ": already exists, second definition ignored\n";
 		}
 	}
 	return true;
@@ -604,251 +604,251 @@ BlendFactor evaluateBlendFactor(const ShaderValue &value, const ShaderParameters
 }
 
 class CShader : public IShader {
-	std::size_t m_refcount;
-	const ShaderTemplate &m_template;
-	const ShaderArguments &m_args;
-	const char *m_filename;
-	// name is shader-name, otherwise texture-name (if not a real shader)
-	CopiedString m_Name;
-	qtexture_t *m_pTexture;
-	qtexture_t *m_notfound;
-	qtexture_t *m_pDiffuse;
-	float m_heightmapScale;
-	qtexture_t *m_pBump;
-	qtexture_t *m_pSpecular;
-	qtexture_t *m_pLightFalloffImage;
-	BlendFunc m_blendFunc;
-	bool m_bInUse;
+std::size_t m_refcount;
+const ShaderTemplate &m_template;
+const ShaderArguments &m_args;
+const char *m_filename;
+// name is shader-name, otherwise texture-name (if not a real shader)
+CopiedString m_Name;
+qtexture_t *m_pTexture;
+qtexture_t *m_notfound;
+qtexture_t *m_pDiffuse;
+float m_heightmapScale;
+qtexture_t *m_pBump;
+qtexture_t *m_pSpecular;
+qtexture_t *m_pLightFalloffImage;
+BlendFunc m_blendFunc;
+bool m_bInUse;
 
 public:
-	CShader(const ShaderDefinition &definition) :
-		m_refcount(0),
-		m_template(*definition.shaderTemplate),
-		m_args(definition.args),
-		m_filename(definition.filename),
-		m_blendFunc(BLEND_SRC_ALPHA, BLEND_ONE_MINUS_SRC_ALPHA),
-		m_bInUse(false)
-	{
-		m_pTexture = 0;
-		m_pDiffuse = 0;
-		m_pBump = 0;
-		m_pSpecular = 0;
-		m_notfound = 0;
-		realise();
-	}
+CShader(const ShaderDefinition &definition) :
+	m_refcount(0),
+	m_template(*definition.shaderTemplate),
+	m_args(definition.args),
+	m_filename(definition.filename),
+	m_blendFunc(BLEND_SRC_ALPHA, BLEND_ONE_MINUS_SRC_ALPHA),
+	m_bInUse(false)
+{
+	m_pTexture = 0;
+	m_pDiffuse = 0;
+	m_pBump = 0;
+	m_pSpecular = 0;
+	m_notfound = 0;
+	realise();
+}
 
-	virtual ~CShader()
-	{
-		unrealise();
+virtual ~CShader()
+{
+	unrealise();
 
-		ASSERT_MESSAGE(m_refcount == 0, "deleting active shader");
-	}
+	ASSERT_MESSAGE(m_refcount == 0, "deleting active shader");
+}
 
-	// IShaders implementation -----------------
-	void IncRef()
-	{
-		++m_refcount;
-	}
+// IShaders implementation -----------------
+void IncRef()
+{
+	++m_refcount;
+}
 
-	void DecRef()
-	{
-		ASSERT_MESSAGE(m_refcount != 0, "shader reference-count going below zero");
-		if (--m_refcount == 0) {
+void DecRef()
+{
+	ASSERT_MESSAGE(m_refcount != 0, "shader reference-count going below zero");
+	if (--m_refcount == 0) {
 		delete this;
-		}
 	}
+}
 
-	std::size_t refcount()
-	{
-		return m_refcount;
-	}
+std::size_t refcount()
+{
+	return m_refcount;
+}
 
-	// get/set the qtexture_t* Radiant uses to represent this shader object
-	qtexture_t *getTexture() const
-	{
-		return m_pTexture;
-	}
+// get/set the qtexture_t* Radiant uses to represent this shader object
+qtexture_t *getTexture() const
+{
+	return m_pTexture;
+}
 
-	qtexture_t *getDiffuse() const
-	{
-		return m_pDiffuse;
-	}
+qtexture_t *getDiffuse() const
+{
+	return m_pDiffuse;
+}
 
-	qtexture_t *getBump() const
-	{
-		return m_pBump;
-	}
+qtexture_t *getBump() const
+{
+	return m_pBump;
+}
 
-	qtexture_t *getSpecular() const
-	{
-		return m_pSpecular;
-	}
+qtexture_t *getSpecular() const
+{
+	return m_pSpecular;
+}
 
-	// get shader name
-	const char *getName() const
-	{
-		return m_Name.c_str();
-	}
+// get shader name
+const char *getName() const
+{
+	return m_Name.c_str();
+}
 
-	bool IsInUse() const
-	{
-		return m_bInUse;
-	}
+bool IsInUse() const
+{
+	return m_bInUse;
+}
 
-	void SetInUse(bool bInUse)
-	{
-		m_bInUse = bInUse;
-		g_ActiveShadersChangedNotify();
-	}
+void SetInUse(bool bInUse)
+{
+	m_bInUse = bInUse;
+	g_ActiveShadersChangedNotify();
+}
 
-	// get the shader flags
-	int getFlags() const
-	{
-		return m_template.m_nFlags;
-	}
+// get the shader flags
+int getFlags() const
+{
+	return m_template.m_nFlags;
+}
 
-	// get the transparency value
-	float getTrans() const
-	{
-		return m_template.m_fTrans;
-	}
-	
-	int getPolygonOffset() const
-	{
-		return m_template.m_iPolygonOffset;
-	}
+// get the transparency value
+float getTrans() const
+{
+	return m_template.m_fTrans;
+}
 
-	// test if it's a true shader, or a default shader created to wrap around a texture
-	bool IsDefault() const
-	{
-		return string_empty(m_filename);
-	}
+int getPolygonOffset() const
+{
+	return m_template.m_iPolygonOffset;
+}
 
-	// get the alphaFunc
-	void getAlphaFunc(EAlphaFunc *func, float *ref)
-	{
-		*func = m_template.m_AlphaFunc;
-		*ref = m_template.m_AlphaRef;
-	};
+// test if it's a true shader, or a default shader created to wrap around a texture
+bool IsDefault() const
+{
+	return string_empty(m_filename);
+}
 
-	BlendFunc getBlendFunc() const
-	{
-		return m_blendFunc;
-	}
+// get the alphaFunc
+void getAlphaFunc(EAlphaFunc *func, float *ref)
+{
+	*func = m_template.m_AlphaFunc;
+	*ref = m_template.m_AlphaRef;
+};
 
-	// get the cull type
-	ECull getCull()
-	{
-		return m_template.m_Cull;
-	};
+BlendFunc getBlendFunc() const
+{
+	return m_blendFunc;
+}
 
-	// get shader file name (ie the file where this one is defined)
-	const char *getShaderFileName() const
-	{
-		return m_filename;
-	}
-	// -----------------------------------------
+// get the cull type
+ECull getCull()
+{
+	return m_template.m_Cull;
+};
 
-	void realise()
-	{
-		m_pTexture = evaluateTexture(m_template.m_textureName, m_template.m_params, m_args);
+// get shader file name (ie the file where this one is defined)
+const char *getShaderFileName() const
+{
+	return m_filename;
+}
+// -----------------------------------------
 
-		if (m_pTexture->texture_number == 0) {
-			m_notfound = m_pTexture;
-			{
-				StringOutputStream name(256);
-				name << GlobalRadiant().getAppPath() << "bitmaps/" << (IsDefault() ? "notex.tga" : "shadernotex.tga");
-				m_pTexture = GlobalTexturesCache().capture(LoadImageCallback(0, loadBitmap), name.c_str());
-			}
-		}
-	}
+void realise()
+{
+	m_pTexture = evaluateTexture(m_template.m_textureName, m_template.m_params, m_args);
 
-	void unrealise()
-	{
-		GlobalTexturesCache().release(m_pTexture);
-
-		if (m_notfound != 0) {
-			GlobalTexturesCache().release(m_notfound);
-		}
-	}
-
-	// set shader name
-	void setName(const char *name)
-	{
-		m_Name = name;
-	}
-
-	class MapLayer : public ShaderLayer {
-		qtexture_t *m_texture;
-		BlendFunc m_blendFunc;
-		bool m_clampToBorder;
-		float m_alphaTest;
-	public:
-		MapLayer(qtexture_t *texture, BlendFunc blendFunc, bool clampToBorder, float alphaTest) :
-			m_texture(texture),
-			m_blendFunc(blendFunc),
-			m_clampToBorder(false),
-			m_alphaTest(alphaTest)
+	if (m_pTexture->texture_number == 0) {
+		m_notfound = m_pTexture;
 		{
+			StringOutputStream name(256);
+			name << GlobalRadiant().getAppPath() << "bitmaps/" << (IsDefault() ? "notex.tga" : "shadernotex.tga");
+			m_pTexture = GlobalTexturesCache().capture(LoadImageCallback(0, loadBitmap), name.c_str());
 		}
+	}
+}
 
-		qtexture_t *texture() const
-		{
-			return m_texture;
-		}
+void unrealise()
+{
+	GlobalTexturesCache().release(m_pTexture);
 
-		BlendFunc blendFunc() const
-		{
-			return m_blendFunc;
-		}
+	if (m_notfound != 0) {
+		GlobalTexturesCache().release(m_notfound);
+	}
+}
 
-		bool clampToBorder() const
-		{
-			return m_clampToBorder;
-		}
+// set shader name
+void setName(const char *name)
+{
+	m_Name = name;
+}
 
-		float alphaTest() const
-		{
-			return m_alphaTest;
-		}
-	};
+class MapLayer : public ShaderLayer {
+qtexture_t *m_texture;
+BlendFunc m_blendFunc;
+bool m_clampToBorder;
+float m_alphaTest;
+public:
+MapLayer(qtexture_t *texture, BlendFunc blendFunc, bool clampToBorder, float alphaTest) :
+	m_texture(texture),
+	m_blendFunc(blendFunc),
+	m_clampToBorder(false),
+	m_alphaTest(alphaTest)
+{
+}
 
-	static MapLayer evaluateLayer(const ShaderTemplate::MapLayerTemplate &layerTemplate, const ShaderParameters &params,
-					const ShaderArguments &args)
-	{
-		return MapLayer(
-			evaluateTexture(layerTemplate.texture(), params, args),
-			evaluateBlendFunc(layerTemplate.blendFunc(), params, args),
-			layerTemplate.clampToBorder(),
-			evaluateFloat(layerTemplate.alphaTest(), params, args)
+qtexture_t *texture() const
+{
+	return m_texture;
+}
+
+BlendFunc blendFunc() const
+{
+	return m_blendFunc;
+}
+
+bool clampToBorder() const
+{
+	return m_clampToBorder;
+}
+
+float alphaTest() const
+{
+	return m_alphaTest;
+}
+};
+
+static MapLayer evaluateLayer(const ShaderTemplate::MapLayerTemplate &layerTemplate, const ShaderParameters &params,
+                              const ShaderArguments &args)
+{
+	return MapLayer(
+		evaluateTexture(layerTemplate.texture(), params, args),
+		evaluateBlendFunc(layerTemplate.blendFunc(), params, args),
+		layerTemplate.clampToBorder(),
+		evaluateFloat(layerTemplate.alphaTest(), params, args)
 		);
-	}
+}
 
-	typedef std::vector<MapLayer> MapLayers;
-	MapLayers m_layers;
+typedef std::vector<MapLayer> MapLayers;
+MapLayers m_layers;
 
-	const ShaderLayer *firstLayer() const
-	{
-		if (m_layers.empty()) {
-			return 0;
-		}
-		return &m_layers.front();
-	}
-
-	void forEachLayer(const ShaderLayerCallback &callback) const
-	{
-		for (MapLayers::const_iterator i = m_layers.begin(); i != m_layers.end(); ++i) {
-			callback(*i);
-		}
-	}
-
-	qtexture_t *lightFalloffImage() const
-	{
-		if (!string_empty(m_template.m_lightFalloffImage.c_str())) {
-			return m_pLightFalloffImage;
-		}
+const ShaderLayer *firstLayer() const
+{
+	if (m_layers.empty()) {
 		return 0;
 	}
+	return &m_layers.front();
+}
+
+void forEachLayer(const ShaderLayerCallback &callback) const
+{
+	for (MapLayers::const_iterator i = m_layers.begin(); i != m_layers.end(); ++i) {
+		callback(*i);
+	}
+}
+
+qtexture_t *lightFalloffImage() const
+{
+	if (!string_empty(m_template.m_lightFalloffImage.c_str())) {
+		return m_pLightFalloffImage;
+	}
+	return 0;
+}
 };
 
 typedef SmartPointer<CShader> ShaderPointer;
@@ -972,15 +972,15 @@ bool ShaderTemplate::parseMaterial(Tokeniser &tokeniser)
 				}
 
 				if (string_equal_nocase(cull, "none")
-				|| string_equal_nocase(cull, "twosided")
-				|| string_equal_nocase(cull, "disable")) {
-				m_Cull = IShader::eCullNone;
+				    || string_equal_nocase(cull, "twosided")
+				    || string_equal_nocase(cull, "disable")) {
+					m_Cull = IShader::eCullNone;
 				} else if (string_equal_nocase(cull, "back")
-					|| string_equal_nocase(cull, "backside")
-					|| string_equal_nocase(cull, "backsided")) {
-				m_Cull = IShader::eCullBack;
+				           || string_equal_nocase(cull, "backside")
+				           || string_equal_nocase(cull, "backsided")) {
+					m_Cull = IShader::eCullBack;
 				} else {
-				m_Cull = IShader::eCullBack;
+					m_Cull = IShader::eCullBack;
 				}
 
 				m_nFlags |= QER_CULL;
@@ -1021,17 +1021,17 @@ bool ShaderTemplate::parseMaterial(Tokeniser &tokeniser)
 
 class Layer {
 public:
-	LayerTypeId m_type;
-	TextureExpression m_texture;
-	BlendFunc m_blendFunc;
-	bool m_clampToBorder;
-	float m_alphaTest;
-	float m_heightmapScale;
+LayerTypeId m_type;
+TextureExpression m_texture;
+BlendFunc m_blendFunc;
+bool m_clampToBorder;
+float m_alphaTest;
+float m_heightmapScale;
 
-	Layer() : m_type(LAYER_NONE), m_blendFunc(BLEND_ONE, BLEND_ZERO), m_clampToBorder(false), m_alphaTest(-1),
-		m_heightmapScale(0)
-	{
-	}
+Layer() : m_type(LAYER_NONE), m_blendFunc(BLEND_ONE, BLEND_ZERO), m_clampToBorder(false), m_alphaTest(-1),
+	m_heightmapScale(0)
+{
+}
 };
 
 std::list<CopiedString> g_shaderFilenames;
@@ -1063,7 +1063,7 @@ char* m_substring(const char* str, size_t begin, size_t len)
 	}
 
 	return strndup(str + begin, len);
-} 
+}
 
 void ParseShaderFile(Tokeniser &tokeniser, const char *filename)
 {
@@ -1091,7 +1091,7 @@ void ParseShaderFile(Tokeniser &tokeniser, const char *filename)
 					for (;;) {
 						const char *value = tokeniser.getToken();
 						if (string_equal(value, "}")) {
-						break;
+							break;
 						}
 					}
 
@@ -1106,9 +1106,9 @@ void ParseShaderFile(Tokeniser &tokeniser, const char *filename)
 				parseTemplateInstance(tokeniser, filename);
 			} else {
 				if (!string_equal(token, "material")
-				&& !string_equal(token, "particle")
-				&& !string_equal(token, "skin")) {
-				tokeniser.ungetToken();
+				    && !string_equal(token, "particle")
+				    && !string_equal(token, "skin")) {
+					tokeniser.ungetToken();
 				}
 				// first token should be the path + name.. (from base)
 				ShaderTemplatePointer shaderTemplate(new ShaderTemplate());
@@ -1118,20 +1118,20 @@ void ParseShaderFile(Tokeniser &tokeniser, const char *filename)
 
 				bool result = shaderTemplate->parseMaterial(tokeniser);
 				if (result) {
-				// do we already have this shader?
-				if (!g_shaderDefinitions.insert(ShaderDefinitionMap::value_type(shaderTemplate->getName(),
-												ShaderDefinition(
-													shaderTemplate.get(),
-													ShaderArguments(),
-													filename))).second) {
+					// do we already have this shader?
+					if (!g_shaderDefinitions.insert(ShaderDefinitionMap::value_type(shaderTemplate->getName(),
+					                                                                ShaderDefinition(
+														shaderTemplate.get(),
+														ShaderArguments(),
+														filename))).second) {
 		#if GDEF_DEBUG
-					globalOutputStream() << "WARNING: shader " << shaderTemplate->getName()
-							<< " is already in memory, definition in " << filename << " ignored.\n";
+						globalOutputStream() << "WARNING: shader " << shaderTemplate->getName()
+						                     << " is already in memory, definition in " << filename << " ignored.\n";
 		#endif
-				}
+					}
 				} else {
-				globalErrorStream() << "Error parsing material " << shaderTemplate->getName() << "\n";
-				return;
+					globalErrorStream() << "Error parsing material " << shaderTemplate->getName() << "\n";
+					return;
 				}
 			}
 		}
@@ -1153,9 +1153,9 @@ void parseGuideFile(Tokeniser &tokeniser, const char *filename)
 			ShaderTemplatePointer shaderTemplate(new ShaderTemplate);
 			shaderTemplate->parseTemplate(tokeniser);
 			if (!g_shaderTemplates.insert(
-				ShaderTemplateMap::value_type(shaderTemplate->getName(), shaderTemplate)).second) {
+				    ShaderTemplateMap::value_type(shaderTemplate->getName(), shaderTemplate)).second) {
 				globalErrorStream() << "guide " << makeQuoted(shaderTemplate->getName())
-						<< ": already defined, second definition ignored\n";
+				                    << ": already defined, second definition ignored\n";
 			}
 		} else if (string_equal(token, "inlineGuide")) {
 			// skip entire inlineGuide definition
@@ -1164,11 +1164,11 @@ void parseGuideFile(Tokeniser &tokeniser, const char *filename)
 				tokeniser.nextLine();
 				token = tokeniser.getToken();
 				if (string_equal(token, "{")) {
-				++depth;
+					++depth;
 				} else if (string_equal(token, "}")) {
-				if (--depth == 0) {
-					break;
-				}
+					if (--depth == 0) {
+						break;
+					}
 				}
 			}
 		}
@@ -1213,7 +1213,7 @@ CShader *Try_Shader_ForName(const char *name)
 	{
 		shaders_t::iterator i = g_ActiveShaders.find(name);
 		if (i != g_ActiveShaders.end()) {
-		return (*i).second;
+			return (*i).second;
 		}
 	}
 	// active shader was not found
@@ -1228,8 +1228,8 @@ CShader *Try_Shader_ForName(const char *name)
 		g_shaderTemplates.insert(ShaderTemplateMap::value_type(shaderTemplate->getName(), shaderTemplate));
 
 		i = g_shaderDefinitions.insert(ShaderDefinitionMap::value_type(name, ShaderDefinition(shaderTemplate.get(),
-			ShaderArguments(),
-			""))).first;
+		                                                                                      ShaderArguments(),
+		                                                                                      ""))).first;
 	}
 
 	// create shader from existing definition
@@ -1285,7 +1285,7 @@ void IfFound_dumpUnreferencedShader(bool &bFound, const char *filename)
 	}
 }
 
-typedef ReferenceCaller<bool, void(const char *), IfFound_dumpUnreferencedShader> IfFoundDumpUnreferencedShaderCaller;
+typedef ReferenceCaller<bool, void (const char *), IfFound_dumpUnreferencedShader> IfFoundDumpUnreferencedShaderCaller;
 
 void DumpUnreferencedShaders()
 {
@@ -1392,8 +1392,8 @@ shaderlist_findOrInstall(const char *enginePath, const char *toolsPath, const ch
 void Shaders_Load()
 {
 	/*if (QUAKE4) {
-		GlobalFileSystem().forEachFile("guides/", "guide", makeCallbackF(loadGuideFile), 0);
-	}*/
+	        GlobalFileSystem().forEachFile("guides/", "guide", makeCallbackF(loadGuideFile), 0);
+	   }*/
 
 	const char *shaderPath = GlobalRadiant().getGameDescriptionKeyValue("shaderpath");
 	if (!string_empty(shaderPath)) {
@@ -1472,77 +1472,77 @@ void Shaders_Refresh()
 
 class MaterialSystem : public ShaderSystem, public ModuleObserver {
 public:
-	void realise()
-	{
-		Shaders_Realise();
-	}
+void realise()
+{
+	Shaders_Realise();
+}
 
-	void unrealise()
-	{
-		Shaders_Unrealise();
-	}
+void unrealise()
+{
+	Shaders_Unrealise();
+}
 
-	void refresh()
-	{
-		Shaders_Refresh();
-	}
+void refresh()
+{
+	Shaders_Refresh();
+}
 
-	IShader *getShaderForName(const char *name)
-	{
-		return Shader_ForName(name);
-	}
+IShader *getShaderForName(const char *name)
+{
+	return Shader_ForName(name);
+}
 
-	void foreachShaderName(const ShaderNameCallback &callback)
-	{
-		for (ShaderDefinitionMap::const_iterator i = g_shaderDefinitions.begin(); i != g_shaderDefinitions.end(); ++i) {
-			callback((*i).first.c_str());
-		}
+void foreachShaderName(const ShaderNameCallback &callback)
+{
+	for (ShaderDefinitionMap::const_iterator i = g_shaderDefinitions.begin(); i != g_shaderDefinitions.end(); ++i) {
+		callback((*i).first.c_str());
 	}
+}
 
-	void beginActiveShadersIterator()
-	{
-		ActiveShaders_IteratorBegin();
-	}
+void beginActiveShadersIterator()
+{
+	ActiveShaders_IteratorBegin();
+}
 
-	bool endActiveShadersIterator()
-	{
-		return ActiveShaders_IteratorAtEnd();
-	}
+bool endActiveShadersIterator()
+{
+	return ActiveShaders_IteratorAtEnd();
+}
 
-	IShader *dereferenceActiveShadersIterator()
-	{
-		return ActiveShaders_IteratorCurrent();
-	}
+IShader *dereferenceActiveShadersIterator()
+{
+	return ActiveShaders_IteratorCurrent();
+}
 
-	void incrementActiveShadersIterator()
-	{
-		ActiveShaders_IteratorIncrement();
-	}
+void incrementActiveShadersIterator()
+{
+	ActiveShaders_IteratorIncrement();
+}
 
-	void setActiveShadersChangedNotify(const Callback<void()> &notify)
-	{
-		g_ActiveShadersChangedNotify = notify;
-	}
+void setActiveShadersChangedNotify(const Callback<void()> &notify)
+{
+	g_ActiveShadersChangedNotify = notify;
+}
 
-	void attach(ModuleObserver &observer)
-	{
-		g_observers.attach(observer);
-	}
+void attach(ModuleObserver &observer)
+{
+	g_observers.attach(observer);
+}
 
-	void detach(ModuleObserver &observer)
-	{
-		g_observers.detach(observer);
-	}
+void detach(ModuleObserver &observer)
+{
+	g_observers.detach(observer);
+}
 
-	void setLightingEnabled(bool enabled)
-	{
+void setLightingEnabled(bool enabled)
+{
 
-	}
+}
 
-	const char *getTexturePrefix() const
-	{
-		return g_texturePrefix;
-	}
+const char *getTexturePrefix() const
+{
+	return g_texturePrefix;
+}
 };
 
 MaterialSystem g_MaterialSystem;

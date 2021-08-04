@@ -60,7 +60,7 @@ inline void istream_read_little_endian( InputStreamType& istream, Type& value ){
 	istream.read(reinterpret_cast<typename InputStreamType::byte_type *>( &value ), sizeof(Type));
 	if (GDEF_ARCH_ENDIAN_BIG) {
 		std::reverse(reinterpret_cast<typename InputStreamType::byte_type *>( &value ),
-					 reinterpret_cast<typename InputStreamType::byte_type *>( &value ) + sizeof(Type));
+		             reinterpret_cast<typename InputStreamType::byte_type *>( &value ) + sizeof(Type));
 	}
 }
 
@@ -69,7 +69,7 @@ inline void istream_read_big_endian( InputStreamType& istream, Type& value ){
 	istream.read(reinterpret_cast<typename InputStreamType::byte_type *>( &value ), sizeof(Type));
 	if (!GDEF_ARCH_ENDIAN_BIG) {
 		std::reverse(reinterpret_cast<typename InputStreamType::byte_type *>( &value ),
-					 reinterpret_cast<typename InputStreamType::byte_type *>( &value ) + sizeof(Type));
+		             reinterpret_cast<typename InputStreamType::byte_type *>( &value ) + sizeof(Type));
 	}
 }
 

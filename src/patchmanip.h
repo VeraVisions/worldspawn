@@ -32,7 +32,7 @@ void Patch_constructToolbar(ui::Toolbar toolbar);
 void Patch_constructMenu(ui::Menu menu);
 
 namespace scene {
-    class Graph;
+class Graph;
 }
 
 void Scene_PatchSetShader_Selected(scene::Graph &graph, const char *name);

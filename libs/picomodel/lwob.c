@@ -14,7 +14,7 @@
 
 /* disable warnings */
 #if GDEF_COMPILER_MSVC
-#pragma warning( disable:4018 )		/* signed/unsigned mismatch */
+#pragma warning( disable:4018 )         /* signed/unsigned mismatch */
 #endif
 
 
@@ -456,7 +456,7 @@ lwSurface *lwGetSurface5( picoMemStream_t *fp, int cksize, lwObject *obj ){
 			for ( i = 0; i < 3; i++ )
 				v[ i ] = getF4( fp );
 			tex->tmap.center.eindex = add_tvel( tex->tmap.center.val, v,
-												&obj->env, &obj->nenvs );
+			                                    &obj->env, &obj->nenvs );
 			break;
 
 		case ID_TCLR:
@@ -771,7 +771,7 @@ lwObject *lwGetObject5( const char *filename, picoMemStream_t *fp, unsigned int 
 
 		case ID_POLS:
 			if ( !lwGetPolygons5( fp, cksize, &layer->polygon,
-								  layer->point.offset ) ) {
+			                      layer->point.offset ) ) {
 				goto Fail;
 			}
 			break;
@@ -818,7 +818,7 @@ lwObject *lwGetObject5( const char *filename, picoMemStream_t *fp, unsigned int 
 		goto Fail;
 	}
 	if ( !lwResolvePolySurfaces( &layer->polygon, &object->taglist,
-								 &object->surf, &object->nsurfs ) ) {
+	                             &object->surf, &object->nsurfs ) ) {
 		goto Fail;
 	}
 	lwGetVertNormals( &layer->point, &layer->polygon );

@@ -567,10 +567,10 @@ int BSPMain( int argc, char **argv ){
 	int i;
 	char path[ 1024 ], tempSource[ 1024 ];
 	qboolean onlyents = qfalse;
-	char BSPFilePath [ 1024 ];
-	char lineFilePath [ 1024 ];
-	char portalFilePath [ 1024 ];
-	char surfaceFilePath [ 1024 ];
+	char BSPFilePath[ 1024 ];
+	char lineFilePath[ 1024 ];
+	char portalFilePath[ 1024 ];
+	char surfaceFilePath[ 1024 ];
 	BSPFilePath[0] = 0;
 	lineFilePath[0] = 0;
 	portalFilePath[0] = 0;
@@ -616,7 +616,7 @@ int BSPMain( int argc, char **argv ){
 			Sys_Printf( "Leaving light entities on map after compile\n" );
 		}
 		else if ( !strcmp( argv[ i ],  "-nodetail" ) ) {
-			Sys_Printf( "Ignoring detail brushes\n" ) ;
+			Sys_Printf( "Ignoring detail brushes\n" );
 			nodetail = qtrue;
 		}
 		else if ( !strcmp( argv[ i ],  "-fulldetail" ) ) {

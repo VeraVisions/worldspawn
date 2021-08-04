@@ -38,7 +38,7 @@
 
 /* disable warnings */
 #if GDEF_COMPILER_MSVC
-#pragma warning( disable:4100 )		/* unref param */
+#pragma warning( disable:4100 )         /* unref param */
 #endif
 
 /* todo:
@@ -74,7 +74,7 @@ static int _obj_canload( PM_PARAMS_CANLOAD ){
 	/* first check file extension. we have to do this for objs */
 	/* cause there is no good way to identify the contents */
 	if ( _pico_stristr( fileName,".obj" ) != NULL ||
-		 _pico_stristr( fileName,".wf" ) != NULL ) {
+	     _pico_stristr( fileName,".wf" ) != NULL ) {
 		return PICO_PMV_OK;
 	}
 	/* if the extension check failed we parse through the first */
@@ -107,9 +107,9 @@ static int _obj_canload( PM_PARAMS_CANLOAD ){
 
 		/* material library keywords are teh good */
 		if ( !_pico_stricmp( p->token,"usemtl" ) ||
-			 !_pico_stricmp( p->token,"mtllib" ) ||
-			 !_pico_stricmp( p->token,"g" ) ||
-			 !_pico_stricmp( p->token,"v" ) ) { /* v,g bit fishy, but uh... */
+		     !_pico_stricmp( p->token,"mtllib" ) ||
+		     !_pico_stricmp( p->token,"g" ) ||
+		     !_pico_stricmp( p->token,"v" ) ) {     /* v,g bit fishy, but uh... */
 			/* free the pico parser thing */
 			_pico_free_parser( p );
 
@@ -155,16 +155,16 @@ static TObjVertexData *SizeObjVertexData(
 	if ( vertexData == NULL ) {
 		/* how many entries to allocate */
 		newAllocated = ( reqEntries > SIZE_OBJ_STEP ) ?
-					   reqEntries : SIZE_OBJ_STEP;
+		               reqEntries : SIZE_OBJ_STEP;
 
 		/* throw out an extended debug message */
 #ifdef DEBUG_PM_OBJ_EX
 		printf( "SizeObjVertexData: allocate (%d entries)\n",
-				newAllocated );
+		        newAllocated );
 #endif
 		/* first time allocation */
 		vertexData = (TObjVertexData *)
-					 _pico_alloc( sizeof( TObjVertexData ) * newAllocated );
+		             _pico_alloc( sizeof( TObjVertexData ) * newAllocated );
 
 		/* allocation failed */
 		if ( vertexData == NULL ) {
@@ -183,13 +183,13 @@ static TObjVertexData *SizeObjVertexData(
 		/* throw out an extended debug message */
 #ifdef DEBUG_PM_OBJ_EX
 		printf( "SizeObjVertexData: reallocate (%d entries)\n",
-				newAllocated );
+		        newAllocated );
 #endif
 		/* try to reallocate */
 		vertexData = (TObjVertexData *)
-					 _pico_realloc( (void *)&vertexData,
-									sizeof( TObjVertexData ) * ( *allocated ),
-									sizeof( TObjVertexData ) * ( newAllocated ) );
+		             _pico_realloc( (void *)&vertexData,
+		                            sizeof( TObjVertexData ) * ( *allocated ),
+		                            sizeof( TObjVertexData ) * ( newAllocated ) );
 
 		/* reallocation failed */
 		if ( vertexData == NULL ) {
@@ -231,9 +231,9 @@ static int _obj_mtl_load( picoModel_t *model ){
 	/* helper */
 	#define _obj_mtl_error_return \
 	{ \
-		_pico_free_parser( p );	\
+		_pico_free_parser( p ); \
 		_pico_free_file( mtlBuffer ); \
-		_pico_free( fileName );	\
+		_pico_free( fileName ); \
 		return 0; \
 	}
 	/* alloc copy of model file name */
@@ -517,17 +517,17 @@ static picoModel_t *_obj_load( PM_PARAMS_LOAD ){
 
 #define AUTO_GROUPNAME( namebuf ) \
 	sprintf( namebuf, "__autogroup_%d", autoGroupNumber++ )
-#define NEW_SURFACE( name )	\
+#define NEW_SURFACE( name )     \
 	{ \
 		picoSurface_t *newSurface; \
 		/* allocate a pico surface */ \
 		newSurface = PicoNewSurface( model ); \
-		if ( newSurface == NULL ) {	\
+		if ( newSurface == NULL ) {     \
 			_obj_error_return( "Error allocating surface" ); } \
 		/* reset face index for surface */ \
 		curFace = 0; \
-		/* if we can, assign the previous shader to this surface */	\
-		if ( curSurface ) {	\
+		/* if we can, assign the previous shader to this surface */     \
+		if ( curSurface ) {     \
 			PicoSetSurfaceShader( newSurface, curSurface->shader ); } \
 		/* set ptr to current surface */ \
 		curSurface = newSurface; \
@@ -541,9 +541,9 @@ static picoModel_t *_obj_load( PM_PARAMS_LOAD ){
 #define _obj_error_return( m ) \
 	{ \
 		_pico_printf( PICO_ERROR, "%s in OBJ %s, line %d.", m, model->fileName, p->curLine ); \
-		_pico_free_parser( p );	\
+		_pico_free_parser( p ); \
 		FreeObjVertexData( vertexData ); \
-		PicoFreeModel( model );	\
+		PicoFreeModel( model ); \
 		return NULL; \
 	}
 	/* alllocate a new pico parser */
@@ -693,11 +693,11 @@ static picoModel_t *_obj_load( PM_PARAMS_LOAD ){
 			/* ways of storing face information. so, i really won't support */
 			/* such stupid extravaganza here! */
 
-			picoVec3_t verts  [ 4 ];
+			picoVec3_t verts[ 4 ];
 			picoVec3_t normals[ 4 ];
-			picoVec2_t coords [ 4 ];
+			picoVec2_t coords[ 4 ];
 
-			int iv [ 4 ], has_v;
+			int iv[ 4 ], has_v;
 			int ivt[ 4 ], has_vt = 0;
 			int ivn[ 4 ], has_vn = 0;
 			int have_quad = 0;

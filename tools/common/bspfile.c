@@ -210,7 +210,7 @@ void SwapBlock( int *block, int sizeOfBlock ) {
 	int i;
 
 	sizeOfBlock >>= 2;
-	for ( i = 0 ; i < sizeOfBlock ; i++ ) {
+	for ( i = 0; i < sizeOfBlock; i++ ) {
 		block[i] = LittleLong( block[i] );
 	}
 }
@@ -229,7 +229,7 @@ void SwapBSPFile( void ) {
 	SwapBlock( (int *)dmodels, nummodels * sizeof( dmodels[0] ) );
 
 	// shaders (don't swap the name)
-	for ( i = 0 ; i < numShaders ; i++ ) {
+	for ( i = 0; i < numShaders; i++ ) {
 		dshaders[i].contentFlags = LittleLong( dshaders[i].contentFlags );
 		dshaders[i].surfaceFlags = LittleLong( dshaders[i].surfaceFlags );
 	}
@@ -260,7 +260,7 @@ void SwapBSPFile( void ) {
 	( (int *)&visBytes )[1] = LittleLong( ( (int *)&visBytes )[1] );
 
 	// drawverts (don't swap colors )
-	for ( i = 0 ; i < numDrawVerts ; i++ ) {
+	for ( i = 0; i < numDrawVerts; i++ ) {
 		drawVerts[i].lightmap[0] = LittleFloat( drawVerts[i].lightmap[0] );
 		drawVerts[i].lightmap[1] = LittleFloat( drawVerts[i].lightmap[1] );
 		drawVerts[i].st[0] = LittleFloat( drawVerts[i].st[0] );
@@ -280,7 +280,7 @@ void SwapBSPFile( void ) {
 	SwapBlock( (int *)drawSurfaces, numDrawSurfaces * sizeof( drawSurfaces[0] ) );
 
 	// fogs
-	for ( i = 0 ; i < numFogs ; i++ ) {
+	for ( i = 0; i < numFogs; i++ ) {
 		dfogs[i].brushNum = LittleLong( dfogs[i].brushNum );
 		dfogs[i].visibleSide = LittleLong( dfogs[i].visibleSide );
 	}
@@ -461,40 +461,40 @@ void PrintBSPFileSizes( void ) {
 	}
 
 	Sys_Printf( "%6i models       %7i\n"
-				,nummodels, (int)( nummodels * sizeof( dmodel_t ) ) );
+	            ,nummodels, (int)( nummodels * sizeof( dmodel_t ) ) );
 	Sys_Printf( "%6i shaders      %7i\n"
-				,numShaders, (int)( numShaders * sizeof( dshader_t ) ) );
+	            ,numShaders, (int)( numShaders * sizeof( dshader_t ) ) );
 	Sys_Printf( "%6i brushes      %7i\n"
-				,numbrushes, (int)( numbrushes * sizeof( dbrush_t ) ) );
+	            ,numbrushes, (int)( numbrushes * sizeof( dbrush_t ) ) );
 	Sys_Printf( "%6i brushsides   %7i\n"
-				,numbrushsides, (int)( numbrushsides * sizeof( dbrushside_t ) ) );
+	            ,numbrushsides, (int)( numbrushsides * sizeof( dbrushside_t ) ) );
 	Sys_Printf( "%6i fogs         %7i\n"
-				,numFogs, (int)( numFogs * sizeof( dfog_t ) ) );
+	            ,numFogs, (int)( numFogs * sizeof( dfog_t ) ) );
 	Sys_Printf( "%6i planes       %7i\n"
-				,numplanes, (int)( numplanes * sizeof( dplane_t ) ) );
+	            ,numplanes, (int)( numplanes * sizeof( dplane_t ) ) );
 	Sys_Printf( "%6i entdata      %7i\n", num_entities, entdatasize );
 
 	Sys_Printf( "\n" );
 
 	Sys_Printf( "%6i nodes        %7i\n"
-				,numnodes, (int)( numnodes * sizeof( dnode_t ) ) );
+	            ,numnodes, (int)( numnodes * sizeof( dnode_t ) ) );
 	Sys_Printf( "%6i leafs        %7i\n"
-				,numleafs, (int)( numleafs * sizeof( dleaf_t ) ) );
+	            ,numleafs, (int)( numleafs * sizeof( dleaf_t ) ) );
 	Sys_Printf( "%6i leafsurfaces %7i\n"
-				,numleafsurfaces, (int)( numleafsurfaces * sizeof( dleafsurfaces[0] ) ) );
+	            ,numleafsurfaces, (int)( numleafsurfaces * sizeof( dleafsurfaces[0] ) ) );
 	Sys_Printf( "%6i leafbrushes  %7i\n"
-				,numleafbrushes, (int)( numleafbrushes * sizeof( dleafbrushes[0] ) ) );
+	            ,numleafbrushes, (int)( numleafbrushes * sizeof( dleafbrushes[0] ) ) );
 	Sys_Printf( "%6i drawverts    %7i\n"
-				,numDrawVerts, (int)( numDrawVerts * sizeof( drawVerts[0] ) ) );
+	            ,numDrawVerts, (int)( numDrawVerts * sizeof( drawVerts[0] ) ) );
 	Sys_Printf( "%6i drawindexes  %7i\n"
-				,numDrawIndexes, (int)( numDrawIndexes * sizeof( drawIndexes[0] ) ) );
+	            ,numDrawIndexes, (int)( numDrawIndexes * sizeof( drawIndexes[0] ) ) );
 	Sys_Printf( "%6i drawsurfaces %7i\n"
-				,numDrawSurfaces, (int)( numDrawSurfaces * sizeof( drawSurfaces[0] ) ) );
+	            ,numDrawSurfaces, (int)( numDrawSurfaces * sizeof( drawSurfaces[0] ) ) );
 
 	Sys_Printf( "%6i lightmaps    %7i\n"
-				,numLightBytes / ( LIGHTMAP_WIDTH * LIGHTMAP_HEIGHT * 3 ), numLightBytes );
+	            ,numLightBytes / ( LIGHTMAP_WIDTH * LIGHTMAP_HEIGHT * 3 ), numLightBytes );
 	Sys_Printf( "       visibility   %7i\n"
-				, numVisBytes );
+	            , numVisBytes );
 }
 
 
@@ -617,7 +617,7 @@ void UnparseEntities( void ) {
 	end = buf;
 	*end = 0;
 
-	for ( i = 0 ; i < num_entities ; i++ ) {
+	for ( i = 0; i < num_entities; i++ ) {
 		ep = entities[i].epairs;
 		if ( !ep ) {
 			continue;   // ent got removed
@@ -626,7 +626,7 @@ void UnparseEntities( void ) {
 		strcat( end,"{\n" );
 		end += 2;
 
-		for ( ep = entities[i].epairs ; ep ; ep = ep->next ) {
+		for ( ep = entities[i].epairs; ep; ep = ep->next ) {
 			strcpy( key, ep->key );
 			StripTrailing( key );
 			strcpy( value, ep->value );
@@ -650,7 +650,7 @@ void PrintEntity( const entity_t *ent ) {
 	epair_t *ep;
 
 	Sys_Printf( "------- entity %p -------\n", ent );
-	for ( ep = ent->epairs ; ep ; ep = ep->next ) {
+	for ( ep = ent->epairs; ep; ep = ep->next ) {
 		Sys_Printf( "%s = %s\n", ep->key, ep->value );
 	}
 
@@ -659,7 +659,7 @@ void PrintEntity( const entity_t *ent ) {
 void    SetKeyValue( entity_t *ent, const char *key, const char *value ) {
 	epair_t *ep;
 
-	for ( ep = ent->epairs ; ep ; ep = ep->next ) {
+	for ( ep = ent->epairs; ep; ep = ep->next ) {
 		if ( !strcmp( ep->key, key ) ) {
 			free( ep->value );
 			ep->value = copystring( value );
@@ -676,7 +676,7 @@ void    SetKeyValue( entity_t *ent, const char *key, const char *value ) {
 const char  *ValueForKey( const entity_t *ent, const char *key ) {
 	epair_t *ep;
 
-	for ( ep = ent->epairs ; ep ; ep = ep->next ) {
+	for ( ep = ent->epairs; ep; ep = ep->next ) {
 		if ( !strcmp( ep->key, key ) ) {
 			return ep->value;
 		}

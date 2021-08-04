@@ -40,10 +40,10 @@ void GroupDialog_show();
 
 inline void RawStringExport(const char *string, const Callback<void(const char *)> &importer)
 {
-    importer(string);
+	importer(string);
 }
 
-typedef ConstPointerCaller<char, void(const Callback<void(const char *)> &), RawStringExport> RawStringExportCaller;
+typedef ConstPointerCaller<char, void (const Callback<void (const char *)> &), RawStringExport> RawStringExportCaller;
 
 ui::Widget GroupDialog_addPage(const char *tabLabel, ui::Widget widget,
                                const Callback<void(const Callback<void(const char *)> &)> &title);

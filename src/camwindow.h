@@ -55,9 +55,9 @@ const Vector3 &Camera_getOrigin(CamWnd &camwnd);
 void Camera_setOrigin(CamWnd &camwnd, const Vector3 &origin);
 
 enum {
-    CAMERA_PITCH = 0, // up / down
-    CAMERA_YAW = 1, // left / right
-    CAMERA_ROLL = 2, // fall over
+	CAMERA_PITCH = 0, // up / down
+	CAMERA_YAW = 1, // left / right
+	CAMERA_ROLL = 2, // fall over
 };
 
 const Vector3 &Camera_getAngles(CamWnd &camwnd);
@@ -66,17 +66,17 @@ void Camera_setAngles(CamWnd &camwnd, const Vector3 &angles);
 
 
 struct camwindow_globals_t {
-    Vector3 color_cameraback;
-    Vector3 color_selbrushes3d;
+	Vector3 color_cameraback;
+	Vector3 color_selbrushes3d;
 
-    int m_nCubicScale;
+	int m_nCubicScale;
 
-    camwindow_globals_t() :
-            color_cameraback(0.15f, 0.15f, 0.15f),
-            color_selbrushes3d(1.0f, 0.0f, 0.0f),
-            m_nCubicScale(13)
-    {
-    }
+	camwindow_globals_t() :
+		color_cameraback(0.15f, 0.15f, 0.15f),
+		color_selbrushes3d(1.0f, 0.0f, 0.0f),
+		m_nCubicScale(13)
+	{
+	}
 
 };
 

@@ -101,7 +101,7 @@ vec_t VectorLength( const vec3_t v ){
 	float length;
 
 	length = 0.0f;
-	for ( i = 0 ; i < 3 ; i++ )
+	for ( i = 0; i < 3; i++ )
 		length += v[i] * v[i];
 	length = (float)sqrt( length );
 
@@ -111,7 +111,7 @@ vec_t VectorLength( const vec3_t v ){
 qboolean VectorCompare( const vec3_t v1, const vec3_t v2 ){
 	int i;
 
-	for ( i = 0 ; i < 3 ; i++ )
+	for ( i = 0; i < 3; i++ )
 		if ( fabs( v1[i] - v2[i] ) > EQUAL_EPSILON ) {
 			return qfalse;
 		}
@@ -288,7 +288,7 @@ void VectorSnap( vec3_t v ){
 
 void VectorISnap( vec3_t point, int snap ){
 	int i;
-	for ( i = 0 ; i < 3 ; i++ )
+	for ( i = 0; i < 3; i++ )
 	{
 		point[i] = (vec_t)FLOAT_SNAP( point[i], snap );
 	}
@@ -296,7 +296,7 @@ void VectorISnap( vec3_t point, int snap ){
 
 void VectorFSnap( vec3_t point, float snap ){
 	int i;
-	for ( i = 0 ; i < 3 ; i++ )
+	for ( i = 0; i < 3; i++ )
 	{
 		point[i] = (vec_t)FLOAT_SNAP( point[i], snap );
 	}
@@ -342,7 +342,7 @@ void AddPointToBounds( vec3_t v, vec3_t mins, vec3_t maxs ){
 		}
 	}
 
-	for ( i = 0 ; i < 3 ; i++ )
+	for ( i = 0; i < 3; i++ )
 	{
 		val = v[i];
 		if ( val < mins[i] ) {
@@ -501,23 +501,23 @@ int PlaneTypeForNormal( vec3_t normal ) {
  */
 void MatrixMultiply( float in1[3][3], float in2[3][3], float out[3][3] ) {
 	out[0][0] = in1[0][0] * in2[0][0] + in1[0][1] * in2[1][0] +
-				in1[0][2] * in2[2][0];
+	            in1[0][2] * in2[2][0];
 	out[0][1] = in1[0][0] * in2[0][1] + in1[0][1] * in2[1][1] +
-				in1[0][2] * in2[2][1];
+	            in1[0][2] * in2[2][1];
 	out[0][2] = in1[0][0] * in2[0][2] + in1[0][1] * in2[1][2] +
-				in1[0][2] * in2[2][2];
+	            in1[0][2] * in2[2][2];
 	out[1][0] = in1[1][0] * in2[0][0] + in1[1][1] * in2[1][0] +
-				in1[1][2] * in2[2][0];
+	            in1[1][2] * in2[2][0];
 	out[1][1] = in1[1][0] * in2[0][1] + in1[1][1] * in2[1][1] +
-				in1[1][2] * in2[2][1];
+	            in1[1][2] * in2[2][1];
 	out[1][2] = in1[1][0] * in2[0][2] + in1[1][1] * in2[1][2] +
-				in1[1][2] * in2[2][2];
+	            in1[1][2] * in2[2][2];
 	out[2][0] = in1[2][0] * in2[0][0] + in1[2][1] * in2[1][0] +
-				in1[2][2] * in2[2][0];
+	            in1[2][2] * in2[2][0];
 	out[2][1] = in1[2][0] * in2[0][1] + in1[2][1] * in2[1][1] +
-				in1[2][2] * in2[2][1];
+	            in1[2][2] * in2[2][1];
 	out[2][2] = in1[2][0] * in2[0][2] + in1[2][1] * in2[1][2] +
-				in1[2][2] * in2[2][2];
+	            in1[2][2] * in2[2][2];
 }
 
 void ProjectPointOnPlane( vec3_t dst, const vec3_t p, const vec3_t normal ){
@@ -579,7 +579,7 @@ void PerpendicularVector( vec3_t dst, const vec3_t src ){
    ===============
  */
 void RotatePointAroundVector( vec3_t dst, const vec3_t dir, const vec3_t point,
-							  float degrees ) {
+                              float degrees ) {
 	float m[3][3];
 	float im[3][3];
 	float zrot[3][3];

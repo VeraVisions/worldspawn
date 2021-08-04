@@ -43,44 +43,44 @@
 #include "modulesystem/singletonmodule.h"
 
 class EntityDependencies :
-        public GlobalRadiantModuleRef,
-        public GlobalOpenGLModuleRef,
-        public GlobalUndoModuleRef,
-        public GlobalSceneGraphModuleRef,
-        public GlobalShaderCacheModuleRef,
-        public GlobalSelectionModuleRef,
-        public GlobalReferenceModuleRef,
-        public GlobalFilterModuleRef,
-        public GlobalPreferenceSystemModuleRef,
-        public GlobalNamespaceModuleRef,
-        public GlobalModelSkinCacheModuleRef {
+	public GlobalRadiantModuleRef,
+	public GlobalOpenGLModuleRef,
+	public GlobalUndoModuleRef,
+	public GlobalSceneGraphModuleRef,
+	public GlobalShaderCacheModuleRef,
+	public GlobalSelectionModuleRef,
+	public GlobalReferenceModuleRef,
+	public GlobalFilterModuleRef,
+	public GlobalPreferenceSystemModuleRef,
+	public GlobalNamespaceModuleRef,
+	public GlobalModelSkinCacheModuleRef {
 };
 
 class EntityQ3API : public TypeSystemRef {
-    EntityCreator *m_entityq3;
+EntityCreator *m_entityq3;
 public:
-    typedef EntityCreator Type;
+typedef EntityCreator Type;
 
-    STRING_CONSTANT(Name, "quake3");
+STRING_CONSTANT(Name, "quake3");
 
-    EntityQ3API()
-    {
-        Entity_Construct();
+EntityQ3API()
+{
+	Entity_Construct();
 
-        m_entityq3 = &GetEntityCreator();
+	m_entityq3 = &GetEntityCreator();
 
-        GlobalReferenceCache().setEntityCreator(*m_entityq3);
-    }
+	GlobalReferenceCache().setEntityCreator(*m_entityq3);
+}
 
-    ~EntityQ3API()
-    {
-        Entity_Destroy();
-    }
+~EntityQ3API()
+{
+	Entity_Destroy();
+}
 
-    EntityCreator *getTable()
-    {
-        return m_entityq3;
-    }
+EntityCreator *getTable()
+{
+	return m_entityq3;
+}
 };
 
 typedef SingletonModule<EntityQ3API, EntityDependencies> EntityQ3Module;
@@ -95,8 +95,8 @@ __attribute__((visibility("default")))
 #endif
 Radiant_RegisterModules(ModuleServer &server)
 {
-    initialiseModule(server);
+	initialiseModule(server);
 
-    g_EntityQ3Module.selfRegister();
-    Doom3ModelSkinCacheModule_selfRegister(server);
+	g_EntityQ3Module.selfRegister();
+	Doom3ModelSkinCacheModule_selfRegister(server);
 }

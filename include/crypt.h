@@ -14,7 +14,7 @@
 
    This program is distributed under the terms of the same license as zlib.
    See the accompanying LICENSE file for the full text of the license.
-*/
+ */
 
 #ifndef _MINICRYPT_H
 #define _MINICRYPT_H
@@ -32,10 +32,10 @@ extern "C" {
 /***************************************************************************/
 
 #define zdecode(pkeys,pcrc_32_tab,c) \
-    (update_keys(pkeys,pcrc_32_tab, c ^= decrypt_byte(pkeys)))
+	(update_keys(pkeys,pcrc_32_tab, c ^= decrypt_byte(pkeys)))
 
 #define zencode(pkeys,pcrc_32_tab,c,t) \
-    (t = decrypt_byte(pkeys), update_keys(pkeys,pcrc_32_tab,c), t^(c))
+	(t = decrypt_byte(pkeys), update_keys(pkeys,pcrc_32_tab,c), t^(c))
 
 /***************************************************************************/
 
@@ -54,7 +54,7 @@ int cryptrand(unsigned char *buf, unsigned int len);
 
 /* Create encryption header */
 int crypthead(const char *passwd, uint8_t *buf, int buf_size, uint32_t *pkeys,
-    const z_crc_t *pcrc_32_tab, uint8_t verify1, uint8_t verify2);
+              const z_crc_t *pcrc_32_tab, uint8_t verify1, uint8_t verify2);
 #endif
 
 /***************************************************************************/

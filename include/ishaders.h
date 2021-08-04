@@ -79,7 +79,7 @@ virtual bool clampToBorder() const = 0;
 virtual float alphaTest() const = 0;
 };
 
-typedef Callback<void(const ShaderLayer&)> ShaderLayerCallback;
+typedef Callback<void (const ShaderLayer&)> ShaderLayerCallback;
 
 
 class IShader
@@ -134,7 +134,7 @@ virtual qtexture_t* lightFalloffImage() const = 0;
 };
 
 typedef struct _GSList GSList;
-typedef Callback<void(const char*)> ShaderNameCallback;
+typedef Callback<void (const char*)> ShaderNameCallback;
 
 class ModuleObserver;
 

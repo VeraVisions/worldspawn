@@ -219,7 +219,7 @@ skipspace:
 
 	// ; # // comments
 	if ( *mat->script_p == ';' || *mat->script_p == '#'
-		 || ( mat->script_p[0] == '/' && mat->script_p[1] == '/' ) ) {
+	     || ( mat->script_p[0] == '/' && mat->script_p[1] == '/' ) ) {
 		if ( !crossline ) {
 			Error( "Line %i is incomplete\n",matline );
 		}
@@ -346,7 +346,7 @@ void Parse1DMatMatrix( int x, vec_t *m ) {
 
 	MatchMatToken( "(" );
 
-	for ( i = 0 ; i < x ; i++ ) {
+	for ( i = 0; i < x; i++ ) {
 		GetMatToken( qfalse );
 		m[i] = atof( mattoken );
 	}
@@ -359,7 +359,7 @@ void Parse2DMatMatrix( int y, int x, vec_t *m ) {
 
 	MatchMatToken( "(" );
 
-	for ( i = 0 ; i < y ; i++ ) {
+	for ( i = 0; i < y; i++ ) {
 		Parse1DMatMatrix( x, m + i * x );
 	}
 
@@ -371,7 +371,7 @@ void Parse3DMatMatrix( int z, int y, int x, vec_t *m ) {
 
 	MatchMatToken( "(" );
 
-	for ( i = 0 ; i < z ; i++ ) {
+	for ( i = 0; i < z; i++ ) {
 		Parse2DMatMatrix( y, x, m + i * x * y );
 	}
 
@@ -383,7 +383,7 @@ void Write1DMatMatrix( FILE *f, int x, vec_t *m ) {
 	int i;
 
 	fprintf( f, "( " );
-	for ( i = 0 ; i < x ; i++ ) {
+	for ( i = 0; i < x; i++ ) {
 		if ( m[i] == (int)m[i] ) {
 			fprintf( f, "%i ", (int)m[i] );
 		}
@@ -398,7 +398,7 @@ void Write2DMatMatrix( FILE *f, int y, int x, vec_t *m ) {
 	int i;
 
 	fprintf( f, "( " );
-	for ( i = 0 ; i < y ; i++ ) {
+	for ( i = 0; i < y; i++ ) {
 		Write1DMatMatrix( f, x, m + i * x );
 		fprintf( f, " " );
 	}
@@ -410,7 +410,7 @@ void Write3DMatMatrix( FILE *f, int z, int y, int x, vec_t *m ) {
 	int i;
 
 	fprintf( f, "(\n" );
-	for ( i = 0 ; i < z ; i++ ) {
+	for ( i = 0; i < z; i++ ) {
 		Write2DMatMatrix( f, y, x, m + i * ( x * y ) );
 	}
 	fprintf( f, ")\n" );

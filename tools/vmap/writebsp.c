@@ -226,7 +226,7 @@ int EmitDrawNode_r( node_t *node ){
 	//
 	// recursively output the other nodes
 	//
-	for ( i = 0 ; i < 2 ; i++ )
+	for ( i = 0; i < 2; i++ )
 	{
 		if ( node->children[i]->planenum == PLANENUM_LEAF ) {
 			n->children[i] = -( numBSPLeafs + 1 );
@@ -257,7 +257,7 @@ void SetModelNumbers( void ){
 	char value[12];
 
 	models = 1;
-	for ( i = 1 ; i < numEntities ; i++ ) {
+	for ( i = 1; i < numEntities; i++ ) {
 		if ( entities[i].brushes || entities[i].patches ) {
 			sprintf( value, "*%i", models );
 			models++;

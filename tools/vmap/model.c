@@ -101,8 +101,8 @@ picoModel_t *FindModel( const char *name, int frame ){
 	for ( i = 0; i < MAX_MODELS; i++ )
 	{
 		if ( picoModels[ i ] != NULL &&
-			 !strcmp( PicoGetModelName( picoModels[ i ] ), name ) &&
-			 PicoGetModelFrameNum( picoModels[ i ] ) == frame ) {
+		     !strcmp( PicoGetModelName( picoModels[ i ] ), name ) &&
+		     PicoGetModelFrameNum( picoModels[ i ] ) == frame ) {
 			return picoModels[ i ];
 		}
 	}
@@ -632,8 +632,8 @@ void InsertModel( const char *name, int skin, int frame, m4x4_t transform, remap
 					// that's at least sqrt(1/3) backPlaneDistance, unless in DOWN mode; in DOWN mode, we are screwed anyway if we encounter a plane that's perpendicular to the xy plane)
 
 					if ( PlaneFromPoints( pa, points[ 2 ], points[ 1 ], backs[ 1 ] ) &&
-						 PlaneFromPoints( pb, points[ 1 ], points[ 0 ], backs[ 0 ] ) &&
-						 PlaneFromPoints( pc, points[ 0 ], points[ 2 ], backs[ 2 ] ) ) {
+					     PlaneFromPoints( pb, points[ 1 ], points[ 0 ], backs[ 0 ] ) &&
+					     PlaneFromPoints( pc, points[ 0 ], points[ 2 ], backs[ 2 ] ) ) {
 						/* set up brush sides */
 						buildBrush->numsides = 5;
 						buildBrush->sides[ 0 ].shaderInfo = si;
@@ -717,8 +717,8 @@ void AddTriangleModels( entity_t *e ){
 	/* vortex: added _ls key (short name of lightmapscale) */
 	baseLightmapScale = 0.0f;
 	if ( strcmp( "", ValueForKey( e, "lightmapscale" ) ) ||
-		 strcmp( "", ValueForKey( e, "_lightmapscale" ) ) ||
-		 strcmp( "", ValueForKey( e, "_ls" ) ) ) {
+	     strcmp( "", ValueForKey( e, "_lightmapscale" ) ) ||
+	     strcmp( "", ValueForKey( e, "_ls" ) ) ) {
 		baseLightmapScale = FloatForKey( e, "lightmapscale" );
 		if ( baseLightmapScale <= 0.0f ) {
 			baseLightmapScale = FloatForKey( e, "_lightmapscale" );
@@ -755,7 +755,7 @@ void AddTriangleModels( entity_t *e ){
 		model = ValueForKey( e2, "model" );
 		if ( model[ 0 ] == '\0' ) {
 			Sys_FPrintf( SYS_WRN, "WARNING: prop_static at %i %i %i without a model key\n",
-						(int) origin[ 0 ], (int) origin[ 1 ], (int) origin[ 2 ] );
+			             (int) origin[ 0 ], (int) origin[ 1 ], (int) origin[ 2 ] );
 			continue;
 		}
 
@@ -820,8 +820,8 @@ void AddTriangleModels( entity_t *e ){
 		{
 			/* look for keys prefixed with "_remap" */
 			if ( ep->key != NULL && ep->value != NULL &&
-				 ep->key[ 0 ] != '\0' && ep->value[ 0 ] != '\0' &&
-				 !Q_strncasecmp( ep->key, "_remap", 6 ) ) {
+			     ep->key[ 0 ] != '\0' && ep->value[ 0 ] != '\0' &&
+			     !Q_strncasecmp( ep->key, "_remap", 6 ) ) {
 				/* create new remapping */
 				remap2 = remap;
 				remap = safe_malloc( sizeof( *remap ) );
@@ -880,8 +880,8 @@ void AddTriangleModels( entity_t *e ){
 		/* vortex: added _ls key (short name of lightmapscale) */
 		lightmapScale = 0.0f;
 		if ( strcmp( "", ValueForKey( e2, "lightmapscale" ) ) ||
-			 strcmp( "", ValueForKey( e2, "_lightmapscale" ) ) ||
-			 strcmp( "", ValueForKey( e2, "_ls" ) ) ) {
+		     strcmp( "", ValueForKey( e2, "_lightmapscale" ) ) ||
+		     strcmp( "", ValueForKey( e2, "_ls" ) ) ) {
 			lightmapScale = FloatForKey( e2, "lightmapscale" );
 			if ( lightmapScale <= 0.0f ) {
 				lightmapScale = FloatForKey( e2, "_lightmapscale" );

@@ -70,200 +70,200 @@ extern bool g_newLightDraw;
 
 void sphere_draw_fill(const Vector3 &origin, float radius, int sides)
 {
-    if (radius <= 0) {
-        return;
-    }
+	if (radius <= 0) {
+		return;
+	}
 
-    const double dt = c_2pi / static_cast<double>( sides );
-    const double dp = c_pi / static_cast<double>( sides );
+	const double dt = c_2pi / static_cast<double>( sides );
+	const double dp = c_pi / static_cast<double>( sides );
 
-    glBegin(GL_TRIANGLES);
-    for (int i = 0; i <= sides - 1; ++i) {
-        for (int j = 0; j <= sides - 2; ++j) {
-            const double t = i * dt;
-            const double p = (j * dp) - (c_pi / 2.0);
+	glBegin(GL_TRIANGLES);
+	for (int i = 0; i <= sides - 1; ++i) {
+		for (int j = 0; j <= sides - 2; ++j) {
+			const double t = i * dt;
+			const double p = (j * dp) - (c_pi / 2.0);
 
-            {
-                Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t, p), radius)));
-                glVertex3fv(vector3_to_array(v));
-            }
+			{
+				Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t, p), radius)));
+				glVertex3fv(vector3_to_array(v));
+			}
 
-            {
-                Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t, p + dp), radius)));
-                glVertex3fv(vector3_to_array(v));
-            }
+			{
+				Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t, p + dp), radius)));
+				glVertex3fv(vector3_to_array(v));
+			}
 
-            {
-                Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t + dt, p + dp), radius)));
-                glVertex3fv(vector3_to_array(v));
-            }
+			{
+				Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t + dt, p + dp), radius)));
+				glVertex3fv(vector3_to_array(v));
+			}
 
-            {
-                Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t, p), radius)));
-                glVertex3fv(vector3_to_array(v));
-            }
+			{
+				Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t, p), radius)));
+				glVertex3fv(vector3_to_array(v));
+			}
 
-            {
-                Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t + dt, p + dp), radius)));
-                glVertex3fv(vector3_to_array(v));
-            }
+			{
+				Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t + dt, p + dp), radius)));
+				glVertex3fv(vector3_to_array(v));
+			}
 
-            {
-                Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t + dt, p), radius)));
-                glVertex3fv(vector3_to_array(v));
-            }
-        }
-    }
+			{
+				Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t + dt, p), radius)));
+				glVertex3fv(vector3_to_array(v));
+			}
+		}
+	}
 
-    {
-        const double p = (sides - 1) * dp - (c_pi / 2.0);
-        for (int i = 0; i <= sides - 1; ++i) {
-            const double t = i * dt;
+	{
+		const double p = (sides - 1) * dp - (c_pi / 2.0);
+		for (int i = 0; i <= sides - 1; ++i) {
+			const double t = i * dt;
 
-            {
-                Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t, p), radius)));
-                glVertex3fv(vector3_to_array(v));
-            }
+			{
+				Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t, p), radius)));
+				glVertex3fv(vector3_to_array(v));
+			}
 
-            {
-                Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t + dt, p + dp), radius)));
-                glVertex3fv(vector3_to_array(v));
-            }
+			{
+				Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t + dt, p + dp), radius)));
+				glVertex3fv(vector3_to_array(v));
+			}
 
-            {
-                Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t + dt, p), radius)));
-                glVertex3fv(vector3_to_array(v));
-            }
-        }
-    }
-    glEnd();
+			{
+				Vector3 v(vector3_added(origin, vector3_scaled(vector3_for_spherical(t + dt, p), radius)));
+				glVertex3fv(vector3_to_array(v));
+			}
+		}
+	}
+	glEnd();
 }
 
 void sphere_draw_wire(const Vector3 &origin, float radius, int sides)
 {
-    {
-        glBegin(GL_LINE_LOOP);
+	{
+		glBegin(GL_LINE_LOOP);
 
-        for (int i = 0; i <= sides; i++) {
-            double ds = sin((i * 2 * c_pi) / sides);
-            double dc = cos((i * 2 * c_pi) / sides);
+		for (int i = 0; i <= sides; i++) {
+			double ds = sin((i * 2 * c_pi) / sides);
+			double dc = cos((i * 2 * c_pi) / sides);
 
-            glVertex3f(
-                    static_cast<float>( origin[0] + radius * dc ),
-                    static_cast<float>( origin[1] + radius * ds ),
-                    origin[2]
-            );
-        }
+			glVertex3f(
+				static_cast<float>( origin[0] + radius * dc ),
+				static_cast<float>( origin[1] + radius * ds ),
+				origin[2]
+				);
+		}
 
-        glEnd();
-    }
+		glEnd();
+	}
 
-    {
-        glBegin(GL_LINE_LOOP);
+	{
+		glBegin(GL_LINE_LOOP);
 
-        for (int i = 0; i <= sides; i++) {
-            double ds = sin((i * 2 * c_pi) / sides);
-            double dc = cos((i * 2 * c_pi) / sides);
+		for (int i = 0; i <= sides; i++) {
+			double ds = sin((i * 2 * c_pi) / sides);
+			double dc = cos((i * 2 * c_pi) / sides);
 
-            glVertex3f(
-                    static_cast<float>( origin[0] + radius * dc ),
-                    origin[1],
-                    static_cast<float>( origin[2] + radius * ds )
-            );
-        }
+			glVertex3f(
+				static_cast<float>( origin[0] + radius * dc ),
+				origin[1],
+				static_cast<float>( origin[2] + radius * ds )
+				);
+		}
 
-        glEnd();
-    }
+		glEnd();
+	}
 
-    {
-        glBegin(GL_LINE_LOOP);
+	{
+		glBegin(GL_LINE_LOOP);
 
-        for (int i = 0; i <= sides; i++) {
-            double ds = sin((i * 2 * c_pi) / sides);
-            double dc = cos((i * 2 * c_pi) / sides);
+		for (int i = 0; i <= sides; i++) {
+			double ds = sin((i * 2 * c_pi) / sides);
+			double dc = cos((i * 2 * c_pi) / sides);
 
-            glVertex3f(
-                    origin[0],
-                    static_cast<float>( origin[1] + radius * dc ),
-                    static_cast<float>( origin[2] + radius * ds )
-            );
-        }
+			glVertex3f(
+				origin[0],
+				static_cast<float>( origin[1] + radius * dc ),
+				static_cast<float>( origin[2] + radius * ds )
+				);
+		}
 
-        glEnd();
-    }
+		glEnd();
+	}
 }
 
 void light_draw_box_lines(const Vector3 &origin, const Vector3 points[8])
 {
-    //draw lines from the center of the bbox to the corners
-    glBegin(GL_LINES);
+	//draw lines from the center of the bbox to the corners
+	glBegin(GL_LINES);
 
-    glVertex3fv(vector3_to_array(origin));
-    glVertex3fv(vector3_to_array(points[1]));
+	glVertex3fv(vector3_to_array(origin));
+	glVertex3fv(vector3_to_array(points[1]));
 
-    glVertex3fv(vector3_to_array(origin));
-    glVertex3fv(vector3_to_array(points[5]));
+	glVertex3fv(vector3_to_array(origin));
+	glVertex3fv(vector3_to_array(points[5]));
 
-    glVertex3fv(vector3_to_array(origin));
-    glVertex3fv(vector3_to_array(points[2]));
+	glVertex3fv(vector3_to_array(origin));
+	glVertex3fv(vector3_to_array(points[2]));
 
-    glVertex3fv(vector3_to_array(origin));
-    glVertex3fv(vector3_to_array(points[6]));
+	glVertex3fv(vector3_to_array(origin));
+	glVertex3fv(vector3_to_array(points[6]));
 
-    glVertex3fv(vector3_to_array(origin));
-    glVertex3fv(vector3_to_array(points[0]));
+	glVertex3fv(vector3_to_array(origin));
+	glVertex3fv(vector3_to_array(points[0]));
 
-    glVertex3fv(vector3_to_array(origin));
-    glVertex3fv(vector3_to_array(points[4]));
+	glVertex3fv(vector3_to_array(origin));
+	glVertex3fv(vector3_to_array(points[4]));
 
-    glVertex3fv(vector3_to_array(origin));
-    glVertex3fv(vector3_to_array(points[3]));
+	glVertex3fv(vector3_to_array(origin));
+	glVertex3fv(vector3_to_array(points[3]));
 
-    glVertex3fv(vector3_to_array(origin));
-    glVertex3fv(vector3_to_array(points[7]));
+	glVertex3fv(vector3_to_array(origin));
+	glVertex3fv(vector3_to_array(points[7]));
 
-    glEnd();
+	glEnd();
 }
 
 void light_draw_radius_wire(const Vector3 &origin, const float envelope[3])
 {
-    if (envelope[0] > 0) {
-        sphere_draw_wire(origin, envelope[0], 24);
-    }
-    if (envelope[1] > 0) {
-        sphere_draw_wire(origin, envelope[1], 24);
-    }
-    if (envelope[2] > 0) {
-        sphere_draw_wire(origin, envelope[2], 24);
-    }
+	if (envelope[0] > 0) {
+		sphere_draw_wire(origin, envelope[0], 24);
+	}
+	if (envelope[1] > 0) {
+		sphere_draw_wire(origin, envelope[1], 24);
+	}
+	if (envelope[2] > 0) {
+		sphere_draw_wire(origin, envelope[2], 24);
+	}
 }
 
 void light_draw_radius_fill(const Vector3 &origin, const float envelope[3])
 {
-    if (envelope[0] > 0) {
-        sphere_draw_fill(origin, envelope[0], 16);
-    }
-    if (envelope[1] > 0) {
-        sphere_draw_fill(origin, envelope[1], 16);
-    }
-    if (envelope[2] > 0) {
-        sphere_draw_fill(origin, envelope[2], 16);
-    }
+	if (envelope[0] > 0) {
+		sphere_draw_fill(origin, envelope[0], 16);
+	}
+	if (envelope[1] > 0) {
+		sphere_draw_fill(origin, envelope[1], 16);
+	}
+	if (envelope[2] > 0) {
+		sphere_draw_fill(origin, envelope[2], 16);
+	}
 }
 
 void light_vertices(const AABB &aabb_light, Vector3 points[6])
 {
-    Vector3 max(vector3_added(aabb_light.origin, aabb_light.extents));
-    Vector3 min(vector3_subtracted(aabb_light.origin, aabb_light.extents));
-    Vector3 mid(aabb_light.origin);
+	Vector3 max(vector3_added(aabb_light.origin, aabb_light.extents));
+	Vector3 min(vector3_subtracted(aabb_light.origin, aabb_light.extents));
+	Vector3 mid(aabb_light.origin);
 
-    // top, bottom, middle-up, middle-right, middle-down, middle-left
-    points[0] = Vector3(mid[0], mid[1], max[2]);
-    points[1] = Vector3(mid[0], mid[1], min[2]);
-    points[2] = Vector3(mid[0], max[1], mid[2]);
-    points[3] = Vector3(max[0], mid[1], mid[2]);
-    points[4] = Vector3(mid[0], min[1], mid[2]);
-    points[5] = Vector3(min[0], mid[1], mid[2]);
+	// top, bottom, middle-up, middle-right, middle-down, middle-left
+	points[0] = Vector3(mid[0], mid[1], max[2]);
+	points[1] = Vector3(mid[0], mid[1], min[2]);
+	points[2] = Vector3(mid[0], max[1], mid[2]);
+	points[3] = Vector3(max[0], mid[1], mid[2]);
+	points[4] = Vector3(mid[0], min[1], mid[2]);
+	points[5] = Vector3(min[0], mid[1], mid[2]);
 }
 
 void light_draw(const AABB &aabb_light, RenderStateFlags state)
@@ -295,12 +295,12 @@ float fLinearScale = 1.f / 8000.f;
 
 float light_radius_linear(float fIntensity, float fFalloffTolerance)
 {
-    return ((fIntensity * fPointScale * fLinearScale) - fFalloffTolerance);
+	return ((fIntensity * fPointScale * fLinearScale) - fFalloffTolerance);
 }
 
 float light_radius(float fIntensity, float fFalloffTolerance)
 {
-    return sqrt(fIntensity * fPointScale / fFalloffTolerance);
+	return sqrt(fIntensity * fPointScale / fFalloffTolerance);
 }
 
 bool spawnflags_linear(int flags)
@@ -310,899 +310,899 @@ bool spawnflags_linear(int flags)
 
 class LightRadii {
 public:
-	float m_radii[3];
+float m_radii[3];
 
 private:
-	float m_primaryIntensity;
-	float m_secondaryIntensity;
-	int m_flags;
-	float m_fade;
-	float m_scale;
+float m_primaryIntensity;
+float m_secondaryIntensity;
+int m_flags;
+float m_fade;
+float m_scale;
 
-	void calculateRadii()
-	{
-		float intensity = 300.0f;
+void calculateRadii()
+{
+	float intensity = 300.0f;
 
-		if (m_primaryIntensity != 0.0f) {
-			intensity = m_primaryIntensity;
-		} else if (m_secondaryIntensity != 0.0f) {
-			intensity = m_secondaryIntensity;
-		}
+	if (m_primaryIntensity != 0.0f) {
+		intensity = m_primaryIntensity;
+	} else if (m_secondaryIntensity != 0.0f) {
+		intensity = m_secondaryIntensity;
+	}
 
-		if (m_scale) {
-			intensity = m_scale * 0.5f;
+	if (m_scale) {
+		intensity = m_scale * 0.5f;
+		m_radii[0] = light_radius(intensity, 1.0f);
+		m_radii[1] = light_radius(intensity, 48.0f);
+		m_radii[2] = light_radius(intensity, 255.0f);
+	} else {
+		if (spawnflags_linear(m_flags)) {
+			m_radii[0] = light_radius_linear(intensity, 1.0f) / m_fade;
+			m_radii[1] = light_radius_linear(intensity, 48.0f) / m_fade;
+			m_radii[2] = light_radius_linear(intensity, 255.0f) / m_fade;
+		} else {
 			m_radii[0] = light_radius(intensity, 1.0f);
 			m_radii[1] = light_radius(intensity, 48.0f);
 			m_radii[2] = light_radius(intensity, 255.0f);
-		} else {
-			if (spawnflags_linear(m_flags)) {
-				m_radii[0] = light_radius_linear(intensity, 1.0f) / m_fade;
-				m_radii[1] = light_radius_linear(intensity, 48.0f) / m_fade;
-				m_radii[2] = light_radius_linear(intensity, 255.0f) / m_fade;
-			} else {
-				m_radii[0] = light_radius(intensity, 1.0f);
-				m_radii[1] = light_radius(intensity, 48.0f);
-				m_radii[2] = light_radius(intensity, 255.0f);
-			}
 		}
 	}
+}
 
 public:
-    LightRadii() : m_primaryIntensity(0), m_secondaryIntensity(0), m_flags(0), m_fade(1), m_scale(1)
-    {
-    }
+LightRadii() : m_primaryIntensity(0), m_secondaryIntensity(0), m_flags(0), m_fade(1), m_scale(1)
+{
+}
 
 
-    void primaryIntensityChanged(const char *value)
-    {
-        m_primaryIntensity = string_read_float(value);
-        calculateRadii();
-    }
+void primaryIntensityChanged(const char *value)
+{
+	m_primaryIntensity = string_read_float(value);
+	calculateRadii();
+}
 
-    typedef MemberCaller<LightRadii, void(
-            const char *), &LightRadii::primaryIntensityChanged> PrimaryIntensityChangedCaller;
+typedef MemberCaller<LightRadii, void (
+			     const char *), &LightRadii::primaryIntensityChanged> PrimaryIntensityChangedCaller;
 
-    void secondaryIntensityChanged(const char *value)
-    {
-        m_secondaryIntensity = string_read_float(value);
-        calculateRadii();
-    }
+void secondaryIntensityChanged(const char *value)
+{
+	m_secondaryIntensity = string_read_float(value);
+	calculateRadii();
+}
 
-    typedef MemberCaller<LightRadii, void(
-            const char *), &LightRadii::secondaryIntensityChanged> SecondaryIntensityChangedCaller;
+typedef MemberCaller<LightRadii, void (
+			     const char *), &LightRadii::secondaryIntensityChanged> SecondaryIntensityChangedCaller;
 
-    void scaleChanged(const char *value)
-    {
-        m_scale = string_read_float(value);
-        calculateRadii();
-    }
+void scaleChanged(const char *value)
+{
+	m_scale = string_read_float(value);
+	calculateRadii();
+}
 
-    typedef MemberCaller<LightRadii, void(const char *), &LightRadii::scaleChanged> ScaleChangedCaller;
+typedef MemberCaller<LightRadii, void (const char *), &LightRadii::scaleChanged> ScaleChangedCaller;
 
-    void fadeChanged(const char *value)
-    {
-        m_fade = string_read_float(value);
-        if (m_fade <= 0.0f) {
-            m_fade = 1.0f;
-        }
-        calculateRadii();
-    }
+void fadeChanged(const char *value)
+{
+	m_fade = string_read_float(value);
+	if (m_fade <= 0.0f) {
+		m_fade = 1.0f;
+	}
+	calculateRadii();
+}
 
-    typedef MemberCaller<LightRadii, void(const char *), &LightRadii::fadeChanged> FadeChangedCaller;
+typedef MemberCaller<LightRadii, void (const char *), &LightRadii::fadeChanged> FadeChangedCaller;
 
-    void flagsChanged(const char *value)
-    {
-        m_flags = string_read_int(value);
-        calculateRadii();
-    }
+void flagsChanged(const char *value)
+{
+	m_flags = string_read_int(value);
+	calculateRadii();
+}
 
-    typedef MemberCaller<LightRadii, void(const char *), &LightRadii::flagsChanged> FlagsChangedCaller;
+typedef MemberCaller<LightRadii, void (const char *), &LightRadii::flagsChanged> FlagsChangedCaller;
 };
 
 class LightRadius {
 public:
-    Vector3 m_defaultRadius;
-    Vector3 m_radius;
-    Vector3 m_radiusTransformed;
-    Vector3 m_center;
-    Callback<void()> m_changed;
-    bool m_useCenterKey;
+Vector3 m_defaultRadius;
+Vector3 m_radius;
+Vector3 m_radiusTransformed;
+Vector3 m_center;
+Callback<void()> m_changed;
+bool m_useCenterKey;
 
-    LightRadius(const char *defaultRadius) : m_defaultRadius(300, 300, 300), m_center(0, 0, 0),
-                                                  m_useCenterKey(false)
-    {
-        if (!string_parse_vector3(defaultRadius, m_defaultRadius)) {
-            globalErrorStream() << "LightRadius: failed to parse default light radius\n";
-        }
-        m_radius = m_defaultRadius;
-    }
+LightRadius(const char *defaultRadius) : m_defaultRadius(300, 300, 300), m_center(0, 0, 0),
+	m_useCenterKey(false)
+{
+	if (!string_parse_vector3(defaultRadius, m_defaultRadius)) {
+		globalErrorStream() << "LightRadius: failed to parse default light radius\n";
+	}
+	m_radius = m_defaultRadius;
+}
 
-    void lightRadiusChanged(const char *value)
-    {
-        if (!string_parse_vector3(value, m_radius)) {
-            m_radius = m_defaultRadius;
-        }
-        m_radiusTransformed = m_radius;
-        m_changed();
-        SceneChangeNotify();
-    }
+void lightRadiusChanged(const char *value)
+{
+	if (!string_parse_vector3(value, m_radius)) {
+		m_radius = m_defaultRadius;
+	}
+	m_radiusTransformed = m_radius;
+	m_changed();
+	SceneChangeNotify();
+}
 
-    typedef MemberCaller<LightRadius, void(
-            const char *), &LightRadius::lightRadiusChanged> LightRadiusChangedCaller;
+typedef MemberCaller<LightRadius, void (
+			     const char *), &LightRadius::lightRadiusChanged> LightRadiusChangedCaller;
 
-    void lightCenterChanged(const char *value)
-    {
-        m_useCenterKey = string_parse_vector3(value, m_center);
-        if (!m_useCenterKey) {
-            m_center = Vector3(0, 0, 0);
-        }
-        SceneChangeNotify();
-    }
+void lightCenterChanged(const char *value)
+{
+	m_useCenterKey = string_parse_vector3(value, m_center);
+	if (!m_useCenterKey) {
+		m_center = Vector3(0, 0, 0);
+	}
+	SceneChangeNotify();
+}
 
-    typedef MemberCaller<LightRadius, void(
-            const char *), &LightRadius::lightCenterChanged> LightCenterChangedCaller;
+typedef MemberCaller<LightRadius, void (
+			     const char *), &LightRadius::lightCenterChanged> LightCenterChangedCaller;
 };
 
 class RenderLightRadiiWire : public OpenGLRenderable {
-    LightRadii &m_radii;
-    const Vector3 &m_origin;
+LightRadii &m_radii;
+const Vector3 &m_origin;
 public:
-    RenderLightRadiiWire(LightRadii &radii, const Vector3 &origin) : m_radii(radii), m_origin(origin)
-    {
-    }
+RenderLightRadiiWire(LightRadii &radii, const Vector3 &origin) : m_radii(radii), m_origin(origin)
+{
+}
 
-    void render(RenderStateFlags state) const
-    {
-        light_draw_radius_wire(m_origin, m_radii.m_radii);
-    }
+void render(RenderStateFlags state) const
+{
+	light_draw_radius_wire(m_origin, m_radii.m_radii);
+}
 };
 
 class RenderLightRadiiFill : public OpenGLRenderable {
-    LightRadii &m_radii;
-    const Vector3 &m_origin;
+LightRadii &m_radii;
+const Vector3 &m_origin;
 public:
-    static Shader *m_state;
+static Shader *m_state;
 
-    RenderLightRadiiFill(LightRadii &radii, const Vector3 &origin) : m_radii(radii), m_origin(origin)
-    {
-    }
+RenderLightRadiiFill(LightRadii &radii, const Vector3 &origin) : m_radii(radii), m_origin(origin)
+{
+}
 
-    void render(RenderStateFlags state) const
-    {
-        light_draw_radius_fill(m_origin, m_radii.m_radii);
-    }
+void render(RenderStateFlags state) const
+{
+	light_draw_radius_fill(m_origin, m_radii.m_radii);
+}
 };
 
 class RenderLightRadiiBox : public OpenGLRenderable {
-    const Vector3 &m_origin;
+const Vector3 &m_origin;
 public:
-    mutable Vector3 m_points[8];
-    static Shader *m_state;
+mutable Vector3 m_points[8];
+static Shader *m_state;
 
-    RenderLightRadiiBox(const Vector3 &origin) : m_origin(origin)
-    {
-    }
+RenderLightRadiiBox(const Vector3 &origin) : m_origin(origin)
+{
+}
 
-    void render(RenderStateFlags state) const
-    {
-        //draw the bounding box of light based on light_radius key
-        if ((state & RENDER_FILL) != 0) {
-            aabb_draw_flatshade(m_points);
-        } else {
-            aabb_draw_wire(m_points);
-        }
+void render(RenderStateFlags state) const
+{
+	//draw the bounding box of light based on light_radius key
+	if ((state & RENDER_FILL) != 0) {
+		aabb_draw_flatshade(m_points);
+	} else {
+		aabb_draw_wire(m_points);
+	}
 
 #if 1    //disable if you dont want lines going from the center of the light bbox to the corners
-        light_draw_box_lines(m_origin, m_points);
+	light_draw_box_lines(m_origin, m_points);
 #endif
-    }
+}
 };
 
 Shader *RenderLightRadiiFill::m_state = 0;
 
 class RenderLightCenter : public OpenGLRenderable {
-    const Vector3 &m_center;
-    EntityClass &m_eclass;
+const Vector3 &m_center;
+EntityClass &m_eclass;
 public:
-    static Shader *m_state;
+static Shader *m_state;
 
-    RenderLightCenter(const Vector3 &center, EntityClass &eclass) : m_center(center), m_eclass(eclass)
-    {
-    }
+RenderLightCenter(const Vector3 &center, EntityClass &eclass) : m_center(center), m_eclass(eclass)
+{
+}
 
-    void render(RenderStateFlags state) const
-    {
-        glBegin(GL_POINTS);
-        glColor3fv(vector3_to_array(m_eclass.color));
-        glVertex3fv(vector3_to_array(m_center));
-        glEnd();
-    }
+void render(RenderStateFlags state) const
+{
+	glBegin(GL_POINTS);
+	glColor3fv(vector3_to_array(m_eclass.color));
+	glVertex3fv(vector3_to_array(m_center));
+	glEnd();
+}
 };
 
 Shader *RenderLightCenter::m_state = 0;
 
 class RenderLightProjection : public OpenGLRenderable {
-    const Matrix4 &m_projection;
+const Matrix4 &m_projection;
 public:
 
-    RenderLightProjection(const Matrix4 &projection) : m_projection(projection)
-    {
-    }
+RenderLightProjection(const Matrix4 &projection) : m_projection(projection)
+{
+}
 
-    void render(RenderStateFlags state) const
-    {
-        Matrix4 unproject(matrix4_full_inverse(m_projection));
-        Vector3 points[8];
-        aabb_corners(AABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(0.5f, 0.5f, 0.5f)), points);
-        points[0] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[0], 1)));
-        points[1] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[1], 1)));
-        points[2] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[2], 1)));
-        points[3] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[3], 1)));
-        points[4] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[4], 1)));
-        points[5] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[5], 1)));
-        points[6] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[6], 1)));
-        points[7] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[7], 1)));
+void render(RenderStateFlags state) const
+{
+	Matrix4 unproject(matrix4_full_inverse(m_projection));
+	Vector3 points[8];
+	aabb_corners(AABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(0.5f, 0.5f, 0.5f)), points);
+	points[0] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[0], 1)));
+	points[1] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[1], 1)));
+	points[2] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[2], 1)));
+	points[3] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[3], 1)));
+	points[4] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[4], 1)));
+	points[5] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[5], 1)));
+	points[6] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[6], 1)));
+	points[7] = vector4_projected(matrix4_transformed_vector4(unproject, Vector4(points[7], 1)));
 //	Vector4 test1 = matrix4_transformed_vector4( unproject, Vector4( 0.5f, 0.5f, 0.5f, 1 ) );
 //	Vector3 test2 = vector4_projected( test1 );
-        aabb_draw_wire(points);
-    }
+	aabb_draw_wire(points);
+}
 };
 
 inline void default_extents(Vector3 &extents)
 {
-    extents = Vector3(8, 8, 8);
+	extents = Vector3(8, 8, 8);
 }
 
 class ShaderRef {
-    CopiedString m_name;
-    Shader *m_shader;
+CopiedString m_name;
+Shader *m_shader;
 
-    void capture()
-    {
-        m_shader = GlobalShaderCache().capture(m_name.c_str());
-    }
+void capture()
+{
+	m_shader = GlobalShaderCache().capture(m_name.c_str());
+}
 
-    void release()
-    {
-        GlobalShaderCache().release(m_name.c_str());
-    }
+void release()
+{
+	GlobalShaderCache().release(m_name.c_str());
+}
 
 public:
-    ShaderRef()
-    {
-        capture();
-    }
+ShaderRef()
+{
+	capture();
+}
 
-    ~ShaderRef()
-    {
-        release();
-    }
+~ShaderRef()
+{
+	release();
+}
 
-    void setName(const char *name)
-    {
-        release();
-        m_name = name;
-        capture();
-    }
+void setName(const char *name)
+{
+	release();
+	m_name = name;
+	capture();
+}
 
-    Shader *get() const
-    {
-        return m_shader;
-    }
+Shader *get() const
+{
+	return m_shader;
+}
 };
 
 class LightShader {
-    ShaderRef m_shader;
+ShaderRef m_shader;
 
-    void setDefault()
-    {
-        m_shader.setName(m_defaultShader);
-    }
+void setDefault()
+{
+	m_shader.setName(m_defaultShader);
+}
 
 public:
-    static const char *m_defaultShader;
+static const char *m_defaultShader;
 
-    LightShader()
-    {
-        setDefault();
-    }
+LightShader()
+{
+	setDefault();
+}
 
-    void valueChanged(const char *value)
-    {
-        if (string_empty(value)) {
-            setDefault();
-        } else {
-            m_shader.setName(value);
-        }
-        SceneChangeNotify();
-    }
+void valueChanged(const char *value)
+{
+	if (string_empty(value)) {
+		setDefault();
+	} else {
+		m_shader.setName(value);
+	}
+	SceneChangeNotify();
+}
 
-    typedef MemberCaller<LightShader, void(const char *), &LightShader::valueChanged> ValueChangedCaller;
+typedef MemberCaller<LightShader, void (const char *), &LightShader::valueChanged> ValueChangedCaller;
 
-    Shader *get() const
-    {
-        return m_shader.get();
-    }
+Shader *get() const
+{
+	return m_shader.get();
+}
 };
 
 const char *LightShader::m_defaultShader = "";
 
 inline const BasicVector4<double> &plane3_to_vector4(const Plane3 &self)
 {
-    return reinterpret_cast<const BasicVector4<double> &>( self );
+	return reinterpret_cast<const BasicVector4<double> &>( self );
 }
 
 inline BasicVector4<double> &plane3_to_vector4(Plane3 &self)
 {
-    return reinterpret_cast<BasicVector4<double> &>( self );
+	return reinterpret_cast<BasicVector4<double> &>( self );
 }
 
 inline Matrix4 matrix4_from_planes(const Plane3 &left, const Plane3 &right, const Plane3 &bottom, const Plane3 &top,
                                    const Plane3 &front, const Plane3 &back)
 {
-    return Matrix4(
-            (right.a - left.a) / 2,
-            (top.a - bottom.a) / 2,
-            (back.a - front.a) / 2,
-            right.a - (right.a - left.a) / 2,
-            (right.b - left.b) / 2,
-            (top.b - bottom.b) / 2,
-            (back.b - front.b) / 2,
-            right.b - (right.b - left.b) / 2,
-            (right.c - left.c) / 2,
-            (top.c - bottom.c) / 2,
-            (back.c - front.c) / 2,
-            right.c - (right.c - left.c) / 2,
-            (right.d - left.d) / 2,
-            (top.d - bottom.d) / 2,
-            (back.d - front.d) / 2,
-            right.d - (right.d - left.d) / 2
-    );
+	return Matrix4(
+		(right.a - left.a) / 2,
+		(top.a - bottom.a) / 2,
+		(back.a - front.a) / 2,
+		right.a - (right.a - left.a) / 2,
+		(right.b - left.b) / 2,
+		(top.b - bottom.b) / 2,
+		(back.b - front.b) / 2,
+		right.b - (right.b - left.b) / 2,
+		(right.c - left.c) / 2,
+		(top.c - bottom.c) / 2,
+		(back.c - front.c) / 2,
+		right.c - (right.c - left.c) / 2,
+		(right.d - left.d) / 2,
+		(top.d - bottom.d) / 2,
+		(back.d - front.d) / 2,
+		right.d - (right.d - left.d) / 2
+		);
 }
 
 class Light :
-        public OpenGLRenderable,
-        public Cullable,
-        public Bounded,
-        public Editable,
-        public Snappable {
-    EntityKeyValues m_entity;
-    KeyObserverMap m_keyObservers;
-    TraversableNodeSet m_traverse;
-    IdentityTransform m_transform;
+	public OpenGLRenderable,
+	public Cullable,
+	public Bounded,
+	public Editable,
+	public Snappable {
+EntityKeyValues m_entity;
+KeyObserverMap m_keyObservers;
+TraversableNodeSet m_traverse;
+IdentityTransform m_transform;
 
-    OriginKey m_originKey;
-    RotationKey m_rotationKey;
-    Float9 m_rotation;
-    Colour m_colour;
+OriginKey m_originKey;
+RotationKey m_rotationKey;
+Float9 m_rotation;
+Colour m_colour;
 
-    ClassnameFilter m_filter;
-    NamedEntity m_named;
-    NameKeys m_nameKeys;
-    TraversableObserverPairRelay m_traverseObservers;
+ClassnameFilter m_filter;
+NamedEntity m_named;
+NameKeys m_nameKeys;
+TraversableObserverPairRelay m_traverseObservers;
 
-    LightRadii m_radii;
-    LightRadius m_radius;
+LightRadii m_radii;
+LightRadius m_radius;
 
-    RenderLightRadiiWire m_radii_wire;
-    RenderLightRadiiFill m_radii_fill;
-    RenderLightRadiiBox m_radii_box;
-    RenderLightCenter m_render_center;
-    RenderableNamedEntity m_renderName;
+RenderLightRadiiWire m_radii_wire;
+RenderLightRadiiFill m_radii_fill;
+RenderLightRadiiBox m_radii_box;
+RenderLightCenter m_render_center;
+RenderableNamedEntity m_renderName;
 
-    Vector3 m_lightOrigin;
-    bool m_useLightOrigin;
-    Float9 m_lightRotation;
-    bool m_useLightRotation;
+Vector3 m_lightOrigin;
+bool m_useLightOrigin;
+Float9 m_lightRotation;
+bool m_useLightRotation;
 
-    Vector3 m_lightTarget;
-    bool m_useLightTarget;
-    Vector3 m_lightUp;
-    bool m_useLightUp;
-    Vector3 m_lightRight;
-    bool m_useLightRight;
-    Vector3 m_lightStart;
-    bool m_useLightStart;
-    Vector3 m_lightEnd;
-    bool m_useLightEnd;
+Vector3 m_lightTarget;
+bool m_useLightTarget;
+Vector3 m_lightUp;
+bool m_useLightUp;
+Vector3 m_lightRight;
+bool m_useLightRight;
+Vector3 m_lightStart;
+bool m_useLightStart;
+Vector3 m_lightEnd;
+bool m_useLightEnd;
 
-    mutable AABB m_doom3AABB;
-    mutable Matrix4 m_doom3Rotation;
-    mutable Matrix4 m_doom3Projection;
-    mutable Frustum m_doom3Frustum;
-    mutable bool m_doom3ProjectionChanged;
+mutable AABB m_doom3AABB;
+mutable Matrix4 m_doom3Rotation;
+mutable Matrix4 m_doom3Projection;
+mutable Frustum m_doom3Frustum;
+mutable bool m_doom3ProjectionChanged;
 
-    RenderLightProjection m_renderProjection;
+RenderLightProjection m_renderProjection;
 
-    LightShader m_shader;
+LightShader m_shader;
 
-    AABB m_aabb_light;
+AABB m_aabb_light;
 
-    Callback<void()> m_transformChanged;
-    Callback<void()> m_boundsChanged;
-    Callback<void()> m_evaluateTransform;
+Callback<void()> m_transformChanged;
+Callback<void()> m_boundsChanged;
+Callback<void()> m_evaluateTransform;
 
-    void construct()
-    {
-        default_rotation(m_rotation);
-        m_aabb_light.origin = Vector3(0, 0, 0);
-        default_extents(m_aabb_light.extents);
+void construct()
+{
+	default_rotation(m_rotation);
+	m_aabb_light.origin = Vector3(0, 0, 0);
+	default_extents(m_aabb_light.extents);
 
-        m_keyObservers.insert("classname", ClassnameFilter::ClassnameChangedCaller(m_filter));
-        m_keyObservers.insert(Static<KeyIsName>::instance().m_nameKey, NamedEntity::IdentifierChangedCaller(m_named));
-        m_keyObservers.insert("_color", Colour::ColourChangedCaller(m_colour));
-        m_keyObservers.insert("_color255", Colour::Colour255ChangedCaller(m_colour));
-        m_keyObservers.insert("origin", OriginKey::OriginChangedCaller(m_originKey));
-        m_keyObservers.insert("_light", LightRadii::PrimaryIntensityChangedCaller(m_radii));
-        m_keyObservers.insert("light", LightRadii::SecondaryIntensityChangedCaller(m_radii));
-        m_keyObservers.insert("fade", LightRadii::FadeChangedCaller(m_radii));
-        m_keyObservers.insert("radius", LightRadii::ScaleChangedCaller(m_radii));
-        m_keyObservers.insert("scale", LightRadii::ScaleChangedCaller(m_radii));
-        m_keyObservers.insert("spawnflags", LightRadii::FlagsChangedCaller(m_radii));
+	m_keyObservers.insert("classname", ClassnameFilter::ClassnameChangedCaller(m_filter));
+	m_keyObservers.insert(Static<KeyIsName>::instance().m_nameKey, NamedEntity::IdentifierChangedCaller(m_named));
+	m_keyObservers.insert("_color", Colour::ColourChangedCaller(m_colour));
+	m_keyObservers.insert("_color255", Colour::Colour255ChangedCaller(m_colour));
+	m_keyObservers.insert("origin", OriginKey::OriginChangedCaller(m_originKey));
+	m_keyObservers.insert("_light", LightRadii::PrimaryIntensityChangedCaller(m_radii));
+	m_keyObservers.insert("light", LightRadii::SecondaryIntensityChangedCaller(m_radii));
+	m_keyObservers.insert("fade", LightRadii::FadeChangedCaller(m_radii));
+	m_keyObservers.insert("radius", LightRadii::ScaleChangedCaller(m_radii));
+	m_keyObservers.insert("scale", LightRadii::ScaleChangedCaller(m_radii));
+	m_keyObservers.insert("spawnflags", LightRadii::FlagsChangedCaller(m_radii));
 
-    }
+}
 
-    void destroy()
-    {
+void destroy()
+{
 
-    }
+}
 
 // vc 2k5 compiler fix
 #if _MSC_VER >= 1400
-    public:
+public:
 #endif
 
-    void updateOrigin()
-    {
-        m_boundsChanged();
-        m_radius.m_changed();
-        GlobalSelectionSystem().pivotChanged();
-    }
+void updateOrigin()
+{
+	m_boundsChanged();
+	m_radius.m_changed();
+	GlobalSelectionSystem().pivotChanged();
+}
 
-    void originChanged()
-    {
-        m_aabb_light.origin = m_useLightOrigin ? m_lightOrigin : m_originKey.m_origin;
-        updateOrigin();
-    }
+void originChanged()
+{
+	m_aabb_light.origin = m_useLightOrigin ? m_lightOrigin : m_originKey.m_origin;
+	updateOrigin();
+}
 
-    typedef MemberCaller<Light, void(), &Light::originChanged> OriginChangedCaller;
+typedef MemberCaller<Light, void (), &Light::originChanged> OriginChangedCaller;
 
-    void lightOriginChanged(const char *value)
-    {
-        m_useLightOrigin = !string_empty(value);
-        if (m_useLightOrigin) {
-            read_origin(m_lightOrigin, value);
-        }
-        originChanged();
-    }
+void lightOriginChanged(const char *value)
+{
+	m_useLightOrigin = !string_empty(value);
+	if (m_useLightOrigin) {
+		read_origin(m_lightOrigin, value);
+	}
+	originChanged();
+}
 
-    typedef MemberCaller<Light, void(const char *), &Light::lightOriginChanged> LightOriginChangedCaller;
+typedef MemberCaller<Light, void (const char *), &Light::lightOriginChanged> LightOriginChangedCaller;
 
-    void lightTargetChanged(const char *value)
-    {
-        m_useLightTarget = !string_empty(value);
-        if (m_useLightTarget) {
-            read_origin(m_lightTarget, value);
-        }
-        projectionChanged();
-    }
+void lightTargetChanged(const char *value)
+{
+	m_useLightTarget = !string_empty(value);
+	if (m_useLightTarget) {
+		read_origin(m_lightTarget, value);
+	}
+	projectionChanged();
+}
 
-    typedef MemberCaller<Light, void(const char *), &Light::lightTargetChanged> LightTargetChangedCaller;
+typedef MemberCaller<Light, void (const char *), &Light::lightTargetChanged> LightTargetChangedCaller;
 
-    void lightUpChanged(const char *value)
-    {
-        m_useLightUp = !string_empty(value);
-        if (m_useLightUp) {
-            read_origin(m_lightUp, value);
-        }
-        projectionChanged();
-    }
+void lightUpChanged(const char *value)
+{
+	m_useLightUp = !string_empty(value);
+	if (m_useLightUp) {
+		read_origin(m_lightUp, value);
+	}
+	projectionChanged();
+}
 
-    typedef MemberCaller<Light, void(const char *), &Light::lightUpChanged> LightUpChangedCaller;
+typedef MemberCaller<Light, void (const char *), &Light::lightUpChanged> LightUpChangedCaller;
 
-    void lightRightChanged(const char *value)
-    {
-        m_useLightRight = !string_empty(value);
-        if (m_useLightRight) {
-            read_origin(m_lightRight, value);
-        }
-        projectionChanged();
-    }
+void lightRightChanged(const char *value)
+{
+	m_useLightRight = !string_empty(value);
+	if (m_useLightRight) {
+		read_origin(m_lightRight, value);
+	}
+	projectionChanged();
+}
 
-    typedef MemberCaller<Light, void(const char *), &Light::lightRightChanged> LightRightChangedCaller;
+typedef MemberCaller<Light, void (const char *), &Light::lightRightChanged> LightRightChangedCaller;
 
-    void lightStartChanged(const char *value)
-    {
-        m_useLightStart = !string_empty(value);
-        if (m_useLightStart) {
-            read_origin(m_lightStart, value);
-        }
-        projectionChanged();
-    }
+void lightStartChanged(const char *value)
+{
+	m_useLightStart = !string_empty(value);
+	if (m_useLightStart) {
+		read_origin(m_lightStart, value);
+	}
+	projectionChanged();
+}
 
-    typedef MemberCaller<Light, void(const char *), &Light::lightStartChanged> LightStartChangedCaller;
+typedef MemberCaller<Light, void (const char *), &Light::lightStartChanged> LightStartChangedCaller;
 
-    void lightEndChanged(const char *value)
-    {
-        m_useLightEnd = !string_empty(value);
-        if (m_useLightEnd) {
-            read_origin(m_lightEnd, value);
-        }
-        projectionChanged();
-    }
+void lightEndChanged(const char *value)
+{
+	m_useLightEnd = !string_empty(value);
+	if (m_useLightEnd) {
+		read_origin(m_lightEnd, value);
+	}
+	projectionChanged();
+}
 
-    typedef MemberCaller<Light, void(const char *), &Light::lightEndChanged> LightEndChangedCaller;
+typedef MemberCaller<Light, void (const char *), &Light::lightEndChanged> LightEndChangedCaller;
 
-    void writeLightOrigin()
-    {
-        write_origin(m_lightOrigin, &m_entity, "light_origin");
-    }
+void writeLightOrigin()
+{
+	write_origin(m_lightOrigin, &m_entity, "light_origin");
+}
 
-    void updateLightRadiiBox() const
-    {
-        const Matrix4 &rotation = rotation_toMatrix(m_rotation);
-        aabb_corners(AABB(Vector3(0, 0, 0), m_radius.m_radiusTransformed), m_radii_box.m_points);
-        matrix4_transform_point(rotation, m_radii_box.m_points[0]);
-        vector3_add(m_radii_box.m_points[0], m_aabb_light.origin);
-        matrix4_transform_point(rotation, m_radii_box.m_points[1]);
-        vector3_add(m_radii_box.m_points[1], m_aabb_light.origin);
-        matrix4_transform_point(rotation, m_radii_box.m_points[2]);
-        vector3_add(m_radii_box.m_points[2], m_aabb_light.origin);
-        matrix4_transform_point(rotation, m_radii_box.m_points[3]);
-        vector3_add(m_radii_box.m_points[3], m_aabb_light.origin);
-        matrix4_transform_point(rotation, m_radii_box.m_points[4]);
-        vector3_add(m_radii_box.m_points[4], m_aabb_light.origin);
-        matrix4_transform_point(rotation, m_radii_box.m_points[5]);
-        vector3_add(m_radii_box.m_points[5], m_aabb_light.origin);
-        matrix4_transform_point(rotation, m_radii_box.m_points[6]);
-        vector3_add(m_radii_box.m_points[6], m_aabb_light.origin);
-        matrix4_transform_point(rotation, m_radii_box.m_points[7]);
-        vector3_add(m_radii_box.m_points[7], m_aabb_light.origin);
-    }
+void updateLightRadiiBox() const
+{
+	const Matrix4 &rotation = rotation_toMatrix(m_rotation);
+	aabb_corners(AABB(Vector3(0, 0, 0), m_radius.m_radiusTransformed), m_radii_box.m_points);
+	matrix4_transform_point(rotation, m_radii_box.m_points[0]);
+	vector3_add(m_radii_box.m_points[0], m_aabb_light.origin);
+	matrix4_transform_point(rotation, m_radii_box.m_points[1]);
+	vector3_add(m_radii_box.m_points[1], m_aabb_light.origin);
+	matrix4_transform_point(rotation, m_radii_box.m_points[2]);
+	vector3_add(m_radii_box.m_points[2], m_aabb_light.origin);
+	matrix4_transform_point(rotation, m_radii_box.m_points[3]);
+	vector3_add(m_radii_box.m_points[3], m_aabb_light.origin);
+	matrix4_transform_point(rotation, m_radii_box.m_points[4]);
+	vector3_add(m_radii_box.m_points[4], m_aabb_light.origin);
+	matrix4_transform_point(rotation, m_radii_box.m_points[5]);
+	vector3_add(m_radii_box.m_points[5], m_aabb_light.origin);
+	matrix4_transform_point(rotation, m_radii_box.m_points[6]);
+	vector3_add(m_radii_box.m_points[6], m_aabb_light.origin);
+	matrix4_transform_point(rotation, m_radii_box.m_points[7]);
+	vector3_add(m_radii_box.m_points[7], m_aabb_light.origin);
+}
 
-    void rotationChanged()
-    {
-        rotation_assign(m_rotation, m_useLightRotation ? m_lightRotation : m_rotationKey.m_rotation);
-        GlobalSelectionSystem().pivotChanged();
-    }
+void rotationChanged()
+{
+	rotation_assign(m_rotation, m_useLightRotation ? m_lightRotation : m_rotationKey.m_rotation);
+	GlobalSelectionSystem().pivotChanged();
+}
 
-    typedef MemberCaller<Light, void(), &Light::rotationChanged> RotationChangedCaller;
+typedef MemberCaller<Light, void (), &Light::rotationChanged> RotationChangedCaller;
 
-    void lightRotationChanged(const char *value)
-    {
-        m_useLightRotation = !string_empty(value);
-        if (m_useLightRotation) {
-            read_rotation(m_lightRotation, value);
-        }
-        rotationChanged();
-    }
+void lightRotationChanged(const char *value)
+{
+	m_useLightRotation = !string_empty(value);
+	if (m_useLightRotation) {
+		read_rotation(m_lightRotation, value);
+	}
+	rotationChanged();
+}
 
-    typedef MemberCaller<Light, void(const char *), &Light::lightRotationChanged> LightRotationChangedCaller;
+typedef MemberCaller<Light, void (const char *), &Light::lightRotationChanged> LightRotationChangedCaller;
 
 public:
 
-    Light(EntityClass *eclass, scene::Node &node, const Callback<void()> &transformChanged,
-          const Callback<void()> &boundsChanged, const Callback<void()> &evaluateTransform) :
-            m_entity(eclass),
-            m_originKey(OriginChangedCaller(*this)),
-            m_rotationKey(RotationChangedCaller(*this)),
-            m_colour(Callback<void()>()),
-            m_filter(m_entity, node),
-            m_named(m_entity),
-            m_nameKeys(m_entity),
-            m_radius(EntityClass_valueForKey(m_entity.getEntityClass(), "light_radius")),
-            m_radii_wire(m_radii, m_aabb_light.origin),
-            m_radii_fill(m_radii, m_aabb_light.origin),
-            m_radii_box(m_aabb_light.origin),
-            m_render_center(m_radius.m_center, m_entity.getEntityClass()),
-            m_renderName(m_named, m_aabb_light.origin),
-            m_useLightOrigin(false),
-            m_useLightRotation(false),
-            m_renderProjection(m_doom3Projection),
-            m_transformChanged(transformChanged),
-            m_boundsChanged(boundsChanged),
-            m_evaluateTransform(evaluateTransform)
-    {
-        construct();
-    }
+Light(EntityClass *eclass, scene::Node &node, const Callback<void()> &transformChanged,
+      const Callback<void()> &boundsChanged, const Callback<void()> &evaluateTransform) :
+	m_entity(eclass),
+	m_originKey(OriginChangedCaller(*this)),
+	m_rotationKey(RotationChangedCaller(*this)),
+	m_colour(Callback<void()>()),
+	m_filter(m_entity, node),
+	m_named(m_entity),
+	m_nameKeys(m_entity),
+	m_radius(EntityClass_valueForKey(m_entity.getEntityClass(), "light_radius")),
+	m_radii_wire(m_radii, m_aabb_light.origin),
+	m_radii_fill(m_radii, m_aabb_light.origin),
+	m_radii_box(m_aabb_light.origin),
+	m_render_center(m_radius.m_center, m_entity.getEntityClass()),
+	m_renderName(m_named, m_aabb_light.origin),
+	m_useLightOrigin(false),
+	m_useLightRotation(false),
+	m_renderProjection(m_doom3Projection),
+	m_transformChanged(transformChanged),
+	m_boundsChanged(boundsChanged),
+	m_evaluateTransform(evaluateTransform)
+{
+	construct();
+}
 
-    Light(const Light &other, scene::Node &node, const Callback<void()> &transformChanged,
-          const Callback<void()> &boundsChanged, const Callback<void()> &evaluateTransform) :
-            m_entity(other.m_entity),
-            m_originKey(OriginChangedCaller(*this)),
-            m_rotationKey(RotationChangedCaller(*this)),
-            m_colour(Callback<void()>()),
-            m_filter(m_entity, node),
-            m_named(m_entity),
-            m_nameKeys(m_entity),
-            m_radius(EntityClass_valueForKey(m_entity.getEntityClass(), "light_radius")),
-            m_radii_wire(m_radii, m_aabb_light.origin),
-            m_radii_fill(m_radii, m_aabb_light.origin),
-            m_radii_box(m_aabb_light.origin),
-            m_render_center(m_radius.m_center, m_entity.getEntityClass()),
-            m_renderName(m_named, m_aabb_light.origin),
-            m_useLightOrigin(false),
-            m_useLightRotation(false),
-            m_renderProjection(m_doom3Projection),
-            m_transformChanged(transformChanged),
-            m_boundsChanged(boundsChanged),
-            m_evaluateTransform(evaluateTransform)
-    {
-        construct();
-    }
+Light(const Light &other, scene::Node &node, const Callback<void()> &transformChanged,
+      const Callback<void()> &boundsChanged, const Callback<void()> &evaluateTransform) :
+	m_entity(other.m_entity),
+	m_originKey(OriginChangedCaller(*this)),
+	m_rotationKey(RotationChangedCaller(*this)),
+	m_colour(Callback<void()>()),
+	m_filter(m_entity, node),
+	m_named(m_entity),
+	m_nameKeys(m_entity),
+	m_radius(EntityClass_valueForKey(m_entity.getEntityClass(), "light_radius")),
+	m_radii_wire(m_radii, m_aabb_light.origin),
+	m_radii_fill(m_radii, m_aabb_light.origin),
+	m_radii_box(m_aabb_light.origin),
+	m_render_center(m_radius.m_center, m_entity.getEntityClass()),
+	m_renderName(m_named, m_aabb_light.origin),
+	m_useLightOrigin(false),
+	m_useLightRotation(false),
+	m_renderProjection(m_doom3Projection),
+	m_transformChanged(transformChanged),
+	m_boundsChanged(boundsChanged),
+	m_evaluateTransform(evaluateTransform)
+{
+	construct();
+}
 
-    ~Light()
-    {
-        destroy();
-    }
+~Light()
+{
+	destroy();
+}
 
-    InstanceCounter m_instanceCounter;
+InstanceCounter m_instanceCounter;
 
-    void instanceAttach(const scene::Path &path)
-    {
-        if (++m_instanceCounter.m_count == 1) {
-            m_filter.instanceAttach();
-            m_entity.instanceAttach(path_find_mapfile(path.begin(), path.end()));
-            m_entity.attach(m_keyObservers);
-        }
-    }
+void instanceAttach(const scene::Path &path)
+{
+	if (++m_instanceCounter.m_count == 1) {
+		m_filter.instanceAttach();
+		m_entity.instanceAttach(path_find_mapfile(path.begin(), path.end()));
+		m_entity.attach(m_keyObservers);
+	}
+}
 
-    void instanceDetach(const scene::Path &path)
-    {
-        if (--m_instanceCounter.m_count == 0) {
-            m_entity.detach(m_keyObservers);
-            m_entity.instanceDetach(path_find_mapfile(path.begin(), path.end()));
-            m_filter.instanceDetach();
-        }
-    }
+void instanceDetach(const scene::Path &path)
+{
+	if (--m_instanceCounter.m_count == 0) {
+		m_entity.detach(m_keyObservers);
+		m_entity.instanceDetach(path_find_mapfile(path.begin(), path.end()));
+		m_filter.instanceDetach();
+	}
+}
 
-    EntityKeyValues &getEntity()
-    {
-        return m_entity;
-    }
+EntityKeyValues &getEntity()
+{
+	return m_entity;
+}
 
-    const EntityKeyValues &getEntity() const
-    {
-        return m_entity;
-    }
+const EntityKeyValues &getEntity() const
+{
+	return m_entity;
+}
 
-    scene::Traversable &getTraversable()
-    {
-        return m_traverse;
-    }
+scene::Traversable &getTraversable()
+{
+	return m_traverse;
+}
 
-    Namespaced &getNamespaced()
-    {
-        return m_nameKeys;
-    }
+Namespaced &getNamespaced()
+{
+	return m_nameKeys;
+}
 
-    Nameable &getNameable()
-    {
-        return m_named;
-    }
+Nameable &getNameable()
+{
+	return m_named;
+}
 
-    TransformNode &getTransformNode()
-    {
-        return m_transform;
-    }
+TransformNode &getTransformNode()
+{
+	return m_transform;
+}
 
-    void attach(scene::Traversable::Observer *observer)
-    {
-        m_traverseObservers.attach(*observer);
-    }
+void attach(scene::Traversable::Observer *observer)
+{
+	m_traverseObservers.attach(*observer);
+}
 
-    void detach(scene::Traversable::Observer *observer)
-    {
-        m_traverseObservers.detach(*observer);
-    }
+void detach(scene::Traversable::Observer *observer)
+{
+	m_traverseObservers.detach(*observer);
+}
 
-    void render(RenderStateFlags state) const
-    {
-        if (!g_newLightDraw) {
-            aabb_draw(m_aabb_light, state);
-        } else {
-            light_draw(m_aabb_light, state);
-        }
-    }
+void render(RenderStateFlags state) const
+{
+	if (!g_newLightDraw) {
+		aabb_draw(m_aabb_light, state);
+	} else {
+		light_draw(m_aabb_light, state);
+	}
+}
 
-    VolumeIntersectionValue intersectVolume(const VolumeTest &volume, const Matrix4 &localToWorld) const
-    {
-        return volume.TestAABB(m_aabb_light, localToWorld);
-    }
+VolumeIntersectionValue intersectVolume(const VolumeTest &volume, const Matrix4 &localToWorld) const
+{
+	return volume.TestAABB(m_aabb_light, localToWorld);
+}
 
 // cache
-    const AABB &localAABB() const
-    {
-        return m_aabb_light;
-    }
+const AABB &localAABB() const
+{
+	return m_aabb_light;
+}
 
 
-    mutable Matrix4 m_projectionOrientation;
+mutable Matrix4 m_projectionOrientation;
 
-    void renderSolid(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld, bool selected) const
-    {
-        renderer.SetState(m_entity.getEntityClass().m_state_wire, Renderer::eWireframeOnly);
-        renderer.SetState(m_colour.state(), Renderer::eFullMaterials);
-        renderer.addRenderable(*this, localToWorld);
+void renderSolid(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld, bool selected) const
+{
+	renderer.SetState(m_entity.getEntityClass().m_state_wire, Renderer::eWireframeOnly);
+	renderer.SetState(m_colour.state(), Renderer::eFullMaterials);
+	renderer.addRenderable(*this, localToWorld);
 
-        if (selected && g_lightRadii && string_empty(m_entity.getKeyValue("target"))) {
-            if (renderer.getStyle() == Renderer::eFullMaterials) {
-                renderer.SetState(RenderLightRadiiFill::m_state, Renderer::eFullMaterials);
-                renderer.Highlight(Renderer::ePrimitive, false);
-                renderer.addRenderable(m_radii_fill, localToWorld);
-            } else {
-                renderer.addRenderable(m_radii_wire, localToWorld);
-            }
-        }
+	if (selected && g_lightRadii && string_empty(m_entity.getKeyValue("target"))) {
+		if (renderer.getStyle() == Renderer::eFullMaterials) {
+			renderer.SetState(RenderLightRadiiFill::m_state, Renderer::eFullMaterials);
+			renderer.Highlight(Renderer::ePrimitive, false);
+			renderer.addRenderable(m_radii_fill, localToWorld);
+		} else {
+			renderer.addRenderable(m_radii_wire, localToWorld);
+		}
+	}
 
-        renderer.SetState(m_entity.getEntityClass().m_state_wire, Renderer::eFullMaterials);
-    }
+	renderer.SetState(m_entity.getEntityClass().m_state_wire, Renderer::eFullMaterials);
+}
 
-    void renderWireframe(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld, bool selected) const
-    {
-        renderSolid(renderer, volume, localToWorld, selected);
-        if (g_showNames) {
-            renderer.addRenderable(m_renderName, localToWorld);
-        }
-    }
+void renderWireframe(Renderer &renderer, const VolumeTest &volume, const Matrix4 &localToWorld, bool selected) const
+{
+	renderSolid(renderer, volume, localToWorld, selected);
+	if (g_showNames) {
+		renderer.addRenderable(m_renderName, localToWorld);
+	}
+}
 
-    void testSelect(Selector &selector, SelectionTest &test, const Matrix4 &localToWorld)
-    {
-        test.BeginMesh(localToWorld);
+void testSelect(Selector &selector, SelectionTest &test, const Matrix4 &localToWorld)
+{
+	test.BeginMesh(localToWorld);
 
-        SelectionIntersection best;
-        aabb_testselect(m_aabb_light, test, best);
-        if (best.valid()) {
-            selector.addIntersection(best);
-        }
-    }
+	SelectionIntersection best;
+	aabb_testselect(m_aabb_light, test, best);
+	if (best.valid()) {
+		selector.addIntersection(best);
+	}
+}
 
-    void translate(const Vector3 &translation)
-    {
-        m_aabb_light.origin = origin_translated(m_aabb_light.origin, translation);
-    }
+void translate(const Vector3 &translation)
+{
+	m_aabb_light.origin = origin_translated(m_aabb_light.origin, translation);
+}
 
-    void rotate(const Quaternion &rotation)
-    {
-        rotation_rotate(m_rotation, rotation);
-    }
+void rotate(const Quaternion &rotation)
+{
+	rotation_rotate(m_rotation, rotation);
+}
 
-    void snapto(float snap)
-    {
-        if (m_useLightOrigin) {
-            m_lightOrigin = origin_snapped(m_lightOrigin, snap);
-            writeLightOrigin();
-        } else {
-            m_originKey.m_origin = origin_snapped(m_originKey.m_origin, snap);
-            m_originKey.write(&m_entity);
-        }
-    }
+void snapto(float snap)
+{
+	if (m_useLightOrigin) {
+		m_lightOrigin = origin_snapped(m_lightOrigin, snap);
+		writeLightOrigin();
+	} else {
+		m_originKey.m_origin = origin_snapped(m_originKey.m_origin, snap);
+		m_originKey.write(&m_entity);
+	}
+}
 
-    void setLightRadius(const AABB &aabb)
-    {
-        m_aabb_light.origin = aabb.origin;
-        m_radius.m_radiusTransformed = aabb.extents;
-    }
+void setLightRadius(const AABB &aabb)
+{
+	m_aabb_light.origin = aabb.origin;
+	m_radius.m_radiusTransformed = aabb.extents;
+}
 
-    void transformLightRadius(const Matrix4 &transform)
-    {
-        matrix4_transform_point(transform, m_aabb_light.origin);
-    }
+void transformLightRadius(const Matrix4 &transform)
+{
+	matrix4_transform_point(transform, m_aabb_light.origin);
+}
 
-    void revertTransform()
-    {
-        m_aabb_light.origin = m_useLightOrigin ? m_lightOrigin : m_originKey.m_origin;
-        rotation_assign(m_rotation, m_useLightRotation ? m_lightRotation : m_rotationKey.m_rotation);
-        m_radius.m_radiusTransformed = m_radius.m_radius;
-    }
+void revertTransform()
+{
+	m_aabb_light.origin = m_useLightOrigin ? m_lightOrigin : m_originKey.m_origin;
+	rotation_assign(m_rotation, m_useLightRotation ? m_lightRotation : m_rotationKey.m_rotation);
+	m_radius.m_radiusTransformed = m_radius.m_radius;
+}
 
-    void freezeTransform()
-    {
-        if (m_useLightOrigin) {
-            m_lightOrigin = m_aabb_light.origin;
-            writeLightOrigin();
-        } else {
-            m_originKey.m_origin = m_aabb_light.origin;
-            m_originKey.write(&m_entity);
-        }
-    }
+void freezeTransform()
+{
+	if (m_useLightOrigin) {
+		m_lightOrigin = m_aabb_light.origin;
+		writeLightOrigin();
+	} else {
+		m_originKey.m_origin = m_aabb_light.origin;
+		m_originKey.write(&m_entity);
+	}
+}
 
-    void transformChanged()
-    {
-        revertTransform();
-        m_evaluateTransform();
-        updateOrigin();
-    }
+void transformChanged()
+{
+	revertTransform();
+	m_evaluateTransform();
+	updateOrigin();
+}
 
-    typedef MemberCaller<Light, void(), &Light::transformChanged> TransformChangedCaller;
+typedef MemberCaller<Light, void (), &Light::transformChanged> TransformChangedCaller;
 
-    mutable Matrix4 m_localPivot;
+mutable Matrix4 m_localPivot;
 
-    const Matrix4 &getLocalPivot() const
-    {
-        m_localPivot = rotation_toMatrix(m_rotation);
-        vector4_to_vector3(m_localPivot.t()) = m_aabb_light.origin;
-        return m_localPivot;
-    }
+const Matrix4 &getLocalPivot() const
+{
+	m_localPivot = rotation_toMatrix(m_rotation);
+	vector4_to_vector3(m_localPivot.t()) = m_aabb_light.origin;
+	return m_localPivot;
+}
 
-    void setLightChangedCallback(const Callback<void()> &callback)
-    {
-        m_radius.m_changed = callback;
-    }
+void setLightChangedCallback(const Callback<void()> &callback)
+{
+	m_radius.m_changed = callback;
+}
 
-    const AABB &aabb() const
-    {
-        m_doom3AABB = AABB(m_aabb_light.origin, m_radius.m_radiusTransformed);
-        return m_doom3AABB;
-    }
+const AABB &aabb() const
+{
+	m_doom3AABB = AABB(m_aabb_light.origin, m_radius.m_radiusTransformed);
+	return m_doom3AABB;
+}
 
-    bool testAABB(const AABB &other) const
-    {
-        if (isProjected()) {
-            Matrix4 transform = rotation();
-            vector4_to_vector3(transform.t()) = localAABB().origin;
-            projection();
-            Frustum frustum(frustum_transformed(m_doom3Frustum, transform));
-            return frustum_test_aabb(frustum, other) != c_volumeOutside;
-        }
-        // test against an AABB which contains the rotated bounds of this light.
-        const AABB &bounds = aabb();
-        return aabb_intersects_aabb(other, AABB(
-                bounds.origin,
-                Vector3(
-                        static_cast<float>( fabs(m_rotation[0] * bounds.extents[0])
-                                            + fabs(m_rotation[3] * bounds.extents[1])
-                                            + fabs(m_rotation[6] * bounds.extents[2])),
-                        static_cast<float>( fabs(m_rotation[1] * bounds.extents[0])
-                                            + fabs(m_rotation[4] * bounds.extents[1])
-                                            + fabs(m_rotation[7] * bounds.extents[2])),
-                        static_cast<float>( fabs(m_rotation[2] * bounds.extents[0])
-                                            + fabs(m_rotation[5] * bounds.extents[1])
-                                            + fabs(m_rotation[8] * bounds.extents[2]))
-                )
-        ));
-    }
+bool testAABB(const AABB &other) const
+{
+	if (isProjected()) {
+		Matrix4 transform = rotation();
+		vector4_to_vector3(transform.t()) = localAABB().origin;
+		projection();
+		Frustum frustum(frustum_transformed(m_doom3Frustum, transform));
+		return frustum_test_aabb(frustum, other) != c_volumeOutside;
+	}
+	// test against an AABB which contains the rotated bounds of this light.
+	const AABB &bounds = aabb();
+	return aabb_intersects_aabb(other, AABB(
+					    bounds.origin,
+					    Vector3(
+						    static_cast<float>( fabs(m_rotation[0] * bounds.extents[0])
+						                        + fabs(m_rotation[3] * bounds.extents[1])
+						                        + fabs(m_rotation[6] * bounds.extents[2])),
+						    static_cast<float>( fabs(m_rotation[1] * bounds.extents[0])
+						                        + fabs(m_rotation[4] * bounds.extents[1])
+						                        + fabs(m_rotation[7] * bounds.extents[2])),
+						    static_cast<float>( fabs(m_rotation[2] * bounds.extents[0])
+						                        + fabs(m_rotation[5] * bounds.extents[1])
+						                        + fabs(m_rotation[8] * bounds.extents[2]))
+						    )
+					    ));
+}
 
-    const Matrix4 &rotation() const
-    {
-        m_doom3Rotation = rotation_toMatrix(m_rotation);
-        return m_doom3Rotation;
-    }
+const Matrix4 &rotation() const
+{
+	m_doom3Rotation = rotation_toMatrix(m_rotation);
+	return m_doom3Rotation;
+}
 
-    const Vector3 &offset() const
-    {
-        return m_radius.m_center;
-    }
+const Vector3 &offset() const
+{
+	return m_radius.m_center;
+}
 
-    const Vector3 &colour() const
-    {
-        return m_colour.m_colour;
-    }
+const Vector3 &colour() const
+{
+	return m_colour.m_colour;
+}
 
-    bool isProjected() const
-    {
-        return m_useLightTarget && m_useLightUp && m_useLightRight;
-    }
+bool isProjected() const
+{
+	return m_useLightTarget && m_useLightUp && m_useLightRight;
+}
 
-    void projectionChanged()
-    {
-        m_doom3ProjectionChanged = true;
-        m_radius.m_changed();
-        SceneChangeNotify();
-    }
+void projectionChanged()
+{
+	m_doom3ProjectionChanged = true;
+	m_radius.m_changed();
+	SceneChangeNotify();
+}
 
-    const Matrix4 &projection() const
-    {
-        if (!m_doom3ProjectionChanged) {
-            return m_doom3Projection;
-        }
-        m_doom3ProjectionChanged = false;
-        m_doom3Projection = g_matrix4_identity;
-        matrix4_translate_by_vec3(m_doom3Projection, Vector3(0.5f, 0.5f, 0));
-        matrix4_scale_by_vec3(m_doom3Projection, Vector3(0.5f, 0.5f, 1));
+const Matrix4 &projection() const
+{
+	if (!m_doom3ProjectionChanged) {
+		return m_doom3Projection;
+	}
+	m_doom3ProjectionChanged = false;
+	m_doom3Projection = g_matrix4_identity;
+	matrix4_translate_by_vec3(m_doom3Projection, Vector3(0.5f, 0.5f, 0));
+	matrix4_scale_by_vec3(m_doom3Projection, Vector3(0.5f, 0.5f, 1));
 
 #if 0
-                                                                                                                                Vector3 right = vector3_cross( m_lightUp, vector3_normalised( m_lightTarget ) );
+	Vector3 right = vector3_cross( m_lightUp, vector3_normalised( m_lightTarget ) );
 	Vector3 up = vector3_cross( vector3_normalised( m_lightTarget ), m_lightRight );
 	Vector3 target = m_lightTarget;
 	Matrix4 test(
@@ -1216,7 +1216,7 @@ public:
 	matrix4_premultiply_by_matrix4( test, frustum );
 	matrix4_multiply_by_matrix4( m_doom3Projection, test );
 #elif 0
-                                                                                                                                const float nearFar = 1 / 49.5f;
+	const float nearFar = 1 / 49.5f;
 	Vector3 right = vector3_cross( m_lightUp, vector3_normalised( m_lightTarget + m_lightRight ) );
 	Vector3 up = vector3_cross( vector3_normalised( m_lightTarget + m_lightUp ), m_lightRight );
 	Vector3 target = vector3_negated( m_lightTarget * ( 1 + nearFar ) );
@@ -1229,7 +1229,7 @@ public:
 		);
 	matrix4_multiply_by_matrix4( m_doom3Projection, test );
 #elif 0
-                                                                                                                                Vector3 leftA( m_lightTarget - m_lightRight );
+	Vector3 leftA( m_lightTarget - m_lightRight );
 	Vector3 leftB( m_lightRight + m_lightUp );
 	Plane3 left( vector3_normalised( vector3_cross( leftA, leftB ) ) * ( 1.0 / 128 ), 0 );
 	Vector3 rightA( m_lightTarget + m_lightRight );
@@ -1247,434 +1247,434 @@ public:
 	matrix4_multiply_by_matrix4( m_doom3Projection, test );
 #else
 
-        Plane3 lightProject[4];
+	Plane3 lightProject[4];
 
-        Vector3 start = m_useLightStart && m_useLightEnd ? m_lightStart : vector3_normalised(m_lightTarget);
-        Vector3 stop = m_useLightStart && m_useLightEnd ? m_lightEnd : m_lightTarget;
+	Vector3 start = m_useLightStart && m_useLightEnd ? m_lightStart : vector3_normalised(m_lightTarget);
+	Vector3 stop = m_useLightStart && m_useLightEnd ? m_lightEnd : m_lightTarget;
 
-        float rLen = vector3_length(m_lightRight);
-        Vector3 right = vector3_divided(m_lightRight, rLen);
-        float uLen = vector3_length(m_lightUp);
-        Vector3 up = vector3_divided(m_lightUp, uLen);
-        Vector3 normal = vector3_normalised(vector3_cross(up, right));
+	float rLen = vector3_length(m_lightRight);
+	Vector3 right = vector3_divided(m_lightRight, rLen);
+	float uLen = vector3_length(m_lightUp);
+	Vector3 up = vector3_divided(m_lightUp, uLen);
+	Vector3 normal = vector3_normalised(vector3_cross(up, right));
 
-        float dist = vector3_dot(m_lightTarget, normal);
-        if (dist < 0) {
-            dist = -dist;
-            normal = vector3_negated(normal);
-        }
+	float dist = vector3_dot(m_lightTarget, normal);
+	if (dist < 0) {
+		dist = -dist;
+		normal = vector3_negated(normal);
+	}
 
-        right *= (0.5f * dist) / rLen;
-        up *= -(0.5f * dist) / uLen;
+	right *= (0.5f * dist) / rLen;
+	up *= -(0.5f * dist) / uLen;
 
-        lightProject[2] = Plane3(normal, 0);
-        lightProject[0] = Plane3(right, 0);
-        lightProject[1] = Plane3(up, 0);
+	lightProject[2] = Plane3(normal, 0);
+	lightProject[0] = Plane3(right, 0);
+	lightProject[1] = Plane3(up, 0);
 
-        // now offset to center
-        Vector4 targetGlobal(m_lightTarget, 1);
-        {
-            float a = vector4_dot(targetGlobal, plane3_to_vector4(lightProject[0]));
-            float b = vector4_dot(targetGlobal, plane3_to_vector4(lightProject[2]));
-            float ofs = 0.5f - a / b;
-            plane3_to_vector4(lightProject[0]) += plane3_to_vector4(lightProject[2]) * ofs;
-        }
-        {
-            float a = vector4_dot(targetGlobal, plane3_to_vector4(lightProject[1]));
-            float b = vector4_dot(targetGlobal, plane3_to_vector4(lightProject[2]));
-            float ofs = 0.5f - a / b;
-            plane3_to_vector4(lightProject[1]) += plane3_to_vector4(lightProject[2]) * ofs;
-        }
+	// now offset to center
+	Vector4 targetGlobal(m_lightTarget, 1);
+	{
+		float a = vector4_dot(targetGlobal, plane3_to_vector4(lightProject[0]));
+		float b = vector4_dot(targetGlobal, plane3_to_vector4(lightProject[2]));
+		float ofs = 0.5f - a / b;
+		plane3_to_vector4(lightProject[0]) += plane3_to_vector4(lightProject[2]) * ofs;
+	}
+	{
+		float a = vector4_dot(targetGlobal, plane3_to_vector4(lightProject[1]));
+		float b = vector4_dot(targetGlobal, plane3_to_vector4(lightProject[2]));
+		float ofs = 0.5f - a / b;
+		plane3_to_vector4(lightProject[1]) += plane3_to_vector4(lightProject[2]) * ofs;
+	}
 
-        // set the falloff vector
-        Vector3 falloff = stop - start;
-        float length = vector3_length(falloff);
-        falloff = vector3_divided(falloff, length);
-        if (length <= 0) {
-            length = 1;
-        }
-        falloff *= (1.0f / length);
-        lightProject[3] = Plane3(falloff, -vector3_dot(start, falloff));
+	// set the falloff vector
+	Vector3 falloff = stop - start;
+	float length = vector3_length(falloff);
+	falloff = vector3_divided(falloff, length);
+	if (length <= 0) {
+		length = 1;
+	}
+	falloff *= (1.0f / length);
+	lightProject[3] = Plane3(falloff, -vector3_dot(start, falloff));
 
-        // we want the planes of s=0, s=q, t=0, and t=q
-        m_doom3Frustum.left = lightProject[0];
-        m_doom3Frustum.bottom = lightProject[1];
-        m_doom3Frustum.right = Plane3(lightProject[2].normal() - lightProject[0].normal(),
-                                      lightProject[2].dist() - lightProject[0].dist());
-        m_doom3Frustum.top = Plane3(lightProject[2].normal() - lightProject[1].normal(),
-                                    lightProject[2].dist() - lightProject[1].dist());
+	// we want the planes of s=0, s=q, t=0, and t=q
+	m_doom3Frustum.left = lightProject[0];
+	m_doom3Frustum.bottom = lightProject[1];
+	m_doom3Frustum.right = Plane3(lightProject[2].normal() - lightProject[0].normal(),
+	                              lightProject[2].dist() - lightProject[0].dist());
+	m_doom3Frustum.top = Plane3(lightProject[2].normal() - lightProject[1].normal(),
+	                            lightProject[2].dist() - lightProject[1].dist());
 
-        // we want the planes of s=0 and s=1 for front and rear clipping planes
-        m_doom3Frustum.front = lightProject[3];
+	// we want the planes of s=0 and s=1 for front and rear clipping planes
+	m_doom3Frustum.front = lightProject[3];
 
-        m_doom3Frustum.back = lightProject[3];
-        m_doom3Frustum.back.dist() -= 1.0f;
-        m_doom3Frustum.back = plane3_flipped(m_doom3Frustum.back);
+	m_doom3Frustum.back = lightProject[3];
+	m_doom3Frustum.back.dist() -= 1.0f;
+	m_doom3Frustum.back = plane3_flipped(m_doom3Frustum.back);
 
-        Matrix4 test(matrix4_from_planes(m_doom3Frustum.left, m_doom3Frustum.right, m_doom3Frustum.bottom,
-                                         m_doom3Frustum.top, m_doom3Frustum.front, m_doom3Frustum.back));
-        matrix4_multiply_by_matrix4(m_doom3Projection, test);
+	Matrix4 test(matrix4_from_planes(m_doom3Frustum.left, m_doom3Frustum.right, m_doom3Frustum.bottom,
+	                                 m_doom3Frustum.top, m_doom3Frustum.front, m_doom3Frustum.back));
+	matrix4_multiply_by_matrix4(m_doom3Projection, test);
 
-        m_doom3Frustum.left = plane3_normalised(m_doom3Frustum.left);
-        m_doom3Frustum.right = plane3_normalised(m_doom3Frustum.right);
-        m_doom3Frustum.bottom = plane3_normalised(m_doom3Frustum.bottom);
-        m_doom3Frustum.top = plane3_normalised(m_doom3Frustum.top);
-        m_doom3Frustum.back = plane3_normalised(m_doom3Frustum.back);
-        m_doom3Frustum.front = plane3_normalised(m_doom3Frustum.front);
+	m_doom3Frustum.left = plane3_normalised(m_doom3Frustum.left);
+	m_doom3Frustum.right = plane3_normalised(m_doom3Frustum.right);
+	m_doom3Frustum.bottom = plane3_normalised(m_doom3Frustum.bottom);
+	m_doom3Frustum.top = plane3_normalised(m_doom3Frustum.top);
+	m_doom3Frustum.back = plane3_normalised(m_doom3Frustum.back);
+	m_doom3Frustum.front = plane3_normalised(m_doom3Frustum.front);
 #endif
-        //matrix4_scale_by_vec3(m_doom3Projection, Vector3(1.0 / 128, 1.0 / 128, 1.0 / 128));
-        return m_doom3Projection;
-    }
+	//matrix4_scale_by_vec3(m_doom3Projection, Vector3(1.0 / 128, 1.0 / 128, 1.0 / 128));
+	return m_doom3Projection;
+}
 
-    Shader *getShader() const
-    {
-        return m_shader.get();
-    }
+Shader *getShader() const
+{
+	return m_shader.get();
+}
 };
 
 class LightInstance :
-        public TargetableInstance,
-        public TransformModifier,
-        public Renderable,
-        public SelectionTestable,
-        public RendererLight,
-        public PlaneSelectable,
-        public ComponentSelectionTestable {
-    class TypeCasts {
-        InstanceTypeCastTable m_casts;
-    public:
-        TypeCasts()
-        {
-            m_casts = TargetableInstance::StaticTypeCasts::instance().get();
-            InstanceContainedCast<LightInstance, Bounded>::install(m_casts);
-            //InstanceContainedCast<LightInstance, Cullable>::install(m_casts);
-            InstanceStaticCast<LightInstance, Renderable>::install(m_casts);
-            InstanceStaticCast<LightInstance, SelectionTestable>::install(m_casts);
-            InstanceStaticCast<LightInstance, Transformable>::install(m_casts);
-            InstanceStaticCast<LightInstance, PlaneSelectable>::install(m_casts);
-            InstanceStaticCast<LightInstance, ComponentSelectionTestable>::install(m_casts);
-            InstanceIdentityCast<LightInstance>::install(m_casts);
-        }
-
-        InstanceTypeCastTable &get()
-        {
-            return m_casts;
-        }
-    };
-
-    Light &m_contained;
-    DragPlanes m_dragPlanes;  // dragplanes for lightresizing using mousedrag
+	public TargetableInstance,
+	public TransformModifier,
+	public Renderable,
+	public SelectionTestable,
+	public RendererLight,
+	public PlaneSelectable,
+	public ComponentSelectionTestable {
+class TypeCasts {
+InstanceTypeCastTable m_casts;
 public:
-    typedef LazyStatic<TypeCasts> StaticTypeCasts;
+TypeCasts()
+{
+	m_casts = TargetableInstance::StaticTypeCasts::instance().get();
+	InstanceContainedCast<LightInstance, Bounded>::install(m_casts);
+	//InstanceContainedCast<LightInstance, Cullable>::install(m_casts);
+	InstanceStaticCast<LightInstance, Renderable>::install(m_casts);
+	InstanceStaticCast<LightInstance, SelectionTestable>::install(m_casts);
+	InstanceStaticCast<LightInstance, Transformable>::install(m_casts);
+	InstanceStaticCast<LightInstance, PlaneSelectable>::install(m_casts);
+	InstanceStaticCast<LightInstance, ComponentSelectionTestable>::install(m_casts);
+	InstanceIdentityCast<LightInstance>::install(m_casts);
+}
 
-    Bounded &get(NullType<Bounded>)
-    {
-        return m_contained;
-    }
+InstanceTypeCastTable &get()
+{
+	return m_casts;
+}
+};
 
-    STRING_CONSTANT(Name, "LightInstance");
+Light &m_contained;
+DragPlanes m_dragPlanes;      // dragplanes for lightresizing using mousedrag
+public:
+typedef LazyStatic<TypeCasts> StaticTypeCasts;
 
-    LightInstance(const scene::Path &path, scene::Instance *parent, Light &contained) :
-            TargetableInstance(path, parent, this, StaticTypeCasts::instance().get(), contained.getEntity(), *this),
-            TransformModifier(Light::TransformChangedCaller(contained), ApplyTransformCaller(*this)),
-            m_contained(contained),
-            m_dragPlanes(SelectedChangedComponentCaller(*this))
-    {
-        m_contained.instanceAttach(Instance::path());
-        StaticRenderableConnectionLines::instance().attach(*this);
-    }
+Bounded &get(NullType<Bounded>)
+{
+	return m_contained;
+}
 
-    ~LightInstance()
-    {
-        StaticRenderableConnectionLines::instance().detach(*this);
-        m_contained.instanceDetach(Instance::path());
-    }
+STRING_CONSTANT(Name, "LightInstance");
 
-    void renderSolid(Renderer &renderer, const VolumeTest &volume) const
-    {
-        m_contained.renderSolid(renderer, volume, Instance::localToWorld(), getSelectable().isSelected());
-    }
+LightInstance(const scene::Path &path, scene::Instance *parent, Light &contained) :
+	TargetableInstance(path, parent, this, StaticTypeCasts::instance().get(), contained.getEntity(), *this),
+	TransformModifier(Light::TransformChangedCaller(contained), ApplyTransformCaller(*this)),
+	m_contained(contained),
+	m_dragPlanes(SelectedChangedComponentCaller(*this))
+{
+	m_contained.instanceAttach(Instance::path());
+	StaticRenderableConnectionLines::instance().attach(*this);
+}
 
-    void renderWireframe(Renderer &renderer, const VolumeTest &volume) const
-    {
-        m_contained.renderWireframe(renderer, volume, Instance::localToWorld(), getSelectable().isSelected());
-    }
+~LightInstance()
+{
+	StaticRenderableConnectionLines::instance().detach(*this);
+	m_contained.instanceDetach(Instance::path());
+}
 
-    void testSelect(Selector &selector, SelectionTest &test)
-    {
-        m_contained.testSelect(selector, test, Instance::localToWorld());
-    }
+void renderSolid(Renderer &renderer, const VolumeTest &volume) const
+{
+	m_contained.renderSolid(renderer, volume, Instance::localToWorld(), getSelectable().isSelected());
+}
 
-    void selectPlanes(Selector &selector, SelectionTest &test, const PlaneCallback &selectedPlaneCallback)
-    {
-        test.BeginMesh(localToWorld());
-        m_dragPlanes.selectPlanes(m_contained.aabb(), selector, test, selectedPlaneCallback, rotation());
-    }
+void renderWireframe(Renderer &renderer, const VolumeTest &volume) const
+{
+	m_contained.renderWireframe(renderer, volume, Instance::localToWorld(), getSelectable().isSelected());
+}
 
-    void selectReversedPlanes(Selector &selector, const SelectedPlanes &selectedPlanes)
-    {
-        m_dragPlanes.selectReversedPlanes(m_contained.aabb(), selector, selectedPlanes, rotation());
-    }
+void testSelect(Selector &selector, SelectionTest &test)
+{
+	m_contained.testSelect(selector, test, Instance::localToWorld());
+}
 
-    bool isSelectedComponents() const
-    {
-        return m_dragPlanes.isSelected();
-    }
+void selectPlanes(Selector &selector, SelectionTest &test, const PlaneCallback &selectedPlaneCallback)
+{
+	test.BeginMesh(localToWorld());
+	m_dragPlanes.selectPlanes(m_contained.aabb(), selector, test, selectedPlaneCallback, rotation());
+}
 
-    void setSelectedComponents(bool select, SelectionSystem::EComponentMode mode)
-    {
-        if (mode == SelectionSystem::eFace) {
-            m_dragPlanes.setSelected(false);
-        }
-    }
+void selectReversedPlanes(Selector &selector, const SelectedPlanes &selectedPlanes)
+{
+	m_dragPlanes.selectReversedPlanes(m_contained.aabb(), selector, selectedPlanes, rotation());
+}
 
-    void testSelectComponents(Selector &selector, SelectionTest &test, SelectionSystem::EComponentMode mode)
-    {
-    }
+bool isSelectedComponents() const
+{
+	return m_dragPlanes.isSelected();
+}
 
-    void selectedChangedComponent(const Selectable &selectable)
-    {
-        GlobalSelectionSystem().getObserver(SelectionSystem::eComponent)(selectable);
-        GlobalSelectionSystem().onComponentSelection(*this, selectable);
-    }
+void setSelectedComponents(bool select, SelectionSystem::EComponentMode mode)
+{
+	if (mode == SelectionSystem::eFace) {
+		m_dragPlanes.setSelected(false);
+	}
+}
 
-    typedef MemberCaller<LightInstance, void(
-            const Selectable &), &LightInstance::selectedChangedComponent> SelectedChangedComponentCaller;
+void testSelectComponents(Selector &selector, SelectionTest &test, SelectionSystem::EComponentMode mode)
+{
+}
 
-    void evaluateTransform()
-    {
-        if (getType() == TRANSFORM_PRIMITIVE) {
-            m_contained.translate(getTranslation());
-            m_contained.rotate(getRotation());
-        } else {
-            //globalOutputStream() << getTranslation() << "\n";
+void selectedChangedComponent(const Selectable &selectable)
+{
+	GlobalSelectionSystem().getObserver(SelectionSystem::eComponent)(selectable);
+	GlobalSelectionSystem().onComponentSelection(*this, selectable);
+}
 
-            m_dragPlanes.m_bounds = m_contained.aabb();
-            m_contained.setLightRadius(m_dragPlanes.evaluateResize(getTranslation(), rotation()));
-        }
-    }
+typedef MemberCaller<LightInstance, void (
+			     const Selectable &), &LightInstance::selectedChangedComponent> SelectedChangedComponentCaller;
 
-    void applyTransform()
-    {
-        m_contained.revertTransform();
-        evaluateTransform();
-        m_contained.freezeTransform();
-    }
+void evaluateTransform()
+{
+	if (getType() == TRANSFORM_PRIMITIVE) {
+		m_contained.translate(getTranslation());
+		m_contained.rotate(getRotation());
+	} else {
+		//globalOutputStream() << getTranslation() << "\n";
 
-    typedef MemberCaller<LightInstance, void(), &LightInstance::applyTransform> ApplyTransformCaller;
+		m_dragPlanes.m_bounds = m_contained.aabb();
+		m_contained.setLightRadius(m_dragPlanes.evaluateResize(getTranslation(), rotation()));
+	}
+}
 
-    void lightChanged()
-    {
-        GlobalShaderCache().changed(*this);
-    }
+void applyTransform()
+{
+	m_contained.revertTransform();
+	evaluateTransform();
+	m_contained.freezeTransform();
+}
 
-    typedef MemberCaller<LightInstance, void(), &LightInstance::lightChanged> LightChangedCaller;
+typedef MemberCaller<LightInstance, void (), &LightInstance::applyTransform> ApplyTransformCaller;
 
-    Shader *getShader() const
-    {
-        return m_contained.getShader();
-    }
+void lightChanged()
+{
+	GlobalShaderCache().changed(*this);
+}
 
-    const AABB &aabb() const
-    {
-        return m_contained.aabb();
-    }
+typedef MemberCaller<LightInstance, void (), &LightInstance::lightChanged> LightChangedCaller;
 
-    bool testAABB(const AABB &other) const
-    {
-        return m_contained.testAABB(other);
-    }
+Shader *getShader() const
+{
+	return m_contained.getShader();
+}
 
-    const Matrix4 &rotation() const
-    {
-        return m_contained.rotation();
-    }
+const AABB &aabb() const
+{
+	return m_contained.aabb();
+}
 
-    const Vector3 &offset() const
-    {
-        return m_contained.offset();
-    }
+bool testAABB(const AABB &other) const
+{
+	return m_contained.testAABB(other);
+}
 
-    const Vector3 &colour() const
-    {
-        return m_contained.colour();
-    }
+const Matrix4 &rotation() const
+{
+	return m_contained.rotation();
+}
 
-    bool isProjected() const
-    {
-        return m_contained.isProjected();
-    }
+const Vector3 &offset() const
+{
+	return m_contained.offset();
+}
 
-    const Matrix4 &projection() const
-    {
-        return m_contained.projection();
-    }
+const Vector3 &colour() const
+{
+	return m_contained.colour();
+}
+
+bool isProjected() const
+{
+	return m_contained.isProjected();
+}
+
+const Matrix4 &projection() const
+{
+	return m_contained.projection();
+}
 };
 
 class LightNode :
-        public scene::Node::Symbiot,
-        public scene::Instantiable,
-        public scene::Cloneable,
-        public scene::Traversable::Observer {
-    class TypeCasts {
-        NodeTypeCastTable m_casts;
-    public:
-        TypeCasts()
-        {
-            NodeStaticCast<LightNode, scene::Instantiable>::install(m_casts);
-            NodeStaticCast<LightNode, scene::Cloneable>::install(m_casts);
-            NodeContainedCast<LightNode, Editable>::install(m_casts);
-            NodeContainedCast<LightNode, Snappable>::install(m_casts);
-            NodeContainedCast<LightNode, TransformNode>::install(m_casts);
-            NodeContainedCast<LightNode, Entity>::install(m_casts);
-            NodeContainedCast<LightNode, Nameable>::install(m_casts);
-            NodeContainedCast<LightNode, Namespaced>::install(m_casts);
-        }
+	public scene::Node::Symbiot,
+	public scene::Instantiable,
+	public scene::Cloneable,
+	public scene::Traversable::Observer {
+class TypeCasts {
+NodeTypeCastTable m_casts;
+public:
+TypeCasts()
+{
+	NodeStaticCast<LightNode, scene::Instantiable>::install(m_casts);
+	NodeStaticCast<LightNode, scene::Cloneable>::install(m_casts);
+	NodeContainedCast<LightNode, Editable>::install(m_casts);
+	NodeContainedCast<LightNode, Snappable>::install(m_casts);
+	NodeContainedCast<LightNode, TransformNode>::install(m_casts);
+	NodeContainedCast<LightNode, Entity>::install(m_casts);
+	NodeContainedCast<LightNode, Nameable>::install(m_casts);
+	NodeContainedCast<LightNode, Namespaced>::install(m_casts);
+}
 
-        NodeTypeCastTable &get()
-        {
-            return m_casts;
-        }
-    };
+NodeTypeCastTable &get()
+{
+	return m_casts;
+}
+};
 
 
-    scene::Node m_node;
-    InstanceSet m_instances;
-    Light m_contained;
+scene::Node m_node;
+InstanceSet m_instances;
+Light m_contained;
 
-    void construct()
-    {
-    }
+void construct()
+{
+}
 
-    void destroy()
-    {
+void destroy()
+{
 
-    }
+}
 
 public:
-    typedef LazyStatic<TypeCasts> StaticTypeCasts;
+typedef LazyStatic<TypeCasts> StaticTypeCasts;
 
-    scene::Traversable &get(NullType<scene::Traversable>)
-    {
-        return m_contained.getTraversable();
-    }
+scene::Traversable &get(NullType<scene::Traversable>)
+{
+	return m_contained.getTraversable();
+}
 
-    Editable &get(NullType<Editable>)
-    {
-        return m_contained;
-    }
+Editable &get(NullType<Editable>)
+{
+	return m_contained;
+}
 
-    Snappable &get(NullType<Snappable>)
-    {
-        return m_contained;
-    }
+Snappable &get(NullType<Snappable>)
+{
+	return m_contained;
+}
 
-    TransformNode &get(NullType<TransformNode>)
-    {
-        return m_contained.getTransformNode();
-    }
+TransformNode &get(NullType<TransformNode>)
+{
+	return m_contained.getTransformNode();
+}
 
-    Entity &get(NullType<Entity>)
-    {
-        return m_contained.getEntity();
-    }
+Entity &get(NullType<Entity>)
+{
+	return m_contained.getEntity();
+}
 
-    Nameable &get(NullType<Nameable>)
-    {
-        return m_contained.getNameable();
-    }
+Nameable &get(NullType<Nameable>)
+{
+	return m_contained.getNameable();
+}
 
-    Namespaced &get(NullType<Namespaced>)
-    {
-        return m_contained.getNamespaced();
-    }
+Namespaced &get(NullType<Namespaced>)
+{
+	return m_contained.getNamespaced();
+}
 
-    LightNode(EntityClass *eclass) :
-            m_node(this, this, StaticTypeCasts::instance().get()),
-            m_contained(eclass, m_node, InstanceSet::TransformChangedCaller(m_instances),
-                        InstanceSet::BoundsChangedCaller(m_instances),
-                        InstanceSetEvaluateTransform<LightInstance>::Caller(m_instances))
-    {
-        construct();
-    }
+LightNode(EntityClass *eclass) :
+	m_node(this, this, StaticTypeCasts::instance().get()),
+	m_contained(eclass, m_node, InstanceSet::TransformChangedCaller(m_instances),
+	            InstanceSet::BoundsChangedCaller(m_instances),
+	            InstanceSetEvaluateTransform<LightInstance>::Caller(m_instances))
+{
+	construct();
+}
 
-    LightNode(const LightNode &other) :
-            scene::Node::Symbiot(other),
-            scene::Instantiable(other),
-            scene::Cloneable(other),
-            scene::Traversable::Observer(other),
-            m_node(this, this, StaticTypeCasts::instance().get()),
-            m_contained(other.m_contained, m_node, InstanceSet::TransformChangedCaller(m_instances),
-                        InstanceSet::BoundsChangedCaller(m_instances),
-                        InstanceSetEvaluateTransform<LightInstance>::Caller(m_instances))
-    {
-        construct();
-    }
+LightNode(const LightNode &other) :
+	scene::Node::Symbiot(other),
+	scene::Instantiable(other),
+	scene::Cloneable(other),
+	scene::Traversable::Observer(other),
+	m_node(this, this, StaticTypeCasts::instance().get()),
+	m_contained(other.m_contained, m_node, InstanceSet::TransformChangedCaller(m_instances),
+	            InstanceSet::BoundsChangedCaller(m_instances),
+	            InstanceSetEvaluateTransform<LightInstance>::Caller(m_instances))
+{
+	construct();
+}
 
-    ~LightNode()
-    {
-        destroy();
-    }
+~LightNode()
+{
+	destroy();
+}
 
-    void release()
-    {
-        delete this;
-    }
+void release()
+{
+	delete this;
+}
 
-    scene::Node &node()
-    {
-        return m_node;
-    }
+scene::Node &node()
+{
+	return m_node;
+}
 
-    scene::Node &clone() const
-    {
-        return (new LightNode(*this))->node();
-    }
+scene::Node &clone() const
+{
+	return (new LightNode(*this))->node();
+}
 
-    void insert(scene::Node &child)
-    {
-        m_instances.insert(child);
-    }
+void insert(scene::Node &child)
+{
+	m_instances.insert(child);
+}
 
-    void erase(scene::Node &child)
-    {
-        m_instances.erase(child);
-    }
+void erase(scene::Node &child)
+{
+	m_instances.erase(child);
+}
 
-    scene::Instance *create(const scene::Path &path, scene::Instance *parent)
-    {
-        return new LightInstance(path, parent, m_contained);
-    }
+scene::Instance *create(const scene::Path &path, scene::Instance *parent)
+{
+	return new LightInstance(path, parent, m_contained);
+}
 
-    void forEachInstance(const scene::Instantiable::Visitor &visitor)
-    {
-        m_instances.forEachInstance(visitor);
-    }
+void forEachInstance(const scene::Instantiable::Visitor &visitor)
+{
+	m_instances.forEachInstance(visitor);
+}
 
-    void insert(scene::Instantiable::Observer *observer, const scene::Path &path, scene::Instance *instance)
-    {
-        m_instances.insert(observer, path, instance);
-    }
+void insert(scene::Instantiable::Observer *observer, const scene::Path &path, scene::Instance *instance)
+{
+	m_instances.insert(observer, path, instance);
+}
 
-    scene::Instance *erase(scene::Instantiable::Observer *observer, const scene::Path &path)
-    {
-        return m_instances.erase(observer, path);
-    }
+scene::Instance *erase(scene::Instantiable::Observer *observer, const scene::Path &path)
+{
+	return m_instances.erase(observer, path);
+}
 };
 
 void Light_Construct()
 {
-    RenderLightRadiiFill::m_state = GlobalShaderCache().capture("$Q3MAP2_LIGHT_SPHERE");
-    RenderLightCenter::m_state = GlobalShaderCache().capture("$BIGPOINT");
+	RenderLightRadiiFill::m_state = GlobalShaderCache().capture("$Q3MAP2_LIGHT_SPHERE");
+	RenderLightCenter::m_state = GlobalShaderCache().capture("$BIGPOINT");
 }
 
 void Light_Destroy()
 {
-    GlobalShaderCache().release("$Q3MAP2_LIGHT_SPHERE");
-    GlobalShaderCache().release("$BIGPOINT");
+	GlobalShaderCache().release("$Q3MAP2_LIGHT_SPHERE");
+	GlobalShaderCache().release("$BIGPOINT");
 }
 
 scene::Node &New_Light(EntityClass *eclass)
 {
-    return (new LightNode(eclass))->node();
+	return (new LightNode(eclass))->node();
 }

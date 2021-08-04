@@ -23,7 +23,7 @@
 #define INCLUDED_NULLMODEL_H
 
 namespace scene {
-    class Node;
+class Node;
 }
 
 #include "generic/referencecounted.h"

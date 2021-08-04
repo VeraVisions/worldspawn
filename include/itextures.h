@@ -46,7 +46,7 @@ inline bool operator==( const LoadImageCallback& self, const LoadImageCallback& 
 }
 inline bool operator<( const LoadImageCallback& self, const LoadImageCallback& other ){
 	return self.m_environment < other.m_environment ||
-		   ( !( other.m_environment < self.m_environment ) && self.m_func < other.m_func );
+	       ( !( other.m_environment < self.m_environment ) && self.m_func < other.m_func );
 }
 
 class TexturesCacheObserver

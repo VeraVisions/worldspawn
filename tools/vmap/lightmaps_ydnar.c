@@ -106,21 +106,21 @@ void WriteTGA24( char *filename, byte *data, int width, int height, qboolean fli
 }
 
 static unsigned int PackE5BRG9(float *rgb, float one)
-{	//5 bits exponent, 3*9 bits of mantissa. no sign bit.
+{       //5 bits exponent, 3*9 bits of mantissa. no sign bit.
 	int e = 0;
 	int r,g,b;
 	float scale;
-	float m = rgb[0];if(m<rgb[1])m=rgb[1];if(m<rgb[1])m=rgb[1];
+	float m = rgb[0]; if(m<rgb[1]) m=rgb[1]; if(m<rgb[1]) m=rgb[1];
 	m /= one;
 
 	if (m >= 0.5)
-	{	//positive exponent
-		while (m >= (1<<(e)) && e < 30-15)	//don't do nans.
+	{       //positive exponent
+		while (m >= (1<<(e)) && e < 30-15)      //don't do nans.
 			e++;
 	}
 	else
-	{	//negative exponent...
-		while (m < 1/(1<<-e) && e > -15)	//don't do denormals.
+	{       //negative exponent...
+		while (m < 1/(1<< -e) && e > -15)       //don't do denormals.
 			e--;
 	}
 
@@ -143,13 +143,13 @@ static unsigned int PackE5BRG9(float *rgb, float one)
    WriteHDR()
    Writes a Khronos TeXture, using some hdr format...
    Fun choices: e5b9g9r9, half-float, or just float. Either way, the input is regular floats.
-*/
+ */
 
 //input data is in floats.
 void WriteHDR( char *filename, float *data, int width, int height, qboolean flip, int fmt ){
 	int x,y;
 	float *in;
-	unsigned int	imagesize, rowbytes;
+	unsigned int imagesize, rowbytes;
 	FILE    *file;
 
 	/* write it and free the buffer */
@@ -159,7 +159,7 @@ void WriteHDR( char *filename, float *data, int width, int height, qboolean flip
 	}
 
 	if (fmt == 0)
-	{	//tga bgr format
+	{       //tga bgr format
 		byte tmp[3];
 		byte header[18];
 		byte *buffer;
@@ -181,7 +181,7 @@ void WriteHDR( char *filename, float *data, int width, int height, qboolean flip
 			else
 				in = data + y*width*3;
 			for (x = 0; x < width*3; x+=3)
-			{	//spit out bgr8 packed data
+			{       //spit out bgr8 packed data
 				ColorToBytes(in+x, tmp, 1);
 				buffer[x+0] = tmp[2];
 				buffer[x+1] = tmp[1];
@@ -214,21 +214,21 @@ void WriteHDR( char *filename, float *data, int width, int height, qboolean flip
 			unsigned int numberoffaces;
 			unsigned int numberofmipmaplevels;
 			unsigned int bytesofkeyvaluedata;
-		} header = {	{0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A},
-								0x04030201,
-								0x8C3E/*GL_UNSIGNED_INT_5_9_9_9_REV_EXT*/,
-								4,
-								0x1907/*GL_RGB*/,
-								0x8C3D/*GL_RGB9_E5*/,
-								0x1907/*GL_RGB*/,
-								width,
-								height,
-								0,				//2d texture, so z size is 0.
-								0,	//not an array texture
-								1,
-								1,
-								0};
-		flip = (qboolean)(!flip);	//opengl technically defines textures as bottom-up, but screw that.
+		} header = {    {0xAB, 0x4B, 0x54, 0x58, 0x20, 0x31, 0x31, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A},
+			        0x04030201,
+			        0x8C3E /*GL_UNSIGNED_INT_5_9_9_9_REV_EXT*/,
+			        4,
+			        0x1907 /*GL_RGB*/,
+			        0x8C3D /*GL_RGB9_E5*/,
+			        0x1907 /*GL_RGB*/,
+			        width,
+			        height,
+			        0,                                                              //2d texture, so z size is 0.
+			        0,                                      //not an array texture
+			        1,
+			        1,
+			        0};
+		flip = (qboolean)(!flip);       //opengl technically defines textures as bottom-up, but screw that.
 		fwrite( &header, 1, sizeof(header), file );
 
 		rowbytes = width*4; //FIXME: align
@@ -392,7 +392,7 @@ int ImportLightmapsMain( int argc, char **argv ){
 		}
 		if ( width != game->lightmapSize || height != game->lightmapSize ) {
 			Sys_FPrintf( SYS_WRN, "WARNING: Image %s is not the right size (%d, %d) != (%d, %d)\n",
-						filename, width, height, game->lightmapSize, game->lightmapSize );
+			             filename, width, height, game->lightmapSize, game->lightmapSize );
 		}
 
 		/* copy the pixels */
@@ -783,13 +783,13 @@ qboolean AddSurfaceToRawLightmap( int num, rawLightmap_t *lm ){
 
 		/* match identical attributes */
 		if ( info->sampleSize != lm->sampleSize ||
-			 info->entityNum != lm->entityNum ||
-			 info->recvShadows != lm->recvShadows ||
-			 info->si->lmCustomWidth != lm->customWidth ||
-			 info->si->lmCustomHeight != lm->customHeight ||
-			 info->si->lmBrightness != lm->brightness ||
-			 info->si->lmFilterRadius != lm->filterRadius ||
-			 info->si->splotchFix != lm->splotchFix ) {
+		     info->entityNum != lm->entityNum ||
+		     info->recvShadows != lm->recvShadows ||
+		     info->si->lmCustomWidth != lm->customWidth ||
+		     info->si->lmCustomHeight != lm->customHeight ||
+		     info->si->lmBrightness != lm->brightness ||
+		     info->si->lmFilterRadius != lm->filterRadius ||
+		     info->si->splotchFix != lm->splotchFix ) {
 			return qfalse;
 		}
 
@@ -833,7 +833,7 @@ qboolean AddSurfaceToRawLightmap( int num, rawLightmap_t *lm ){
 
 	/* check to see if this is a non-planar patch */
 	if ( (ds->surfaceType == MST_PATCH || ds->surfaceType == MST_PATCHFIXED) &&
-		 lm->axis[ 0 ] == 0.0f && lm->axis[ 1 ] == 0.0f && lm->axis[ 2 ] == 0.0f ) {
+	     lm->axis[ 0 ] == 0.0f && lm->axis[ 1 ] == 0.0f && lm->axis[ 2 ] == 0.0f ) {
 		return AddPatchToRawLightmap( num, lm );
 	}
 
@@ -856,14 +856,14 @@ qboolean AddSurfaceToRawLightmap( int num, rawLightmap_t *lm ){
 
 	if ( sampleSize != lm->sampleSize && lmLimitSize == 0 ) {
 		Sys_FPrintf( SYS_VRB,"WARNING: surface at (%6.0f %6.0f %6.0f) (%6.0f %6.0f %6.0f) too large for desired samplesize/lightmapsize/lightmapscale combination, increased samplesize from %d to %d\n",
-					 info->mins[0],
-					 info->mins[1],
-					 info->mins[2],
-					 info->maxs[0],
-					 info->maxs[1],
-					 info->maxs[2],
-					 lm->sampleSize,
-					 (int) sampleSize );
+		             info->mins[0],
+		             info->mins[1],
+		             info->mins[2],
+		             info->maxs[0],
+		             info->maxs[1],
+		             info->maxs[2],
+		             lm->sampleSize,
+		             (int) sampleSize );
 	}
 
 	/* set actual sample size */
@@ -940,7 +940,7 @@ qboolean AddSurfaceToRawLightmap( int num, rawLightmap_t *lm ){
 
 			if ( s > (float) lm->w || t > (float) lm->h ) {
 				Sys_FPrintf( SYS_VRB, "WARNING: Lightmap texture coords out of range: S %1.4f > %3d || T %1.4f > %3d\n",
-							 s, lm->w, t, lm->h );
+				             s, lm->w, t, lm->h );
 			}
 		}
 	}
@@ -1222,8 +1222,8 @@ void SetupSurfaceLightmaps( void ){
 
 				/* test bbox */
 				if ( leaf->mins[ 0 ] > info->maxs[ 0 ] || leaf->maxs[ 0 ] < info->mins[ 0 ] ||
-					 leaf->mins[ 1 ] > info->maxs[ 1 ] || leaf->maxs[ 1 ] < info->mins[ 1 ] ||
-					 leaf->mins[ 2 ] > info->maxs[ 2 ] || leaf->maxs[ 2 ] < info->mins[ 2 ] ) {
+				     leaf->mins[ 1 ] > info->maxs[ 1 ] || leaf->maxs[ 1 ] < info->mins[ 1 ] ||
+				     leaf->mins[ 2 ] > info->maxs[ 2 ] || leaf->maxs[ 2 ] < info->mins[ 2 ] ) {
 					continue;
 				}
 
@@ -1251,8 +1251,8 @@ void SetupSurfaceLightmaps( void ){
 
 			/* determine if surface requires a lightmap */
 			if ( ds->surfaceType == MST_TRIANGLE_SOUP ||
-				 ds->surfaceType == MST_FOLIAGE ||
-				 ( info->si->compileFlags & C_VERTEXLIT ) ) {
+			     ds->surfaceType == MST_FOLIAGE ||
+			     ( info->si->compileFlags & C_VERTEXLIT ) ) {
 				numSurfsVertexLit++;
 			}
 			else
@@ -1394,10 +1394,10 @@ void SetupSurfaceLightmaps( void ){
 
 void StitchSurfaceLightmaps( void ){
 	int i, j, x, y, x2, y2, *cluster, *cluster2,
-		numStitched, numCandidates, numLuxels, f, fOld, start;
+	    numStitched, numCandidates, numLuxels, f, fOld, start;
 	rawLightmap_t   *lm, *a, *b, *c[ MAX_STITCH_CANDIDATES ];
 	float           *luxel, *luxel2, *origin, *origin2, *normal, *normal2,
-					 sampleSize, average[ 3 ], totalColor, ootc;
+	                sampleSize, average[ 3 ], totalColor, ootc;
 
 
 	/* disabled for now */
@@ -1433,8 +1433,8 @@ void StitchSurfaceLightmaps( void ){
 
 			/* test bounding box */
 			if ( a->mins[ 0 ] > b->maxs[ 0 ] || a->maxs[ 0 ] < b->mins[ 0 ] ||
-				 a->mins[ 1 ] > b->maxs[ 1 ] || a->maxs[ 1 ] < b->mins[ 1 ] ||
-				 a->mins[ 2 ] > b->maxs[ 2 ] || a->maxs[ 2 ] < b->mins[ 2 ] ) {
+			     a->mins[ 1 ] > b->maxs[ 1 ] || a->maxs[ 1 ] < b->mins[ 1 ] ||
+			     a->mins[ 2 ] > b->maxs[ 2 ] || a->maxs[ 2 ] < b->mins[ 2 ] ) {
 				continue;
 			}
 
@@ -1474,8 +1474,8 @@ void StitchSurfaceLightmaps( void ){
 
 					/* test bounding box */
 					if ( origin[ 0 ] < ( b->mins[ 0 ] - sampleSize ) || ( origin[ 0 ] > b->maxs[ 0 ] + sampleSize ) ||
-						 origin[ 1 ] < ( b->mins[ 1 ] - sampleSize ) || ( origin[ 1 ] > b->maxs[ 1 ] + sampleSize ) ||
-						 origin[ 2 ] < ( b->mins[ 2 ] - sampleSize ) || ( origin[ 2 ] > b->maxs[ 2 ] + sampleSize ) ) {
+					     origin[ 1 ] < ( b->mins[ 1 ] - sampleSize ) || ( origin[ 1 ] > b->maxs[ 1 ] + sampleSize ) ||
+					     origin[ 2 ] < ( b->mins[ 2 ] - sampleSize ) || ( origin[ 2 ] > b->maxs[ 2 ] + sampleSize ) ) {
 						continue;
 					}
 
@@ -1513,8 +1513,8 @@ void StitchSurfaceLightmaps( void ){
 
 							/* test bounds */
 							if ( fabs( origin[ 0 ] - origin2[ 0 ] ) > sampleSize ||
-								 fabs( origin[ 1 ] - origin2[ 1 ] ) > sampleSize ||
-								 fabs( origin[ 2 ] - origin2[ 2 ] ) > sampleSize ) {
+							     fabs( origin[ 1 ] - origin2[ 1 ] ) > sampleSize ||
+							     fabs( origin[ 2 ] - origin2[ 2 ] ) > sampleSize ) {
 								continue;
 							}
 
@@ -1565,15 +1565,15 @@ static qboolean CompareBSPLuxels( rawLightmap_t *a, int aNum, rawLightmap_t *b, 
 
 	/* styled lightmaps will never be collapsed to non-styled lightmaps when there is _minlight */
 	if ( ( minLight[ 0 ] || minLight[ 1 ] || minLight[ 2 ] ) &&
-		 ( ( aNum == 0 && bNum != 0 ) || ( aNum != 0 && bNum == 0 ) ) ) {
+	     ( ( aNum == 0 && bNum != 0 ) || ( aNum != 0 && bNum == 0 ) ) ) {
 		return qfalse;
 	}
 
 	/* basic tests */
 	if ( a->customWidth != b->customWidth || a->customHeight != b->customHeight ||
-		 a->brightness != b->brightness ||
-		 a->solid[ aNum ] != b->solid[ bNum ] ||
-		 a->bspLuxels[ aNum ] == NULL || b->bspLuxels[ bNum ] == NULL ) {
+	     a->brightness != b->brightness ||
+	     a->solid[ aNum ] != b->solid[ bNum ] ||
+	     a->bspLuxels[ aNum ] == NULL || b->bspLuxels[ bNum ] == NULL ) {
 		return qfalse;
 	}
 
@@ -1658,9 +1658,9 @@ static qboolean MergeBSPLuxels( rawLightmap_t *a, int aNum, rawLightmap_t *b, in
 
 	/* basic tests */
 	if ( a->customWidth != b->customWidth || a->customHeight != b->customHeight ||
-		 a->brightness != b->brightness ||
-		 a->solid[ aNum ] != b->solid[ bNum ] ||
-		 a->bspLuxels[ aNum ] == NULL || b->bspLuxels[ bNum ] == NULL ) {
+	     a->brightness != b->brightness ||
+	     a->solid[ aNum ] != b->solid[ bNum ] ||
+	     a->bspLuxels[ aNum ] == NULL || b->bspLuxels[ bNum ] == NULL ) {
 		return qfalse;
 	}
 
@@ -1935,8 +1935,8 @@ static qboolean ApproximateLightmap( rawLightmap_t *lm ){
 
 		/* assume that surfaces whose bounding boxes is smaller than 2x samplesize will be forced to vertex */
 		if ( ( info->maxs[ 0 ] - info->mins[ 0 ] ) <= ( 2.0f * info->sampleSize ) &&
-			 ( info->maxs[ 1 ] - info->mins[ 1 ] ) <= ( 2.0f * info->sampleSize ) &&
-			 ( info->maxs[ 2 ] - info->mins[ 2 ] ) <= ( 2.0f * info->sampleSize ) ) {
+		     ( info->maxs[ 1 ] - info->mins[ 1 ] ) <= ( 2.0f * info->sampleSize ) &&
+		     ( info->maxs[ 2 ] - info->mins[ 2 ] ) <= ( 2.0f * info->sampleSize ) ) {
 			info->approximated = qtrue;
 			numSurfsVertexForced++;
 			continue;
@@ -2159,7 +2159,7 @@ static void FindOutLightmaps( rawLightmap_t *lm, qboolean fastAllocate ){
 	surfaceInfo_t       *info;
 	float               *luxel, *deluxel;
 	vec3_t color, direction;
-	float				*fpixel;
+	float                           *fpixel;
 	byte                *pixel;
 	qboolean ok;
 	int xIncrement, yIncrement;
@@ -2206,7 +2206,7 @@ static void FindOutLightmaps( rawLightmap_t *lm, qboolean fastAllocate ){
 
 					/* don't store non-custom raw lightmaps on custom bsp lightmaps */
 					if ( olm->customWidth != lm->customWidth ||
-						 olm->customHeight != lm->customHeight ) {
+					     olm->customHeight != lm->customHeight ) {
 						continue;
 					}
 
@@ -2282,7 +2282,7 @@ static void FindOutLightmaps( rawLightmap_t *lm, qboolean fastAllocate ){
 
 				/* don't store non-custom raw lightmaps on custom bsp lightmaps */
 				if ( olm->customWidth != lm->customWidth ||
-					 olm->customHeight != lm->customHeight ) {
+				     olm->customHeight != lm->customHeight ) {
 					continue;
 				}
 
@@ -3007,7 +3007,7 @@ void StoreSurfaceLightmaps( qboolean fastAllocate ){
 				/* check solid color */
 				VectorSubtract( colorMaxs, colorMins, sample );
 				if ( ( sample[ 0 ] <= SOLID_EPSILON && sample[ 1 ] <= SOLID_EPSILON && sample[ 2 ] <= SOLID_EPSILON ) ||
-					 ( lm->w <= 2 && lm->h <= 2 ) ) { /* small lightmaps get forced to solid color */
+				     ( lm->w <= 2 && lm->h <= 2 ) ) {     /* small lightmaps get forced to solid color */
 					/* set to solid */
 					VectorCopy( colorMins, lm->solidColor[ lightmapNum ] );
 					lm->solid[ lightmapNum ] = qtrue;
@@ -3220,7 +3220,7 @@ void StoreSurfaceLightmaps( qboolean fastAllocate ){
 			{
 				/* early outs */
 				if ( lm->bspLuxels[ lightmapNum ] == NULL ||
-					 lm->twins[ lightmapNum ] != NULL ) {
+				     lm->twins[ lightmapNum ] != NULL ) {
 					continue;
 				}
 
@@ -3235,7 +3235,7 @@ void StoreSurfaceLightmaps( qboolean fastAllocate ){
 					{
 						/* early outs */
 						if ( lm2->bspLuxels[ lightmapNum2 ] == NULL ||
-							 lm2->twins[ lightmapNum2 ] != NULL ) {
+						     lm2->twins[ lightmapNum2 ] != NULL ) {
 							continue;
 						}
 
@@ -3644,34 +3644,34 @@ void StoreSurfaceLightmaps( qboolean fastAllocate ){
 				/* create additional stage */
 				if ( lmx == 0.0f && lmy == 0.0f ) {
 					sprintf( styleStage,    "\t{\n"
-											"\t\tmap %s\n"                                      /* lightmap */
-											"\t\tblendFunc GL_SRC_ALPHA GL_ONE\n"
-											"%s"                                                /* depthFunc equal */
-											"%s"                                                /* rgbGen */
-											"%s"                                                /* alphaGen */
-											"\t\ttcGen lightmap\n"
-											"\t}\n",
-							 lightmapName,
-							 ( dfEqual ? "\t\tdepthFunc equal\n" : "" ),
-							 rgbGen,
-							 alphaGen );
+					         "\t\tmap %s\n"                                                                             /* lightmap */
+					         "\t\tblendFunc GL_SRC_ALPHA GL_ONE\n"
+					         "%s"                                                                                       /* depthFunc equal */
+					         "%s"                                                                                       /* rgbGen */
+					         "%s"                                                                                       /* alphaGen */
+					         "\t\ttcGen lightmap\n"
+					         "\t}\n",
+					         lightmapName,
+					         ( dfEqual ? "\t\tdepthFunc equal\n" : "" ),
+					         rgbGen,
+					         alphaGen );
 				}
 				else
 				{
 					sprintf( styleStage,    "\t{\n"
-											"\t\tmap %s\n"                                      /* lightmap */
-											"\t\tblendFunc GL_SRC_ALPHA GL_ONE\n"
-											"%s"                                                /* depthFunc equal */
-											"%s"                                                /* rgbGen */
-											"%s"                                                /* alphaGen */
-											"\t\ttcGen lightmap\n"
-											"\t\ttcMod transform 1 0 0 1 %1.5f %1.5f\n"         /* st offset */
-											"\t}\n",
-							 lightmapName,
-							 ( dfEqual ? "\t\tdepthFunc equal\n" : "" ),
-							 rgbGen,
-							 alphaGen,
-							 lmx, lmy );
+					         "\t\tmap %s\n"                                                                             /* lightmap */
+					         "\t\tblendFunc GL_SRC_ALPHA GL_ONE\n"
+					         "%s"                                                                                       /* depthFunc equal */
+					         "%s"                                                                                       /* rgbGen */
+					         "%s"                                                                                       /* alphaGen */
+					         "\t\ttcGen lightmap\n"
+					         "\t\ttcMod transform 1 0 0 1 %1.5f %1.5f\n"                                                /* st offset */
+					         "\t}\n",
+					         lightmapName,
+					         ( dfEqual ? "\t\tdepthFunc equal\n" : "" ),
+					         rgbGen,
+					         alphaGen,
+					         lmx, lmy );
 
 				}
 
@@ -3698,7 +3698,7 @@ void StoreSurfaceLightmaps( qboolean fastAllocate ){
 
 		/* devise a custom shader for this surface (fixme: make this work with light styles) */
 		else if ( olm != NULL && lm != NULL && !externalLightmaps &&
-				  ( olm->customWidth != game->lightmapSize || olm->customHeight != game->lightmapSize ) ) {
+		          ( olm->customWidth != game->lightmapSize || olm->customHeight != game->lightmapSize ) ) {
 			/* get output lightmap */
 			olm = &outLightmaps[ lm->outLightmapNums[ 0 ] ];
 
@@ -3726,8 +3726,8 @@ void StoreSurfaceLightmaps( qboolean fastAllocate ){
 	/* calc num stored */
 	numStored = numBSPLightBytes / 3;
 	efficiency = ( numStored <= 0 )
-				 ? 0
-				 : (float) numUsed / (float) numStored;
+	                         ? 0
+	                         : (float) numUsed / (float) numStored;
 
 	/* print stats */
 	Sys_Printf( "%9d luxels used\n", numUsed );

@@ -48,86 +48,86 @@
 #include "uilib/uilib.h"
 
 struct entity_globals_t {
-    Vector3 color_entity;
+	Vector3 color_entity;
 
-    entity_globals_t() :
-            color_entity(0.0f, 0.0f, 0.0f)
-    {
-    }
+	entity_globals_t() :
+		color_entity(0.0f, 0.0f, 0.0f)
+	{
+	}
 };
 
 entity_globals_t g_entity_globals;
 
 class EntitySetKeyValueSelected : public scene::Graph::Walker {
-    const char *m_key;
-    const char *m_value;
+const char *m_key;
+const char *m_value;
 public:
-    EntitySetKeyValueSelected(const char *key, const char *value)
-            : m_key(key), m_value(value)
-    {
-    }
+EntitySetKeyValueSelected(const char *key, const char *value)
+	: m_key(key), m_value(value)
+{
+}
 
-    bool pre(const scene::Path &path, scene::Instance &instance) const
-    {
-        return true;
-    }
+bool pre(const scene::Path &path, scene::Instance &instance) const
+{
+	return true;
+}
 
-    void post(const scene::Path &path, scene::Instance &instance) const
-    {
-        Entity *entity = Node_getEntity(path.top());
-        if (entity != 0
-            && (instance.childSelected() || Instance_getSelectable(instance)->isSelected())) {
-            entity->setKeyValue(m_key, m_value);
-        }
-    }
+void post(const scene::Path &path, scene::Instance &instance) const
+{
+	Entity *entity = Node_getEntity(path.top());
+	if (entity != 0
+	    && (instance.childSelected() || Instance_getSelectable(instance)->isSelected())) {
+		entity->setKeyValue(m_key, m_value);
+	}
+}
 };
 
 class EntitySetClassnameSelected : public scene::Graph::Walker {
-    const char *m_classname;
+const char *m_classname;
 public:
-    EntitySetClassnameSelected(const char *classname)
-            : m_classname(classname)
-    {
-    }
+EntitySetClassnameSelected(const char *classname)
+	: m_classname(classname)
+{
+}
 
-    bool pre(const scene::Path &path, scene::Instance &instance) const
-    {
-        return true;
-    }
+bool pre(const scene::Path &path, scene::Instance &instance) const
+{
+	return true;
+}
 
-    void post(const scene::Path &path, scene::Instance &instance) const
-    {
-        Entity *entity = Node_getEntity(path.top());
-        if (entity != 0
-            && (instance.childSelected() || Instance_getSelectable(instance)->isSelected())) {
-            NodeSmartReference node(GlobalEntityCreator().createEntity(
-                    GlobalEntityClassManager().findOrInsert(m_classname, node_is_group(path.top()))));
+void post(const scene::Path &path, scene::Instance &instance) const
+{
+	Entity *entity = Node_getEntity(path.top());
+	if (entity != 0
+	    && (instance.childSelected() || Instance_getSelectable(instance)->isSelected())) {
+		NodeSmartReference node(GlobalEntityCreator().createEntity(
+						GlobalEntityClassManager().findOrInsert(m_classname, node_is_group(path.top()))));
 
-            EntityCopyingVisitor visitor(*Node_getEntity(node));
+		EntityCopyingVisitor visitor(*Node_getEntity(node));
 
-            entity->forEachKeyValue(visitor);
+		entity->forEachKeyValue(visitor);
 
-            NodeSmartReference child(path.top().get());
-            NodeSmartReference parent(path.parent().get());
-            Node_getTraversable(parent)->erase(child);
-            if (Node_getTraversable(child) != 0
-                && Node_getTraversable(node) != 0
-                && node_is_group(node)) {
-                parentBrushes(child, node);
-            }
-            Node_getTraversable(parent)->insert(node);
-        }
-    }
+		NodeSmartReference child(path.top().get());
+		NodeSmartReference parent(path.parent().get());
+		Node_getTraversable(parent)->erase(child);
+		if (Node_getTraversable(child) != 0
+		    && Node_getTraversable(node) != 0
+		    && node_is_group(node)) {
+			parentBrushes(child, node);
+		}
+		Node_getTraversable(parent)->insert(node);
+	}
+}
 };
 
 void Scene_EntitySetKeyValue_Selected(const char *key, const char *value)
 {
-    GlobalSceneGraph().traverse(EntitySetKeyValueSelected(key, value));
+	GlobalSceneGraph().traverse(EntitySetKeyValueSelected(key, value));
 }
 
 void Scene_EntitySetClassname_Selected(const char *classname)
 {
-    GlobalSceneGraph().traverse(EntitySetClassnameSelected(classname));
+	GlobalSceneGraph().traverse(EntitySetClassnameSelected(classname));
 }
 
 /* to worldspawn */
@@ -141,7 +141,7 @@ void Entity_ungroupSelected()
 
 	/* to auto-select */
 	/*scene::Path entitypath(makeReference(GlobalSceneGraph().root()));
-	scene::Instance& einstance = findInstance(entitypath);*/
+	   scene::Instance& einstance = findInstance(entitypath);*/
 
 	while (GlobalSelectionSystem().countSelected()) {
 		scene::Path world_path(makeReference(GlobalSceneGraph().root()));
@@ -177,72 +177,72 @@ void Entity_ungroupSelected()
 
 class EntityFindSelected : public scene::Graph::Walker {
 public:
-    mutable const scene::Path *groupPath;
-    mutable scene::Instance *groupInstance;
+mutable const scene::Path *groupPath;
+mutable scene::Instance *groupInstance;
 
-    EntityFindSelected() : groupPath(0), groupInstance(0)
-    {
-    }
+EntityFindSelected() : groupPath(0), groupInstance(0)
+{
+}
 
-    bool pre(const scene::Path &path, scene::Instance &instance) const
-    {
-        return true;
-    }
+bool pre(const scene::Path &path, scene::Instance &instance) const
+{
+	return true;
+}
 
-    void post(const scene::Path &path, scene::Instance &instance) const
-    {
-        Entity *entity = Node_getEntity(path.top());
-        if (entity != 0
-            && Instance_getSelectable(instance)->isSelected()
-            && node_is_group(path.top())
-            && !groupPath) {
-            groupPath = &path;
-            groupInstance = &instance;
-        }
-    }
+void post(const scene::Path &path, scene::Instance &instance) const
+{
+	Entity *entity = Node_getEntity(path.top());
+	if (entity != 0
+	    && Instance_getSelectable(instance)->isSelected()
+	    && node_is_group(path.top())
+	    && !groupPath) {
+		groupPath = &path;
+		groupInstance = &instance;
+	}
+}
 };
 
 class EntityGroupSelected : public scene::Graph::Walker {
-    NodeSmartReference group, worldspawn;
+NodeSmartReference group, worldspawn;
 //typedef std::pair<NodeSmartReference, NodeSmartReference> DeletionPair;
 //Stack<DeletionPair> deleteme;
 public:
-    EntityGroupSelected(const scene::Path &p) : group(p.top().get()), worldspawn(Map_FindOrInsertWorldspawn(g_map))
-    {
-    }
+EntityGroupSelected(const scene::Path &p) : group(p.top().get()), worldspawn(Map_FindOrInsertWorldspawn(g_map))
+{
+}
 
-    bool pre(const scene::Path &path, scene::Instance &instance) const
-    {
-        return true;
-    }
+bool pre(const scene::Path &path, scene::Instance &instance) const
+{
+	return true;
+}
 
-    void post(const scene::Path &path, scene::Instance &instance) const
-    {
-        Selectable *selectable = Instance_getSelectable(instance);
+void post(const scene::Path &path, scene::Instance &instance) const
+{
+	Selectable *selectable = Instance_getSelectable(instance);
 
-        if (selectable && selectable->isSelected()) {
-            Entity *entity = Node_getEntity(path.top());
-            if (entity == 0 && Node_isPrimitive(path.top())) {
-                NodeSmartReference child(path.top().get());
-                NodeSmartReference parent(path.parent().get());
+	if (selectable && selectable->isSelected()) {
+		Entity *entity = Node_getEntity(path.top());
+		if (entity == 0 && Node_isPrimitive(path.top())) {
+			NodeSmartReference child(path.top().get());
+			NodeSmartReference parent(path.parent().get());
 
-                if (path.size() >= 3 && parent != worldspawn) {
-                    NodeSmartReference parentparent(path[path.size() - 3].get());
+			if (path.size() >= 3 && parent != worldspawn) {
+				NodeSmartReference parentparent(path[path.size() - 3].get());
 
-                    Node_getTraversable(parent)->erase(child);
-                    Node_getTraversable(group)->insert(child);
+				Node_getTraversable(parent)->erase(child);
+				Node_getTraversable(group)->insert(child);
 
-                    if (Node_getTraversable(parent)->empty()) {
-                        //deleteme.push(DeletionPair(parentparent, parent));
-                        Node_getTraversable(parentparent)->erase(parent);
-                    }
-                } else {
-                    Node_getTraversable(parent)->erase(child);
-                    Node_getTraversable(group)->insert(child);
-                }
-            }
-        }
-    }
+				if (Node_getTraversable(parent)->empty()) {
+					//deleteme.push(DeletionPair(parentparent, parent));
+					Node_getTraversable(parentparent)->erase(parent);
+				}
+			} else {
+				Node_getTraversable(parent)->erase(child);
+				Node_getTraversable(group)->insert(child);
+			}
+		}
+	}
+}
 };
 
 void Scene_DeleteEmpty();
@@ -279,55 +279,55 @@ void Entity_groupMake()
 
 void Entity_connectSelected()
 {
-    if (GlobalSelectionSystem().countSelected() == 2) {
-        GlobalEntityCreator().connectEntities(
-                GlobalSelectionSystem().penultimateSelected().path(),
-                GlobalSelectionSystem().ultimateSelected().path(),
-                0
-        );
-    } else {
-        globalErrorStream() << "entityConnectSelected: exactly two instances must be selected\n";
-    }
+	if (GlobalSelectionSystem().countSelected() == 2) {
+		GlobalEntityCreator().connectEntities(
+			GlobalSelectionSystem().penultimateSelected().path(),
+			GlobalSelectionSystem().ultimateSelected().path(),
+			0
+			);
+	} else {
+		globalErrorStream() << "entityConnectSelected: exactly two instances must be selected\n";
+	}
 }
 
 void Entity_killconnectSelected()
 {
-    if (GlobalSelectionSystem().countSelected() == 2) {
-        GlobalEntityCreator().connectEntities(
-                GlobalSelectionSystem().penultimateSelected().path(),
-                GlobalSelectionSystem().ultimateSelected().path(),
-                1
-        );
-    } else {
-        globalErrorStream() << "entityKillConnectSelected: exactly two instances must be selected\n";
-    }
+	if (GlobalSelectionSystem().countSelected() == 2) {
+		GlobalEntityCreator().connectEntities(
+			GlobalSelectionSystem().penultimateSelected().path(),
+			GlobalSelectionSystem().ultimateSelected().path(),
+			1
+			);
+	} else {
+		globalErrorStream() << "entityKillConnectSelected: exactly two instances must be selected\n";
+	}
 }
 
 AABB Doom3Light_getBounds(const AABB &workzone)
 {
-    AABB aabb(workzone);
+	AABB aabb(workzone);
 
-    Vector3 defaultRadius(300, 300, 300);
-    if (!string_parse_vector3(
-            EntityClass_valueForKey(*GlobalEntityClassManager().findOrInsert("light", false), "light_radius"),
-            defaultRadius)) {
-        globalErrorStream() << "Doom3Light_getBounds: failed to parse default light radius\n";
-    }
+	Vector3 defaultRadius(300, 300, 300);
+	if (!string_parse_vector3(
+		    EntityClass_valueForKey(*GlobalEntityClassManager().findOrInsert("light", false), "light_radius"),
+		    defaultRadius)) {
+		globalErrorStream() << "Doom3Light_getBounds: failed to parse default light radius\n";
+	}
 
-    if (aabb.extents[0] == 0) {
-        aabb.extents[0] = defaultRadius[0];
-    }
-    if (aabb.extents[1] == 0) {
-        aabb.extents[1] = defaultRadius[1];
-    }
-    if (aabb.extents[2] == 0) {
-        aabb.extents[2] = defaultRadius[2];
-    }
+	if (aabb.extents[0] == 0) {
+		aabb.extents[0] = defaultRadius[0];
+	}
+	if (aabb.extents[1] == 0) {
+		aabb.extents[1] = defaultRadius[1];
+	}
+	if (aabb.extents[2] == 0) {
+		aabb.extents[2] = defaultRadius[2];
+	}
 
-    if (aabb_valid(aabb)) {
-        return aabb;
-    }
-    return AABB(Vector3(0, 0, 0), Vector3(64, 64, 64));
+	if (aabb_valid(aabb)) {
+		return aabb;
+	}
+	return AABB(Vector3(0, 0, 0), Vector3(64, 64, 64));
 }
 
 int g_iLastLightIntensity;
@@ -378,27 +378,27 @@ void Entity_createFromSelection(const char *name, const Vector3 &origin)
 	if (g_pGameDescription->mGameType == "hl") {
 		// FIXME - Hydra: really we need a combined light AND color dialog for halflife.
 		if (string_equal_nocase(name, "light")
-		|| string_equal_nocase(name, "light_environment")
-		|| string_equal_nocase(name, "light_spot")) {
-		int intensity = g_iLastLightIntensity;
+		    || string_equal_nocase(name, "light_environment")
+		    || string_equal_nocase(name, "light_spot")) {
+			int intensity = g_iLastLightIntensity;
 
-		if (DoLightIntensityDlg(&intensity) == eIDOK) {
-			g_iLastLightIntensity = intensity;
-			char buf[30];
-			sprintf(buf, "255 255 255 %d", intensity);
-			Node_getEntity(node)->setKeyValue("_light", buf);
-		}
+			if (DoLightIntensityDlg(&intensity) == eIDOK) {
+				g_iLastLightIntensity = intensity;
+				char buf[30];
+				sprintf(buf, "255 255 255 %d", intensity);
+				Node_getEntity(node)->setKeyValue("_light", buf);
+			}
 		}
 	} else if (string_equal_nocase(name, "light")) {
 		if (g_pGameDescription->mGameType != "doom3") {
-		int intensity = g_iLastLightIntensity;
+			int intensity = g_iLastLightIntensity;
 
-		if (DoLightIntensityDlg(&intensity) == eIDOK) {
-			g_iLastLightIntensity = intensity;
-			char buf[10];
-			sprintf(buf, "%d", intensity);
-			Node_getEntity(node)->setKeyValue("light", buf);
-		}
+			if (DoLightIntensityDlg(&intensity) == eIDOK) {
+				g_iLastLightIntensity = intensity;
+				char buf[10];
+				sprintf(buf, "%d", intensity);
+				Node_getEntity(node)->setKeyValue("light", buf);
+			}
 		} else if (brushesSelected) { // use workzone to set light position/size for doom3 lights, if there are brushes selected
 			AABB bounds(Doom3Light_getBounds(workzone));
 			StringOutputStream key(64);
@@ -420,96 +420,96 @@ void Entity_createFromSelection(const char *name, const Vector3 &origin)
 
 #if 0
 bool DoNormalisedColor( Vector3& color ){
-    if ( !color_dialog( MainFrame_getWindow( ), color ) ) {
-        return false;
-    }
-    /*
-    ** scale colors so that at least one component is at 1.0F
-    */
+	if ( !color_dialog( MainFrame_getWindow( ), color ) ) {
+		return false;
+	}
+	/*
+	** scale colors so that at least one component is at 1.0F
+	*/
 
-    float largest = 0.0F;
+	float largest = 0.0F;
 
-    if ( color[0] > largest ) {
-        largest = color[0];
-    }
-    if ( color[1] > largest ) {
-        largest = color[1];
-    }
-    if ( color[2] > largest ) {
-        largest = color[2];
-    }
+	if ( color[0] > largest ) {
+		largest = color[0];
+	}
+	if ( color[1] > largest ) {
+		largest = color[1];
+	}
+	if ( color[2] > largest ) {
+		largest = color[2];
+	}
 
-    if ( largest == 0.0F ) {
-        color[0] = 1.0F;
-        color[1] = 1.0F;
-        color[2] = 1.0F;
-    }
-    else
-    {
-        float scaler = 1.0F / largest;
+	if ( largest == 0.0F ) {
+		color[0] = 1.0F;
+		color[1] = 1.0F;
+		color[2] = 1.0F;
+	}
+	else
+	{
+		float scaler = 1.0F / largest;
 
-        color[0] *= scaler;
-        color[1] *= scaler;
-        color[2] *= scaler;
-    }
+		color[0] *= scaler;
+		color[1] *= scaler;
+		color[2] *= scaler;
+	}
 
-    return true;
+	return true;
 }
 #endif
 
 void NormalizeColor(Vector3 &color)
 {
-    // scale colors so that at least one component is at 1.0F
+	// scale colors so that at least one component is at 1.0F
 
-    float largest = 0.0F;
+	float largest = 0.0F;
 
-    if (color[0] > largest) {
-        largest = color[0];
-    }
-    if (color[1] > largest) {
-        largest = color[1];
-    }
-    if (color[2] > largest) {
-        largest = color[2];
-    }
+	if (color[0] > largest) {
+		largest = color[0];
+	}
+	if (color[1] > largest) {
+		largest = color[1];
+	}
+	if (color[2] > largest) {
+		largest = color[2];
+	}
 
-    if (largest == 0.0F) {
-        color[0] = 1.0F;
-        color[1] = 1.0F;
-        color[2] = 1.0F;
-    } else {
-        float scaler = 1.0F / largest;
+	if (largest == 0.0F) {
+		color[0] = 1.0F;
+		color[1] = 1.0F;
+		color[2] = 1.0F;
+	} else {
+		float scaler = 1.0F / largest;
 
-        color[0] *= scaler;
-        color[1] *= scaler;
-        color[2] *= scaler;
-    }
+		color[0] *= scaler;
+		color[1] *= scaler;
+		color[2] *= scaler;
+	}
 }
 
 void Entity_normalizeColor()
 {
-    if (GlobalSelectionSystem().countSelected() != 0) {
-        const scene::Path &path = GlobalSelectionSystem().ultimateSelected().path();
-        Entity *entity = Node_getEntity(path.top());
+	if (GlobalSelectionSystem().countSelected() != 0) {
+		const scene::Path &path = GlobalSelectionSystem().ultimateSelected().path();
+		Entity *entity = Node_getEntity(path.top());
 
-        if (entity != 0) {
-            const char *strColor = entity->getKeyValue("_color");
-            if (!string_empty(strColor)) {
-                Vector3 rgb;
-                if (string_parse_vector3(strColor, rgb)) {
-                    g_entity_globals.color_entity = rgb;
-                    NormalizeColor(g_entity_globals.color_entity);
+		if (entity != 0) {
+			const char *strColor = entity->getKeyValue("_color");
+			if (!string_empty(strColor)) {
+				Vector3 rgb;
+				if (string_parse_vector3(strColor, rgb)) {
+					g_entity_globals.color_entity = rgb;
+					NormalizeColor(g_entity_globals.color_entity);
 
-                    char buffer[128];
-                    sprintf(buffer, "%g %g %g", g_entity_globals.color_entity[0],
-                            g_entity_globals.color_entity[1],
-                            g_entity_globals.color_entity[2]);
+					char buffer[128];
+					sprintf(buffer, "%g %g %g", g_entity_globals.color_entity[0],
+					        g_entity_globals.color_entity[1],
+					        g_entity_globals.color_entity[2]);
 
-                    Scene_EntitySetKeyValue_Selected("_color", buffer);
-                }
-            }
-        }
-    }
+					Scene_EntitySetKeyValue_Selected("_color", buffer);
+				}
+			}
+		}
+	}
 }
 
 void Entity_setColour()
@@ -535,8 +535,8 @@ void Entity_setColour()
 
 				char buffer[128];
 				sprintf(buffer, "%g %g %g", g_entity_globals.color_entity[0],
-					g_entity_globals.color_entity[1],
-					g_entity_globals.color_entity[2]);
+				        g_entity_globals.color_entity[1],
+				        g_entity_globals.color_entity[2]);
 
 				Scene_EntitySetKeyValue_Selected("_color", buffer);
 			}
@@ -546,68 +546,68 @@ void Entity_setColour()
 
 const char *misc_model_dialog(ui::Widget parent)
 {
-    StringOutputStream buffer(1024);
+	StringOutputStream buffer(1024);
 
-    buffer << g_qeglobals.m_userGamePath.c_str() << "models/";
+	buffer << g_qeglobals.m_userGamePath.c_str() << "models/";
 
-    if (!file_readable(buffer.c_str())) {
-        // just go to fsmain
-        buffer.clear();
-        buffer << g_qeglobals.m_userGamePath.c_str() << "/";
-    }
+	if (!file_readable(buffer.c_str())) {
+		// just go to fsmain
+		buffer.clear();
+		buffer << g_qeglobals.m_userGamePath.c_str() << "/";
+	}
 
-    const char *filename = parent.file_dialog(TRUE, "Choose Model", buffer.c_str(), ModelLoader::Name());
-    if (filename != 0) {
-        // use VFS to get the correct relative path
-        const char *relative = path_make_relative(filename, GlobalFileSystem().findRoot(filename));
-        if (relative == filename) {
-            globalOutputStream() << "WARNING: could not extract the relative path, using full path instead\n";
-        }
-        return relative;
-    }
-    return 0;
+	const char *filename = parent.file_dialog(TRUE, "Choose Model", buffer.c_str(), ModelLoader::Name());
+	if (filename != 0) {
+		// use VFS to get the correct relative path
+		const char *relative = path_make_relative(filename, GlobalFileSystem().findRoot(filename));
+		if (relative == filename) {
+			globalOutputStream() << "WARNING: could not extract the relative path, using full path instead\n";
+		}
+		return relative;
+	}
+	return 0;
 }
 
 struct LightRadii {
-    static void Export(const EntityCreator &self, const Callback<void(bool)> &returnz)
-    {
-        returnz(self.getLightRadii());
-    }
+	static void Export(const EntityCreator &self, const Callback<void(bool)> &returnz)
+	{
+		returnz(self.getLightRadii());
+	}
 
-    static void Import(EntityCreator &self, bool value)
-    {
-        self.setLightRadii(value);
-    }
+	static void Import(EntityCreator &self, bool value)
+	{
+		self.setLightRadii(value);
+	}
 };
 
 void Entity_constructPreferences(PreferencesPage &page)
 {
-    page.appendCheckBox(
-            "Show", "Light Radii",
-            make_property<LightRadii>(GlobalEntityCreator())
-    );
+	page.appendCheckBox(
+		"Show", "Light Radii",
+		make_property<LightRadii>(GlobalEntityCreator())
+		);
 }
 
 void Entity_constructPage(PreferenceGroup &group)
 {
-    PreferencesPage page(group.createPage("Entities", "Entity Display Preferences"));
-    Entity_constructPreferences(page);
+	PreferencesPage page(group.createPage("Entities", "Entity Display Preferences"));
+	Entity_constructPreferences(page);
 }
 
 void Entity_registerPreferencesPage()
 {
-    PreferencesDialog_addDisplayPage(makeCallbackF(Entity_constructPage));
+	PreferencesDialog_addDisplayPage(makeCallbackF(Entity_constructPage));
 }
 
 
 void Entity_constructMenu(ui::Menu menu)
 {
-    create_menu_item_with_mnemonic(menu, "_To Worldspawn", "UngroupSelection");
-    create_menu_item_with_mnemonic(menu, "_Regroup", "GroupSelection");
-    create_menu_item_with_mnemonic(menu, "_Connect", "ConnectSelection");
-    create_menu_item_with_mnemonic(menu, "_KillConnect", "KillConnectSelection");
-    create_menu_item_with_mnemonic(menu, "_Select Color...", "EntityColor");
-    create_menu_item_with_mnemonic(menu, "_Normalize Color...", "NormalizeColor");
+	create_menu_item_with_mnemonic(menu, "_To Worldspawn", "UngroupSelection");
+	create_menu_item_with_mnemonic(menu, "_Regroup", "GroupSelection");
+	create_menu_item_with_mnemonic(menu, "_Connect", "ConnectSelection");
+	create_menu_item_with_mnemonic(menu, "_KillConnect", "KillConnectSelection");
+	create_menu_item_with_mnemonic(menu, "_Select Color...", "EntityColor");
+	create_menu_item_with_mnemonic(menu, "_Normalize Color...", "NormalizeColor");
 }
 
 
@@ -616,20 +616,20 @@ void Entity_constructMenu(ui::Menu menu)
 
 void Entity_Construct()
 {
-    GlobalCommands_insert("EntityColor", makeCallbackF(Entity_setColour), Accelerator('K'));
-    GlobalCommands_insert("NormalizeColor", makeCallbackF(Entity_normalizeColor));
-    GlobalCommands_insert("ConnectSelection", makeCallbackF(Entity_connectSelected),
-                          Accelerator('K', (GdkModifierType) GDK_CONTROL_MASK));
-    GlobalCommands_insert("KillConnectSelection", makeCallbackF(Entity_killconnectSelected),
-                          Accelerator('K', (GdkModifierType) (GDK_SHIFT_MASK)));
-    GlobalCommands_insert("GroupSelection", makeCallbackF(Entity_groupSelected));
-    GlobalCommands_insert("UngroupSelection", makeCallbackF(Entity_ungroupSelected));
-    GlobalCommands_insert("CreateFuncGroup", makeCallbackF(Entity_groupMake));
+	GlobalCommands_insert("EntityColor", makeCallbackF(Entity_setColour), Accelerator('K'));
+	GlobalCommands_insert("NormalizeColor", makeCallbackF(Entity_normalizeColor));
+	GlobalCommands_insert("ConnectSelection", makeCallbackF(Entity_connectSelected),
+	                      Accelerator('K', (GdkModifierType) GDK_CONTROL_MASK));
+	GlobalCommands_insert("KillConnectSelection", makeCallbackF(Entity_killconnectSelected),
+	                      Accelerator('K', (GdkModifierType) (GDK_SHIFT_MASK)));
+	GlobalCommands_insert("GroupSelection", makeCallbackF(Entity_groupSelected));
+	GlobalCommands_insert("UngroupSelection", makeCallbackF(Entity_ungroupSelected));
+	GlobalCommands_insert("CreateFuncGroup", makeCallbackF(Entity_groupMake));
 
-    GlobalPreferenceSystem().registerPreference("SI_Colors5", make_property_string(g_entity_globals.color_entity));
-    GlobalPreferenceSystem().registerPreference("LastLightIntensity", make_property_string(g_iLastLightIntensity));
+	GlobalPreferenceSystem().registerPreference("SI_Colors5", make_property_string(g_entity_globals.color_entity));
+	GlobalPreferenceSystem().registerPreference("LastLightIntensity", make_property_string(g_iLastLightIntensity));
 
-    Entity_registerPreferencesPage();
+	Entity_registerPreferencesPage();
 }
 
 void Entity_Destroy()

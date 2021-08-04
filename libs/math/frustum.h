@@ -33,23 +33,23 @@
 
 inline Matrix4 matrix4_frustum( float left, float right, float bottom, float top, float nearval, float farval ){
 	return Matrix4(
-			   static_cast<float>( ( 2 * nearval ) / ( right - left ) ),
-			   0,
-			   0,
-			   0,
-			   0,
-			   static_cast<float>( ( 2 * nearval ) / ( top - bottom ) ),
-			   0,
-			   0,
-			   static_cast<float>( ( right + left ) / ( right - left ) ),
-			   static_cast<float>( ( top + bottom ) / ( top - bottom ) ),
-			   static_cast<float>( -( farval + nearval ) / ( farval - nearval ) ),
-			   -1,
-			   0,
-			   0,
-			   static_cast<float>( -( 2 * farval * nearval ) / ( farval - nearval ) ),
-			   0
-			   );
+		static_cast<float>( ( 2 * nearval ) / ( right - left ) ),
+		0,
+		0,
+		0,
+		0,
+		static_cast<float>( ( 2 * nearval ) / ( top - bottom ) ),
+		0,
+		0,
+		static_cast<float>( ( right + left ) / ( right - left ) ),
+		static_cast<float>( ( top + bottom ) / ( top - bottom ) ),
+		static_cast<float>( -( farval + nearval ) / ( farval - nearval ) ),
+		-1,
+		0,
+		0,
+		static_cast<float>( -( 2 * farval * nearval ) / ( farval - nearval ) ),
+		0
+		);
 }
 
 
@@ -371,42 +371,42 @@ struct Frustum
 	Frustum(){
 	}
 	Frustum( const Plane3& _right,
-			 const Plane3& _left,
-			 const Plane3& _bottom,
-			 const Plane3& _top,
-			 const Plane3& _back,
-			 const Plane3& _front )
+	         const Plane3& _left,
+	         const Plane3& _bottom,
+	         const Plane3& _top,
+	         const Plane3& _back,
+	         const Plane3& _front )
 		: right( _right ), left( _left ), bottom( _bottom ), top( _top ), back( _back ), front( _front ){
 	}
 };
 
 inline Frustum frustum_transformed( const Frustum& frustum, const Matrix4& transform ){
 	return Frustum(
-			   plane3_transformed( frustum.right, transform ),
-			   plane3_transformed( frustum.left, transform ),
-			   plane3_transformed( frustum.bottom, transform ),
-			   plane3_transformed( frustum.top, transform ),
-			   plane3_transformed( frustum.back, transform ),
-			   plane3_transformed( frustum.front, transform )
-			   );
+		plane3_transformed( frustum.right, transform ),
+		plane3_transformed( frustum.left, transform ),
+		plane3_transformed( frustum.bottom, transform ),
+		plane3_transformed( frustum.top, transform ),
+		plane3_transformed( frustum.back, transform ),
+		plane3_transformed( frustum.front, transform )
+		);
 }
 
 inline Frustum frustum_inverse_transformed( const Frustum& frustum, const Matrix4& transform ){
 	return Frustum(
-			   plane3_inverse_transformed( frustum.right, transform ),
-			   plane3_inverse_transformed( frustum.left, transform ),
-			   plane3_inverse_transformed( frustum.bottom, transform ),
-			   plane3_inverse_transformed( frustum.top, transform ),
-			   plane3_inverse_transformed( frustum.back, transform ),
-			   plane3_inverse_transformed( frustum.front, transform )
-			   );
+		plane3_inverse_transformed( frustum.right, transform ),
+		plane3_inverse_transformed( frustum.left, transform ),
+		plane3_inverse_transformed( frustum.bottom, transform ),
+		plane3_inverse_transformed( frustum.top, transform ),
+		plane3_inverse_transformed( frustum.back, transform ),
+		plane3_inverse_transformed( frustum.front, transform )
+		);
 }
 
 inline bool viewproj_test_point( const Matrix4& viewproj, const Vector3& point ){
 	Vector4 hpoint( matrix4_transformed_vector4( viewproj, Vector4( point, 1.0f ) ) );
 	if ( fabs( hpoint[0] ) < fabs( hpoint[3] )
-		 && fabs( hpoint[1] ) < fabs( hpoint[3] )
-		 && fabs( hpoint[2] ) < fabs( hpoint[3] ) ) {
+	     && fabs( hpoint[1] ) < fabs( hpoint[3] )
+	     && fabs( hpoint[2] ) < fabs( hpoint[3] ) ) {
 		return true;
 	}
 	return false;
@@ -418,14 +418,14 @@ inline bool viewproj_test_transformed_point( const Matrix4& viewproj, const Vect
 
 inline Frustum frustum_from_viewproj( const Matrix4& viewproj ){
 	return Frustum
-		   (
-			   plane3_normalised( Plane3( viewproj[ 3] - viewproj[ 0], viewproj[ 7] - viewproj[ 4], viewproj[11] - viewproj[ 8], viewproj[15] - viewproj[12] ) ),
-			   plane3_normalised( Plane3( viewproj[ 3] + viewproj[ 0], viewproj[ 7] + viewproj[ 4], viewproj[11] + viewproj[ 8], viewproj[15] + viewproj[12] ) ),
-			   plane3_normalised( Plane3( viewproj[ 3] + viewproj[ 1], viewproj[ 7] + viewproj[ 5], viewproj[11] + viewproj[ 9], viewproj[15] + viewproj[13] ) ),
-			   plane3_normalised( Plane3( viewproj[ 3] - viewproj[ 1], viewproj[ 7] - viewproj[ 5], viewproj[11] - viewproj[ 9], viewproj[15] - viewproj[13] ) ),
-			   plane3_normalised( Plane3( viewproj[ 3] - viewproj[ 2], viewproj[ 7] - viewproj[ 6], viewproj[11] - viewproj[10], viewproj[15] - viewproj[14] ) ),
-			   plane3_normalised( Plane3( viewproj[ 3] + viewproj[ 2], viewproj[ 7] + viewproj[ 6], viewproj[11] + viewproj[10], viewproj[15] + viewproj[14] ) )
-		   );
+	       (
+		plane3_normalised( Plane3( viewproj[ 3] - viewproj[ 0], viewproj[ 7] - viewproj[ 4], viewproj[11] - viewproj[ 8], viewproj[15] - viewproj[12] ) ),
+		plane3_normalised( Plane3( viewproj[ 3] + viewproj[ 0], viewproj[ 7] + viewproj[ 4], viewproj[11] + viewproj[ 8], viewproj[15] + viewproj[12] ) ),
+		plane3_normalised( Plane3( viewproj[ 3] + viewproj[ 1], viewproj[ 7] + viewproj[ 5], viewproj[11] + viewproj[ 9], viewproj[15] + viewproj[13] ) ),
+		plane3_normalised( Plane3( viewproj[ 3] - viewproj[ 1], viewproj[ 7] - viewproj[ 5], viewproj[11] - viewproj[ 9], viewproj[15] - viewproj[13] ) ),
+		plane3_normalised( Plane3( viewproj[ 3] - viewproj[ 2], viewproj[ 7] - viewproj[ 6], viewproj[11] - viewproj[10], viewproj[15] - viewproj[14] ) ),
+		plane3_normalised( Plane3( viewproj[ 3] + viewproj[ 2], viewproj[ 7] + viewproj[ 6], viewproj[11] + viewproj[10], viewproj[15] + viewproj[14] ) )
+	       );
 }
 
 struct VolumeIntersection
@@ -504,8 +504,8 @@ inline double plane_distance_to_point( const Plane3& plane, const Vector3& point
 
 inline double plane_distance_to_oriented_extents( const Plane3& plane, const Vector3& extents, const Matrix4& orientation ){
 	return fabs( extents[0] * vector3_dot( plane.normal(), vector4_to_vector3( orientation.x() ) ) )
-		   + fabs( extents[1] * vector3_dot( plane.normal(), vector4_to_vector3( orientation.y() ) ) )
-		   + fabs( extents[2] * vector3_dot( plane.normal(), vector4_to_vector3( orientation.z() ) ) );
+	       + fabs( extents[1] * vector3_dot( plane.normal(), vector4_to_vector3( orientation.y() ) ) )
+	       + fabs( extents[2] * vector3_dot( plane.normal(), vector4_to_vector3( orientation.z() ) ) );
 }
 
 /// \brief Return false if \p aabb with \p orientation is partially or completely outside \p plane.
@@ -519,11 +519,11 @@ inline VolumeIntersectionValue frustum_intersects_transformed_aabb( const Frustu
 	matrix4_transform_point( localToWorld, aabb_world.origin );
 
 	if ( plane_contains_oriented_aabb( frustum.right, aabb_world, localToWorld )
-		 || plane_contains_oriented_aabb( frustum.left, aabb_world, localToWorld )
-		 || plane_contains_oriented_aabb( frustum.bottom, aabb_world, localToWorld )
-		 || plane_contains_oriented_aabb( frustum.top, aabb_world, localToWorld )
-		 || plane_contains_oriented_aabb( frustum.back, aabb_world, localToWorld )
-		 || plane_contains_oriented_aabb( frustum.front, aabb_world, localToWorld ) ) {
+	     || plane_contains_oriented_aabb( frustum.left, aabb_world, localToWorld )
+	     || plane_contains_oriented_aabb( frustum.bottom, aabb_world, localToWorld )
+	     || plane_contains_oriented_aabb( frustum.top, aabb_world, localToWorld )
+	     || plane_contains_oriented_aabb( frustum.back, aabb_world, localToWorld )
+	     || plane_contains_oriented_aabb( frustum.front, aabb_world, localToWorld ) ) {
 		return c_volumeOutside;
 	}
 	return c_volumeInside;
@@ -539,27 +539,27 @@ inline bool plane3_test_line( const Plane3& plane, const Segment& segment ){
 
 inline bool frustum_test_point( const Frustum& frustum, const Vector3& point ){
 	return !plane3_test_point( frustum.right, point )
-		   && !plane3_test_point( frustum.left, point )
-		   && !plane3_test_point( frustum.bottom, point )
-		   && !plane3_test_point( frustum.top, point )
-		   && !plane3_test_point( frustum.back, point )
-		   && !plane3_test_point( frustum.front, point );
+	       && !plane3_test_point( frustum.left, point )
+	       && !plane3_test_point( frustum.bottom, point )
+	       && !plane3_test_point( frustum.top, point )
+	       && !plane3_test_point( frustum.back, point )
+	       && !plane3_test_point( frustum.front, point );
 }
 
 inline bool frustum_test_line( const Frustum& frustum, const Segment& segment ){
 	return !plane3_test_line( frustum.right, segment )
-		   && !plane3_test_line( frustum.left, segment )
-		   && !plane3_test_line( frustum.bottom, segment )
-		   && !plane3_test_line( frustum.top, segment )
-		   && !plane3_test_line( frustum.back, segment )
-		   && !plane3_test_line( frustum.front, segment );
+	       && !plane3_test_line( frustum.left, segment )
+	       && !plane3_test_line( frustum.bottom, segment )
+	       && !plane3_test_line( frustum.top, segment )
+	       && !plane3_test_line( frustum.back, segment )
+	       && !plane3_test_line( frustum.front, segment );
 }
 
 inline bool viewer_test_plane( const Vector4& viewer, const Plane3& plane ){
 	return ( ( plane.a * viewer[0] )
-			 + ( plane.b * viewer[1] )
-			 + ( plane.c * viewer[2] )
-			 + ( plane.d * viewer[3] ) ) > 0;
+	         + ( plane.b * viewer[1] )
+	         + ( plane.c * viewer[2] )
+	         + ( plane.d * viewer[3] ) ) > 0;
 }
 
 inline Vector3 triangle_cross( const Vector3& p0, const Vector3& p1, const Vector3& p2 ){
@@ -569,9 +569,9 @@ inline Vector3 triangle_cross( const Vector3& p0, const Vector3& p1, const Vecto
 inline bool viewer_test_triangle( const Vector4& viewer, const Vector3& p0, const Vector3& p1, const Vector3& p2 ){
 	Vector3 cross( triangle_cross( p0, p1, p2 ) );
 	return ( ( viewer[0] * cross[0] )
-			 + ( viewer[1] * cross[1] )
-			 + ( viewer[2] * cross[2] )
-			 + ( viewer[3] * 0 ) ) > 0;
+	         + ( viewer[1] * cross[1] )
+	         + ( viewer[2] * cross[2] )
+	         + ( viewer[3] * 0 ) ) > 0;
 }
 
 inline Vector4 viewer_from_transformed_viewer( const Vector4& viewer, const Matrix4& transform ){

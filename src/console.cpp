@@ -40,30 +40,30 @@ std::size_t Sys_Print(int level, const char *buf, std::size_t length)
 
 class SysPrintOutputStream : public TextOutputStream {
 public:
-    std::size_t write(const char *buffer, std::size_t length)
-    {
-        return Sys_Print(SYS_STD, buffer, length);
-    }
+std::size_t write(const char *buffer, std::size_t length)
+{
+	return Sys_Print(SYS_STD, buffer, length);
+}
 };
 
 class SysPrintErrorStream : public TextOutputStream {
 public:
-    std::size_t write(const char *buffer, std::size_t length)
-    {
-        return Sys_Print(SYS_ERR, buffer, length);
-    }
+std::size_t write(const char *buffer, std::size_t length)
+{
+	return Sys_Print(SYS_ERR, buffer, length);
+}
 };
 
 SysPrintOutputStream g_outputStream;
 
 TextOutputStream &getSysPrintOutputStream()
 {
-    return g_outputStream;
+	return g_outputStream;
 }
 
 SysPrintErrorStream g_errorStream;
 
 TextOutputStream &getSysPrintErrorStream()
 {
-    return g_errorStream;
+	return g_errorStream;
 }

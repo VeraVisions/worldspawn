@@ -147,7 +147,7 @@ inline bool string_equal_prefix( const char* string, const char* prefix ){
 /// O(n)
 inline bool string_equal_suffix( const char* string, const char* suffix){
 	const char *s = string + string_length( string ) - string_length( suffix );
-	return string_equal_n( s , suffix, string_length( suffix ) );
+	return string_equal_n( s, suffix, string_length( suffix ) );
 }
 
 /// \brief Copies \p other into \p string and returns \p string.

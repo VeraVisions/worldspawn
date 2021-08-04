@@ -51,34 +51,34 @@
  */
 
 void ExportEntities( void ){
-        char filename[ 1024 ];
-        FILE *file;
-		
-        /* note it */
-        Sys_FPrintf( SYS_VRB, "--- ExportEntities ---\n" );
-		
-        /* do some path mangling */
-        strcpy( filename, source );
-        StripExtension( filename );
-        strcat( filename, ".ent" );
-		
-        /* sanity check */
-        if ( bspEntData == NULL || bspEntDataSize == 0 ) {
-                Sys_FPrintf( SYS_WRN, "WARNING: No BSP entity data. aborting...\n" );
-                return;
-        }
-		
-        /* write it */
-        Sys_Printf( "Writing %s\n", filename );
-        Sys_FPrintf( SYS_VRB, "(%d bytes)\n", bspEntDataSize );
-        file = fopen( filename, "w" );
-		
-        if ( file == NULL ) {
-                Error( "Unable to open %s for writing", filename );
-        }
-		
-        fprintf( file, "%s\n", bspEntData );
-        fclose( file );
+	char filename[ 1024 ];
+	FILE *file;
+
+	/* note it */
+	Sys_FPrintf( SYS_VRB, "--- ExportEntities ---\n" );
+
+	/* do some path mangling */
+	strcpy( filename, source );
+	StripExtension( filename );
+	strcat( filename, ".ent" );
+
+	/* sanity check */
+	if ( bspEntData == NULL || bspEntDataSize == 0 ) {
+		Sys_FPrintf( SYS_WRN, "WARNING: No BSP entity data. aborting...\n" );
+		return;
+	}
+
+	/* write it */
+	Sys_Printf( "Writing %s\n", filename );
+	Sys_FPrintf( SYS_VRB, "(%d bytes)\n", bspEntDataSize );
+	file = fopen( filename, "w" );
+
+	if ( file == NULL ) {
+		Error( "Unable to open %s for writing", filename );
+	}
+
+	fprintf( file, "%s\n", bspEntData );
+	fclose( file );
 }
 
 
@@ -89,24 +89,24 @@ void ExportEntities( void ){
  */
 
 int ExportEntitiesMain( int argc, char **argv ){
-        /* arg checking */
-        if ( argc < 1 ) {
-                Sys_Printf( "Usage: q3map -exportents [-v] <mapname>\n" );
-                return 0;
-        }
-		
-        /* do some path mangling */
-        strcpy( source, ExpandArg( argv[ argc - 1 ] ) );
-        StripExtension( source );
-        DefaultExtension( source, ".bsp" );
-		
-        /* load the bsp */
-        Sys_Printf( "Loading %s\n", source );
-        LoadBSPFile( source );
-		
-        /* export the lightmaps */
-        ExportEntities();
-		
-        /* return to sender */
-        return 0;
+	/* arg checking */
+	if ( argc < 1 ) {
+		Sys_Printf( "Usage: q3map -exportents [-v] <mapname>\n" );
+		return 0;
+	}
+
+	/* do some path mangling */
+	strcpy( source, ExpandArg( argv[ argc - 1 ] ) );
+	StripExtension( source );
+	DefaultExtension( source, ".bsp" );
+
+	/* load the bsp */
+	Sys_Printf( "Loading %s\n", source );
+	LoadBSPFile( source );
+
+	/* export the lightmaps */
+	ExportEntities();
+
+	/* return to sender */
+	return 0;
 }

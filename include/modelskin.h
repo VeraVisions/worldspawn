@@ -34,7 +34,7 @@ SkinRemap( const char* from, const char* to ) : m_from( from ), m_to( to ){
 }
 };
 
-typedef Callback<void(SkinRemap)> SkinRemapCallback;
+typedef Callback<void (SkinRemap)> SkinRemapCallback;
 class ModuleObserver;
 
 class ModelSkin

@@ -143,9 +143,9 @@ static int AddTraceInfo( traceInfo_t *ti ){
 	for ( num = firstTraceInfo; num < numTraceInfos; num++ )
 	{
 		if ( traceInfos[ num ].si == ti->si &&
-			 traceInfos[ num ].surfaceNum == ti->surfaceNum &&
-			 traceInfos[ num ].castShadows == ti->castShadows &&
-			 traceInfos[ num ].skipGrid == ti->skipGrid ) {
+		     traceInfos[ num ].surfaceNum == ti->surfaceNum &&
+		     traceInfos[ num ].castShadows == ti->castShadows &&
+		     traceInfos[ num ].skipGrid == ti->skipGrid ) {
 			return num;
 		}
 	}
@@ -928,7 +928,7 @@ static void PopulateWithBSPModel( bspModel_t *model, m4x4_t transform ){
 
 		/* some surfaces in the bsp might have been tagged as nodraw, with a bogus shader */
 		if ( ( bspShaders[ ds->shaderNum ].contentFlags & noDrawContentFlags ) ||
-			 ( bspShaders[ ds->shaderNum ].surfaceFlags & noDrawSurfaceFlags ) ) {
+		     ( bspShaders[ ds->shaderNum ].surfaceFlags & noDrawSurfaceFlags ) ) {
 			continue;
 		}
 
@@ -937,8 +937,8 @@ static void PopulateWithBSPModel( bspModel_t *model, m4x4_t transform ){
 			continue;
 		}
 		if ( ( info->si->compileFlags & C_TRANSLUCENT ) &&
-			 !( info->si->compileFlags & C_ALPHASHADOW ) &&
-			 !( info->si->compileFlags & C_LIGHTFILTER ) ) {
+		     !( info->si->compileFlags & C_ALPHASHADOW ) &&
+		     !( info->si->compileFlags & C_LIGHTFILTER ) ) {
 			continue;
 		}
 
@@ -1128,8 +1128,8 @@ static void PopulateWithPicoModel( int castShadows, picoModel_t *model, m4x4_t t
 			continue;
 		}
 		if ( ( ti.si->compileFlags & C_TRANSLUCENT ) &&
-			 !( ti.si->compileFlags & C_ALPHASHADOW ) &&
-			 !( ti.si->compileFlags & C_LIGHTFILTER ) ) {
+		     !( ti.si->compileFlags & C_ALPHASHADOW ) &&
+		     !( ti.si->compileFlags & C_LIGHTFILTER ) ) {
 			continue;
 		}
 
@@ -1380,7 +1380,7 @@ void SetupTraceNodes( void ){
 			tw = &traceWindings[ i ];
 			for ( j = 0; j < tw->numVerts + 1; j++ )
 				fprintf( file, "%f %f %f\n",
-						 tw->v[ j % tw->numVerts ].xyz[ 0 ], tw->v[ j % tw->numVerts ].xyz[ 1 ], tw->v[ j % tw->numVerts ].xyz[ 2 ] );
+				         tw->v[ j % tw->numVerts ].xyz[ 0 ], tw->v[ j % tw->numVerts ].xyz[ 1 ], tw->v[ j % tw->numVerts ].xyz[ 2 ] );
 		}
 
 		/* close it */
@@ -1513,7 +1513,7 @@ qboolean TraceTriangle( traceInfo_t *ti, traceTriangle_t *tt, trace_t *trace ){
 
 	/* most surfaces are completely opaque */
 	if ( !( si->compileFlags & ( C_ALPHASHADOW | C_LIGHTFILTER ) ) ||
-		 si->lightImage == NULL || si->lightImage->pixels == NULL ) {
+	     si->lightImage == NULL || si->lightImage->pixels == NULL ) {
 		VectorMA( trace->origin, depth, trace->direction, trace->hit );
 		VectorClear( trace->color );
 		trace->opaque = qtrue;
@@ -1525,7 +1525,7 @@ qboolean TraceTriangle( traceInfo_t *ti, traceTriangle_t *tt, trace_t *trace ){
 
 	/* try to avoid double shadows near triangle seams */
 	if ( u < -ASLF_EPSILON || u > ( 1.0f + ASLF_EPSILON ) ||
-		 v < -ASLF_EPSILON || ( u + v ) > ( 1.0f + ASLF_EPSILON ) ) {
+	     v < -ASLF_EPSILON || ( u + v ) > ( 1.0f + ASLF_EPSILON ) ) {
 		return qfalse;
 	}
 
@@ -1765,8 +1765,8 @@ void TraceLine( trace_t *trace ){
 
 	/* testall means trace through sky */
 	if ( trace->testAll && trace->numTestNodes < MAX_TRACE_TEST_NODES &&
-		 trace->compileFlags & C_SKY &&
-		 ( trace->numSurfaces == 0 || surfaceInfos[ trace->surfaces[ 0 ] ].childSurfaceNum < 0 ) ) {
+	     trace->compileFlags & C_SKY &&
+	     ( trace->numSurfaces == 0 || surfaceInfos[ trace->surfaces[ 0 ] ].childSurfaceNum < 0 ) ) {
 		//%	trace->testNodes[ trace->numTestNodes++ ] = skyboxNodeNum;
 		TraceLine_r( skyboxNodeNum, trace->origin, trace->end, trace );
 	}

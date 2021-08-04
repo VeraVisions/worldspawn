@@ -26,7 +26,7 @@ typedef Function<SignalHandlerResult(Test&), handler0> TestHandler0;
 int function0( Test& ){
 	return 7;
 }
-typedef Function<int(Test&), function0> TestFunction0;
+typedef Function<int (Test&), function0> TestFunction0;
 
 SignalHandlerResult handler1( Test&, A1 ){
 	return SIGNAL_CONTINUE_EMISSION;
@@ -35,7 +35,7 @@ typedef Function<SignalHandlerResult(Test&, A1), handler1> TestHandler1;
 
 void function1( Test&, A1 ){
 }
-typedef ReferenceCaller<Test, void(A1), function1> TestFunction1;
+typedef ReferenceCaller<Test, void (A1), function1> TestFunction1;
 
 SignalHandlerResult handler2( Test&, A1, A2 ){
 	return SIGNAL_CONTINUE_EMISSION;
@@ -44,7 +44,7 @@ typedef Function<SignalHandlerResult(Test&, A1, A2), handler2> TestHandler2;
 
 void function2( Test&, A1, A2 ){
 }
-typedef Function<void(Test&, A1, A2), function2> TestFunction2;
+typedef Function<void (Test&, A1, A2), function2> TestFunction2;
 
 SignalHandlerResult handler3( Test&, A1, A2, A3 ){
 	return SIGNAL_CONTINUE_EMISSION;
@@ -53,7 +53,7 @@ typedef Function<SignalHandlerResult(Test&, A1, A2, A3), handler3> TestHandler3;
 
 void function3( Test&, A1, A2, A3 ){
 }
-typedef Function<void(Test&, A1, A2, A3), function3> TestFunction3;
+typedef Function<void (Test&, A1, A2, A3), function3> TestFunction3;
 
 void testSignals(){
 	Test test;

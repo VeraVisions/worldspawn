@@ -132,7 +132,7 @@ static void SelectSplitPlaneNum( node_t *node, face_t *list, int *splitPlaneNum,
 		facing = 0;
 		front = 0;
 		back = 0;
-		for ( check = list ; check ; check = check->next ) {
+		for ( check = list; check; check = check->next ) {
 			if ( check->planenum == split->planenum ) {
 				facing++;
 				//check->checked = qtrue;	// won't need to test this plane again
@@ -159,7 +159,7 @@ static void SelectSplitPlaneNum( node_t *node, face_t *list, int *splitPlaneNum,
 			//Base score = 20000 perfectly balanced
 			value = 20000 - ( abs( front - back ) );
 			value -= plane->counter; // If we've already used this plane sometime in the past try not to use it again
-			value -= facing ;       // if we're going to have alot of other surfs use this plane, we want to get it in quickly.
+			value -= facing;        // if we're going to have alot of other surfs use this plane, we want to get it in quickly.
 			value -= splits * 5;        //more splits = bad
 			value +=  sizeBias * 10; //We want a huge score bias based on plane size
 		}
@@ -269,7 +269,7 @@ void BuildFaceTree_r( node_t *node, face_t *list ){
 		if ( side == SIDE_CROSS ) {
 			/* strict; if no winding is left, we have a "virtually identical" plane and don't want to split by it */
 			ClipWindingEpsilonStrict( split->w, plane->normal, plane->dist, CLIP_EPSILON * 2,
-								&frontWinding, &backWinding );
+			                          &frontWinding, &backWinding );
 			if ( frontWinding ) {
 				newFace = AllocBspFace();
 				newFace->w = frontWinding;
@@ -302,14 +302,14 @@ void BuildFaceTree_r( node_t *node, face_t *list ){
 
 
 	// recursively process children
-	for ( i = 0 ; i < 2 ; i++ ) {
+	for ( i = 0; i < 2; i++ ) {
 		node->children[i] = AllocNode();
 		node->children[i]->parent = node;
 		VectorCopy( node->mins, node->children[i]->mins );
 		VectorCopy( node->maxs, node->children[i]->maxs );
 	}
 
-	for ( i = 0 ; i < 3 ; i++ ) {
+	for ( i = 0; i < 3; i++ ) {
 		if ( plane->normal[i] == 1 ) {
 			node->children[0]->mins[i] = plane->dist;
 			node->children[1]->maxs[i] = plane->dist;
@@ -322,7 +322,7 @@ void BuildFaceTree_r( node_t *node, face_t *list ){
 		}
 	}
 
-	for ( i = 0 ; i < 2 ; i++ ) {
+	for ( i = 0; i < 2; i++ ) {
 		BuildFaceTree_r( node->children[i], childLists[i] );
 		node->has_structural_children |= node->children[i]->has_structural_children;
 	}

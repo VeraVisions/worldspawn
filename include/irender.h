@@ -89,9 +89,9 @@ virtual void clearLights(){
 };
 
 class Renderable;
-typedef Callback<void(const Renderable&)> RenderableCallback;
+typedef Callback<void (const Renderable&)> RenderableCallback;
 
-typedef Callback<void(const RendererLight&)> RendererLightCallback;
+typedef Callback<void (const RendererLight&)> RendererLightCallback;
 
 class LightList
 {

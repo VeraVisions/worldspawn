@@ -33,7 +33,8 @@ bool m_selected;
 public:
 SelectableBool()
 	: m_selected( false )
-{}
+{
+}
 
 void setSelected( bool select = true ){
 	m_selected = select;
@@ -114,7 +115,7 @@ void selectedChanged( const Selectable& selectable ){
 
 	Instance::selectedChanged();
 }
-typedef MemberCaller<SelectableInstance, void(const Selectable&), &SelectableInstance::selectedChanged> SelectedChangedCaller;
+typedef MemberCaller<SelectableInstance, void (const Selectable&), &SelectableInstance::selectedChanged> SelectedChangedCaller;
 };
 
 

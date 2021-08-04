@@ -48,16 +48,16 @@ ui::ScrolledWindow create_scrolled_window(ui::Policy hscrollbar_policy, ui::Poli
 
 
 struct WindowPosition {
-    int x, y, w, h;
+	int x, y, w, h;
 
-    WindowPosition()
-    {
-    }
+	WindowPosition()
+	{
+	}
 
-    WindowPosition(int _x, int _y, int _w, int _h)
-            : x(_x), y(_y), w(_w), h(_h)
-    {
-    }
+	WindowPosition(int _x, int _y, int _w, int _h)
+		: x(_x), y(_y), w(_w), h(_h)
+	{
+	}
 };
 
 const WindowPosition c_default_window_pos(50, 25, 400, 300);
@@ -68,38 +68,38 @@ void window_set_position(ui::Window window, const WindowPosition &position);
 
 struct WindowPosition_String {
 
-    static void Export(const WindowPosition &self, const Callback<void(const char *)> &returnz);
+	static void Export(const WindowPosition &self, const Callback<void(const char *)> &returnz);
 
-    static void Import(WindowPosition &self, const char *value);
+	static void Import(WindowPosition &self, const char *value);
 
 };
 
 class WindowPositionTracker {
-    WindowPosition m_position;
+WindowPosition m_position;
 
-    static gboolean configure(ui::Widget widget, GdkEventConfigure *event, WindowPositionTracker *self);
+static gboolean configure(ui::Widget widget, GdkEventConfigure *event, WindowPositionTracker *self);
 
 public:
-    WindowPositionTracker()
-            : m_position(c_default_window_pos)
-    {
-    }
+WindowPositionTracker()
+	: m_position(c_default_window_pos)
+{
+}
 
-    void sync(ui::Window window);
+void sync(ui::Window window);
 
-    void connect(ui::Window window);
+void connect(ui::Window window);
 
-    const WindowPosition &getPosition() const;
+const WindowPosition &getPosition() const;
 
 //hack
-    void setPosition(const WindowPosition &position);
+void setPosition(const WindowPosition &position);
 };
 
 
 struct WindowPositionTracker_String {
-    static void Export(const WindowPositionTracker &self, const Callback<void(const char *)> &returnz);
+	static void Export(const WindowPositionTracker &self, const Callback<void(const char *)> &returnz);
 
-    static void Import(WindowPositionTracker &self, const char *value);
+	static void Import(WindowPositionTracker &self, const char *value);
 };
 
 #endif

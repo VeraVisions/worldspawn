@@ -130,9 +130,12 @@ float x,y,z,dist;
 #endif
 
 #ifndef FAT_VEC3
-idVec3() {};
+idVec3() {
+};
 #else
-idVec3() {dist = 0.0f; };
+idVec3() {
+	dist = 0.0f;
+};
 #endif
 idVec3( const float x, const float y, const float z );
 
@@ -406,7 +409,7 @@ ID_INLINE bool Bounds::IsCleared() {
 
 ID_INLINE bool Bounds::ContainsPoint( const idVec3 &p ) {
 	if ( p[0] < b[0][0] || p[1] < b[0][1] || p[2] < b[0][2]
-		 || p[0] > b[1][0] || p[1] > b[1][1] || p[2] > b[1][2] ) {
+	     || p[0] > b[1][0] || p[1] > b[1][1] || p[2] > b[1][2] ) {
 		return false;
 	}
 	return true;
@@ -414,7 +417,7 @@ ID_INLINE bool Bounds::ContainsPoint( const idVec3 &p ) {
 
 ID_INLINE bool Bounds::IntersectsBounds( const Bounds &b2 ) {
 	if ( b2.b[1][0] < b[0][0] || b2.b[1][1] < b[0][1] || b2.b[1][2] < b[0][2]
-		 || b2.b[0][0] > b[1][0] || b2.b[0][1] > b[1][1] || b2.b[0][2] > b[1][2] ) {
+	     || b2.b[0][0] > b[1][0] || b2.b[0][1] > b[1][1] || b2.b[0][2] > b[1][2] ) {
 		return false;
 	}
 	return true;
@@ -436,7 +439,7 @@ ID_INLINE void Bounds::Clear() {
 
 ID_INLINE void Bounds::Zero() {
 	b[0][0] = b[0][1] = b[0][2] =
-							b[1][0] = b[1][1] = b[1][2] = 0;
+		b[1][0] = b[1][1] = b[1][2] = 0;
 }
 
 ID_INLINE void Bounds::AddPoint( const idVec3 &v ) {
@@ -489,7 +492,7 @@ ID_INLINE float Bounds::Radius() {
 	float a, aa;
 
 	total = 0;
-	for ( i = 0 ; i < 3 ; i++ ) {
+	for ( i = 0; i < 3; i++ ) {
 		a = (float)fabs( b[0][i] );
 		aa = (float)fabs( b[1][i] );
 		if ( aa > a ) {
@@ -532,14 +535,16 @@ public:
 float dist;
 #endif
 idVec4();
-~idVec4() {};
+~idVec4() {
+};
 
 idVec4( float x, float y, float z, float dist );
 float operator[]( int index ) const;
 float           &operator[]( int index );
 };
 
-ID_INLINE idVec4::idVec4() {}
+ID_INLINE idVec4::idVec4() {
+}
 ID_INLINE idVec4::idVec4( float x, float y, float z, float dist ) {
 	this->x = x;
 	this->y = y;

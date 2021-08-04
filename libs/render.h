@@ -525,8 +525,8 @@ enum UnitSphereOctant
 /// \brief Returns the octant for \p normal indicating the sign of the region of unit-sphere space it lies within.
 inline UnitSphereOctant normal3f_classify_octant( const Normal3f& normal ){
 	return static_cast<UnitSphereOctant>(
-			   ( ( normal.x() > 0 ) << 0 ) | ( ( normal.y() > 0 ) << 1 ) | ( ( normal.z() > 0 ) << 2 )
-			   );
+		( ( normal.x() > 0 ) << 0 ) | ( ( normal.y() > 0 ) << 1 ) | ( ( normal.z() > 0 ) << 2 )
+		);
 }
 
 /// \brief Returns \p normal with its components signs made positive based on \p octant.
@@ -575,17 +575,17 @@ enum UnitSphereSextant
 /// \p normal must be normalised.
 inline UnitSphereSextant normal3f_classify_sextant( const Normal3f& normal ){
 	return
-		normal.x() >= normal.y()
-		? normal.x() >= normal.z()
-		? normal.y() >= normal.z()
-		? UNITSPHERESEXTANT_XYZ
-		: UNITSPHERESEXTANT_XZY
-		: UNITSPHERESEXTANT_ZXY
-		: normal.y() >= normal.z()
-		? normal.x() >= normal.z()
-		? UNITSPHERESEXTANT_YXZ
-		: UNITSPHERESEXTANT_YZX
-		: UNITSPHERESEXTANT_ZYX;
+	        normal.x() >= normal.y()
+	        ? normal.x() >= normal.z()
+	        ? normal.y() >= normal.z()
+	        ? UNITSPHERESEXTANT_XYZ
+	        : UNITSPHERESEXTANT_XZY
+	        : UNITSPHERESEXTANT_ZXY
+	        : normal.y() >= normal.z()
+	        ? normal.x() >= normal.z()
+	        ? UNITSPHERESEXTANT_YXZ
+	        : UNITSPHERESEXTANT_YZX
+	        : UNITSPHERESEXTANT_ZYX;
 }
 
 /// \brief Returns \p normal with its components sorted so that x > y > z based on \p sextant.
@@ -628,10 +628,10 @@ inline Normal3f normal3f_folded_quantised( const Normal3f& folded ){
 
 	// decompress
 	return normal3f_normalised( Normal3f(
-									static_cast<float>( c_quantise_normal - zbits - ybits ),
-									static_cast<float>( ybits ),
-									static_cast<float>( zbits )
-									) );
+					    static_cast<float>( c_quantise_normal - zbits - ybits ),
+					    static_cast<float>( ybits ),
+					    static_cast<float>( zbits )
+					    ) );
 }
 
 /// \brief Returns \p normal quantised by compressing and then decompressing its representation.
@@ -682,10 +682,10 @@ inline spherical_t spherical_from_normal3f( const Normal3f& normal ){
 
 inline Normal3f normal3f_from_spherical( const spherical_t& spherical ){
 	return Normal3f(
-			   static_cast<float>( cos( spherical.longditude ) * sin( spherical.latitude ) ),
-			   static_cast<float>( sin( spherical.longditude ) * sin( spherical.latitude ) ),
-			   static_cast<float>( cos( spherical.latitude ) )
-			   );
+		static_cast<float>( cos( spherical.longditude ) * sin( spherical.latitude ) ),
+		static_cast<float>( sin( spherical.longditude ) * sin( spherical.latitude ) ),
+		static_cast<float>( cos( spherical.latitude ) )
+		);
 }
 
 inline uniformspherical_t uniformspherical_from_spherical( const spherical_t& spherical ){
@@ -1033,87 +1033,87 @@ Vertex3f* operator->(){
 }
 
 template<typename remap_policy, typename iterator_type
-		 inline void draw_circle( const std::size_t segments, const float radius, iterator_type start, remap_policy remap ){
-			 const float increment = c_pi / (double)( segments << 2 );
+inline void draw_circle( const std::size_t segments, const float radius, iterator_type start, remap_policy remap ){
+	const float increment = c_pi / (double)( segments << 2 );
 
-			 std::size_t count = 0;
-			 iterator_type pxpy( start );
-			 iterator_type pypx( pxpy + ( segments << 1 ) );
-			 iterator_type pynx( pxpy + ( segments << 1 ) );
-			 iterator_type nxpy( pypx + ( segments << 1 ) );
-			 iterator_type nxny( pypx + ( segments << 1 ) );
-			 iterator_type nynx( nxpy + ( segments << 1 ) );
-			 iterator_type nypx( nxpy + ( segments << 1 ) );
-			 iterator_type pxny( start );
-			 while ( count < segments )
-			 {
-				 const float theta = increment * count;
-				 const float x = radius * cos( theta );
-				 const float y = radius * sin( theta );
+	std::size_t count = 0;
+	iterator_type pxpy( start );
+	iterator_type pypx( pxpy + ( segments << 1 ) );
+	iterator_type pynx( pxpy + ( segments << 1 ) );
+	iterator_type nxpy( pypx + ( segments << 1 ) );
+	iterator_type nxny( pypx + ( segments << 1 ) );
+	iterator_type nynx( nxpy + ( segments << 1 ) );
+	iterator_type nypx( nxpy + ( segments << 1 ) );
+	iterator_type pxny( start );
+	while ( count < segments )
+	{
+		const float theta = increment * count;
+		const float x = radius * cos( theta );
+		const float y = radius * sin( theta );
 
-				 remap_policy::set( ( *pxpy ), x, y, 0 );
-				 remap_policy::set( ( *pxny ), x,-y, 0 );
-				 remap_policy::set( ( *nxpy ),-x, y, 0 );
-				 remap_policy::set( ( *nxny ),-x,-y, 0 );
+		remap_policy::set( ( *pxpy ), x, y, 0 );
+		remap_policy::set( ( *pxny ), x,-y, 0 );
+		remap_policy::set( ( *nxpy ),-x, y, 0 );
+		remap_policy::set( ( *nxny ),-x,-y, 0 );
 
-				 remap_policy::set( ( *pypx ), y, x, 0 );
-				 remap_policy::set( ( *pynx ), y,-x, 0 );
-				 remap_policy::set( ( *nypx ),-y, x, 0 );
-				 remap_policy::set( ( *nynx ),-y,-x, 0 );
-			 }
-		 }
+		remap_policy::set( ( *pypx ), y, x, 0 );
+		remap_policy::set( ( *pynx ), y,-x, 0 );
+		remap_policy::set( ( *nypx ),-y, x, 0 );
+		remap_policy::set( ( *nynx ),-y,-x, 0 );
+	}
+}
 
-		 template<typename remap_policy, typename iterator_type
-				  inline void draw_semicircle( const std::size_t segments, const float radius, iterator_type start, remap_policy remap )
-				  {
-					  const float increment = c_pi / (double)( segments << 2 );
+template<typename remap_policy, typename iterator_type
+inline void draw_semicircle( const std::size_t segments, const float radius, iterator_type start, remap_policy remap )
+{
+	const float increment = c_pi / (double)( segments << 2 );
 
-					  std::size_t count = 0;
-					  iterator_type pxpy( start );
-					  iterator_type pypx( pxpy + ( segments << 1 ) );
-					  iterator_type pynx( pxpy + ( segments << 1 ) );
-					  iterator_type nxpy( pypx + ( segments << 1 ) );
-					  iterator_type nxny( pypx + ( segments << 1 ) );
-					  iterator_type nynx( nxpy + ( segments << 1 ) );
-					  iterator_type nypx( nxpy + ( segments << 1 ) );
-					  iterator_type pxny( start );
-					  while ( count < segments )
-					  {
-						  const float theta = increment * count;
-						  const float x = radius * cos( theta );
-						  const float y = radius * sin( theta );
+	std::size_t count = 0;
+	iterator_type pxpy( start );
+	iterator_type pypx( pxpy + ( segments << 1 ) );
+	iterator_type pynx( pxpy + ( segments << 1 ) );
+	iterator_type nxpy( pypx + ( segments << 1 ) );
+	iterator_type nxny( pypx + ( segments << 1 ) );
+	iterator_type nynx( nxpy + ( segments << 1 ) );
+	iterator_type nypx( nxpy + ( segments << 1 ) );
+	iterator_type pxny( start );
+	while ( count < segments )
+	{
+		const float theta = increment * count;
+		const float x = radius * cos( theta );
+		const float y = radius * sin( theta );
 
-						  remap_policy::set( ( *pxpy ), x, y, 0 );
-						  remap_policy::set( ( *pxny ), x,-y, 0 );
-						  remap_policy::set( ( *nxpy ),-x, y, 0 );
-						  remap_policy::set( ( *nxny ),-x,-y, 0 );
+		remap_policy::set( ( *pxpy ), x, y, 0 );
+		remap_policy::set( ( *pxny ), x,-y, 0 );
+		remap_policy::set( ( *nxpy ),-x, y, 0 );
+		remap_policy::set( ( *nxny ),-x,-y, 0 );
 
-                          //remap_policy::set((*pypx), y, x, 0);
-                          //remap_policy::set((*pynx), y,-x, 0);
-                          //remap_policy::set((*nypx),-y, x, 0);
-                          //remap_policy::set((*nynx),-y,-x, 0);
-					  }
-				  }
+		//remap_policy::set((*pypx), y, x, 0);
+		//remap_policy::set((*pynx), y,-x, 0);
+		//remap_policy::set((*nypx),-y, x, 0);
+		//remap_policy::set((*nynx),-y,-x, 0);
+	}
+}
 
 
 #endif
 
 inline void draw_quad( const float radius, PointVertex* quad ){
-	( *quad ++ ).vertex = Vertex3f( -radius, radius, 0 );
-	( *quad ++ ).vertex = Vertex3f( radius, radius, 0 );
-	( *quad ++ ).vertex = Vertex3f( radius, -radius, 0 );
-	( *quad ++ ).vertex = Vertex3f( -radius, -radius, 0 );
+	( *quad++ ).vertex = Vertex3f( -radius, radius, 0 );
+	( *quad++ ).vertex = Vertex3f( radius, radius, 0 );
+	( *quad++ ).vertex = Vertex3f( radius, -radius, 0 );
+	( *quad++ ).vertex = Vertex3f( -radius, -radius, 0 );
 }
 
 inline void draw_cube( const float radius, PointVertex* cube ){
-	( *cube ++ ).vertex = Vertex3f( -radius, -radius, -radius );
-	( *cube ++ ).vertex = Vertex3f( radius, -radius, -radius );
-	( *cube ++ ).vertex = Vertex3f( -radius, radius, -radius );
-	( *cube ++ ).vertex = Vertex3f( radius, radius, -radius );
-	( *cube ++ ).vertex = Vertex3f( -radius, -radius, radius );
-	( *cube ++ ).vertex = Vertex3f( radius, -radius, radius );
-	( *cube ++ ).vertex = Vertex3f( -radius, radius, radius );
-	( *cube ++ ).vertex = Vertex3f( radius, radius, radius );
+	( *cube++ ).vertex = Vertex3f( -radius, -radius, -radius );
+	( *cube++ ).vertex = Vertex3f( radius, -radius, -radius );
+	( *cube++ ).vertex = Vertex3f( -radius, radius, -radius );
+	( *cube++ ).vertex = Vertex3f( radius, radius, -radius );
+	( *cube++ ).vertex = Vertex3f( -radius, -radius, radius );
+	( *cube++ ).vertex = Vertex3f( radius, -radius, radius );
+	( *cube++ ).vertex = Vertex3f( -radius, radius, radius );
+	( *cube++ ).vertex = Vertex3f( radius, radius, radius );
 }
 
 
