@@ -50,7 +50,6 @@ WS_OBJS = \
 	brushxml.o \
 	build.o \
 	camwindow.o \
-	clippertool.o \
 	commands.o \
 	console.o \
 	csg.o \
@@ -140,7 +139,6 @@ brushtokens.o: brushtokens.cpp brushtokens.h
 brushxml.o: brushxml.cpp brushxml.h
 build.o: build.cpp build.h
 camwindow.o: camwindow.cpp camwindow.h
-clippertool.o: clippertool.cpp clippertool.h
 commands.o: commands.cpp commands.h
 console.o: console.cpp console.h
 csg.o: csg.cpp csg.h

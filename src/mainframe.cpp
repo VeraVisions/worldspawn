@@ -2359,15 +2359,14 @@ ui::Toolbar create_main_toolbar()
 	Select_constructToolbar(toolbar);
 	space();
 	CSG_constructToolbar(toolbar);
-
-
+	space();
+	ComponentModes_constructToolbar(toolbar);
+	space();
+	Manipulators_constructToolbar(toolbar);
 	space();
 	XYWnd_constructToolbar(toolbar);
-
-
 	space();
 	CamWnd_constructToolbar(toolbar);
-
 	space();
 	Patch_constructToolbar(toolbar);
 
