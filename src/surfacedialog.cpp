@@ -634,7 +634,6 @@ ui::Window SurfaceInspector::BuildDialog()
     global_accel_connect_window(window);
 
     window_connect_focus_in_clear_focus_widget(window);
-	gtk_window_set_resizable(window, FALSE);
 
 
     {

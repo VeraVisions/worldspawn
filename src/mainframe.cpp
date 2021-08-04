@@ -1229,7 +1229,7 @@ void Selection_Clone_MakeUnique()
         NudgeSelection(eNudgeDown, GetGridSize(), GlobalXYWnd_getCurrentViewType());
     }
 }
-void ScaleMode();
+
 // called when the escape key is used (either on the main window or on an inspector)
 void Selection_Deselect()
 {
@@ -1247,11 +1247,6 @@ void Selection_Deselect()
             GlobalSelectionSystem().setSelectedAll(false);
         }
     }
-
-    if (GlobalSelectionSystem().ManipulatorMode() != SelectionSystem::eCreate)
-    if (GlobalSelectionSystem().ManipulatorMode() != SelectionSystem::eEntSpawn)
-    if (GlobalSelectionSystem().ManipulatorMode() != SelectionSystem::ePatchSpawn)
-		ScaleMode();
 }
 
 
@@ -1305,22 +1300,6 @@ void ClipperToolExport(const Callback<void(bool)> &importCallback)
     importCallback(GlobalSelectionSystem().ManipulatorMode() == SelectionSystem::eClip);
 }
 
-void CreateToolExport(const Callback<void(bool)> &importCallback)
-{
-    importCallback(GlobalSelectionSystem().ManipulatorMode() == SelectionSystem::eCreate);
-}
-
-void CreateEToolExport(const Callback<void(bool)> &importCallback)
-{
-    importCallback(GlobalSelectionSystem().ManipulatorMode() == SelectionSystem::eEntSpawn);
-}
-
-void CreatePToolExport(const Callback<void(bool)> &importCallback)
-{
-    importCallback(GlobalSelectionSystem().ManipulatorMode() == SelectionSystem::ePatchSpawn);
-}
-
-
 FreeCaller<void(const Callback<void(bool)> &), TranslateToolExport> g_translatemode_button_caller;
 Callback<void(const Callback<void(bool)> &)> g_translatemode_button_callback(g_translatemode_button_caller);
 ToggleItem g_translatemode_button(g_translatemode_button_callback);
@@ -1341,18 +1320,6 @@ FreeCaller<void(const Callback<void(bool)> &), ClipperToolExport> g_clipper_butt
 Callback<void(const Callback<void(bool)> &)> g_clipper_button_callback(g_clipper_button_caller);
 ToggleItem g_clipper_button(g_clipper_button_callback);
 
-FreeCaller<void(const Callback<void(bool)> &), CreateToolExport> g_create_button_caller;
-Callback<void(const Callback<void(bool)> &)> g_create_button_callback(g_create_button_caller);
-ToggleItem g_create_button(g_create_button_callback);
-
-FreeCaller<void(const Callback<void(bool)> &), CreateEToolExport> g_createE_button_caller;
-Callback<void(const Callback<void(bool)> &)> g_createE_button_callback(g_createE_button_caller);
-ToggleItem g_createE_button(g_createE_button_callback);
-
-FreeCaller<void(const Callback<void(bool)> &), CreatePToolExport> g_createP_button_caller;
-Callback<void(const Callback<void(bool)> &)> g_createP_button_callback(g_createP_button_caller);
-ToggleItem g_createP_button(g_createP_button_callback);
-
 void ToolChanged()
 {
     g_translatemode_button.update();
@@ -1360,12 +1327,10 @@ void ToolChanged()
     g_scalemode_button.update();
     g_dragmode_button.update();
     g_clipper_button.update();
-    g_create_button.update();
-    g_createE_button.update();
-    g_createP_button.update();
 }
 
 const char *const c_ResizeMode_status = "Drag Tool: move and resize objects";
+
 void DragMode()
 {
     if (g_currentToolMode == DragMode && g_defaultToolMode != DragMode) {
@@ -1378,63 +1343,6 @@ void DragMode()
 
         Sys_Status(c_ResizeMode_status);
         GlobalSelectionSystem().SetManipulatorMode(SelectionSystem::eDrag);
-        ToolChanged();
-        ModeChangeNotify();
-    }
-}
-
-const char *const c_CreateMode_status = "Create Tool: draw brush models";
-void CreateMode()
-{
-	Selection_Deselect();
-    if (g_currentToolMode == CreateMode && g_defaultToolMode != CreateMode) {
-        g_defaultToolMode();
-    } else {
-        g_currentToolMode = CreateMode;
-        g_currentToolModeSupportsComponentEditing = true;
-
-        OnClipMode(false);
-
-        Sys_Status(c_CreateMode_status);
-        GlobalSelectionSystem().SetManipulatorMode(SelectionSystem::eCreate);
-        ToolChanged();
-        ModeChangeNotify();
-    }
-}
-
-const char *const c_CreateEMode_status = "Create Entity Tool: spawn point entities";
-void CreateEMode()
-{
-	Selection_Deselect();
-    if (g_currentToolMode == CreateEMode && g_defaultToolMode != CreateEMode) {
-        g_defaultToolMode();
-    } else {
-        g_currentToolMode = CreateEMode;
-        g_currentToolModeSupportsComponentEditing = true;
-
-        OnClipMode(false);
-
-        Sys_Status(c_CreateEMode_status);
-        GlobalSelectionSystem().SetManipulatorMode(SelectionSystem::eEntSpawn);
-        ToolChanged();
-        ModeChangeNotify();
-    }
-}
-
-const char *const c_CreatePMode_status = "Create Patch Tool: spawn patches";
-void CreatePMode()
-{
-	Selection_Deselect();
-    if (g_currentToolMode == CreatePMode && g_defaultToolMode != CreatePMode) {
-        g_defaultToolMode();
-    } else {
-        g_currentToolMode = CreatePMode;
-        g_currentToolModeSupportsComponentEditing = true;
-
-        OnClipMode(false);
-
-        Sys_Status(c_CreatePMode_status);
-        GlobalSelectionSystem().SetManipulatorMode(SelectionSystem::ePatchSpawn);
         ToolChanged();
         ModeChangeNotify();
     }
@@ -2292,12 +2200,9 @@ void Patch_registerShortcuts()
 
 void Manipulators_registerShortcuts()
 {
-    toggle_add_accelerator("MouseCreate");
-    toggle_add_accelerator("MouseCreateE");
-    toggle_add_accelerator("MouseCreateP");
     toggle_add_accelerator("MouseRotate");
     toggle_add_accelerator("MouseTranslate");
-    toggle_add_accelerator("MouseSelect");
+    toggle_add_accelerator("MouseScale");
     toggle_add_accelerator("MouseDrag");
     toggle_add_accelerator("ToggleClipper");
 }
@@ -2366,12 +2271,8 @@ void File_constructToolbar(ui::Toolbar toolbar)
 
 void UndoRedo_constructToolbar(ui::Toolbar toolbar)
 {
-	
-    toolbar_append_toggle_button(toolbar, "Select Vertices", "modify_vertices.xpm", "DragVertices");
-    toolbar_append_toggle_button(toolbar, "Select Edges", "modify_edges.xpm", "DragEdges");
-    toolbar_append_toggle_button(toolbar, "Select Faces", "modify_faces.xpm", "DragFaces");
-    toolbar_append_button(toolbar, "Undo", "undo.xpm", "Undo");
-    toolbar_append_button(toolbar, "Redo", "redo.xpm", "Redo");
+    toolbar_append_button(toolbar, "Undo (CTRL + Z)", "undo.xpm", "Undo");
+    toolbar_append_button(toolbar, "Redo (CTRL + Y)", "redo.xpm", "Redo");
 }
 
 void Rotate_constructToolbar(ui::Toolbar toolbar)
@@ -2422,11 +2323,10 @@ void XYWnd_constructToolbar(ui::Toolbar toolbar)
 
 void Manipulators_constructToolbar(ui::Toolbar toolbar)
 {
-    toolbar_append_toggle_button(toolbar, "Select", "select_mousescale.xpm", "MouseSelect");
-    toolbar_append_toggle_button(toolbar, "Translate", "select_mousetranslate.xpm", "MouseTranslate");
-    toolbar_append_toggle_button(toolbar, "Rotate", "select_mouserotate.xpm", "MouseRotate");
-    toolbar_append_toggle_button(toolbar, "Resize", "select_mouseresize.xpm", "MouseDrag");
-    toolbar_append_toggle_button(toolbar, "Create", "select_mousecreate.xpm", "MouseCreate");
+    toolbar_append_toggle_button(toolbar, "Translate (W)", "select_mousetranslate.xpm", "MouseTranslate");
+    toolbar_append_toggle_button(toolbar, "Rotate (R)", "select_mouserotate.xpm", "MouseRotate");
+    toolbar_append_toggle_button(toolbar, "Scale", "select_mousescale.xpm", "MouseScale");
+    toolbar_append_toggle_button(toolbar, "Resize (Q)", "select_mouseresize.xpm", "MouseDrag");
 
     Clipper_constructToolbar(toolbar);
 }
@@ -2511,39 +2411,6 @@ ui::Widget create_main_statusbar(ui::Widget pStatusLabel[c_count_status])
     }
 
     return ui::Widget(table);
-}
-
-
-ui::Toolbar create_main_sidebar()
-{
-    auto toolbar = ui::Toolbar::from(gtk_toolbar_new());
-    gtk_orientable_set_orientation(GTK_ORIENTABLE(toolbar), GTK_ORIENTATION_VERTICAL);
-    gtk_toolbar_set_style(toolbar, GTK_TOOLBAR_ICONS);
-
-    toolbar.show();
-
-    auto space = [&]() {
-        auto btn = ui::ToolItem::from(gtk_separator_tool_item_new());
-        btn.show();
-        toolbar.add(btn);
-    };
-
-    toolbar_append_toggle_button(toolbar, "Select", "side_select.png", "MouseSelect");
-    toolbar_append_toggle_button(toolbar, "Translate", "side_move.png", "MouseTranslate");
-    toolbar_append_toggle_button(toolbar, "Rotate", "side_rotate.png", "MouseRotate");
-    toolbar_append_toggle_button(toolbar, "Resize", "side_scale.png", "MouseDrag");
-    toolbar_append_toggle_button(toolbar, "Clipper", "side_cut.png", "ToggleClipper");
-    space();
-    toolbar_append_toggle_button(toolbar, "Create", "side_brush.png", "MouseCreate");
-    toolbar_append_toggle_button(toolbar, "Create Entity", "side_entities.png", "MouseCreateE");
-    toolbar_append_toggle_button(toolbar, "Create Patch", "side_patch.png", "MouseCreateP");
-	space();
-    toolbar_append_button(toolbar, "Texture Browser", "side_tex.png", "ToggleTextures");
-    toolbar_append_button(toolbar, "Entity Inspector", "side_entspec.png", "ToggleEntityInspector");
-    toolbar_append_button(toolbar, "Surface Inspector", "side_surfspec.png", "SurfaceInspector");
-    toolbar_append_button(toolbar, "Patch Inspector", "side_patchspec.png", "PatchInspector");
-
-    return toolbar;
 }
 
 #if 0
@@ -2925,9 +2792,6 @@ void MainFrame::Create()
 
 	auto split = create_split_views(camera, yz, xy, xz);
 	vbox.pack_start(hbox, TRUE, TRUE, 0);
-		
-	auto main_sidebar = create_main_sidebar();
-	hbox.pack_start(main_sidebar, FALSE, FALSE, 2);
 			
 	hbox.pack_start(split, TRUE, TRUE, 0);
 
@@ -2965,7 +2829,7 @@ void MainFrame::Create()
 	SetActiveXY(m_pXYWnd);
 	AddGridChangeCallback(SetGridStatusCaller(*this));
 	AddGridChangeCallback(ReferenceCaller<MainFrame, void(), XY_UpdateAllWindows>(*this));
-	g_defaultToolMode = ScaleMode;
+	g_defaultToolMode = DragMode;
 	g_defaultToolMode();
 	SetStatusText(m_command_status, c_TranslateMode_status);
 	EverySecondTimer_enable();
@@ -3227,12 +3091,9 @@ void MainFrame_Construct()
                          ToggleItem::AddCallbackCaller(g_translatemode_button));
     GlobalToggles_insert("MouseRotate", makeCallbackF(RotateMode), ToggleItem::AddCallbackCaller(g_rotatemode_button),
                          Accelerator('R'));
-    GlobalToggles_insert("MouseSelect", makeCallbackF(ScaleMode), ToggleItem::AddCallbackCaller(g_scalemode_button));
+    GlobalToggles_insert("MouseScale", makeCallbackF(ScaleMode), ToggleItem::AddCallbackCaller(g_scalemode_button));
     GlobalToggles_insert("MouseDrag", makeCallbackF(DragMode), ToggleItem::AddCallbackCaller(g_dragmode_button),
                          Accelerator('Q'));
-    GlobalToggles_insert("MouseCreate", makeCallbackF(CreateMode), ToggleItem::AddCallbackCaller(g_create_button));
-    GlobalToggles_insert("MouseCreateE", makeCallbackF(CreateEMode), ToggleItem::AddCallbackCaller(g_createE_button));
-    GlobalToggles_insert("MouseCreateP", makeCallbackF(CreatePMode), ToggleItem::AddCallbackCaller(g_createP_button));
 
     GlobalCommands_insert("ColorSchemeWS", makeCallbackF(ColorScheme_WorldSpawn));
     GlobalCommands_insert("ColorSchemeOriginal", makeCallbackF(ColorScheme_Original));

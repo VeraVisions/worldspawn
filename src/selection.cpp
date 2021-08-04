@@ -388,7 +388,7 @@ public:
 
     void Transform(const Matrix4 &manip2object, const Matrix4 &device2manip, const float x, const float y)
     {
-        /*Vector3 current;
+        Vector3 current;
         point_on_axis(current, m_axis, device2manip, x, y);
         Vector3 delta = vector3_subtracted(current, m_start);
 
@@ -401,7 +401,7 @@ public:
                 start[1] == 0 ? 1 : 1 + delta[1] / start[1],
                 start[2] == 0 ? 1 : 1 + delta[2] / start[2]
         );
-        m_scalable.scale(scale);*/
+        m_scalable.scale(scale);
     }
 
     void SetAxis(const Vector3 &axis)
@@ -427,7 +427,7 @@ public:
 
     void Transform(const Matrix4 &manip2object, const Matrix4 &device2manip, const float x, const float y)
     {
-        /*Vector3 current;
+        Vector3 current;
         point_on_plane(current, device2manip, x, y);
         Vector3 delta = vector3_subtracted(current, m_start);
 
@@ -440,7 +440,7 @@ public:
                 start[1] == 0 ? 1 : 1 + delta[1] / start[1],
                 start[2] == 0 ? 1 : 1 + delta[2] / start[2]
         );
-        m_scalable.scale(scale);*/
+        m_scalable.scale(scale);
     }
 };
 
@@ -1631,11 +1631,11 @@ public:
             m_free(scalable),
             m_axis(scalable)
     {
-      /*  draw_arrowline(length, m_arrow_x.m_line, 0);
+        draw_arrowline(length, m_arrow_x.m_line, 0);
         draw_arrowline(length, m_arrow_y.m_line, 1);
         draw_arrowline(length, m_arrow_z.m_line, 2);
 
-        draw_quad(16, m_quad_screen.m_quad);*/
+        draw_quad(16, m_quad_screen.m_quad);
     }
 
     Pivot2World &getPivot()
@@ -2899,9 +2899,6 @@ public:
             case eDrag:
                 m_manipulator = &m_drag_manipulator;
                 break;
-            case eCreate:
-                m_manipulator = &m_drag_manipulator;
-                break;
             case eClip:
                 m_manipulator = &m_clip_manipulator;
                 break;
@@ -3020,14 +3017,14 @@ public:
 
     bool SelectManipulator(const View &view, const float device_point[2], const float device_epsilon[2])
     {
-        if (!nothingSelected() || ((ManipulatorMode() == eDrag || ManipulatorMode() == eCreate) && Mode() == eComponent)) {
+        if (!nothingSelected() || (ManipulatorMode() == eDrag && Mode() == eComponent)) {
 #if defined ( DEBUG_SELECTION )
             g_render_clipped.destroy();
 #endif
 
             m_manipulator->setSelected(false);
 
-            if (!nothingSelected() || ((ManipulatorMode() == eDrag || ManipulatorMode() == eCreate) && Mode() == eComponent)) {
+            if (!nothingSelected() || (ManipulatorMode() == eDrag && Mode() == eComponent)) {
                 View scissored(view);
                 ConstructSelectionTest(scissored, SelectionBoxForPoint(device_point, device_epsilon));
                 m_manipulator->testSelect(scissored, GetPivot2World());
@@ -3070,10 +3067,6 @@ public:
     void SelectPoint(const View &view, const float device_point[2], const float device_epsilon[2],
                      RadiantSelectionSystem::EModifier modifier, bool face)
     {
-		if (m_manipulator_mode != eScale) {
-			return;
-		}
-
         ASSERT_MESSAGE(fabs(device_point[0]) <= 1.0f && fabs(device_point[1]) <= 1.0f, "point-selection error");
         if (modifier == eReplace) {
             if (face) {
@@ -3149,10 +3142,6 @@ public:
     void SelectArea(const View &view, const float device_point[2], const float device_delta[2],
                     RadiantSelectionSystem::EModifier modifier, bool face)
     {
-		if (m_manipulator_mode != eScale) {
-			return;
-		}
-
         if (modifier == eReplace) {
             if (face) {
                 setSelectedAllComponents(false);
@@ -3295,7 +3284,7 @@ public:
 /// \todo Support view-dependent nudge.
     void NudgeManipulator(const Vector3 &nudge, const Vector3 &view)
     {
-        if (ManipulatorMode() == eTranslate || (ManipulatorMode() == eDrag || ManipulatorMode() == eCreate)) {
+        if (ManipulatorMode() == eTranslate || ManipulatorMode() == eDrag) {
             translateSelected(nudge);
         }
     }
@@ -3529,7 +3518,7 @@ void RadiantSelectionSystem::endMove()
     freezeTransforms();
 
     if (Mode() == ePrimitive) {
-        if ((ManipulatorMode() == eDrag || ManipulatorMode() == eCreate)) {
+        if (ManipulatorMode() == eDrag) {
             Scene_SelectAll_Component(false, SelectionSystem::eFace);
         }
     }
@@ -3549,14 +3538,15 @@ void RadiantSelectionSystem::endMove()
             command << "rotateTool";
             outputRotation(command);
         } else if (ManipulatorMode() == eScale) {
-            //command << "scaleTool";
-            //outputScale(command);
-        } else if ((ManipulatorMode() == eDrag || ManipulatorMode() == eCreate)) {
+            command << "scaleTool";
+            outputScale(command);
+        } else if (ManipulatorMode() == eDrag) {
             command << "dragTool";
-		}
+        }
 
         GlobalUndoSystem().finish(command.c_str());
     }
+
 }
 
 inline AABB Instance_getPivotBounds(scene::Instance &instance)
@@ -3687,6 +3677,13 @@ void RadiantSelectionSystem::ConstructPivot() const
                     matrix4_assign_rotation_for_pivot(m_pivot2world, m_selection.back());
                 }
                 break;
+            case eScale:
+                if (Mode() == eComponent) {
+                    matrix4_assign_rotation_for_pivot(m_pivot2world, m_component_selection.back());
+                } else {
+                    matrix4_assign_rotation_for_pivot(m_pivot2world, m_selection.back());
+                }
+                break;
             default:
                 break;
         }
@@ -3788,9 +3785,9 @@ Single<MouseEventCallback> g_mouseUpCallback;
 const ButtonIdentifier c_button_select = c_buttonLeft;
 const ButtonIdentifier c_button_texture = c_buttonMiddle;
 const ModifierFlags c_modifier_manipulator = c_modifierNone;
-const ModifierFlags c_modifier_toggle = c_modifierNone;
-const ModifierFlags c_modifier_toggle_face = c_modifierShift;
-const ModifierFlags c_modifier_face = c_modifierShift;
+const ModifierFlags c_modifier_toggle = c_modifierShift;
+const ModifierFlags c_modifier_toggle_face = c_modifierShift | c_modifierControl;
+const ModifierFlags c_modifier_face = c_modifierControl;
 const ModifierFlags c_modifier_replace = c_modifierShift | c_modifierAlt;
 const ModifierFlags c_modifier_replace_face = c_modifier_replace | c_modifier_face;
 const ModifierFlags c_modifier_apply_texture1 = c_modifierControl | c_modifierShift;
@@ -3842,12 +3839,8 @@ public:
 
     void testSelect(DeviceVector position)
     {
-		if (getSelectionSystem().ManipulatorMode() != SelectionSystem::eScale) {
-			return;
-		}
-
 		RadiantSelectionSystem::EModifier modifier = modifier_for_state(m_state);
-
+		if (modifier != RadiantSelectionSystem::eManipulator) {
 			DeviceVector delta(position - m_start);
 			if (fabs(delta.x()) > m_epsilon.x() && fabs(delta.y()) > m_epsilon.y()) {
 				DeviceVector delta(position - m_start);
@@ -3860,6 +3853,7 @@ public:
 				getSelectionSystem().SelectPoint(*m_view, &position[0], &m_epsilon[0], modifier,
 								(m_state & c_modifier_face) != c_modifierNone);
 			}
+		}
 
 		m_start = m_current = DeviceVector(0.0f, 0.0f);
 		draw_area();
@@ -3867,10 +3861,7 @@ public:
 
     bool selecting() const
     {
-		if (getSelectionSystem().ManipulatorMode() != SelectionSystem::eScale) {
-			return 0;
-		}
-		return 1;
+        return m_state != c_modifier_manipulator;
     }
 
     void setState(ModifierFlags state)
@@ -4006,10 +3997,6 @@ public:
                 g_mouseMovedCallback.insert(MouseEventCallback(Manipulator_::MouseMovedCaller(m_manipulator)));
                 g_mouseUpCallback.insert(MouseEventCallback(Manipulator_::MouseUpCaller(m_manipulator)));
             } else {
-				/* TODO: Only when eScale is selected */
-				if (getSelectionSystem().ManipulatorMode() != SelectionSystem::eScale) {
-					return;
-				}
                 m_selector.mouseDown(devicePosition);
                 g_mouseMovedCallback.insert(MouseEventCallback(Selector_::MouseMovedCaller(m_selector)));
                 g_mouseUpCallback.insert(MouseEventCallback(Selector_::MouseUpCaller(m_selector)));

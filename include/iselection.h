@@ -89,9 +89,6 @@ enum EManipulatorMode
 	eScale,
 	eDrag,
 	eClip,
-	eCreate,
-	eEntSpawn,
-	ePatchSpawn
 };
 
 virtual void SetMode( EMode mode ) = 0;
