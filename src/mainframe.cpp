@@ -214,7 +214,9 @@ void EnginePath_Realise()
 
 const char *EnginePath_get()
 {
-    ASSERT_MESSAGE(g_enginepath_unrealised == 0, "EnginePath_get: engine path not realised");
+    if (g_enginepath_unrealised == 0) {
+        g_enginePathObservers.realise();
+    }
     return g_strEnginePath.c_str();
 }
 
