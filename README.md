@@ -51,18 +51,18 @@ On BSD you should probably use GNU make right now. The Makefiles are simple enou
 Clang should also be supported, pass `CC=clang and CXX=clang++` if you want to use it.
 
 On NT you'll probably have a build command-line likes this:
-`CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ PKG_CONFIG_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig make -j 4`
+`CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ PKG_CONFIG_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig make`
 Not all works yet, but stay tuned.
 
 It'll compile everything into a subdirectory 'build'. At the end it'll copy files from ./resources into it too.
 
-In the Nuclide SDK, build_engine.sh will call make with the appropriate flags for Linux/BSD automatically and
+In the Nuclide SDK, build_editor.sh will call make with the appropriate flags for Linux/BSD automatically and
 move it into Nuclide's ./bin directory.
 
 ## Dependencies
 * GNU make
 * gcc-core
-* gcc-c++ (or clang++)
+* gcc-c++
 * gtk2-devel
 * gtkglext-devel
 * libxml2-devel
