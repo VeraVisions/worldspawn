@@ -2369,7 +2369,7 @@ void Map_Construct()
 	GlobalCommands_insert("RegionSetXY", makeCallbackF(RegionXY));
 	GlobalCommands_insert("RegionSetBrush", makeCallbackF(RegionBrush));
 	GlobalCommands_insert("RegionSetSelection", makeCallbackF(RegionSelected),
-	                      Accelerator('R', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
+	                      Accelerator('R', (GdkModifierType) (GDK_SHIFT_MASK | GDK_LOCK_MASK)));
 
 	GlobalPreferenceSystem().registerPreference("LastMap", make_property_string(g_strLastMap));
 	GlobalPreferenceSystem().registerPreference("LoadLastMap", make_property_string(g_bLoadLastMap));

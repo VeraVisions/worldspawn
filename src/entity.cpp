@@ -619,7 +619,7 @@ void Entity_Construct()
 	GlobalCommands_insert("EntityColor", makeCallbackF(Entity_setColour), Accelerator('K'));
 	GlobalCommands_insert("NormalizeColor", makeCallbackF(Entity_normalizeColor));
 	GlobalCommands_insert("ConnectSelection", makeCallbackF(Entity_connectSelected),
-	                      Accelerator('K', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator('K', (GdkModifierType) GDK_LOCK_MASK));
 	GlobalCommands_insert("KillConnectSelection", makeCallbackF(Entity_killconnectSelected),
 	                      Accelerator('K', (GdkModifierType) (GDK_SHIFT_MASK)));
 	GlobalCommands_insert("GroupSelection", makeCallbackF(Entity_groupSelected));

@@ -2920,7 +2920,7 @@ void TextureBrowser_Construct()
 	GlobalToggles_insert("ShowInUse", makeCallbackF(TextureBrowser_ToggleHideUnused),
 	                     ToggleItem::AddCallbackCaller(g_TextureBrowser.m_hideunused_item), Accelerator('U'));
 	GlobalCommands_insert("ShowAllTextures", makeCallbackF(TextureBrowser_showAll),
-	                      Accelerator('A', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator('A', (GdkModifierType) GDK_LOCK_MASK));
 	GlobalCommands_insert("ToggleTextures", makeCallbackF(TextureBrowser_toggleShow), Accelerator('T'));
 	GlobalToggles_insert("ToggleShowShaders", makeCallbackF(TextureBrowser_ToggleShowShaders),
 	                     ToggleItem::AddCallbackCaller(g_TextureBrowser.m_showshaders_item));

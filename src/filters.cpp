@@ -251,16 +251,16 @@ void ConstructFilters()
 	}
 	add_filter_command(EXCLUDE_LIGHTS, "FilterLights", Accelerator('0', (GdkModifierType) GDK_MOD1_MASK));
 	add_filter_command(EXCLUDE_STRUCTURAL, "FilterStructural",
-	                   Accelerator('D', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
+	                   Accelerator('D', (GdkModifierType) (GDK_SHIFT_MASK | GDK_LOCK_MASK)));
 	if (g_pGameDescription->mGameType != "doom3") {
 		add_filter_command(EXCLUDE_LIGHTGRID, "FilterLightgrid", accelerator_null());
 	}
-	add_filter_command(EXCLUDE_CURVES, "FilterPatches", Accelerator('P', (GdkModifierType) GDK_CONTROL_MASK));
-	add_filter_command(EXCLUDE_DETAILS, "FilterDetails", Accelerator('D', (GdkModifierType) GDK_CONTROL_MASK));
-	add_filter_command(EXCLUDE_HINTSSKIPS, "FilterHintsSkips", Accelerator('H', (GdkModifierType) GDK_CONTROL_MASK));
+	add_filter_command(EXCLUDE_CURVES, "FilterPatches", Accelerator('P', (GdkModifierType) GDK_LOCK_MASK));
+	add_filter_command(EXCLUDE_DETAILS, "FilterDetails", Accelerator('D', (GdkModifierType) GDK_LOCK_MASK));
+	add_filter_command(EXCLUDE_HINTSSKIPS, "FilterHintsSkips", Accelerator('H', (GdkModifierType) GDK_LOCK_MASK));
 	add_filter_command(EXCLUDE_MODELS, "FilterModels", Accelerator('M', (GdkModifierType) GDK_SHIFT_MASK));
 	add_filter_command(EXCLUDE_TRIGGERS, "FilterTriggers",
-	                   Accelerator('T', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
+	                   Accelerator('T', (GdkModifierType) (GDK_SHIFT_MASK | GDK_LOCK_MASK)));
 	if (g_pGameDescription->mGameType != "doom3") {
 		add_filter_command(EXCLUDE_BOTCLIP, "FilterBotClips", Accelerator('M', (GdkModifierType) GDK_MOD1_MASK));
 		add_filter_command(EXCLUDE_DECALS, "FilterDecals", Accelerator('D', (GdkModifierType) GDK_SHIFT_MASK));

@@ -711,17 +711,17 @@ void Camera_motionDelta(int x, int y, unsigned int state, void *data)
 	case 0:
 		cam->m_strafe = (state & GDK_SHIFT_MASK) != 0;
 		if (cam->m_strafe) {
-			cam->m_strafe_forward = (state & GDK_CONTROL_MASK) != 0;
+			cam->m_strafe_forward = (state & GDK_LOCK_MASK) != 0;
 		} else {
 			cam->m_strafe_forward = false;
 		}
 		break;
 	case 1:
-		cam->m_strafe = (state & GDK_CONTROL_MASK) != 0 && (state & GDK_SHIFT_MASK) == 0;
+		cam->m_strafe = (state & GDK_LOCK_MASK) != 0 && (state & GDK_SHIFT_MASK) == 0;
 		cam->m_strafe_forward = false;
 		break;
 	case 2:
-		cam->m_strafe = (state & GDK_CONTROL_MASK) != 0 && (state & GDK_SHIFT_MASK) == 0;
+		cam->m_strafe = (state & GDK_LOCK_MASK) != 0 && (state & GDK_SHIFT_MASK) == 0;
 		cam->m_strafe_forward = cam->m_strafe;
 		break;
 	}
@@ -2006,6 +2006,15 @@ void GlobalCamera_LookThroughCamera()
 	CamWnd_LookThroughCamera(*g_camwnd);
 }
 
+
+void GlobalCamera_Refresh(void)
+{
+	CamWnd &camwnd = *g_camwnd;
+	Camera_updateModelview(camwnd.getCamera());
+	Camera_updateProjection(camwnd.getCamera());
+	CamWnd_Update(camwnd);
+}
+
 /* sets origin and angle to 0,0,0 coords */
 void XYZ_SetOrigin(const Vector3 &origin);
 void GlobalCamera_GoToZero(void)
@@ -2139,18 +2148,18 @@ void CamWnd_Construct()
 
 	GlobalToggles_insert("ToggleCubicClip", makeCallbackF(Camera_ToggleFarClip),
 	                     ToggleItem::AddCallbackCaller(g_getfarclip_item),
-	                     Accelerator('\\', (GdkModifierType) GDK_CONTROL_MASK));
+	                     Accelerator('\\', (GdkModifierType) GDK_LOCK_MASK));
 	GlobalCommands_insert("CubicClipZoomIn", makeCallbackF(Camera_CubeIn),
-	                      Accelerator('[', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator('[', (GdkModifierType) GDK_LOCK_MASK));
 	GlobalCommands_insert("CubicClipZoomOut", makeCallbackF(Camera_CubeOut),
-	                      Accelerator(']', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator(']', (GdkModifierType) GDK_LOCK_MASK));
 
 	GlobalCommands_insert("UpFloor", makeCallbackF(Camera_ChangeFloorUp), Accelerator(GDK_KEY_Prior));
 	GlobalCommands_insert("DownFloor", makeCallbackF(Camera_ChangeFloorDown), Accelerator(GDK_KEY_Next));
 
 	GlobalToggles_insert("ToggleCamera", ToggleShown::ToggleCaller(g_camera_shown),
 	                     ToggleItem::AddCallbackCaller(g_camera_shown.m_item),
-	                     Accelerator('C', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
+	                     Accelerator('C', (GdkModifierType) (GDK_SHIFT_MASK | GDK_LOCK_MASK)));
 	GlobalCommands_insert("LookThroughSelected", makeCallbackF(GlobalCamera_LookThroughSelected));
 	GlobalCommands_insert("LookThroughCamera", makeCallbackF(GlobalCamera_LookThroughCamera));
 

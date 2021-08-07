@@ -1300,30 +1300,30 @@ void Brush_registerCommands()
 	GlobalCommands_insert("BrushRock", BrushPrefab::SetCaller(g_brushrock));
 
 	GlobalCommands_insert("Brush3Sided", BrushMakeSided::SetCaller(g_brushmakesided3),
-	                      Accelerator('3', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator('3', (GdkModifierType) GDK_LOCK_MASK));
 	GlobalCommands_insert("Brush4Sided", BrushMakeSided::SetCaller(g_brushmakesided4),
-	                      Accelerator('4', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator('4', (GdkModifierType) GDK_LOCK_MASK));
 	GlobalCommands_insert("Brush5Sided", BrushMakeSided::SetCaller(g_brushmakesided5),
-	                      Accelerator('5', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator('5', (GdkModifierType) GDK_LOCK_MASK));
 	GlobalCommands_insert("Brush6Sided", BrushMakeSided::SetCaller(g_brushmakesided6),
-	                      Accelerator('6', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator('6', (GdkModifierType) GDK_LOCK_MASK));
 	GlobalCommands_insert("Brush7Sided", BrushMakeSided::SetCaller(g_brushmakesided7),
-	                      Accelerator('7', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator('7', (GdkModifierType) GDK_LOCK_MASK));
 	GlobalCommands_insert("Brush8Sided", BrushMakeSided::SetCaller(g_brushmakesided8),
-	                      Accelerator('8', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator('8', (GdkModifierType) GDK_LOCK_MASK));
 	GlobalCommands_insert("Brush9Sided", BrushMakeSided::SetCaller(g_brushmakesided9),
-	                      Accelerator('9', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator('9', (GdkModifierType) GDK_LOCK_MASK));
 
 	GlobalCommands_insert("ClipSelected", makeCallbackF(ClipSelected), Accelerator(GDK_KEY_Return));
 	GlobalCommands_insert("SplitSelected", makeCallbackF(SplitSelected),
 	                      Accelerator(GDK_KEY_Return, (GdkModifierType) GDK_SHIFT_MASK));
 	GlobalCommands_insert("FlipClip", makeCallbackF(FlipClipper),
-	                      Accelerator(GDK_KEY_Return, (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator(GDK_KEY_Return, (GdkModifierType) GDK_LOCK_MASK));
 
 	GlobalCommands_insert("MakeDetail", makeCallbackF(Select_MakeDetail),
-	                      Accelerator('M', (GdkModifierType) GDK_CONTROL_MASK));
+	                      Accelerator('M', (GdkModifierType) GDK_LOCK_MASK));
 	GlobalCommands_insert("MakeStructural", makeCallbackF(Select_MakeStructural),
-	                      Accelerator('S', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
+	                      Accelerator('S', (GdkModifierType) (GDK_SHIFT_MASK | GDK_LOCK_MASK)));
 }
 
 void Brush_constructMenu(ui::Menu menu)
