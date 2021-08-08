@@ -444,72 +444,10 @@ void insert( const char* key, const KeyValuePtr& keyValue ){
 
 /* see if our key already exists in here */
 void insert( const char* key, const char* value ){
-	int dupecheck = 0;
+	int dupecheck = 1;
 
-	if (!strcmp(key, "classname"))
-		dupecheck = 1;
-	else if (!strcmp(key, "origin"))
-		dupecheck = 1;
-	else if (!strcmp(key, "model"))
-		dupecheck = 1;
-	else if (!strcmp(key, "angles"))
-		dupecheck = 1;
-	else if (!strcmp(key, "angle"))
-		dupecheck = 1;
-	else if (!strcmp(key, "alpha"))
-		dupecheck = 1;
-	else if (!strcmp(key, "rendermode"))
-		dupecheck = 1;
-	else if (!strcmp(key, "renderamt"))
-		dupecheck = 1;
-	else if (!strcmp(key, "rendercolor"))
-		dupecheck = 1;
-	else if (!strcmp(key, "velocity"))
-		dupecheck = 1;
-	else if (!strcmp(key, "solid"))
-		dupecheck = 1;
-	else if (!strcmp(key, "movetype"))
-		dupecheck = 1;
-	else if (!strcmp(key, "avelocity"))
-		dupecheck = 1;
-	else if (!strcmp(key, "skin"))
-		dupecheck = 1;
-	else if (!strcmp(key, "effects"))
-		dupecheck = 1;
-	else if (!strcmp(key, "target"))
-		dupecheck = 1;
-	else if (!strcmp(key, "targetname"))
-		dupecheck = 1;
-	else if (!strcmp(key, "killtarget"))
-		dupecheck = 1;
-	else if (!strcmp(key, "shadows"))
-		dupecheck = 1;
-	else if (!strcmp(key, "modelscale"))
-		dupecheck = 1;
-	else if (!strcmp(key, "scale"))
-		dupecheck = 1;
-	else if (!strcmp(key, "message"))
-		dupecheck = 1;
-	else if (!strcmp(key, "fade"))         /* light keys */
-		dupecheck = 1;
-	else if (!strcmp(key, "anglescale"))
-		dupecheck = 1;
-	else if (!strcmp(key, "style"))
-		dupecheck = 1;
-	else if (!strcmp(key, "light"))
-		dupecheck = 1;
-	else if (!strcmp(key, "deviance"))
-		dupecheck = 1;
-	else if (!strcmp(key, "samples"))
-		dupecheck = 1;
-	else if (!strcmp(key, "filter"))
-		dupecheck = 1;
-	else if (!strcmp(key, "color"))
-		dupecheck = 1;
-	else if (!strcmp(key, "color255"))
-		dupecheck = 1;
-	else if (!strcmp(key, "extradist"))
-		dupecheck = 1;
+	if (!strncmp(key, "On", 2))
+		dupecheck = 0;
 
 	KeyValues::iterator i = m_keyValues.find( key );
 
