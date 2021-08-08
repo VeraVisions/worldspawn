@@ -1,6 +1,6 @@
 # WorldSpawn Makefile 
 
-GTK_CFLAGS=$(shell pkg-config --cflags gtk+-2.0)
+GTK_CFLAGS=$(shell pkg-config --cflags gtk+-2.0) $(shell pkg-config --cflags cairo)
 GLEXT_CFLAGS=$(shell pkg-config --cflags gtkglext-1.0)
 
 LIB_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) $(GLEXT_CFLAGS) -I../../include -I../../libs -DGTK_TARGET=2
