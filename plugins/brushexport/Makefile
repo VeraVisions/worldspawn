@@ -16,7 +16,7 @@ WS_OBJS = \
 
 # binary target
 ../../build/plugins/libbrushexport.so: $(WS_OBJS)
-	$(CXX) $(PLUGIN_LDFLAGS) -o $@ $(WS_OBJS) ../../libs/libuilib.a ../../libs/libgtkutil.a
+	$(CXX) -o $@ $(WS_OBJS) ../../libs/libuilib.a ../../libs/libgtkutil.a $(PLUGIN_LDFLAGS)
 
 # object files
 callbacks.o: callbacks.cpp callbacks.h

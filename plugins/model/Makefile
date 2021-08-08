@@ -16,8 +16,7 @@ WS_OBJS = \
 
 # binary target
 ../../build/plugins/libmodel.so: $(WS_OBJS)
-	$(CXX) $(PLUGIN_LDFLAGS) -o $@ $(WS_OBJS) ../../libs/libpicomodel.a
-
+	$(CXX) -o $@ $(WS_OBJS) ../../libs/libpicomodel.a $(PLUGIN_LDFLAGS)
 
 # object files
 model.o: model.cpp model.h

@@ -16,8 +16,7 @@ WS_OBJS = \
 
 # binary target
 ../../build/plugins/libmapq3.so: $(WS_OBJS)
-	$(CXX) $(PLUGIN_LDFLAGS) -o $@ $(WS_OBJS)
-
+	$(CXX) -o $@ $(WS_OBJS) $(PLUGIN_LDFLAGS)
 
 # object files
 parse.o: parse.cpp parse.h

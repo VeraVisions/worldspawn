@@ -1,7 +1,7 @@
 # WorldSpawn Makefile 
 
-GTK_CFLAGS=$(shell pkg-config --cflags gtk+-2.0) $(shell pkg-config --cflags cairo)
-GTK_LDFLAGS=$(shell pkg-config --libs gtk+-2.0) $(shell pkg-config --libs cairo)
+GTK_CFLAGS=$(shell pkg-config --cflags gtk+-2.0)
+GTK_LDFLAGS=$(shell pkg-config --libs gtk+-2.0)
 
 XML_CFLAGS=$(shell pkg-config --cflags libxml-2.0)
 XML_LDFLAGS=$(shell pkg-config --libs libxml-2.0)

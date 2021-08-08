@@ -16,7 +16,7 @@ WS_OBJS = \
 
 # binary target
 ../../build/plugins/libprtview.so: $(WS_OBJS)
-	$(CXX) $(PLUGIN_LDFLAGS) -o $@ $(WS_OBJS) ../../libs/libuilib.a ../../libs/libgtkutil.a ../../libs/libprofile.a
+	$(CXX) -o $@ $(WS_OBJS) ../../libs/libuilib.a ../../libs/libgtkutil.a ../../libs/libprofile.a $(PLUGIN_LDFLAGS)
 
 # object files
 AboutDialog.o: AboutDialog.cpp AboutDialog.h

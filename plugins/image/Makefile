@@ -19,7 +19,7 @@ WS_OBJS = \
 
 # binary target
 ../../build/plugins/libimage.so: $(WS_OBJS)
-	$(CXX) $(PLUGIN_LDFLAGS) -o $@ $(WS_OBJS) ../../libs/libddslib.a ../../libs/libetclib.a
+	$(CXX) -o $@ $(WS_OBJS) ../../libs/libddslib.a ../../libs/libetclib.a $(PLUGIN_LDFLAGS)
 
 # object files
 bmp.o: bmp.cpp bmp.h

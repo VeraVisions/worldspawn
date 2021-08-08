@@ -16,8 +16,7 @@ WS_OBJS = \
 
 # binary target
 ../../build/plugins/libvfspk3.so: $(WS_OBJS)
-	$(CXX) $(PLUGIN_LDFLAGS) -o $@ $(WS_OBJS) ../../libs/libfilematch.a
-
+	$(CXX) -o $@ $(WS_OBJS) ../../libs/libfilematch.a $(PLUGIN_LDFLAGS)
 
 # object files
 archive.o: archive.cpp archive.h

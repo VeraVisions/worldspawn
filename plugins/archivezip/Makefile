@@ -13,7 +13,7 @@ WS_OBJS = \
 
 # binary target
 ../../build/plugins/libarchivezip.so: $(WS_OBJS)
-	$(CXX) $(PLUGIN_LDFLAGS) -o $@ $(WS_OBJS)
+	$(CXX) -o $@ $(WS_OBJS) $(PLUGIN_LDFLAGS)
 
 # object files
 archive.o: archive.cpp archive.h

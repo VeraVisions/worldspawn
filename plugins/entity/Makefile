@@ -26,7 +26,7 @@ WS_OBJS = \
 
 # binary target
 ../../build/plugins/libentity.so: $(WS_OBJS)
-	$(CXX) $(PLUGIN_LDFLAGS) -o $@ $(WS_OBJS)
+	$(CXX) -o $@ $(WS_OBJS) $(PLUGIN_LDFLAGS)
 
 # object files
 eclassmodel.o: eclassmodel.cpp eclassmodel.h
