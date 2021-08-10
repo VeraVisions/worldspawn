@@ -3022,9 +3022,9 @@ void MainFrame_Construct()
 	/*GlobalCommands_insert("Sleep", makeCallbackF(thunk_OnSleep),
 	                      Accelerator('P', (GdkModifierType) (GDK_SHIFT_MASK | GDK_LOCK_MASK)));*/
 	GlobalCommands_insert("NewMap", makeCallbackF(NewMap));
-	GlobalCommands_insert("OpenMap", makeCallbackF(OpenMap), Accelerator('O', (GdkModifierType) GDK_LOCK_MASK));
+	GlobalCommands_insert("OpenMap", makeCallbackF(OpenMap), Accelerator('O', (GdkModifierType) GDK_CONTROL_MASK));
 	GlobalCommands_insert("ImportMap", makeCallbackF(ImportMap));
-	GlobalCommands_insert("SaveMap", makeCallbackF(SaveMap), Accelerator('S', (GdkModifierType) GDK_LOCK_MASK));
+	GlobalCommands_insert("SaveMap", makeCallbackF(SaveMap), Accelerator('S', (GdkModifierType) GDK_CONTROL_MASK));
 	GlobalCommands_insert("SaveMapAs", makeCallbackF(SaveMapAs));
 	GlobalCommands_insert("ExportSelected", makeCallbackF(ExportMap));
 	GlobalCommands_insert("SaveRegion", makeCallbackF(SaveRegion));
@@ -3032,10 +3032,10 @@ void MainFrame_Construct()
 	GlobalCommands_insert("ProjectSettings", makeCallbackF(DoProjectSettings));
 	GlobalCommands_insert("Exit", makeCallbackF(Exit));
 
-	GlobalCommands_insert("Undo", makeCallbackF(Undo), Accelerator('Z', (GdkModifierType) GDK_LOCK_MASK));
-	GlobalCommands_insert("Redo", makeCallbackF(Redo), Accelerator('Y', (GdkModifierType) GDK_LOCK_MASK));
-	GlobalCommands_insert("Copy", makeCallbackF(Copy), Accelerator('C', (GdkModifierType) GDK_LOCK_MASK));
-	GlobalCommands_insert("Paste", makeCallbackF(Paste), Accelerator('V', (GdkModifierType) GDK_LOCK_MASK));
+	GlobalCommands_insert("Undo", makeCallbackF(Undo), Accelerator('Z', (GdkModifierType) GDK_CONTROL_MASK));
+	GlobalCommands_insert("Redo", makeCallbackF(Redo), Accelerator('Y', (GdkModifierType) GDK_CONTROL_MASK));
+	GlobalCommands_insert("Copy", makeCallbackF(Copy), Accelerator('C', (GdkModifierType) GDK_CONTROL_MASK));
+	GlobalCommands_insert("Paste", makeCallbackF(Paste), Accelerator('V', (GdkModifierType) GDK_CONTROL_MASK));
 	GlobalCommands_insert("PasteToCamera", makeCallbackF(PasteToCamera),
 	                      Accelerator('V', (GdkModifierType) GDK_MOD1_MASK));
 	GlobalCommands_insert("CloneSelection", makeCallbackF(Selection_Clone), Accelerator(GDK_KEY_space));
