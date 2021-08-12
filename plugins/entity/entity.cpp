@@ -324,6 +324,7 @@ bool filter(const Entity &entity) const
 
 filter_entity_classtwo g_filter_entity_world("worldspawn", "func_group");
 filter_entity_classname g_filter_entity_func_group("func_group");
+filter_entity_classtwo g_filter_entity_details("func_detail", "func_detail_illusionary");
 filter_entity_classname g_filter_entity_light("light");
 filter_entity_classname g_filter_entity_prop_static("prop_static");
 filter_entity_classname g_filter_entity_prop_dynamic("prop_dynamic");
@@ -346,6 +347,7 @@ void Entity_InitFilters()
 {
 	add_entity_filter(g_filter_entity_world, EXCLUDE_WORLD);
 	add_entity_filter(g_filter_entity_func_group, EXCLUDE_GROUP);
+	add_entity_filter(g_filter_entity_details, EXCLUDE_DETAILS);
 	add_entity_filter(g_filter_entity_trigger, EXCLUDE_TRIGGERS);
 	add_entity_filter(g_filter_entity_prop_static, EXCLUDE_MODELS);
 	add_entity_filter(g_filter_entity_prop_dynamic, EXCLUDE_MODELS);
