@@ -1063,18 +1063,24 @@ void GetEntityShadowFlags( const entity_t *ent, const entity_t *ent2, int *castS
 
 	/* get cast shadows */
 	if ( castShadows != NULL ) {
-		value = ValueForKey( ent, "_castShadows" );
-		if ( value[ 0 ] == '\0' ) {
-			value = ValueForKey( ent, "_cs" );
+		value = ValueForKey( ent, "zhlt_lightflags" );
+		if ( value && value[ 0 ] != '\0' ) {
+			*castShadows = atoi( value ) & 0x2;
 		}
-		if ( value[ 0 ] == '\0' ) {
-			value = ValueForKey( ent2, "_castShadows" );
-		}
-		if ( value[ 0 ] == '\0' ) {
-			value = ValueForKey( ent2, "_cs" );
-		}
-		if ( value[ 0 ] != '\0' ) {
-			*castShadows = atoi( value );
+		else {
+			value = ValueForKey( ent, "_castShadows" );
+			if ( value[ 0 ] == '\0' ) {
+				value = ValueForKey( ent, "_cs" );
+			}
+			if ( value[ 0 ] == '\0' ) {
+				value = ValueForKey( ent2, "_castShadows" );
+			}
+			if ( value[ 0 ] == '\0' ) {
+				value = ValueForKey( ent2, "_cs" );
+			}
+			if ( value[ 0 ] != '\0' ) {
+				*castShadows = atoi( value );
+			}
 		}
 	}
 
