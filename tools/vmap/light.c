@@ -246,7 +246,7 @@ void CreateEntityLights( void ){
 	const char      *name;
 	const char      *target;
 	vec3_t dest;
-	const char      *_color, *_light_brightness;
+	const char      *_color, *_light_brightness, *_spread;
 	float intensity, scale, deviance, filterRadius;
 	int spawnflags, flags, numSamples;
 	qboolean junior;
@@ -304,6 +304,10 @@ void CreateEntityLights( void ){
 			} else {
 				/* alternative: read color in RGB8 values -eukara */
 				_color = ValueForKey( e, "ambientcolor255" );
+				if ( !_color || !_color[ 0 ] ) {
+					/* ZHLT's ambient light_environment color. */
+					_color = ValueForKey( e, "_diffuse_light" );
+				}
 				if ( _color && _color[ 0 ] ) {
 					sscanf( _color, "%f %f %f", &ambientColor[ 0 ], &ambientColor[ 1 ], &ambientColor[ 2 ] );
 					ambientColor[0] /= 255;
@@ -336,7 +340,14 @@ void CreateEntityLights( void ){
 
 			/* get filter radius from shader */
 			sun->filterRadius = FloatForKey( e, "filterradius" );
-			sun->deviance = FloatForKey( e, "sunspreadangle" );
+			_spread = ValueForKey( e, "_spread" );
+			if ( _spread && _spread[ 0 ] ) {
+				/* ZHLT's sun spread angle. */
+				sun->deviance = atof( _spread );
+			}
+			else {
+				sun->deviance = FloatForKey( e, "sunspreadangle" );
+			}
 			sun->deviance = sun->deviance / 180.0f * Q_PI;
 			sun->numSamples = IntForKey( e, "samples" );
 
