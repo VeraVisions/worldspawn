@@ -208,6 +208,30 @@ static void CreateSkyLights( vec3_t color, float value, int iterations, float fi
 	return;
 }
 
+/*
+   stristr()
+   helper to find a substring (case-insensitive)
+ */
+
+static const char *stristr(const char *haystack, const char *needle) {
+	char c = tolower(*needle);
+	if (!c) {
+		return haystack;
+	}
+	for (; *haystack; haystack++) {
+		if (tolower(*haystack) == c) {
+			for (size_t i = 1;;i++) {
+				if (!needle[i]) {
+					return haystack;
+				}
+				if (tolower(haystack[i]) != tolower(needle[i])) {
+					break;
+				}
+			}
+		}
+	}
+	return NULL;
+}
 
 
 /*
@@ -222,7 +246,7 @@ void CreateEntityLights( void ){
 	const char      *name;
 	const char      *target;
 	vec3_t dest;
-	const char      *_color;
+	const char      *_color, *_light_brightness;
 	float intensity, scale, deviance, filterRadius;
 	int spawnflags, flags, numSamples;
 	qboolean junior;
@@ -340,6 +364,9 @@ void CreateEntityLights( void ){
 			const char *surfacename;
 
 			surfacename = ValueForKey( e, "surfacename" );
+			if ( !surfacename || !surfacename[ 0 ] ) {
+				surfacename = ValueForKey( e, "_tex" );
+			}
 
 			/* loop through all surfaces -eukara */
 			for (int i = 0; i < numBSPDrawSurfaces; i++)
@@ -354,10 +381,19 @@ void CreateEntityLights( void ){
 				int style;
 				float bscale, bsfrac, bsdist;
 
-				if (Q_stricmp(si->shader, surfacename))
+				if (!stristr(si->shader, surfacename))
 					continue;
 
-				lb = FloatForKey( e, "light" );
+				_light_brightness = ValueForKey( e, "_light" );
+				if ( _light_brightness && _light_brightness[ 0 ] ) {
+					/* Only the last value, alpha, matters for the brightness
+					 * the rest is always dummy values which are meaningless.
+					 */
+					sscanf( _light_brightness, "%*f %*f %*f %f", &lb );
+				}
+				else {
+					lb = FloatForKey( e, "light" );
+				}
 				subd = IntForKey( e, "subdivisions" );
 				style = IntForKey( e, "style" );
 				bscale = FloatForKey( e, "bouncescale" );
@@ -393,6 +429,9 @@ void CreateEntityLights( void ){
 				} else {
 					/* alternative: read color in RGB8 values -eukara */
 					_color = ValueForKey( e, "color255" );
+					if ( !_color || !_color[ 0 ] ) {
+						_color = ValueForKey( e, "_texcolor" );
+					}
 					if ( _color && _color[ 0 ] ) {
 						sscanf( _color, "%f %f %f", &si->color[ 0 ], &si->color[ 1 ], &si->color[ 2 ] );
 						si->color[0] /= 255;
