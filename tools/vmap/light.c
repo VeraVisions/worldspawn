@@ -304,6 +304,10 @@ void CreateEntityLights( void ){
 			} else {
 				/* alternative: read color in RGB8 values -eukara */
 				_color = ValueForKey( e, "ambientcolor255" );
+				if ( !_color || !_color[ 0 ] ) {
+					/* ZHLT's ambient light_environment color. */
+					_color = ValueForKey( e, "_diffuse_light" );
+				}
 				if ( _color && _color[ 0 ] ) {
 					sscanf( _color, "%f %f %f", &ambientColor[ 0 ], &ambientColor[ 1 ], &ambientColor[ 2 ] );
 					ambientColor[0] /= 255;
