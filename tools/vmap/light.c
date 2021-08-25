@@ -264,6 +264,7 @@ void CreateEntityLights( void ){
 			float a, b;
 			sun = safe_malloc( sizeof( *sun ) );
 			memset( sun, 0, sizeof( *sun ) );
+			sun->photons = 0;
 
 			/* set style */
 			sun->style = IntForKey( e, "style" );
@@ -285,10 +286,20 @@ void CreateEntityLights( void ){
 					sun->color[1] /= 255;
 					sun->color[2] /= 255;
 				} else {
-					/* default to white color values */
-					sun->color[ 0 ] =
+					/* this may be a HL light_environment */
+					_color = ValueForKey( e, "_light" );
+					if ( _color && _color[ 0 ] ) {
+						sscanf( _color, "%f %f %f %f", &sun->color[ 0 ], &sun->color[ 1 ], &sun->color[ 2 ], &sun->photons );
+						sun->color[0] /= 255;
+						sun->color[1] /= 255;
+						sun->color[2] /= 255;
+						sun->photons *= 0.5f;
+					} else {
+						/* default to white color values */
+						sun->color[ 0 ] =
 						sun->color[ 1 ] =
-							sun->color[ 2 ] = 1.0f;
+						sun->color[ 2 ] = 1.0f;
+					}
 				}
 			}
 
@@ -325,7 +336,8 @@ void CreateEntityLights( void ){
 			ColorNormalize( sun->color, sun->color );
 
 			/* scale color by brightness */
-			sun->photons = FloatForKey( e, "intensity" ) * 0.5f;
+			if (sun->photons == 0)
+				sun->photons = FloatForKey( e, "intensity" ) * 0.5f;
 
 			/* get sun angle/elevation */
 			a = FloatForKey( e, "sunangle" );
