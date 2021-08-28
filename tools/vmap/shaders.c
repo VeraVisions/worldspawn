@@ -1406,15 +1406,10 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 				si->lightSubdivide = atoi( mattoken );
 			}
 
-			/* vmap_lightLinear */
-			else if ( !Q_stricmp( mattoken, "vmap_lightLinear" ) ) {
-				si->lightLinear = qtrue;
-			}
-
-			/* vmap_lightLinearFade multiplier */
-			else if ( !Q_stricmp( mattoken, "vmap_lightLinearFade" ) ) {
+			/* vmap_surfacelight multiplier */
+			else if ( !Q_stricmp( mattoken, "vmap_surfaceLightDistance" ) ) {
 				GetMatTokenAppend( shaderText, qfalse );
-				si->lightLinearFade = atof( mattoken );
+				si->surfLightDistance = atof( mattoken );
 			}
 
 			/* q3map_backsplash <percent> <distance> */
