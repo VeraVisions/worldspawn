@@ -249,7 +249,7 @@ void CreateEntityLights( void ){
 	const char      *_color, *_light_brightness, *_spread;
 	float intensity, scale, deviance, filterRadius;
 	int spawnflags, flags, numSamples;
-	qboolean junior;
+	qboolean junior, isSpotlightEntity;
 
 
 	/* go throught entity list and find lights */
@@ -426,7 +426,7 @@ void CreateEntityLights( void ){
 
 				/* 23 units apparently is the default */
 				bsdist = FloatForKey( e, "backsplash_distance" );
-
+				
 				/* only apply when things are set. */
 				if (lb)
 					si->value = lb;
@@ -464,10 +464,15 @@ void CreateEntityLights( void ){
 				}
 			}
 			continue;
+		} else if ( !Q_stricmp( "light_spot", name ) ) {
+			junior = qfalse;
+			isSpotlightEntity = qtrue;
 		} else if ( !Q_stricmp( "lightJunior", name ) ) {
 			junior = qtrue;
+			isSpotlightEntity = qfalse;
 		} else if ( !Q_stricmp( "light", name ) ) {
 			junior = qfalse;
+			isSpotlightEntity = qfalse;
 		} else{
 			continue;
 		}
@@ -572,7 +577,7 @@ void CreateEntityLights( void ){
 
 		/* set light intensity */
 		_color = ValueForKey( e, "_light" );
-		if ( _color && _color[0] ) {
+		if ( _color[ 0 ] ) {
 			/* Handle Half-Life styled _light values which
 			 * contain color. Otherwise, fallback to _light
 			 * being a single float for intensity
@@ -585,10 +590,10 @@ void CreateEntityLights( void ){
 			}
 			else {
 				intensity = FloatForKey( e, "_light" );
-				if ( intensity == 0.0f ) {
-					intensity = FloatForKey( e, "light" );
-				}
 			}
+		}
+		else {
+			intensity = FloatForKey( e, "light" );
 		}
 		if ( intensity == 0.0f ) {
 			intensity = 300.0f;
@@ -691,9 +696,11 @@ void CreateEntityLights( void ){
 		/* set falloff threshold */
 		light->falloffTolerance = falloffTolerance / numSamples;
 
-		/* lights with a target will be spotlights */
+		/* lights with a target will be spotlights
+		 * also if they are a light_spot
+		 */
 		target = ValueForKey( e, "target" );
-		if ( target[ 0 ] ) {
+		if ( isSpotlightEntity || target[ 0 ] ) {
 			float radius;
 			float dist;
 			sun_t sun;
@@ -701,10 +708,15 @@ void CreateEntityLights( void ){
 
 
 			/* get target */
-			e2 = FindTargetEntity( target );
-			if ( e2 == NULL ) {
+			if ( isSpotlightEntity ) {
+				e2 = NULL;
+			} else {
+				e2 = FindTargetEntity( target );
+			}
+
+			if ( !isSpotlightEntity && e2 == NULL ) {
 				Sys_FPrintf( SYS_WRN, "WARNING: light at (%i %i %i) has missing target\n",
-				             (int) light->origin[ 0 ], (int) light->origin[ 1 ], (int) light->origin[ 2 ] );
+							(int) light->origin[ 0 ], (int) light->origin[ 1 ], (int) light->origin[ 2 ] );
 				light->photons *= pointScale;
 			}
 			else
@@ -714,9 +726,50 @@ void CreateEntityLights( void ){
 				numSpotLights++;
 
 				/* make a spotlight */
-				GetVectorForKey( e2, "origin", dest );
-				VectorSubtract( dest, light->origin, light->normal );
-				dist = VectorNormalize( light->normal, light->normal );
+				if ( isSpotlightEntity ) {
+					vec3_t angles;
+					float value;
+
+					GetVectorForKey( e, "angles", angles );
+
+					/* handle the legacy "angle" key */
+					value = FloatForKey( e, "angle" );
+					if ( value == ANGLE_UP ) {
+						light->normal[ 0 ] = 0.0f;
+						light->normal[ 1 ] = 0.0f;
+						light->normal[ 2 ] = 1.0f;
+					} else if ( value == ANGLE_DOWN ) {
+						light->normal[ 0 ] = 0.0f;
+						light->normal[ 1 ] = 0.0f;
+						light->normal[ 2 ] = -1.0f;
+					} else {
+						if ( !value ) {
+							value = angles[ 1 ];
+						}
+						value *= Q_PI * 2.0f / 360.0f;
+						light->normal[ 2 ] = 0.0f;
+						light->normal[ 0 ] = cosf( value );
+						light->normal[ 1 ] = sinf( value );
+					}
+
+					/* handle the legacy "pitch" key */
+					value = FloatForKey( e, "pitch" );
+					if ( !value ) {
+						value = -angles[ 0 ];
+					}
+					value *= Q_PI * 2.0f / 360.0f;
+
+					light->normal[ 2 ] = sinf( value );
+					light->normal[ 0 ] *= cosf( value );
+					light->normal[ 1 ] *= cosf( value );
+
+					dist = FloatForKey( e, "dist" );
+				} else {
+					GetVectorForKey( e2, "origin", dest );
+					VectorSubtract( dest, light->origin, light->normal );
+					dist = VectorNormalize( light->normal, light->normal );
+				}
+
 				radius = FloatForKey( e, "radius" );
 				if ( !radius ) {
 					radius = 64;
