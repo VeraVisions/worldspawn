@@ -582,14 +582,13 @@ void CreateEntityLights( void ){
 				light->color[ 1 ] /= 255;
 				light->color[ 2 ] /= 255;
 				intensity /= 4;
-			}
-			else {
+			} else {
 				intensity = FloatForKey( e, "_light" );
-				if ( intensity == 0.0f ) {
-					intensity = FloatForKey( e, "light" );
-				}
 			}
+		} else {
+			intensity = FloatForKey( e, "light" );
 		}
+
 		if ( intensity == 0.0f ) {
 			intensity = 300.0f;
 		}
