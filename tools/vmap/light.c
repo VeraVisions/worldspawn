@@ -400,9 +400,11 @@ void CreateEntityLights( void ){
 				si = info->si;
 
 				float lb;
+				float llfade;
 				int subd;
 				int style;
 				float bscale, bsfrac, bsdist;
+				int sflags;
 
 				if (!stristr(si->shader, surfacename))
 					continue;
@@ -413,13 +415,15 @@ void CreateEntityLights( void ){
 					 * the rest is always dummy values which are meaningless.
 					 */
 					sscanf( _light_brightness, "%*f %*f %*f %f", &lb );
-				}
-				else {
+				} else {
 					lb = FloatForKey( e, "light" );
 				}
+
+				sflags = IntForKey( e, "spawnflags" );
 				subd = IntForKey( e, "subdivisions" );
 				style = IntForKey( e, "style" );
 				bscale = FloatForKey( e, "bouncescale" );
+				llfade = FloatForKey( e, "fade" );
 
 				/* 0.05 is a default */
 				bsfrac = FloatForKey( e, "backsplash_fraction" ) * 0.01f;
@@ -430,6 +434,10 @@ void CreateEntityLights( void ){
 				/* only apply when things are set. */
 				if (lb)
 					si->value = lb;
+				if (sflags & 1)
+					si->lightLinear = qtrue;
+				if (llfade)
+					si->lightLinearFade = llfade;
 				if (subd)
 					si->lightSubdivide = subd;
 				if (style)
@@ -859,9 +867,22 @@ void CreateSurfaceLights( void ){
 
 			/* set it up */
 			light->flags = LIGHT_Q3A_DEFAULT;
+
+			/* vmap_lightLinear */
+			if (si->lightLinear == qtrue) {
+				light->flags &= ~LIGHT_ATTEN_ANGLE;
+				light->flags |= LIGHT_ATTEN_LINEAR;
+			}
+
 			light->type = EMIT_POINT;
 			light->photons = si->value * pointScale;
-			light->fade = 1.0f;
+
+			/* vmap_lightLinearFade <multiplier> */
+			light->fade = si->lightLinearFade;
+
+			if (light->fade == 0.0f)
+				light->fade = 1.0f;
+
 			light->si = si;
 			VectorCopy( origin, light->origin );
 			VectorCopy( si->color, light->color );
