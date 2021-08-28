@@ -693,6 +693,8 @@ typedef struct shaderInfo_s
 	float backsplashDistance;                           /* default 16 */
 	float lightSubdivide;                               /* default 999 */
 	float lightFilterRadius;                            /* ydnar: lightmap filtering/blurring radius for lights created by this shader (default: 0) */
+	qb_t lightLinear;                                   /* vmap addition */
+	float lightLinearFade;                              /* vmap addition */
 
 	int lightmapSampleSize;                             /* lightmap sample size */
 	float lightmapSampleOffset;                         /* ydnar: lightmap sample offset (default: 1.0) */
