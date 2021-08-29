@@ -59,6 +59,7 @@ inline void read_angles(Vector3 &angles, const char *value)
 {
 	if (!string_parse_vector3(value, angles)) {
 		default_angles(angles);
+		printf("Failed to read angles!\n");
 	} else {
 		angles = Vector3(angles[2], angles[0], angles[1]);
 		normalise_angles(angles);
@@ -70,19 +71,11 @@ inline void write_angles(const Vector3 &angles, Entity *entity)
 	if (angles[0] == 0
 	    && angles[1] == 0
 	    && angles[2] == 0) {
-		entity->setKeyValue("angle", "");
 		entity->setKeyValue("angles", "");
 	} else {
 		char value[64];
-
-		if (angles[0] == 0 && angles[1] == 0) {
-			entity->setKeyValue("angles", "");
-			write_angle(angles[2], entity);
-		} else {
-			sprintf(value, "%f %f %f", angles[1], angles[2], angles[0]);
-			entity->setKeyValue("angle", "");
-			entity->setKeyValue("angles", value);
-		}
+		sprintf(value, "%f %f %f", angles[1], angles[2], angles[0]);
+		entity->setKeyValue("angles", value);
 	}
 }
 
