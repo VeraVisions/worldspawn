@@ -52,7 +52,9 @@ inline scene::Node &entity_for_eclass(EntityClass *eclass)
 {
 	if ( classname_equal(eclass->name(), "prop_dynamic" ) ) {
 		return New_PropDynamic(eclass);
-	} if ( classname_equal(eclass->name(), "prop_static" ) ) {
+	} else if ( classname_equal(eclass->name(), "prop_static" ) ) {
+		return New_PropStatic(eclass);
+	} else if ( classname_equal(eclass->name(), "prop_physics" ) ) {
 		return New_PropStatic(eclass);
 	} else if (classname_equal(eclass->name(), "light")
 	           || classname_equal(eclass->name(), "lightJunior")) {
@@ -61,6 +63,7 @@ inline scene::Node &entity_for_eclass(EntityClass *eclass)
 	           || classname_equal(eclass->name(), "lightJunior")) {
 		return New_Light(eclass);
 	}
+
 	if (!eclass->fixedsize) {
 		/*if (g_gameType == eGameTypeDoom3) {
 		        return New_Doom3Group(eclass);

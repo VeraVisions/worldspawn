@@ -86,6 +86,7 @@ void construct()
 	m_keyObservers.insert("angle", AnglesKey::AngleChangedCaller(m_anglesKey));
 	m_keyObservers.insert("angles", AnglesKey::AnglesChangedCaller(m_anglesKey));
 	m_keyObservers.insert("origin", OriginKey::OriginChangedCaller(m_originKey));
+	m_keyObservers.insert("model", SingletonModel::ModelChangedCaller(m_model));
 }
 
 // vc 2k5 compiler fix

@@ -548,6 +548,7 @@ static void RadSubdivideDiffuseLight( int lightmapNum, bspDrawSurface_t *ds, raw
 	light->si = si;
 	light->fade = 1.0f;
 	light->w = w;
+	area *= si->surfLightDistance;
 
 	/* set falloff threshold */
 	light->falloffTolerance = falloffTolerance;
