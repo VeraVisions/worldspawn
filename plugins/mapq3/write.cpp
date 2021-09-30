@@ -50,8 +50,13 @@ public:
 	void visit(const char *key, const char *value)
 	{
 		/* cut anything after # including the symbol itself */
-		StringTokeniser st(key, "#");
-		m_writer.writeString(st.getToken());
+		if (!strncmp(key, "On", 2)) {
+			StringTokeniser st(key, "#");
+			m_writer.writeString(st.getToken());
+		} else {
+			m_writer.writeString(key);
+		}
+
 		m_writer.writeString(value);
 		m_writer.nextLine();
 	}
