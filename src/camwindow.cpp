@@ -86,6 +86,7 @@ struct camwindow_globals_private_t {
 	bool m_showStats;
 	bool m_showLighting;
 	bool m_showAlpha;
+	bool m_showPatchBalls;
 	int m_nStrafeMode;
 
 	camwindow_globals_private_t() :
@@ -98,6 +99,7 @@ struct camwindow_globals_private_t {
 		m_showStats(false),
 		m_showLighting(false),
 		m_showAlpha(true),
+		m_showPatchBalls(true),
 		m_nStrafeMode(0)
 	{
 	}
@@ -1639,9 +1641,30 @@ FreeCaller<void(const Callback<void(bool)> &), ShowAlphaExport> g_show_alpha_cal
 Callback<void(const Callback<void(bool)> &)> g_show_alpha_callback(g_show_alpha_caller);
 ToggleItem g_show_alpha(g_show_alpha_callback);
 
+/* Show Patch Balls */
+void ShowPatchBallsToggle()
+{
+	g_camwindow_globals_private.m_showPatchBalls ^= 1;
+}
+void ShowPatchBallsExport(const Callback<void(bool)> &importer)
+{
+	importer(g_camwindow_globals_private.m_showPatchBalls);
+}
+FreeCaller<void(const Callback<void(bool)> &), ShowPatchBallsExport> g_show_patchballs_caller;
+Callback<void(const Callback<void(bool)> &)> g_show_patchballs_callback(g_show_patchballs_caller);
+ToggleItem g_show_patchballs(g_show_patchballs_callback);
+
+bool
+PatchBalls_Visible(void)
+{
+	return g_camwindow_globals_private.m_showPatchBalls;
+}
+
 void CamWnd::Cam_Draw()
 {
 	glViewport(0, 0, m_Camera.width, m_Camera.height);
+	glScissor(0, 0, m_Camera.width, m_Camera.height);
+	glEnable(GL_SCISSOR_TEST);
 	#if 0
 	GLint viewprt[4];
 	glGetIntegerv( GL_VIEWPORT, viewprt );
@@ -2188,6 +2211,7 @@ void CamWnd_Construct()
 	GlobalToggles_insert("ShowStats", makeCallbackF(ShowStatsToggle), ToggleItem::AddCallbackCaller(g_show_stats));
 	GlobalToggles_insert("ShowLighting", makeCallbackF(ShowLightToggle), ToggleItem::AddCallbackCaller(g_show_light));
 	GlobalToggles_insert("ShowAlpha", makeCallbackF(ShowAlphaToggle), ToggleItem::AddCallbackCaller(g_show_alpha));
+	GlobalToggles_insert("ShowPatchBalls", makeCallbackF(ShowPatchBallsToggle), ToggleItem::AddCallbackCaller(g_show_patchballs));
 
 	GlobalPreferenceSystem().registerPreference("ShowStats",
 	                                            make_property_string(g_camwindow_globals_private.m_showStats));
@@ -2195,6 +2219,8 @@ void CamWnd_Construct()
 	                                            make_property_string(g_camwindow_globals_private.m_showLighting));
 	GlobalPreferenceSystem().registerPreference("ShowAlpha",
 	                                            make_property_string(g_camwindow_globals_private.m_showAlpha));
+	GlobalPreferenceSystem().registerPreference("ShowPatchBalls",
+	                                            make_property_string(g_camwindow_globals_private.m_showPatchBalls));
 	GlobalPreferenceSystem().registerPreference("MoveSpeed",
 	                                            make_property_string(g_camwindow_globals_private.m_nMoveSpeed));
 	GlobalPreferenceSystem().registerPreference("CamLinkSpeed",

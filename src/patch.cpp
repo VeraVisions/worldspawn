@@ -1540,6 +1540,7 @@ void patch_draw_sphere(const Vector3 origin, float radius, int sides)
 	}
 }
 
+bool PatchBalls_Visible(void);
 void RenderablePatchFixedSolid::RenderNormals() const
 {
 	const std::size_t width = m_tess.m_numStrips + 1;
@@ -1552,12 +1553,14 @@ void RenderablePatchFixedSolid::RenderNormals() const
 			Vector4 colour = (m_tess.m_vertices.data() + (j * width + i))->colour;
 
 			/* color the currently selected bit */
+			if (PatchBalls_Visible()) {
 			if (PatchInspector_IsSelected((int)i, (int)j)) {
 				glColor3f(1,0,0);
 				patch_draw_sphere(pos, 8, 4);
 			} else {
 				glColor3f(1,1,1);
 				patch_draw_sphere(pos, 2, 4);
+			}
 			}
 
 			/*{

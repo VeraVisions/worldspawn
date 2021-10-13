@@ -1976,6 +1976,7 @@ ui::MenuItem create_view_menu()
 		create_check_menu_item_with_mnemonic(menu_in_menu, "Show Lighting", "ShowLighting");
 		create_check_menu_item_with_mnemonic(menu_in_menu, "Show Alpha", "ShowAlpha");
 		create_check_menu_item_with_mnemonic(menu_in_menu, "Show Stats", "ShowStats");
+		create_check_menu_item_with_mnemonic(menu_in_menu, "Show Patch Balls", "ShowPatchBalls");
 	}
 
 	{
