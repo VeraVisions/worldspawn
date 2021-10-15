@@ -593,6 +593,7 @@ int BSPMain( int argc, char **argv ){
 	maxSurfaceIndexes = game->maxSurfaceIndexes;
 	texturesRGB = game->texturesRGB;
 	colorsRGB = game->colorsRGB;
+	sampleSize = 16;
 
 	/* process arguments */
 	for ( i = 1; i < ( argc - 1 ); i++ )

@@ -2460,9 +2460,18 @@ int LightMain( int argc, char **argv ){
 	qboolean lightSamplesInsist = qfalse;
 	qboolean fastAllocate = qfalse;
 
+	/* defaults */
 	fast = qtrue;
 	fastgrid = qtrue;
 	fastbounce = qtrue;
+	bounce = 8;
+	dirty = qtrue;
+	patchShadows = qtrue;
+	deluxemap = qtrue;
+	noStyles = qtrue;
+	sampleSize = 16;
+	shadeAngleDegrees = 40.0f;
+	shade = qtrue;
 
 	/* note it */
 	Sys_Printf( "--- Light ---\n" );
@@ -2934,6 +2943,10 @@ int LightMain( int argc, char **argv ){
 			shade = qtrue;
 			Sys_Printf( "Phong shading enabled\n" );
 		}
+		else if ( !strcmp( argv[ i ], "-noshade" ) ) {
+			shade = qfalse;
+			Sys_Printf( "Phong shading disabled\n" );
+		}
 
 		else if ( !strcmp( argv[ i ], "-bouncegrid" ) ) {
 			bouncegrid = qtrue;
@@ -3047,6 +3060,10 @@ int LightMain( int argc, char **argv ){
 			patchShadows = qtrue;
 			Sys_Printf( "Patch shadow casting enabled\n" );
 		}
+		else if ( !strcmp( argv[ i ], "-nopatchshadows" ) ) {
+			patchShadows = qfalse;
+			Sys_Printf( "Patch shadow casting disabled\n" );
+		}
 		else if ( !strcmp( argv[ i ], "-samplesize" ) ) {
 			sampleSize = atoi( argv[ i + 1 ] );
 			if ( sampleSize < 1 ) {
@@ -3139,6 +3156,10 @@ int LightMain( int argc, char **argv ){
 		else if ( !strcmp( argv[ i ], "-dirty" ) ) {
 			dirty = qtrue;
 			Sys_Printf( "Dirtmapping enabled\n" );
+		}
+		else if ( !strcmp( argv[ i ], "-nodirty" ) ) {
+			dirty = qfalse;
+			Sys_Printf( "Dirtmapping disabled\n" );
 		}
 		else if ( !strcmp( argv[ i ], "-dirtdebug" ) || !strcmp( argv[ i ], "-debugdirt" ) ) {
 			dirtDebug = qtrue;
