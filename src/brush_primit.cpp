@@ -1147,6 +1147,89 @@ void Texdef_FitTexture(TextureProjection &projection, std::size_t width, std::si
 	Texdef_normalise(projection, (float) width, (float) height);
 }
 
+
+void Texdef_AlignTexture(TextureProjection &projection, const Plane3 &plane, const Vector3 &normal, const Winding &w, std::size_t width, std::size_t height, int alignment)
+{
+	if (w.numpoints < 3) {
+		return;
+	}
+
+	Matrix4 st2tex;
+	Texdef_toTransform(projection, (float) width, (float) height, st2tex);
+
+	// the current texture transform
+	Matrix4 local2tex = st2tex;
+	{
+		Matrix4 xyz2st;
+		Texdef_basisForNormal(projection, normal, xyz2st);
+		matrix4_multiply_by_matrix4(local2tex, xyz2st);
+	}
+
+	// the bounds of the current texture transform
+	AABB bounds;
+	for (Winding::const_iterator i = w.begin(); i != w.end(); ++i) {
+		Vector3 texcoord = matrix4_transformed_point(local2tex, (*i).vertex);
+		aabb_extend_by_point_safe(bounds, texcoord);
+	}
+	bounds.extents.z() = 1;
+
+	AABB perfect;
+	perfect.extents = bounds.extents;
+	printf("Bounds: %f %f %f\n", bounds.origin.x(), bounds.origin.y(), bounds.origin.z());
+
+	switch (alignment) {
+		case 0:
+			printf("Top Left\n");
+			perfect.origin = Vector3(0, 0, 0);
+			break;
+		case 1:
+			printf("Top Center\n");
+			perfect.origin = Vector3(width /2, 0, 0);
+			break;
+		case 2:
+			printf("Top Right\n");
+			perfect.origin = Vector3(width, 0, 0);
+			break;
+		case 3:
+			printf("Middle Left\n");
+			perfect.origin = Vector3(0.0, 0.5, 0);
+			break;
+		case 4:
+			printf("Middle Center\n");
+			perfect.origin = Vector3(0.5, 0.5, 0);
+			break;
+		case 5:
+			printf("Middle Right\n");
+			perfect.origin = Vector3(1.0, 0.5, 0);
+			break;
+		case 6:
+			printf("Bottom Left\n");
+			perfect.origin = Vector3(0.0, 1.0, 0);
+			break;
+		case 7:
+			printf("Bottom Center\n");
+			perfect.origin = Vector3(0.5, 1.0, 0);
+			break;
+		case 8:
+			printf("Bottom Right\n");
+			perfect.origin = Vector3(1.0, 1.0, 0);
+			break;
+	}
+
+	// the difference between the current texture transform and the perfectly fitted transform
+	Matrix4 matrix(matrix4_translation_for_vec3(bounds.origin - perfect.origin));
+
+	/*
+	matrix4_pivoted_scale_by_vec3(matrix, bounds.extents, perfect.origin);
+	matrix4_affine_invert(matrix);
+	*/
+
+	// apply the difference to the current texture transform
+	matrix4_premultiply_by_matrix4(st2tex, matrix);
+	Texdef_fromTransform(projection, (float) width, (float) height, st2tex);
+	Texdef_normalise(projection, (float) width, (float) height);
+}
+
 float Texdef_getDefaultTextureScale()
 {
 	return g_texdef_default_scale;

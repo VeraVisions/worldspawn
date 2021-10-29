@@ -476,7 +476,7 @@ inline unsigned int buttons_for_event_button(GdkEventButton *event)
 		break;
 	}
 
-	if ((event->state & GDK_LOCK_MASK) != 0) {
+	if ((event->state & GDK_CONTROL_MASK) != 0) {
 		flags |= RAD_CONTROL;
 	}
 
@@ -507,7 +507,7 @@ inline unsigned int buttons_for_state(guint state)
 		flags |= RAD_RBUTTON;
 	}
 
-	if ((state & GDK_LOCK_MASK) != 0) {
+	if ((state & GDK_CONTROL_MASK) != 0) {
 		flags |= RAD_CONTROL;
 	}
 
@@ -2932,13 +2932,13 @@ void XYWindow_Construct()
 
 	GlobalToggles_insert("ToggleView", ToggleShown::ToggleCaller(g_xy_top_shown),
 	                     ToggleItem::AddCallbackCaller(g_xy_top_shown.m_item),
-	                     Accelerator('V', (GdkModifierType) (GDK_SHIFT_MASK | GDK_LOCK_MASK)));
+	                     Accelerator('V', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
 	GlobalToggles_insert("ToggleSideView", ToggleShown::ToggleCaller(g_yz_side_shown),
 	                     ToggleItem::AddCallbackCaller(g_yz_side_shown.m_item));
 	GlobalToggles_insert("ToggleFrontView", ToggleShown::ToggleCaller(g_xz_front_shown),
 	                     ToggleItem::AddCallbackCaller(g_xz_front_shown.m_item));
 	GlobalCommands_insert("NextView", makeCallbackF(XY_Next), Accelerator(GDK_KEY_Tab,
-	                                                                      (GdkModifierType) GDK_LOCK_MASK));   // fixme: doesn't show its shortcut
+	                                                                      (GdkModifierType) GDK_CONTROL_MASK));   // fixme: doesn't show its shortcut
 	GlobalCommands_insert("ZoomIn", makeCallbackF(XY_ZoomIn), Accelerator(GDK_KEY_Delete));
 	GlobalCommands_insert("ZoomOut", makeCallbackF(XY_ZoomOut), Accelerator(GDK_KEY_Insert));
 	GlobalCommands_insert("ViewTop", makeCallbackF(XY_Top), Accelerator(GDK_KEY_KP_Home));
@@ -2946,7 +2946,7 @@ void XYWindow_Construct()
 	GlobalCommands_insert("ViewFront", makeCallbackF(XY_Front), Accelerator(GDK_KEY_KP_End));
 	GlobalCommands_insert("Zoom100", makeCallbackF(XY_Zoom100));
 	GlobalCommands_insert("CenterXYView", makeCallbackF(XY_Focus),
-	                      Accelerator(GDK_KEY_Tab, (GdkModifierType) (GDK_SHIFT_MASK | GDK_LOCK_MASK)));
+	                      Accelerator(GDK_KEY_Tab, (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
 
 	GlobalPreferenceSystem().registerPreference("ClipCaulk", make_property_string(g_clip_useCaulk));
 

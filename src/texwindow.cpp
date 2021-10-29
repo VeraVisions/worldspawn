@@ -1987,7 +1987,9 @@ gboolean TextureBrowser_tagMoveHelper(ui::TreeModel model, ui::TreePath path, Gt
 	g_assert(selected != NULL);
 
 	auto rowref = gtk_tree_row_reference_new(model, path);
-	*selected = g_slist_append(*selected, rowref);
+
+	if (rowref != NULL)
+		*selected = g_slist_append(*selected, rowref);
 
 	return FALSE;
 }
@@ -2920,7 +2922,7 @@ void TextureBrowser_Construct()
 	GlobalToggles_insert("ShowInUse", makeCallbackF(TextureBrowser_ToggleHideUnused),
 	                     ToggleItem::AddCallbackCaller(g_TextureBrowser.m_hideunused_item), Accelerator('U'));
 	GlobalCommands_insert("ShowAllTextures", makeCallbackF(TextureBrowser_showAll),
-	                      Accelerator('A', (GdkModifierType) GDK_LOCK_MASK));
+	                      Accelerator('A', (GdkModifierType) GDK_CONTROL_MASK));
 	GlobalCommands_insert("ToggleTextures", makeCallbackF(TextureBrowser_toggleShow), Accelerator('T'));
 	GlobalToggles_insert("ToggleShowShaders", makeCallbackF(TextureBrowser_ToggleShowShaders),
 	                     ToggleItem::AddCallbackCaller(g_TextureBrowser.m_showshaders_item));

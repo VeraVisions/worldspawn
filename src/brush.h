@@ -624,6 +624,10 @@ void fit(const Vector3 &normal, const Winding &winding, float s_repeat, float t_
 {
 	Texdef_FitTexture(m_projection, m_shader.width(), m_shader.height(), normal, winding, s_repeat, t_repeat);
 }
+void align(const Plane3 &plane, const Vector3 &normal, const Winding &winding, int alignment)
+{
+	Texdef_AlignTexture(m_projection, plane, normal, winding, m_shader.width(), m_shader.height(), alignment);
+}
 
 void emitTextureCoordinates(Winding &winding, const Vector3 &normal, const Matrix4 &localToWorld)
 {
@@ -1314,6 +1318,13 @@ void FitTexture(float s_repeat, float t_repeat)
 {
 	undoSave();
 	m_texdef.fit(m_plane.plane3().normal(), m_winding, s_repeat, t_repeat);
+	texdefChanged();
+}
+
+void AlignTexture(int alignment)
+{
+	undoSave();
+	m_texdef.align(m_plane.plane3(), m_plane.plane3().normal(), m_winding, alignment);
 	texdefChanged();
 }
 

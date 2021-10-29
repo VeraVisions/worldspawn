@@ -128,6 +128,7 @@ void Texdef_Rotate(TextureProjection &projection, float angle);
 
 void Texdef_FitTexture(TextureProjection &projection, std::size_t width, std::size_t height, const Vector3 &normal,
                        const Winding &w, float s_repeat, float t_repeat);
+void Texdef_AlignTexture(TextureProjection &projection, const Plane3 &plane, const Vector3 &normal, const Winding &w, std::size_t width, std::size_t height, int alignment);
 
 void
 Texdef_EmitTextureCoordinates(const TextureProjection &projection, std::size_t width, std::size_t height, Winding &w,

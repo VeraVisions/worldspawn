@@ -469,6 +469,43 @@ void SurfaceInspector_FitTexture()
 	Select_FitTexture(getSurfaceInspector().m_fitHorizontal, getSurfaceInspector().m_fitVertical);
 }
 
+void SurfaceInspector_AlignTopLeft()
+{
+	Select_AlignTexture(0);
+}
+void SurfaceInspector_AlignTop()
+{
+	Select_AlignTexture(1);
+}
+void SurfaceInspector_AlignTopRight()
+{
+	Select_AlignTexture(2);
+}
+void SurfaceInspector_AlignLeft()
+{
+	Select_AlignTexture(3);
+}
+void SurfaceInspector_AlignCenter()
+{
+	Select_AlignTexture(4);
+}
+void SurfaceInspector_AlignRight()
+{
+	Select_AlignTexture(5);
+}
+void SurfaceInspector_AlignBottomLeft()
+{
+	Select_AlignTexture(6);
+}
+void SurfaceInspector_AlignBottom()
+{
+	Select_AlignTexture(7);
+}
+void SurfaceInspector_AlignBottomRight()
+{
+	Select_AlignTexture(8);
+}
+
 static void OnBtnPatchdetails(ui::Widget widget, gpointer data)
 {
 	Patch_CapTexture();
@@ -523,6 +560,57 @@ static void OnBtnFaceFit(ui::Widget widget, gpointer data)
 {
 	getSurfaceInspector().exportData();
 	SurfaceInspector_FitTexture();
+}
+
+
+static void OnBtnTopLeft(ui::Widget widget, gpointer data)
+{
+	getSurfaceInspector().exportData();
+	SurfaceInspector_AlignTopLeft();
+}
+static void OnBtnTopCenter(ui::Widget widget, gpointer data)
+{
+	getSurfaceInspector().exportData();
+	SurfaceInspector_AlignTop();
+}
+static void OnBtnTopRight(ui::Widget widget, gpointer data)
+{
+	getSurfaceInspector().exportData();
+	SurfaceInspector_AlignTopRight();
+}
+
+
+static void OnBtnMiddleLeft(ui::Widget widget, gpointer data)
+{
+	getSurfaceInspector().exportData();
+	SurfaceInspector_AlignLeft();
+}
+static void OnBtnMiddleCenter(ui::Widget widget, gpointer data)
+{
+	getSurfaceInspector().exportData();
+	SurfaceInspector_AlignCenter();
+}
+static void OnBtnMiddleRight(ui::Widget widget, gpointer data)
+{
+	getSurfaceInspector().exportData();
+	SurfaceInspector_AlignRight();
+}
+
+
+static void OnBtnBottomLeft(ui::Widget widget, gpointer data)
+{
+	getSurfaceInspector().exportData();
+	SurfaceInspector_AlignBottomLeft();
+}
+static void OnBtnBottomCenter(ui::Widget widget, gpointer data)
+{
+	getSurfaceInspector().exportData();
+	SurfaceInspector_AlignBottom();
+}
+static void OnBtnBottomRight(ui::Widget widget, gpointer data)
+{
+	getSurfaceInspector().exportData();
+	SurfaceInspector_AlignBottomRight();
 }
 
 typedef const char *FlagName;
@@ -915,6 +1003,92 @@ ui::Window SurfaceInspector::BuildDialog()
 				}
 			}
 		}
+		{
+			auto frame = ui::Frame("Alignment");
+			frame.show();
+			vbox.pack_start(frame, FALSE, FALSE, 0);
+			{
+				auto table = ui::Table(3, 3, FALSE);
+				table.show();
+				frame.add(table);
+				gtk_table_set_row_spacings(table, 5);
+				gtk_table_set_col_spacings(table, 5);
+				gtk_container_set_border_width(GTK_CONTAINER(table), 5);
+				{
+					ui::Widget button = ui::Button("Top-Left");
+					button.show();
+					table.attach(button, {0, 1, 0, 1}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnTopLeft), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Top");
+					button.show();
+					table.attach(button, {1, 2, 0, 1}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnTopCenter), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Top-Right");
+					button.show();
+					table.attach(button, {2, 3, 0, 1}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnTopRight), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Left");
+					button.show();
+					table.attach(button, {0, 1, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnMiddleLeft), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Center");
+					button.show();
+					table.attach(button, {1, 2, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnMiddleCenter), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Right");
+					button.show();
+					table.attach(button, {2, 3, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnMiddleRight), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Bottom-Left");
+					button.show();
+					table.attach(button, {0, 1, 2, 3}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnBottomLeft), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Bottom");
+					button.show();
+					table.attach(button, {1, 2, 2, 3}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnBottomCenter), 0);
+					button.dimensions(60, -1);
+				}
+				{
+					ui::Widget button = ui::Button("Bottom-Right");
+					button.show();
+					table.attach(button, {2, 3, 2, 3}, {GTK_EXPAND | GTK_FILL, 0});
+					button.connect("clicked",
+					               G_CALLBACK(OnBtnBottomRight), 0);
+					button.dimensions(60, -1);
+				}
+			}
+		}
+
 		if (!string_empty(g_pGameDescription->getKeyValue("si_flags"))) {
 			{
 				auto frame = ui::Frame("Surface Flags");

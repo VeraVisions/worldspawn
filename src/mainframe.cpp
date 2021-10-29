@@ -3021,7 +3021,7 @@ void Texdef_ToggleExpansion()
 void MainFrame_Construct()
 {
 	/*GlobalCommands_insert("Sleep", makeCallbackF(thunk_OnSleep),
-	                      Accelerator('P', (GdkModifierType) (GDK_SHIFT_MASK | GDK_LOCK_MASK)));*/
+	                      Accelerator('P', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));*/
 	GlobalCommands_insert("NewMap", makeCallbackF(NewMap));
 	GlobalCommands_insert("OpenMap", makeCallbackF(OpenMap), Accelerator('O', (GdkModifierType) GDK_CONTROL_MASK));
 	GlobalCommands_insert("ImportMap", makeCallbackF(ImportMap));
@@ -3049,7 +3049,7 @@ void MainFrame_Construct()
 	GlobalCommands_insert("SelectInside", makeCallbackF(Select_Inside));
 	GlobalCommands_insert("SelectTouching", makeCallbackF(Select_Touching));
 	GlobalCommands_insert("ExpandSelectionToEntities", makeCallbackF(Scene_ExpandSelectionToEntities),
-	                      Accelerator('E', (GdkModifierType) (GDK_MOD1_MASK | GDK_LOCK_MASK)));
+	                      Accelerator('E', (GdkModifierType) (GDK_MOD1_MASK | GDK_CONTROL_MASK)));
 	GlobalCommands_insert("Preferences", makeCallbackF(PreferencesDialog_showDialog));
 
 	GlobalCommands_insert("ToggleEntityInspector", makeCallbackF(EntityInspector_ToggleShow), Accelerator('N'));
@@ -3120,14 +3120,14 @@ void MainFrame_Construct()
 
 	GlobalCommands_insert("CSGSubtract", makeCallbackF(CSG_Subtract),
 	                      Accelerator('U', (GdkModifierType) GDK_SHIFT_MASK));
-	GlobalCommands_insert("CSGMerge", makeCallbackF(CSG_Merge), Accelerator('U', (GdkModifierType) GDK_LOCK_MASK));
+	GlobalCommands_insert("CSGMerge", makeCallbackF(CSG_Merge), Accelerator('U', (GdkModifierType) GDK_CONTROL_MASK));
 	GlobalCommands_insert("CSGMakeHollow", makeCallbackF(CSG_MakeHollow));
 	GlobalCommands_insert("CSGMakeRoom", makeCallbackF(CSG_MakeRoom));
 
 	Grid_registerCommands();
 
 	GlobalCommands_insert("SnapToGrid", makeCallbackF(Selection_SnapToGrid),
-	                      Accelerator('G', (GdkModifierType) GDK_LOCK_MASK));
+	                      Accelerator('G', (GdkModifierType) GDK_CONTROL_MASK));
 
 	GlobalCommands_insert("SelectAllOfType", makeCallbackF(Select_AllOfType),
 	                      Accelerator('A', (GdkModifierType) GDK_SHIFT_MASK));
@@ -3137,13 +3137,13 @@ void MainFrame_Construct()
 	GlobalCommands_insert("TexRotateCounter", makeCallbackF(Texdef_RotateAntiClockwise),
 	                      Accelerator(GDK_KEY_Prior, (GdkModifierType) GDK_SHIFT_MASK));
 	GlobalCommands_insert("TexScaleUp", makeCallbackF(Texdef_ScaleUp),
-	                      Accelerator(GDK_KEY_Up, (GdkModifierType) GDK_LOCK_MASK));
+	                      Accelerator(GDK_KEY_Up, (GdkModifierType) GDK_CONTROL_MASK));
 	GlobalCommands_insert("TexScaleDown", makeCallbackF(Texdef_ScaleDown),
-	                      Accelerator(GDK_KEY_Down, (GdkModifierType) GDK_LOCK_MASK));
+	                      Accelerator(GDK_KEY_Down, (GdkModifierType) GDK_CONTROL_MASK));
 	GlobalCommands_insert("TexScaleLeft", makeCallbackF(Texdef_ScaleLeft),
-	                      Accelerator(GDK_KEY_Left, (GdkModifierType) GDK_LOCK_MASK));
+	                      Accelerator(GDK_KEY_Left, (GdkModifierType) GDK_CONTROL_MASK));
 	GlobalCommands_insert("TexScaleRight", makeCallbackF(Texdef_ScaleRight),
-	                      Accelerator(GDK_KEY_Right, (GdkModifierType) GDK_LOCK_MASK));
+	                      Accelerator(GDK_KEY_Right, (GdkModifierType) GDK_CONTROL_MASK));
 	GlobalCommands_insert("TexShiftUp", makeCallbackF(Texdef_ShiftUp),
 	                      Accelerator(GDK_KEY_Up, (GdkModifierType) GDK_SHIFT_MASK));
 	GlobalCommands_insert("TexShiftDown", makeCallbackF(Texdef_ShiftDown),

@@ -100,6 +100,9 @@ void Scene_BrushFitTexture_Selected(scene::Graph &graph, float s_repeat, float t
 
 void Scene_BrushFitTexture_Component_Selected(scene::Graph &graph, float s_repeat, float t_repeat);
 
+void Scene_BrushAlignTexture_Selected(scene::Graph &graph, int alignment);
+void Scene_BrushAlignTexture_Component_Selected(scene::Graph &graph, int alignment);
+
 void Brush_constructMenu(ui::Menu menu);
 
 extern Callback<void()> g_texture_lock_status_changed;

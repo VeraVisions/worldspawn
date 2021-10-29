@@ -771,6 +771,17 @@ void Select_FitTexture(float horizontal, float vertical)
 	SceneChangeNotify();
 }
 
+
+void Select_AlignTexture(int alignment)
+{
+	if (GlobalSelectionSystem().Mode() != SelectionSystem::eComponent) {
+		Scene_BrushAlignTexture_Selected(GlobalSceneGraph(), alignment);
+	}
+	Scene_BrushAlignTexture_Component_Selected(GlobalSceneGraph(), alignment);
+
+	SceneChangeNotify();
+}
+
 inline void hide_node(scene::Node &node, bool hide)
 {
 	hide

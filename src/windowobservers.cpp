@@ -164,7 +164,7 @@ ModifierFlags modifiers_for_state(unsigned int state)
 	if (state & GDK_SHIFT_MASK) {
 		modifiers |= c_modifierShift;
 	}
-	if (state & GDK_LOCK_MASK) {
+	if (state & GDK_CONTROL_MASK) {
 		modifiers |= c_modifierControl;
 	}
 	if (state & GDK_MOD1_MASK) {

@@ -362,9 +362,9 @@ void Pointfile_Construct()
 
 	GlobalCommands_insert("TogglePointfile", makeCallbackF(Pointfile_Toggle));
 	GlobalCommands_insert("NextLeakSpot", makeCallbackF(Pointfile_Next),
-	                      Accelerator('K', (GdkModifierType) (GDK_SHIFT_MASK | GDK_LOCK_MASK)));
+	                      Accelerator('K', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
 	GlobalCommands_insert("PrevLeakSpot", makeCallbackF(Pointfile_Prev),
-	                      Accelerator('L', (GdkModifierType) (GDK_SHIFT_MASK | GDK_LOCK_MASK)));
+	                      Accelerator('L', (GdkModifierType) (GDK_SHIFT_MASK | GDK_CONTROL_MASK)));
 }
 
 void Pointfile_Destroy()

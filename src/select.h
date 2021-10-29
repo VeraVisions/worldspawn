@@ -80,6 +80,8 @@ void Select_ShiftTexture(float x, float y);
 
 void Select_FitTexture(float horizontal = 1, float vertical = 1);
 
+void Select_AlignTexture(int alignment);
+
 void FindReplaceTextures(const char *pFind, const char *pReplace, bool bSelected);
 
 void HideSelected();
