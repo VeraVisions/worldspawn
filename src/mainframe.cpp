@@ -2313,26 +2313,11 @@ void ComponentModes_constructToolbar(ui::Toolbar toolbar)
 	toolbar_append_toggle_button(toolbar, "Select Faces", "modify_faces.xpm", "DragFaces");
 }
 
-void Clipper_constructToolbar(ui::Toolbar toolbar)
-{
-
-	toolbar_append_toggle_button(toolbar, "Clipper", "view_clipper.xpm", "ToggleClipper");
-}
-
 void XYWnd_constructToolbar(ui::Toolbar toolbar)
 {
 	toolbar_append_button(toolbar, "Change views", "view_change.xpm", "NextView");
 }
 
-void Manipulators_constructToolbar(ui::Toolbar toolbar)
-{
-	toolbar_append_toggle_button(toolbar, "Translate (W)", "select_mousetranslate.xpm", "MouseTranslate");
-	toolbar_append_toggle_button(toolbar, "Rotate (R)", "select_mouserotate.xpm", "MouseRotate");
-	toolbar_append_toggle_button(toolbar, "Scale", "select_mousescale.xpm", "MouseScale");
-	toolbar_append_toggle_button(toolbar, "Resize (Q)", "select_mouseresize.xpm", "MouseDrag");
-
-	Clipper_constructToolbar(toolbar);
-}
 
 void PluginToolbar_AddToMain(ui::Toolbar toolbar);
 ui::Toolbar create_main_toolbar()
@@ -2363,8 +2348,6 @@ ui::Toolbar create_main_toolbar()
 	space();
 	ComponentModes_constructToolbar(toolbar);
 	space();
-	Manipulators_constructToolbar(toolbar);
-	space();
 	XYWnd_constructToolbar(toolbar);
 	space();
 	CamWnd_constructToolbar(toolbar);
@@ -2380,6 +2363,32 @@ ui::Toolbar create_main_toolbar()
 	PluginToolbar_AddToMain(toolbar);
 
 
+	return toolbar;
+}
+
+ui::Toolbar create_main_sidebar()
+{
+	auto toolbar = ui::Toolbar::from(gtk_toolbar_new());
+	gtk_orientable_set_orientation(GTK_ORIENTABLE(toolbar), GTK_ORIENTATION_VERTICAL);
+	gtk_toolbar_set_style(toolbar, GTK_TOOLBAR_ICONS);
+	toolbar.show();
+
+	auto space = [&]() {
+			     auto btn = ui::ToolItem::from(gtk_separator_tool_item_new());
+			     btn.show();
+			     toolbar.add(btn);
+		     };
+
+	toolbar_append_toggle_button(toolbar, "Resize (Q)", "side_select.png", "MouseDrag");
+	toolbar_append_toggle_button(toolbar, "Translate (W)", "side_move.png", "MouseTranslate");
+	toolbar_append_toggle_button(toolbar, "Rotate (R)", "side_rotate.png", "MouseRotate");
+	toolbar_append_toggle_button(toolbar, "Scale", "side_scale.png", "MouseScale");
+	toolbar_append_toggle_button(toolbar, "Clipper", "side_cut.png", "ToggleClipper");
+	space();
+	toolbar_append_button(toolbar, "Texture Browser", "side_tex.png", "ToggleTextures");
+	toolbar_append_button(toolbar, "Entity Inspector", "side_entspec.png", "ToggleEntityInspector");
+	toolbar_append_button(toolbar, "Surface Inspector", "side_surfspec.png", "SurfaceInspector");
+	toolbar_append_button(toolbar, "Patch Inspector", "side_patchspec.png", "PatchInspector");
 	return toolbar;
 }
 
@@ -2755,6 +2764,9 @@ void MainFrame::Create()
 
 	auto main_toolbar = create_main_toolbar();
 	vbox.pack_start(main_toolbar, FALSE, FALSE, 0);
+
+	auto main_sidebar = create_main_sidebar();
+	hbox.pack_start(main_sidebar, FALSE, FALSE, 0);
 
 	/*if (!g_Layout_enablePluginToolbar.m_value) {
 	        plugin_toolbar.hide();
