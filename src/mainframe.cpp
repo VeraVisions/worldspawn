@@ -2917,7 +2917,7 @@ void MainFrame::Create()
 	}
 	#endif
 
-#if 0
+#if 1
 	if (g_layout_globals.nState & GDK_WINDOW_STATE_MAXIMIZED) {
 		WindowPosition default_position(-1, -1, 640, 480);
 		window_set_position(window, default_position);
@@ -2926,6 +2926,7 @@ void MainFrame::Create()
 		window_set_position(window, g_layout_globals.m_position);
 		gtk_window_resize(window, g_layout_globals.m_position.w, g_layout_globals.m_position.h);
 	}
+	UpdateAllWindows();
 #else
 	WindowPosition default_position(-1, -1, 640, 480);
 	window_set_position(window, default_position);
