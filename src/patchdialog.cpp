@@ -1092,6 +1092,8 @@ ui::Window PatchInspector::BuildDialog()
 		}
 	}
 
+	/* make small */
+	gtk_window_set_default_size(GTK_WINDOW(window), 8, 8);
 	return window;
 }
 

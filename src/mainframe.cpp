@@ -1941,8 +1941,8 @@ ui::MenuItem create_edit_menu()
 	   }*/
 	undobutton = create_menu_item_with_mnemonic(menu, "_Undo", "Undo");
 	redobutton = create_menu_item_with_mnemonic(menu, "_Redo", "Redo");
-	gtk_menu_item_set_label(undobutton, "Undo (Nothing...)");
-	gtk_menu_item_set_label(redobutton, "Redo (Nothing...)");
+	Undo_DisableButton();
+	Redo_DisableButton();
 	menu_separator(menu);
 	create_menu_item_with_mnemonic(menu, "_Copy", "Copy");
 	create_menu_item_with_mnemonic(menu, "_Paste", "Paste");
