@@ -37,6 +37,12 @@
 
 #include "timer.h"
 
+void Undo_SetButtonlabel(const char *title);
+void Undo_DisableButton(void);
+
+void Redo_SetButtonlabel(const char *title);
+void Redo_DisableButton(void);
+
 class DebugScopeTimer {
 Timer m_timer;
 const char *m_operation;
@@ -363,6 +369,8 @@ void finish(const char *command)
 {
 	if (finishUndo(command)) {
 		globalOutputStream() << command << '\n';
+		Undo_SetButtonlabel(command);
+		Redo_DisableButton();
 	}
 }
 
@@ -373,12 +381,19 @@ void undo()
 	} else {
 		Operation *operation = m_undo_stack.back();
 		globalOutputStream() << "Undo: " << operation->m_command.c_str() << "\n";
+		Redo_SetButtonlabel(operation->m_command.c_str());
 
 		startRedo();
 		trackersUndo();
 		operation->m_snapshot.restore();
 		finishRedo(operation->m_command.c_str());
 		m_undo_stack.pop_back();
+
+		Operation *operation2 = m_undo_stack.back();
+		if (operation2) {
+			Undo_SetButtonlabel(operation2->m_command.c_str());
+		} else
+			Undo_DisableButton();
 	}
 }
 
@@ -395,6 +410,14 @@ void redo()
 		operation->m_snapshot.restore();
 		finishUndo(operation->m_command.c_str());
 		m_redo_stack.pop_back();
+		Operation *operationu = m_undo_stack.back();
+		Undo_SetButtonlabel(operationu->m_command.c_str());
+
+		Operation *next = m_redo_stack.back();
+		if (!next)
+			Redo_DisableButton();
+		else
+			Redo_SetButtonlabel(next->m_command.c_str());
 	}
 }
 

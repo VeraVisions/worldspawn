@@ -1899,6 +1899,38 @@ ui::MenuItem create_file_menu()
 	return file_menu_item;
 }
 
+ui::MenuItem undobutton{ui::null};
+void
+Undo_SetButtonlabel(const char *title)
+{
+	StringOutputStream name(128);
+	name << "Undo ("<< title << ")";
+	gtk_menu_item_set_label(undobutton, name.c_str());
+	gtk_widget_set_sensitive(undobutton, true);
+}
+void
+Undo_DisableButton(void)
+{
+	gtk_menu_item_set_label(undobutton, "Undo");
+	gtk_widget_set_sensitive(undobutton, false);
+}
+
+ui::MenuItem redobutton{ui::null};
+void
+Redo_SetButtonlabel(const char *title)
+{
+	StringOutputStream name(128);
+	name << "Redo (" << title << ")";
+	gtk_menu_item_set_label(redobutton, name.c_str());
+	gtk_widget_set_sensitive(redobutton, true);
+}
+void
+Redo_DisableButton(void)
+{
+	gtk_menu_item_set_label(redobutton, "Redo");
+	gtk_widget_set_sensitive(redobutton, false);
+}
+
 ui::MenuItem create_edit_menu()
 {
 	// Edit menu
@@ -1907,8 +1939,10 @@ ui::MenuItem create_edit_menu()
 	/*if (g_Layout_enableOpenStepUX.m_value) {
 	    menu_tearoff(menu);
 	   }*/
-	create_menu_item_with_mnemonic(menu, "_Undo", "Undo");
-	create_menu_item_with_mnemonic(menu, "_Redo", "Redo");
+	undobutton = create_menu_item_with_mnemonic(menu, "_Undo", "Undo");
+	redobutton = create_menu_item_with_mnemonic(menu, "_Redo", "Redo");
+	gtk_menu_item_set_label(undobutton, "Undo (Nothing...)");
+	gtk_menu_item_set_label(redobutton, "Redo (Nothing...)");
 	menu_separator(menu);
 	create_menu_item_with_mnemonic(menu, "_Copy", "Copy");
 	create_menu_item_with_mnemonic(menu, "_Paste", "Paste");
