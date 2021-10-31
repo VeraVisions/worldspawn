@@ -101,6 +101,7 @@ void GroupDlg::Create(ui::Window parent)
 	ASSERT_MESSAGE(!m_window, "dialog already created");
 
 	auto window = ui::Window(create_persistent_floating_window("Entities", parent));
+	gtk_window_set_keep_above(GTK_WINDOW(window), TRUE);
 
 	global_accel_connect_window(window);
 
