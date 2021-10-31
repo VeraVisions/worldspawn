@@ -158,16 +158,17 @@ void GlobalWindowObservers_connectWidget(ui::Widget widget)
 	widget.connect("motion_notify_event", G_CALLBACK(modifiers_motion), &g_window_observers);
 }
 
+int Get_Modifier_State(void);
 ModifierFlags modifiers_for_state(unsigned int state)
 {
 	ModifierFlags modifiers = c_modifierNone;
-	if (state & GDK_SHIFT_MASK) {
+	if (Get_Modifier_State() & 1) {
 		modifiers |= c_modifierShift;
 	}
-	if (state & GDK_CONTROL_MASK) {
+	if (Get_Modifier_State() & 2) {
 		modifiers |= c_modifierControl;
 	}
-	if (state & GDK_MOD1_MASK) {
+	if (Get_Modifier_State() & 4) {
 		modifiers |= c_modifierAlt;
 	}
 	return modifiers;

@@ -1330,7 +1330,6 @@ void ToolChanged()
 	g_dragmode_button.update();
 	g_clipper_button.update();
 }
-
 const char *const c_ResizeMode_status = "Drag Tool: move and resize objects";
 
 void DragMode()
@@ -1429,6 +1428,65 @@ void ClipperMode()
 		ToolChanged();
 		ModeChangeNotify();
 	}
+}
+
+static int g_modifier_state;
+
+void Modifier1Export(const Callback<void(bool)> &importCallback)
+{
+	importCallback(g_modifier_state == 0);
+}
+void Modifier2Export(const Callback<void(bool)> &importCallback)
+{
+	importCallback(g_modifier_state == 1);
+}
+void Modifier3Export(const Callback<void(bool)> &importCallback)
+{
+	importCallback(g_modifier_state == 3);
+}
+
+FreeCaller<void(const Callback<void(bool)> &), Modifier1Export> g_modifier1_button_caller;
+Callback<void(const Callback<void(bool)> &)> g_modifier1_button_callback(g_modifier1_button_caller);
+ToggleItem g_modifier1_button(g_modifier1_button_callback);
+
+FreeCaller<void(const Callback<void(bool)> &), Modifier2Export> g_modifier2_button_caller;
+Callback<void(const Callback<void(bool)> &)> g_modifier2_button_callback(g_modifier2_button_caller);
+ToggleItem g_modifier2_button(g_modifier2_button_callback);
+
+FreeCaller<void(const Callback<void(bool)> &), Modifier3Export> g_modifier3_button_caller;
+Callback<void(const Callback<void(bool)> &)> g_modifier3_button_callback(g_modifier3_button_caller);
+ToggleItem g_modifier3_button(g_modifier3_button_callback);
+
+void ModifierChanged()
+{
+	g_modifier1_button.update();
+	g_modifier2_button.update();
+	g_modifier3_button.update();
+}
+
+void Modifier1()
+{
+	g_modifier_state = 0;
+	ModifierChanged();
+	ModeChangeNotify();
+}
+void Modifier2()
+{
+	g_modifier_state = 1;
+	ModifierChanged();
+	ModeChangeNotify();
+}
+void Modifier3()
+{
+	g_modifier_state = 3;
+	ModifierChanged();
+	ModeChangeNotify();
+}
+
+int
+Get_Modifier_State(void)
+{
+	return g_modifier_state;
 }
 
 
@@ -2379,7 +2437,11 @@ ui::Toolbar create_main_sidebar()
 			     toolbar.add(btn);
 		     };
 
-	toolbar_append_toggle_button(toolbar, "Resize (Q)", "side_select.png", "MouseDrag");
+	toolbar_append_toggle_button(toolbar, "Create", "side_select.png", "Modifier1");
+	toolbar_append_toggle_button(toolbar, "Select Face", "side_selectface.png", "Modifier3");
+	toolbar_append_toggle_button(toolbar, "Select-Whole", "side_selectwhole.png", "Modifier2");
+	space();
+	toolbar_append_toggle_button(toolbar, "Resize (Q)", "side_resize.png", "MouseDrag");
 	toolbar_append_toggle_button(toolbar, "Translate (W)", "side_move.png", "MouseTranslate");
 	toolbar_append_toggle_button(toolbar, "Rotate (R)", "side_rotate.png", "MouseRotate");
 	toolbar_append_toggle_button(toolbar, "Scale", "side_scale.png", "MouseScale");
@@ -3108,6 +3170,11 @@ void MainFrame_Construct()
 	GlobalToggles_insert("MouseScale", makeCallbackF(ScaleMode), ToggleItem::AddCallbackCaller(g_scalemode_button));
 	GlobalToggles_insert("MouseDrag", makeCallbackF(DragMode), ToggleItem::AddCallbackCaller(g_dragmode_button),
 	                     Accelerator('Q'));
+
+
+	GlobalToggles_insert("Modifier1", makeCallbackF(Modifier1), ToggleItem::AddCallbackCaller(g_modifier1_button));
+	GlobalToggles_insert("Modifier2", makeCallbackF(Modifier2), ToggleItem::AddCallbackCaller(g_modifier2_button));
+	GlobalToggles_insert("Modifier3", makeCallbackF(Modifier3), ToggleItem::AddCallbackCaller(g_modifier3_button));
 
 	GlobalCommands_insert("ColorSchemeWS", makeCallbackF(ColorScheme_WorldSpawn));
 	GlobalCommands_insert("ColorSchemeOriginal", makeCallbackF(ColorScheme_Original));

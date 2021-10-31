@@ -92,6 +92,9 @@ all:
 	cp -vf ./bitmaps/side_surfspec.png ../build/bitmaps/side_surfspec.png
 	cp -vf ./bitmaps/side_tex.png ../build/bitmaps/side_tex.png
 	cp -vf ./bitmaps/side_vertices.xpm ../build/bitmaps/side_vertices.xpm
+	cp -vf ./bitmaps/side_selectface.png ../build/bitmaps/side_selectface.png
+	cp -vf ./bitmaps/side_selectwhole.png ../build/bitmaps/side_selectwhole.png
+	cp -vf ./bitmaps/side_resize.png ../build/bitmaps/side_resize.png
 	cp -vf ./bitmaps/splash.xcf ../build/bitmaps/splash.xcf
 	cp -vf ./bitmaps/splash.xpm ../build/bitmaps/splash.xpm
 	cp -vf ./bitmaps/texture_browser.xpm ../build/bitmaps/texture_browser.xpm
