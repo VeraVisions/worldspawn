@@ -173,3 +173,18 @@ ModifierFlags modifiers_for_state(unsigned int state)
 	}
 	return modifiers;
 }
+
+ModifierFlags modifiers_for_key(unsigned int state)
+{
+	ModifierFlags modifiers = c_modifierNone;
+	if (state & GDK_CONTROL_MASK) {
+		modifiers |= c_modifierShift;
+	}
+	if (state & GDK_SHIFT_MASK) {
+		modifiers |= c_modifierControl;
+	}
+	if (state & GDK_MOD1_MASK) {
+		modifiers |= c_modifierAlt;
+	}
+	return modifiers;
+}

@@ -740,7 +740,7 @@ bool XYWnd::chaseMouseMotion(int pointx, int pointy)
 // =============================================================================
 // XYWnd class
 Shader *XYWnd::m_state_selected = 0;
-
+ModifierFlags modifiers_for_key(unsigned int state);
 void xy_update_xor_rectangle(XYWnd &self, rect_t area)
 {
 	if (self.GetWidget().visible()) {
@@ -756,7 +756,7 @@ gboolean xywnd_button_press(ui::Widget widget, GdkEventButton *event, XYWnd *xyw
 		xywnd->ButtonState_onMouseDown(buttons_for_event_button(event));
 
 		xywnd->onMouseDown(WindowVector(event->x, event->y), button_for_button(event->button),
-		                   modifiers_for_state(event->state));
+		                   modifiers_for_key(event->state));
 	}
 	return FALSE;
 }
