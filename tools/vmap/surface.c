@@ -3601,7 +3601,9 @@ void FilterDrawsurfsIntoTree( entity_t *e, tree_t *tree ){
 
 		/* ydnar: remap shader */
 		if ( ds->shaderInfo->remapShader && ds->shaderInfo->remapShader[ 0 ] ) {
+			int surfaceflags = ds->shaderInfo->surfaceFlags;
 			ds->shaderInfo = ShaderInfoForShader( ds->shaderInfo->remapShader );
+			ds->shaderInfo->surfaceFlags = surfaceflags;
 		}
 
 		/* ydnar: gs mods: handle the various types of surfaces */

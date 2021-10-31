@@ -1254,8 +1254,8 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 #endif
 		/* match q3map_ */
 		else if ( !Q_strncasecmp( mattoken, "q3map_", 6 ) || !Q_strncasecmp( mattoken, "vmap_", 5 ) ) {
-			/* ydnar: q3map_baseShader <shader> (inherit this shader's parameters) */
-			if ( !Q_stricmp( mattoken, "q3map_baseShader" ) || !Q_stricmp( mattoken, "vmap_baseShader" ) ) {
+			/* ydnar: vmap_baseMaterial <shader> (inherit this shader's parameters) */
+			if ( !Q_stricmp( mattoken, "vmap_baseMaterial" ) ) {
 				shaderInfo_t    *si2;
 				qboolean oldWarnImage;
 
@@ -1419,7 +1419,7 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 				GetMatTokenAppend( shaderText, qfalse );
 				si->backsplashDistance = atof( mattoken );
 			}
-#if 0
+#if 1
 			/* q3map_floodLight <r> <g> <b> <diste> <intensity> <light_direction_power> */
 			else if ( !Q_stricmp( mattoken, "q3map_floodLight" ) || !Q_stricmp( mattoken, "vmap_floodLight" ) ) {
 				/* get color */
@@ -1525,7 +1525,7 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 			}
 
 			/* q3map_backShader <shader> */
-			else if ( !Q_stricmp( mattoken, "q3map_backShader" ) || !Q_stricmp( mattoken, "vmap_backShader" ) ) {
+			else if ( !Q_stricmp( mattoken, "q3map_backMaterial" ) || !Q_stricmp( mattoken, "vmap_backMaterial" ) ) {
 				GetMatTokenAppend( shaderText, qfalse );
 				if ( mattoken[ 0 ] != '\0' ) {
 					si->backShader = safe_malloc( strlen( mattoken ) + 1 );
@@ -1534,7 +1534,7 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 			}
 
 			/* ydnar: q3map_cloneShader <shader> */
-			else if ( !Q_stricmp( mattoken, "q3map_cloneShader" ) || !Q_stricmp( mattoken, "vmap_cloneShader" ) ) {
+			else if ( !Q_stricmp( mattoken, "q3map_cloneShader" ) || !Q_stricmp( mattoken, "vmap_cloneMaterial" ) ) {
 				GetMatTokenAppend( shaderText, qfalse );
 				if ( mattoken[ 0 ] != '\0' ) {
 					si->cloneShader = safe_malloc( strlen( mattoken ) + 1 );
@@ -1543,7 +1543,7 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 			}
 
 			/* q3map_remapShader <shader> */
-			else if ( !Q_stricmp( mattoken, "q3map_remapShader" ) || !Q_stricmp( mattoken, "vmap_remapShader" ) ) {
+			else if ( !Q_stricmp( mattoken, "q3map_remapShader" ) || !Q_stricmp( mattoken, "vmap_remapMaterial" ) ) {
 				GetMatTokenAppend( shaderText, qfalse );
 				if ( mattoken[ 0 ] != '\0' ) {
 					si->remapShader = safe_malloc( strlen( mattoken ) + 1 );
@@ -1552,7 +1552,7 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 			}
 
 			/* q3map_deprecateShader <shader> */
-			else if ( !Q_stricmp( mattoken, "q3map_deprecateShader" ) || !Q_stricmp( mattoken, "vmap_deprecateShader" ) ) {
+			else if ( !Q_stricmp( mattoken, "q3map_deprecateShader" ) || !Q_stricmp( mattoken, "vmap_deprecateMaterial" ) ) {
 				GetMatTokenAppend( shaderText, qfalse );
 				if ( mattoken[ 0 ] != '\0' ) {
 
@@ -2345,7 +2345,7 @@ static void ParseShaderFile( const char *filename ){
 			/* match q3map_ */
 			else if ( !Q_strncasecmp( token, "q3map_", 6 ) || !Q_strncasecmp( token, "vmap_", 5 ) ) {
 				/* ydnar: q3map_baseShader <shader> (inherit this shader's parameters) */
-				if ( !Q_stricmp( token, "q3map_baseShader" ) || !Q_stricmp( token, "vmap_baseShader" ) ) {
+				if ( !Q_stricmp( token, "q3map_baseShader" ) || !Q_stricmp( token, "vmap_baseMaterial" ) ) {
 					shaderInfo_t    *si2;
 					qboolean oldWarnImage;
 
@@ -2609,7 +2609,7 @@ static void ParseShaderFile( const char *filename ){
 				}
 
 				/* q3map_backShader <shader> */
-				else if ( !Q_stricmp( token, "q3map_backShader" ) || !Q_stricmp( token, "vmap_backShader" ) ) {
+				else if ( !Q_stricmp( token, "q3map_backShader" ) || !Q_stricmp( token, "vmap_backMaterial" ) ) {
 					GetTokenAppend( shaderText, qfalse );
 					if ( token[ 0 ] != '\0' ) {
 						si->backShader = safe_malloc( strlen( token ) + 1 );
@@ -2618,7 +2618,7 @@ static void ParseShaderFile( const char *filename ){
 				}
 
 				/* ydnar: q3map_cloneShader <shader> */
-				else if ( !Q_stricmp( token, "q3map_cloneShader" ) || !Q_stricmp( token, "vmap_cloneShader" ) ) {
+				else if ( !Q_stricmp( token, "q3map_cloneShader" ) || !Q_stricmp( token, "vmap_cloneMaterial" ) ) {
 					GetTokenAppend( shaderText, qfalse );
 					if ( token[ 0 ] != '\0' ) {
 						si->cloneShader = safe_malloc( strlen( token ) + 1 );
@@ -2627,7 +2627,7 @@ static void ParseShaderFile( const char *filename ){
 				}
 
 				/* q3map_remapShader <shader> */
-				else if ( !Q_stricmp( token, "q3map_remapShader" ) || !Q_stricmp( token, "vmap_remapShader" ) ) {
+				else if ( !Q_stricmp( token, "q3map_remapShader" ) || !Q_stricmp( token, "vmap_remapMaterial" ) ) {
 					GetTokenAppend( shaderText, qfalse );
 					if ( token[ 0 ] != '\0' ) {
 						si->remapShader = safe_malloc( strlen( token ) + 1 );
@@ -2636,7 +2636,7 @@ static void ParseShaderFile( const char *filename ){
 				}
 
 				/* q3map_deprecateShader <shader> */
-				else if ( !Q_stricmp( token, "q3map_deprecateShader" ) || !Q_stricmp( token, "vmap_deprecateShader" ) ) {
+				else if ( !Q_stricmp( token, "q3map_deprecateShader" ) || !Q_stricmp( token, "vmap_deprecateMaterial" ) ) {
 					GetTokenAppend( shaderText, qfalse );
 					if ( token[ 0 ] != '\0' ) {
 
