@@ -700,176 +700,10 @@ void ClassifyEntitySurfaces( entity_t *e ){
 	TidyEntitySurfaces( e );
 }
 
-
-
-/*
-   GetShaderIndexForPoint() - ydnar
-   for shader-indexed surfaces (terrain), find a matching index from the indexmap
- */
-
-byte GetShaderIndexForPoint( indexMap_t *im, vec3_t eMins, vec3_t eMaxs, vec3_t point ){
-	int i, x, y;
-	float s, t;
-	vec3_t mins, maxs, size;
-
-
-	/* early out if no indexmap */
-	if ( im == NULL ) {
-		return 0;
-	}
-
-	/* this code is really broken */
-	#if 0
-	/* legacy precision fudges for terrain */
-	for ( i = 0; i < 3; i++ )
-	{
-		mins[ i ] = floor( eMins[ i ] + 0.1 );
-		maxs[ i ] = floor( eMaxs[ i ] + 0.1 );
-		size[ i ] = maxs[ i ] - mins[ i ];
-	}
-
-	/* find st (fixme: support more than just z-axis projection) */
-	s = floor( point[ 0 ] + 0.1f - mins[ 0 ] ) / size[ 0 ];
-	t = floor( maxs[ 1 ] - point[ 1 ] + 0.1f ) / size[ 1 ];
-	if ( s < 0.0f ) {
-		s = 0.0f;
-	}
-	else if ( s > 1.0f ) {
-		s = 1.0f;
-	}
-	if ( t < 0.0f ) {
-		t = 0.0f;
-	}
-	else if ( t > 1.0f ) {
-		t = 1.0f;
-	}
-
-	/* make xy */
-	x = ( im->w - 1 ) * s;
-	y = ( im->h - 1 ) * t;
-	#else
-	/* get size */
-	for ( i = 0; i < 3; i++ )
-	{
-		mins[ i ] = eMins[ i ];
-		maxs[ i ] = eMaxs[ i ];
-		size[ i ] = maxs[ i ] - mins[ i ];
-	}
-
-	/* calc st */
-	s = ( point[ 0 ] - mins[ 0 ] ) / size[ 0 ];
-	t = ( maxs[ 1 ] - point[ 1 ] ) / size[ 1 ];
-
-	/* calc xy */
-	x = s * im->w;
-	y = t * im->h;
-	if ( x < 0 ) {
-		x = 0;
-	}
-	else if ( x > ( im->w - 1 ) ) {
-		x = ( im->w - 1 );
-	}
-	if ( y < 0 ) {
-		y = 0;
-	}
-	else if ( y > ( im->h - 1 ) ) {
-		y = ( im->h - 1 );
-	}
-	#endif
-
-	/* return index */
-	return im->pixels[ y * im->w + x ];
-}
-
-
 #define snprintf_ignore(s, n, format, ...) do { \
 		size_t __n = snprintf(s, n, format, __VA_ARGS__); \
 		if (n >= n) {} /* truncated, ignore */ \
 } while (0)
-
-/*
-   GetIndexedShader() - ydnar
-   for a given set of indexes and an indexmap, get a shader and set the vertex alpha in-place
-   this combines a couple different functions from terrain.c
- */
-
-shaderInfo_t *GetIndexedShader( shaderInfo_t *parent, indexMap_t *im, int numPoints, byte *shaderIndexes ){
-	int i;
-	byte minShaderIndex, maxShaderIndex;
-	char shader[ MAX_QPATH ];
-	shaderInfo_t    *si;
-
-
-	/* early out if bad data */
-	if ( im == NULL || numPoints <= 0 || shaderIndexes == NULL ) {
-		return ShaderInfoForShader( "default" );
-	}
-
-	/* determine min/max index */
-	minShaderIndex = 255;
-	maxShaderIndex = 0;
-	for ( i = 0; i < numPoints; i++ )
-	{
-		if ( shaderIndexes[ i ] < minShaderIndex ) {
-			minShaderIndex = shaderIndexes[ i ];
-		}
-		if ( shaderIndexes[ i ] > maxShaderIndex ) {
-			maxShaderIndex = shaderIndexes[ i ];
-		}
-	}
-
-	/* set alpha inline */
-	for ( i = 0; i < numPoints; i++ )
-	{
-		/* straight rip from terrain.c */
-		if ( shaderIndexes[ i ] < maxShaderIndex ) {
-			shaderIndexes[ i ] = 0;
-		}
-		else{
-			shaderIndexes[ i ] = 255;
-		}
-	}
-
-	/* make a shader name */
-	if ( minShaderIndex == maxShaderIndex ) {
-		snprintf_ignore( shader, sizeof shader, "textures/%s_%d", im->shader, maxShaderIndex );
-	}
-	else{
-		snprintf_ignore( shader, sizeof shader, "textures/%s_%dto%d", im->shader, minShaderIndex, maxShaderIndex );
-	}
-
-	/* get the shader */
-	si = ShaderInfoForShader( shader );
-
-	/* inherit a few things from parent shader */
-	if ( parent->globalTexture ) {
-		si->globalTexture = qtrue;
-	}
-	if ( parent->forceMeta ) {
-		si->forceMeta = qtrue;
-	}
-	if ( parent->nonplanar ) {
-		si->nonplanar = qtrue;
-	}
-	if ( si->shadeAngleDegrees == 0.0 ) {
-		si->shadeAngleDegrees = parent->shadeAngleDegrees;
-	}
-	if ( parent->tcGen && si->tcGen == qfalse ) {
-		/* set xy texture projection */
-		si->tcGen = qtrue;
-		VectorCopy( parent->vecs[ 0 ], si->vecs[ 0 ] );
-		VectorCopy( parent->vecs[ 1 ], si->vecs[ 1 ] );
-	}
-	if ( VectorLength( parent->lightmapAxis ) > 0.0f && VectorLength( si->lightmapAxis ) <= 0.0f ) {
-		/* set lightmap projection axis */
-		VectorCopy( parent->lightmapAxis, si->lightmapAxis );
-	}
-
-	/* return the shader */
-	return si;
-}
-
-
 
 
 /*
@@ -888,7 +722,6 @@ mapDrawSurface_t *DrawSurfaceForSide( entity_t *e, brush_t *b, side_t *s, windin
 	vec3_t texX, texY;
 	vec_t x, y;
 	vec3_t vTranslated;
-	qboolean indexed;
 	byte shaderIndexes[ 256 ];
 	float offsets[ 256 ];
 	char tempShader[ MAX_QPATH ];
@@ -906,27 +739,6 @@ mapDrawSurface_t *DrawSurfaceForSide( entity_t *e, brush_t *b, side_t *s, windin
 
 	/* get shader */
 	si = s->shaderInfo;
-
-	/* ydnar: gs mods: check for indexed shader */
-	if ( si->indexed && b->im != NULL ) {
-		/* indexed */
-		indexed = qtrue;
-
-		/* get shader indexes for each point */
-		for ( i = 0; i < w->numpoints; i++ )
-		{
-			shaderIndexes[ i ] = GetShaderIndexForPoint( b->im, b->eMins, b->eMaxs, w->p[ i ] );
-			offsets[ i ] = b->im->offsets[ shaderIndexes[ i ] ];
-			//%	Sys_Printf( "%f ", offsets[ i ] );
-		}
-
-		/* get matching shader and set alpha */
-		parent = si;
-		si = GetIndexedShader( parent, b->im, w->numpoints, shaderIndexes );
-	}
-	else{
-		indexed = qfalse;
-	}
 
 	/* ydnar: sky hack/fix for GL_CLAMP borders on ati cards */
 	if ( skyFixHack && si->skyParmsImageBase[ 0 ] != '\0' ) {
@@ -977,9 +789,6 @@ mapDrawSurface_t *DrawSurfaceForSide( entity_t *e, brush_t *b, side_t *s, windin
 
 		/* copy xyz and do potential z offset */
 		VectorCopy( w->p[ j ], dv->xyz );
-		if ( indexed ) {
-			dv->xyz[ 2 ] += offsets[ j ];
-		}
 
 		/* round the xyz to a given precision and translate by origin */
 		for ( i = 0; i < 3; i++ )
@@ -1026,9 +835,7 @@ mapDrawSurface_t *DrawSurfaceForSide( entity_t *e, brush_t *b, side_t *s, windin
 			dv->color[ k ][ 0 ] = 255;
 			dv->color[ k ][ 1 ] = 255;
 			dv->color[ k ][ 2 ] = 255;
-
-			/* ydnar: gs mods: handle indexed shader blending */
-			dv->color[ k ][ 3 ] = ( indexed ? shaderIndexes[ i ] : 255 );
+			dv->color[ k ][ 3 ] = 255;
 		}
 	}
 
@@ -1075,7 +882,6 @@ mapDrawSurface_t *DrawSurfaceForMesh( entity_t *e, parseMesh_t *p, mesh_t *mesh 
 	bspDrawVert_t       *dv;
 	vec3_t vTranslated;
 	mesh_t              *copy;
-	qboolean indexed;
 	byte shaderIndexes[ MAX_EXPANDED_AXIS * MAX_EXPANDED_AXIS ];
 	float offsets[ MAX_EXPANDED_AXIS * MAX_EXPANDED_AXIS ];
 
@@ -1119,26 +925,6 @@ mapDrawSurface_t *DrawSurfaceForMesh( entity_t *e, parseMesh_t *p, mesh_t *mesh 
 
 	/* free the old mesh */
 	FreeMesh( copy );
-
-	/* ydnar: gs mods: check for indexed shader */
-	if ( si->indexed && p->im != NULL ) {
-		/* indexed */
-		indexed = qtrue;
-
-		/* get shader indexes for each point */
-		for ( i = 0; i < numVerts; i++ )
-		{
-			shaderIndexes[ i ] = GetShaderIndexForPoint( p->im, p->eMins, p->eMaxs, mesh->verts[ i ].xyz );
-			offsets[ i ] = p->im->offsets[ shaderIndexes[ i ] ];
-		}
-
-		/* get matching shader and set alpha */
-		parent = si;
-		si = GetIndexedShader( parent, p->im, numVerts, shaderIndexes );
-	}
-	else{
-		indexed = qfalse;
-	}
 
 
 	/* ydnar: gs mods */
@@ -1229,18 +1015,7 @@ mapDrawSurface_t *DrawSurfaceForMesh( entity_t *e, parseMesh_t *p, mesh_t *mesh 
 			dv->color[ k ][ 0 ] = 255;
 			dv->color[ k ][ 1 ] = 255;
 			dv->color[ k ][ 2 ] = 255;
-
-			/* ydnar: gs mods: handle indexed shader blending */
-			if (indexed) {
-				dv->color[ k ][ 3 ] = shaderIndexes[ i ];
-			} else {
-				dv->color[ k ][ 3 ] *= 1.0f;
-			}
-		}
-
-		/* ydnar: offset */
-		if ( indexed ) {
-			dv->xyz[ 2 ] += offsets[ i ];
+			dv->color[ k ][ 3 ] *= 1.0f;
 		}
 	}
 
@@ -1832,7 +1607,7 @@ void ClipSidesIntoTree( entity_t *e, tree_t *tree ){
 
 			/* don't create faces for non-visible sides */
 			/* ydnar: except indexed shaders, like common/terrain and nodraw fog surfaces */
-			if ( ( si->compileFlags & C_NODRAW ) && si->indexed == qfalse && !( si->compileFlags & C_FOG ) ) {
+			if ( ( si->compileFlags & C_NODRAW ) && !( si->compileFlags & C_FOG ) ) {
 				continue;
 			}
 

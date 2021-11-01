@@ -698,14 +698,6 @@ void FinishShader( shaderInfo_t *si ){
 		si->shaderHeight = si->shaderImage->height;
 	}
 
-	/* legacy terrain has explicit image-sized texture projection */
-	if ( si->legacyTerrain && si->tcGen == qfalse ) {
-		/* set xy texture projection */
-		si->tcGen = qtrue;
-		VectorSet( si->vecs[ 0 ], ( 1.0f / ( si->shaderWidth * 0.5f ) ), 0, 0 );
-		VectorSet( si->vecs[ 1 ], 0, ( 1.0f / ( si->shaderHeight * 0.5f ) ), 0 );
-	}
-
 	/* find pixel coordinates best matching the average color of the image */
 	bestDist = 99999999;
 	o[ 0 ] = 1.0f / si->shaderImage->width;
@@ -1020,7 +1012,7 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 		}
 
 		/* tesssize is used to force liquid surfaces to subdivide */
-		else if ( !Q_stricmp( mattoken, "tessSize" ) ) {
+		else if ( !Q_stricmp( mattoken, "vmap_tessSize" ) ) {
 			GetMatTokenAppend( shaderText, qfalse );
 			si->subdivisions = atof( mattoken );
 		}
@@ -1577,20 +1569,6 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 				si->furFade = atof( mattoken );
 			}
 
-			/* ydnar: gs mods: legacy support for terrain/terrain2 shaders */
-			else if ( !Q_stricmp( mattoken, "q3map_terrain" ) || !Q_stricmp( mattoken, "vmap_terrain" ) ) {
-				/* team arena terrain is assumed to be nonplanar, with full normal averaging,
-				   passed through the metatriangle surface pipeline, with a lightmap axis on z */
-				si->legacyTerrain = qtrue;
-				si->noClip = qtrue;
-				si->notjunc = qtrue;
-				si->indexed = qtrue;
-				si->nonplanar = qtrue;
-				si->forceMeta = qtrue;
-				si->shadeAngleDegrees = 179.0f;
-				//%	VectorSet( si->lightmapAxis, 0, 0, 1 );	/* ydnar 2002-09-21: turning this off for better lightmapping of cliff faces */
-			}
-
 			/* ydnar: picomodel: q3map_forceMeta (forces brush faces and/or triangle models to go through the metasurface pipeline) */
 			else if ( !Q_stricmp( mattoken, "q3map_forceMeta" ) || !Q_stricmp( mattoken, "vmap_forceMeta" ) ) {
 				si->forceMeta = qtrue;
@@ -1806,11 +1784,6 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 			/* q3map_nofog */
 			else if ( !Q_stricmp( mattoken, "q3map_nofog" ) || !Q_stricmp( mattoken, "vmap_nofog" ) ) {
 				si->noFog = qtrue;
-			}
-
-			/* ydnar: gs mods: q3map_indexed (for explicit terrain-style indexed mapping) */
-			else if ( !Q_stricmp( mattoken, "q3map_indexed" ) || !Q_stricmp( mattoken, "vmap_indexed" ) ) {
-				si->indexed = qtrue;
 			}
 
 			/* ydnar: q3map_invert (inverts a drawsurface's facing) */
@@ -2110,7 +2083,7 @@ static void ParseShaderFile( const char *filename ){
 			}
 
 			/* tesssize is used to force liquid surfaces to subdivide */
-			else if ( !Q_stricmp( token, "tessSize" ) ) {
+			else if ( !Q_stricmp( token, "vmap_tessSize" ) ) {
 				GetTokenAppend( shaderText, qfalse );
 				si->subdivisions = atof( token );
 			}
@@ -2661,20 +2634,6 @@ static void ParseShaderFile( const char *filename ){
 					si->furFade = atof( token );
 				}
 
-				/* ydnar: gs mods: legacy support for terrain/terrain2 shaders */
-				else if ( !Q_stricmp( token, "q3map_terrain" ) || !Q_stricmp( token, "vmap_terrain" ) ) {
-					/* team arena terrain is assumed to be nonplanar, with full normal averaging,
-					   passed through the metatriangle surface pipeline, with a lightmap axis on z */
-					si->legacyTerrain = qtrue;
-					si->noClip = qtrue;
-					si->notjunc = qtrue;
-					si->indexed = qtrue;
-					si->nonplanar = qtrue;
-					si->forceMeta = qtrue;
-					si->shadeAngleDegrees = 179.0f;
-					//%	VectorSet( si->lightmapAxis, 0, 0, 1 );	/* ydnar 2002-09-21: turning this off for better lightmapping of cliff faces */
-				}
-
 				/* ydnar: picomodel: q3map_forceMeta (forces brush faces and/or triangle models to go through the metasurface pipeline) */
 				else if ( !Q_stricmp( token, "q3map_forceMeta" ) || !Q_stricmp( token, "vmap_forceMeta" ) ) {
 					si->forceMeta = qtrue;
@@ -2890,11 +2849,6 @@ static void ParseShaderFile( const char *filename ){
 				/* q3map_nofog */
 				else if ( !Q_stricmp( token, "q3map_nofog" ) || !Q_stricmp( token, "vmap_nofog" ) ) {
 					si->noFog = qtrue;
-				}
-
-				/* ydnar: gs mods: q3map_indexed (for explicit terrain-style indexed mapping) */
-				else if ( !Q_stricmp( token, "q3map_indexed" ) || !Q_stricmp( token, "vmap_indexed" ) ) {
-					si->indexed = qtrue;
 				}
 
 				/* ydnar: q3map_invert (inverts a drawsurface's facing) */

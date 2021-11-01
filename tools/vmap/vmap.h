@@ -706,8 +706,6 @@ typedef struct shaderInfo_s
 
 	vec3_t mins, maxs;                                  /* ydnar: for particle studio vertexDeform move support */
 
-	qb_t legacyTerrain;                                 /* ydnar: enable legacy terrain crutches */
-	qb_t indexed;                                       /* ydnar: attempt to use indexmap (terrain alphamap style) */
 	qb_t forceMeta;                                     /* ydnar: force metasurface path */
 	qb_t noClip;                                        /* ydnar: don't clip into bsp, preserve original face winding */
 	qb_t noFast;                                        /* ydnar: supress fast lighting for surfaces with this shader */
