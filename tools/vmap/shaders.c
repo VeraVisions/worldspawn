@@ -1078,6 +1078,7 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 			GetMatTokenAppend( shaderText, qfalse );           /* don't do anything with health */
 		}
 
+#if 0
 		/* ydnar: enemy territory implicit shaders */
 		else if ( !Q_stricmp( mattoken, "implicitMap" ) ) {
 			si->implicitMap = IM_OPAQUE;
@@ -1111,7 +1112,7 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 				strcpy( si->implicitImagePath, mattoken );
 			}
 		}
-
+#endif
 
 		/* -----------------------------------------------------------------
 		   image directives
@@ -1160,90 +1161,6 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 			GetMatTokenAppend( shaderText, qfalse );
 		}
 
-		/* -----------------------------------------------------------------
-		   q3map_* directives
-		   ----------------------------------------------------------------- */
-
-		/* q3map_sun <red> <green> <blue> <intensity> <degrees> <elevation>
-		   color will be normalized, so it doesn't matter what range you use
-		   intensity falls off with angle but not distance 100 is a fairly bright sun
-		   degree of 0 = from the east, 90 = north, etc.  altitude of 0 = sunrise/set, 90 = noon */
-#if 0
-		else if ( !Q_stricmp( mattoken, "vmap_sun" ) || !Q_stricmp( mattoken, "q3map_sun" ) || !Q_stricmp( mattoken, "q3map_sunExt" ) ) {
-			float a, b;
-			sun_t       *sun;
-			qboolean ext = qfalse;
-
-			/* ydnar: extended sun directive? */
-			if ( !Q_stricmp( mattoken, "q3map_sunext" ) || !Q_stricmp( mattoken, "vmap_sun" ) ) {
-				ext = qtrue;
-			}
-
-			/* allocate sun */
-			sun = safe_malloc( sizeof( *sun ) );
-			memset( sun, 0, sizeof( *sun ) );
-
-			/* set style */
-			sun->style = si->lightStyle;
-
-			/* get color */
-			GetTokenAppend( shaderText, qfalse );
-			sun->color[ 0 ] = atof( mattoken );
-			GetTokenAppend( shaderText, qfalse );
-			sun->color[ 1 ] = atof( mattoken );
-			GetTokenAppend( shaderText, qfalse );
-			sun->color[ 2 ] = atof( mattoken );
-
-			if ( colorsRGB ) {
-				sun->color[0] = Image_LinearFloatFromsRGBFloat( sun->color[0] );
-				sun->color[1] = Image_LinearFloatFromsRGBFloat( sun->color[1] );
-				sun->color[2] = Image_LinearFloatFromsRGBFloat( sun->color[2] );
-			}
-
-			/* normalize it */
-			ColorNormalize( sun->color, sun->color );
-
-			/* scale color by brightness */
-			GetTokenAppend( shaderText, qfalse );
-			sun->photons = atof( mattoken );
-
-			/* get sun angle/elevation */
-			GetTokenAppend( shaderText, qfalse );
-			a = atof( mattoken );
-			a = a / 180.0f * Q_PI;
-
-			GetTokenAppend( shaderText, qfalse );
-			b = atof( mattoken );
-			b = b / 180.0f * Q_PI;
-
-			sun->direction[ 0 ] = cos( a ) * cos( b );
-			sun->direction[ 1 ] = sin( a ) * cos( b );
-			sun->direction[ 2 ] = sin( b );
-
-			/* get filter radius from shader */
-			sun->filterRadius = si->lightFilterRadius;
-
-			/* ydnar: get sun angular deviance/samples */
-			if ( ext && TokenAvailable() ) {
-				GetTokenAppend( shaderText, qfalse );
-				sun->deviance = atof( mattoken );
-				sun->deviance = sun->deviance / 180.0f * Q_PI;
-
-				GetTokenAppend( shaderText, qfalse );
-				sun->numSamples = atoi( mattoken );
-			}
-
-			/* store sun */
-			sun->next = si->sun;
-			si->sun = sun;
-
-			/* apply sky surfaceparm */
-			ApplySurfaceParm( "sky", &si->contentFlags, &si->surfaceFlags, &si->compileFlags );
-
-			/* don't process any more mattokens on this line */
-			continue;
-		}
-#endif
 		/* match q3map_ */
 		else if ( !Q_strncasecmp( mattoken, "q3map_", 6 ) || !Q_strncasecmp( mattoken, "vmap_", 5 ) ) {
 			/* ydnar: vmap_baseMaterial <shader> (inherit this shader's parameters) */

@@ -53,6 +53,8 @@
 
 #include "grid.h"
 
+void Selection_Deselect(void);
+
 TextOutputStream &ostream_write(TextOutputStream &t, const Vector4 &v)
 {
 	return t << "[ " << v.x() << " " << v.y() << " " << v.z() << " " << v.w() << " ]";
@@ -2761,6 +2763,7 @@ void Scene_SelectAll_Component(bool select, SelectionSystem::EComponentMode comp
 	GlobalSceneGraph().traverse(select_all_component(select, componentMode));
 }
 extern bool g_expansion_enabled;
+extern bool g_addselect_enabled;
 
 void Scene_ExpandSelectionToEntities();
 
@@ -3095,6 +3098,9 @@ void SelectPoint(const View &view, const float device_point[2], const float devi
 		if (!selector.failed()) {
 			switch (modifier) {
 			case RadiantSelectionSystem::eToggle: {
+				if (g_addselect_enabled == false)
+					Selection_Deselect();
+
 				SelectableSortedSet::iterator best = selector.begin();
 				// toggle selection of the object with least depth
 				if ((*best).second->isSelected()) {

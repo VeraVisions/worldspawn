@@ -1960,6 +1960,7 @@ ui::MenuItem create_edit_menu()
 	create_menu_item_with_mnemonic(menu, "Select _touching", "SelectTouching");
 
 	create_check_menu_item_with_mnemonic(menu, "Auto-Expand Selection", "ToggleExpansion");
+	create_check_menu_item_with_mnemonic(menu, "Additive Selection", "ToggleAddSelect");
 
 	auto convert_menu = create_sub_menu_with_mnemonic(menu, "E_xpand Selection");
 	/*if (g_Layout_enableOpenStepUX.m_value) {
@@ -3124,6 +3125,20 @@ void Texdef_ToggleExpansion()
 	g_expansion_status_changed();
 }
 
+/* eukara: requested by Xylemon */
+bool g_addselect_enabled = true;
+Callback<void()> g_addselect_status_changed;
+ConstReferenceCaller<bool, void(const Callback<void(bool)> &), PropertyImpl<bool>::Export> g_addselect_caller(
+	g_addselect_enabled);
+ToggleItem g_addselect_item(g_addselect_caller);
+
+void Texdef_ToggleAddSelect()
+{
+	g_addselect_enabled = !g_addselect_enabled;
+	g_addselect_item.update();
+	g_addselect_status_changed();
+}
+
 #include "preferencesystem.h"
 #include "stringio.h"
 
@@ -3194,6 +3209,9 @@ void MainFrame_Construct()
 
 	GlobalToggles_insert("ToggleExpansion", makeCallbackF(Texdef_ToggleExpansion),
 	                     ToggleItem::AddCallbackCaller(g_expansion_item));
+
+	GlobalToggles_insert("ToggleAddSelect", makeCallbackF(Texdef_ToggleAddSelect),
+	                     ToggleItem::AddCallbackCaller(g_addselect_item));
 
 	GlobalToggles_insert("ToggleClipper", makeCallbackF(ClipperMode), ToggleItem::AddCallbackCaller(g_clipper_button),
 	                     Accelerator('X'));
