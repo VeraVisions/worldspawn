@@ -2453,6 +2453,11 @@ ui::Toolbar create_main_toolbar()
 	toolbar_append_button(toolbar, "Refresh Assets", "refresh_models.xpm",
 	                      "RefreshReferences");
 
+	toolbar_append_toggle_button(toolbar, "Auto-Expand Selection", "select_autoexpand.xpm",
+	                      "ToggleExpansion");
+	toolbar_append_toggle_button(toolbar, "Additive Selection", "select_additive.xpm",
+	                      "ToggleAddSelect");
+
 	PluginToolbar_AddToMain(toolbar);
 
 

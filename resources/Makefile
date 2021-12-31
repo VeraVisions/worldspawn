@@ -63,6 +63,8 @@ all:
 	cp -vf ./bitmaps/scalelockx.xpm ../build/bitmaps/scalelockx.xpm
 	cp -vf ./bitmaps/scalelocky.xpm ../build/bitmaps/scalelocky.xpm
 	cp -vf ./bitmaps/scalelockz.xpm ../build/bitmaps/scalelockz.xpm
+	cp -vf ./bitmaps/select_additive.xpm ../build/bitmaps/select_additive.xpm
+	cp -vf ./bitmaps/select_autoexpand.xpm ../build/bitmaps/select_autoexpand.xpm
 	cp -vf ./bitmaps/selection_csgmerge.xpm ../build/bitmaps/selection_csgmerge.xpm
 	cp -vf ./bitmaps/selection_csgsubtract.xpm ../build/bitmaps/selection_csgsubtract.xpm
 	cp -vf ./bitmaps/selection_makehollow.xpm ../build/bitmaps/selection_makehollow.xpm
