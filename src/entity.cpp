@@ -332,11 +332,22 @@ AABB Doom3Light_getBounds(const AABB &workzone)
 
 int g_iLastLightIntensity;
 
+bool
+Entity_isModelEntity(const char *name)
+{
+	if (string_equal_nocase(name, "prop_static"))
+		return true;
+	else if (string_equal_nocase(name, "prop_dynamic"))
+		return true;
+	
+	return false;
+}
+
 void Entity_createFromSelection(const char *name, const Vector3 &origin)
 {
 	EntityClass *entityClass = GlobalEntityClassManager().findOrInsert(name, true);
 
-	bool isModel = string_equal_nocase(name, "prop_static");
+	bool isModel = Entity_isModelEntity(name);
 	bool brushesSelected = Scene_countSelectedBrushes(GlobalSceneGraph()) != 0;
 
 	if (!(entityClass->fixedsize || isModel) && !brushesSelected) {
