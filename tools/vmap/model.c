@@ -689,6 +689,7 @@ void AddTriangleModels( entity_t *e ){
 	float temp, baseLightmapScale, lightmapScale;
 	float shadeAngle;
 	int lightmapSampleSize;
+	int genlightMap;
 	vec3_t origin, scale, angles;
 	m4x4_t transform;
 	epair_t         *ep;
@@ -744,6 +745,12 @@ void AddTriangleModels( entity_t *e ){
 		if ( Q_stricmp( "prop_static", ValueForKey( e2, "classname" ) ) && Q_stricmp( "misc_model", ValueForKey( e2, "classname" ) ) ) {
 			continue;
 		}
+
+		/* only bake into the map if we're generating lightmaps */
+		genlightMap = IntForKey( e2, "generatelightmaps" );
+
+		if (genlightMap != 1)
+			continue;
 
 		/* ydnar: added support for md3 models on non-worldspawn models */
 		target = ValueForKey( e2, "target" );
@@ -931,6 +938,7 @@ void AddTriangleModels( entity_t *e ){
 
 		/* insert the model */
 		InsertModel( model, skin, frame, transform, remap, celShader, mapEntityNum, castShadows, recvShadows, spawnFlags, lightmapScale, lightmapSampleSize, shadeAngle );
+		printf("Inserting model %s\n", model);
 
 		/* free shader remappings */
 		while ( remap != NULL )

@@ -834,10 +834,18 @@ void UnparseEntities( void ){
 		/* ydnar: certain entities get stripped from bsp file */
 		value2 = ValueForKey( &entities[ i ], "classname" );
 		if ( !Q_stricmp( value2, "misc_model" ) ||
-		     !Q_stricmp( value2, "prop_static" ) ||
 		     !Q_stricmp( value2, "_decal" ) ||
 		     !Q_stricmp( value2, "_skybox" ) ) {
 			continue;
+		}
+
+		/* only strip prop_statics that are built into the bsp */
+		if (!Q_stricmp( value2, "prop_static" )) {
+			int foo;
+			foo = IntForKey(&entities[i], "generatelightmaps");
+
+			if (foo == 1)
+				continue;
 		}
 
 		/* add beginning brace */
