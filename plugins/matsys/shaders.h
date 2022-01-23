@@ -30,26 +30,14 @@
 
 #if !defined( INCLUDED_SHADERS_H )
 #define INCLUDED_SHADERS_H
-
 void Shaders_Construct();
 void Shaders_Destroy();
 class ShaderSystem;
-ShaderSystem& GetShaderSystem();
-
-enum ShaderLanguage
-{
-	SHADERLANGUAGE_QUAKE3,
-	SHADERLANGUAGE_DOOM3,
-	SHADERLANGUAGE_QUAKE4
-};
-
-extern const char* g_shadersExtension;
-extern const char* g_shadersDirectory;
-extern ShaderLanguage g_shaderLanguage;
+ShaderSystem &GetShaderSystem();
+extern const char *g_shadersExtension;
+extern const char *g_shadersDirectory;
 extern bool g_enableDefaultShaders;
 extern bool g_useShaderList;
 struct _QERPlugImageTable;
-extern _QERPlugImageTable* g_bitmapModule;
-
-
+extern _QERPlugImageTable *g_bitmapModule;
 #endif

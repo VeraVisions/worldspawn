@@ -3,9 +3,12 @@ all:
 	mkdir -p ../build/games
 	mkdir -p ../build/gl
 	mkdir -p ../build/platform.game
+	mkdir -p ../build/goldsrc.game
 	cp -vf ./defaultkeys.ini ../build/defaultkeys.ini
 	cp -vf ./platform.game/default_build_menu.xml ../build/platform.game/default_build_menu.xml
+	cp -vf ./goldsrc.game/default_build_menu.xml ../build/goldsrc.game/default_build_menu.xml
 	cp -vf ./games/platform.game ../build/games/platform.game
+	cp -vf ./games/goldsrc.game ../build/games/goldsrc.game
 	cp -vf ./gl/lighting_DBS_omni_fp.glp ../build/gl/lighting_DBS_omni_fp.glp
 	cp -vf ./gl/lighting_DBS_omni_fp.glsl ../build/gl/lighting_DBS_omni_fp.glsl
 	cp -vf ./gl/lighting_DBS_omni_vp.glp ../build/gl/lighting_DBS_omni_vp.glp
