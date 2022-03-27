@@ -1655,7 +1655,7 @@ void                        FreeTreePortals_r( node_t *node );
 
 
 /* patch.c */
-void                        ParsePatch( qboolean onlyLights, qboolean fixedsubdivs );
+void                        ParsePatch( qboolean onlyLights, qboolean fixedsubdivs, qboolean extended );
 void                        ParsePatchWS( qboolean onlyLights );
 mesh_t                      *SubdivideMesh( mesh_t in, float maxError, float minLength );
 void                        PatchMapDrawSurfs( entity_t *e );

@@ -1716,12 +1716,15 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 			}
 
 			/* check */
-			if ( !strcmp( token, "patchDef2" ) || !strcmp( token, "patchDef2WS" ) ) {
+			if ( !strcmp( token, "patchDef2" ) ) {
 				numMapPatches++;
-				ParsePatch( onlyLights, qfalse );
+				ParsePatch( onlyLights, qfalse, qfalse );
+			} else if ( !strcmp( token, "patchDef2WS" ) ) {
+				numMapPatches++;
+				ParsePatch( onlyLights, qtrue, qfalse );
 			} else if ( !strcmp( token, "patchDef3" ) || !strcmp( token, "patchDef3WS" ) ) {
 				numMapPatches++;
-				ParsePatch( onlyLights, qtrue );
+				ParsePatch( onlyLights, qtrue, qtrue );
 //			} else if ( !strcmp( token, "patchDefWS" ) ) {
 //				numMapPatches++;
 //				ParsePatch( onlyLights, qfalse );

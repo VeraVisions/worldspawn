@@ -252,7 +252,7 @@ void ParseVertMatrix(bspDrawVert_t *v)
    creates a mapDrawSurface_t from the patch text
  */
 
-void ParsePatch( qboolean onlyLights, qboolean fixedtess ){
+void ParsePatch( qboolean onlyLights, qboolean fixedtess, qboolean extended ){
 	vec_t info[ 5 ];
 	int i, j;
 	parseMesh_t     *pm;
@@ -272,7 +272,7 @@ void ParsePatch( qboolean onlyLights, qboolean fixedtess ){
 	GetToken( qtrue );
 	strcpy( texture, token );
 
-	if (fixedtess)
+	if (extended)
 		Parse1DMatrix( 7, info );
 	else
 		Parse1DMatrix( 5, info );
