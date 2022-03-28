@@ -285,6 +285,12 @@ void ParsePatch( qboolean onlyLights, qboolean fixedtess, qboolean extended ){
 	m.height = info[1];
 	m.subdiv_x = fixedtess?info[2]:-1;
 	m.subdiv_y = fixedtess?info[3]:-1;
+
+	if (m.subdiv_x == 0)
+		m.subdiv_x = -1;
+	if (m.subdiv_y == 0)
+		m.subdiv_y = -1;
+
 	m.verts = verts = safe_malloc( m.width * m.height * sizeof( m.verts[0] ) );
 
 	if ( m.width < 0 || m.width > MAX_PATCH_SIZE || m.height < 0 || m.height > MAX_PATCH_SIZE ) {
