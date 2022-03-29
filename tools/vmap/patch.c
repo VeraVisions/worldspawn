@@ -283,8 +283,14 @@ void ParsePatch( qboolean onlyLights, qboolean fixedtess, qboolean extended ){
 
 	m.width = info[0];
 	m.height = info[1];
-	m.subdiv_x = fixedtess?info[2]:-1;
-	m.subdiv_y = fixedtess?info[3]:-1;
+
+	if (extended) {
+		m.subdiv_x = fixedtess?info[2]:-1;
+		m.subdiv_y = fixedtess?info[3]:-1;
+	} else {
+		m.subdiv_x = fixedtess?info[0]:-1;
+		m.subdiv_y = fixedtess?info[1]:-1;
+	}
 
 	if (m.subdiv_x == 0)
 		m.subdiv_x = -1;
