@@ -459,7 +459,7 @@ void EmitBrushes( brush_t *brushes, int *firstBrush, int *numBrushes ){
 		}
 
 		surfaceFlags = b->contentShader->surfaceFlags | b->entSurfaceFlags;
-		contentFlags = b->contentShader->contentFlags;
+		contentFlags = b->contentShader->contentFlags | b->entContentFlags;
 
 		if (b->nosolid) {
 			contentFlags &= ~1;

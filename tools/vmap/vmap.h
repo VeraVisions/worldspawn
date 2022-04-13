@@ -900,6 +900,7 @@ typedef struct brush_s
 	qboolean detail;
 	qboolean opaque;
 	int entSurfaceFlags;
+	int entContentFlags;
 
 	int portalareas[ 2 ];
 
@@ -961,6 +962,7 @@ typedef struct parseMesh_s
 	int maxIterations;
 	qboolean nosolid;
 	int entSurfaceFlags;
+	int entContentFlags;
 }
 parseMesh_t;
 
