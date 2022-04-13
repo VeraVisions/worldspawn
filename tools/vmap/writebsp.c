@@ -458,7 +458,7 @@ void EmitBrushes( brush_t *brushes, int *firstBrush, int *numBrushes ){
 			( *numBrushes )++;
 		}
 
-		surfaceFlags = b->contentShader->surfaceFlags;
+		surfaceFlags = b->contentShader->surfaceFlags | b->entSurfaceFlags;
 		contentFlags = b->contentShader->contentFlags;
 
 		if (b->nosolid) {
@@ -488,7 +488,7 @@ void EmitBrushes( brush_t *brushes, int *firstBrush, int *numBrushes ){
 
 			/* emit shader */
 			if ( b->sides[ j ].shaderInfo ) {
-				surfaceFlags = b->sides[ j ].shaderInfo->surfaceFlags;
+				surfaceFlags = b->sides[ j ].shaderInfo->surfaceFlags | b->entSurfaceFlags;
 
 				if (b->nosolid)
 					surfaceFlags |= 0x4000;

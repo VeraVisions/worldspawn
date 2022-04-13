@@ -1655,6 +1655,7 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 	const char      *classname, *value;
 	float lightmapScale, shadeAngle;
 	int lightmapSampleSize;
+	int entSurfFlag;
 	char shader[ MAX_QPATH ];
 	shaderInfo_t    *celShader = NULL;
 	brush_t         *brush;
@@ -1832,6 +1833,9 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 		}
 	}
 
+	entSurfFlag = 0;
+	entSurfFlag = IntForKey( mapEnt, "_entsurfaceflags");
+
 	/* ydnar: get cel shader :) for this entity */
 	value = ValueForKey( mapEnt, "_celshader" );
 	if ( value[ 0 ] == '\0' ) {
@@ -1903,6 +1907,7 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 		brush->lightmapScale = lightmapScale;
 		brush->celShader = celShader;
 		brush->shadeAngleDegrees = shadeAngle;
+		brush->entSurfaceFlags = entSurfFlag;
 	}
 
 	for ( patch = mapEnt->patches; patch != NULL; patch = patch->next )
@@ -1913,6 +1918,7 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 		patch->lightmapSampleSize = lightmapSampleSize;
 		patch->lightmapScale = lightmapScale;
 		patch->celShader = celShader;
+		patch->entSurfaceFlags = entSurfFlag;
 	}
 
 	/* ydnar: gs mods: set entity bounds */

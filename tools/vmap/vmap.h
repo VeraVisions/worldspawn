@@ -899,6 +899,7 @@ typedef struct brush_s
 	qboolean nosolid;
 	qboolean detail;
 	qboolean opaque;
+	int entSurfaceFlags;
 
 	int portalareas[ 2 ];
 
@@ -959,6 +960,7 @@ typedef struct parseMesh_s
 	float longestCurve;
 	int maxIterations;
 	qboolean nosolid;
+	int entSurfaceFlags;
 }
 parseMesh_t;
 
