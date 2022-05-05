@@ -1280,3 +1280,142 @@ void DoScaleDlg()
 
 	g_scale_dialog.window.show();
 }
+
+/* NEW: Artbirary Move */
+
+struct MoveDialog {
+	ui::Entry x{ui::null};
+	ui::Entry y{ui::null};
+	ui::Entry z{ui::null};
+	ui::Window window{ui::null};
+};
+
+static gboolean movedlg_apply(ui::Widget widget, MoveDialog *moveDialog)
+{
+	float sx, sy, sz;
+
+	sx = static_cast<float>( atof(gtk_entry_get_text(GTK_ENTRY(moveDialog->x))));
+	sy = static_cast<float>( atof(gtk_entry_get_text(GTK_ENTRY(moveDialog->y))));
+	sz = static_cast<float>( atof(gtk_entry_get_text(GTK_ENTRY(moveDialog->z))));
+
+	StringOutputStream command;
+	command << "nudgeSelected -axis x " << sx;
+	command << "nudgeSelected -axis y " << sy;
+	command << "nudgeSelected -axis z " << sz;
+	UndoableCommand undo(command.c_str());
+
+	Nudge(0, sx);
+	Nudge(1, sy);
+	Nudge(2, sz);
+	return TRUE;
+}
+
+static gboolean movedlg_cancel(ui::Widget widget, MoveDialog *moveDialog)
+{
+	moveDialog->window.hide();
+
+	moveDialog->x.text("0.0");
+	moveDialog->y.text("0.0");
+	moveDialog->z.text("0.0");
+
+	return TRUE;
+}
+
+static gboolean movedlg_ok(ui::Widget widget, MoveDialog *moveDialog)
+{
+	movedlg_apply(widget, moveDialog);
+	moveDialog->window.hide();
+	return TRUE;
+}
+
+static gboolean movedlg_delete(ui::Widget widget, GdkEventAny *event, MoveDialog *moveDialog)
+{
+	movedlg_cancel(widget, moveDialog);
+	return TRUE;
+}
+
+MoveDialog g_move_dialog;
+
+void DoMoveDlg()
+{
+	if (!g_move_dialog.window) {
+		g_move_dialog.window = MainFrame_getWindow().create_dialog_window("Arbitrary scale",
+		                                                                   G_CALLBACK(movedlg_delete),
+		                                                                   &g_move_dialog);
+
+		auto accel = ui::AccelGroup(ui::New);
+		g_move_dialog.window.add_accel_group(accel);
+
+		{
+			auto hbox = create_dialog_hbox(4, 4);
+			g_move_dialog.window.add(hbox);
+			{
+				auto table = create_dialog_table(3, 2, 4, 4);
+				hbox.pack_start(table, TRUE, TRUE, 0);
+				{
+					ui::Widget label = ui::Label("  X  ");
+					label.show();
+					table.attach(label, {0, 1, 0, 1}, {0, 0});
+				}
+				{
+					ui::Widget label = ui::Label("  Y  ");
+					label.show();
+					table.attach(label, {0, 1, 1, 2}, {0, 0});
+				}
+				{
+					ui::Widget label = ui::Label("  Z  ");
+					label.show();
+					table.attach(label, {0, 1, 2, 3}, {0, 0});
+				}
+				{
+					auto entry = ui::Entry(ui::New);
+					entry.text("0.0");
+					entry.show();
+					table.attach(entry, {1, 2, 0, 1}, {GTK_EXPAND | GTK_FILL, 0});
+
+					g_move_dialog.x = entry;
+				}
+				{
+					auto entry = ui::Entry(ui::New);
+					entry.text("0.0");
+					entry.show();
+					table.attach(entry, {1, 2, 1, 2}, {GTK_EXPAND | GTK_FILL, 0});
+
+					g_move_dialog.y = entry;
+				}
+				{
+					auto entry = ui::Entry(ui::New);
+					entry.text("0.0");
+					entry.show();
+					table.attach(entry, {1, 2, 2, 3}, {GTK_EXPAND | GTK_FILL, 0});
+
+					g_move_dialog.z = entry;
+				}
+			}
+			{
+				auto vbox = create_dialog_vbox(4);
+				hbox.pack_start(vbox, TRUE, TRUE, 0);
+				{
+					auto button = create_dialog_button("OK", G_CALLBACK(movedlg_ok), &g_move_dialog);
+					vbox.pack_start(button, FALSE, FALSE, 0);
+					widget_make_default(button);
+					gtk_widget_add_accelerator(button, "clicked", accel, GDK_KEY_Return, (GdkModifierType) 0,
+					                           (GtkAccelFlags) 0);
+				}
+				{
+					auto button = create_dialog_button("Cancel", G_CALLBACK(movedlg_cancel), &g_move_dialog);
+					vbox.pack_start(button, FALSE, FALSE, 0);
+					gtk_widget_add_accelerator(button, "clicked", accel, GDK_KEY_Escape, (GdkModifierType) 0,
+					                           (GtkAccelFlags) 0);
+				}
+				{
+					auto button = create_dialog_button("Apply", G_CALLBACK(movedlg_apply), &g_move_dialog);
+					vbox.pack_start(button, FALSE, FALSE, 0);
+				}
+			}
+		}
+	}
+
+	g_move_dialog.window.show();
+}
+

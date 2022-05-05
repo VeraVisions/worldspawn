@@ -63,6 +63,7 @@ void DoRotateDlg();
 
 void DoScaleDlg();
 
+void DoMoveDlg();
 
 void Select_SetShader(const char *shader);
 

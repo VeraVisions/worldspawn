@@ -2160,6 +2160,7 @@ ui::MenuItem create_selection_menu()
 		create_menu_item_with_mnemonic(menu_in_menu, "Flip _Z", "MirrorSelectionZ");
 	}
 	menu_separator(menu);
+	create_menu_item_with_mnemonic(menu, "Arbitrary move...", "ArbitraryMove");
 	create_menu_item_with_mnemonic(menu, "Arbitrary rotation...", "ArbitraryRotation");
 	create_menu_item_with_mnemonic(menu, "Arbitrary scale...", "ArbitraryScale");
 	create_menu_item_with_mnemonic(menu, "Find brush...", "FindBrush");
@@ -3207,6 +3208,7 @@ void MainFrame_Construct()
 	GlobalCommands_insert("MirrorSelectionZ", makeCallbackF(Selection_Flipz));
 	GlobalCommands_insert("RotateSelectionZ", makeCallbackF(Selection_Rotatez));
 
+	GlobalCommands_insert("ArbitraryMove", makeCallbackF(DoMoveDlg));
 	GlobalCommands_insert("ArbitraryRotation", makeCallbackF(DoRotateDlg));
 	GlobalCommands_insert("ArbitraryScale", makeCallbackF(DoScaleDlg));
 
