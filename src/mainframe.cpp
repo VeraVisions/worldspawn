@@ -1970,6 +1970,8 @@ ui::MenuItem create_edit_menu()
 	   }*/
 	create_menu_item_with_mnemonic(convert_menu, "To Whole _Entities", "ExpandSelectionToEntities");
 
+	create_menu_item_with_mnemonic(menu, "Select all of model type", "SelectAllOfModel");
+
 	menu_separator(menu);
 	create_menu_item_with_mnemonic(menu, "Pre_ferences...", "Preferences");
 
@@ -3270,6 +3272,8 @@ void MainFrame_Construct()
 
 	GlobalCommands_insert("SelectAllOfType", makeCallbackF(Select_AllOfType),
 	                      Accelerator('A', (GdkModifierType) GDK_SHIFT_MASK));
+
+	GlobalCommands_insert("SelectAllOfModel", makeCallbackF(Select_AllOfModel));
 
 	GlobalCommands_insert("TexRotateClock", makeCallbackF(Texdef_RotateClockwise),
 	                      Accelerator(GDK_KEY_Next, (GdkModifierType) GDK_SHIFT_MASK));

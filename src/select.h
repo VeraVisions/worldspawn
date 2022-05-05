@@ -57,6 +57,8 @@ void Selection_MoveUp();
 
 void Select_AllOfType();
 
+void Select_AllOfModel();
+
 void DoRotateDlg();
 
 void DoScaleDlg();

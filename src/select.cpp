@@ -751,6 +751,28 @@ void Select_AllOfType()
 	}
 }
 
+void Select_AllOfModel()
+{
+	if (GlobalSelectionSystem().Mode() == SelectionSystem::eComponent) {
+		if (GlobalSelectionSystem().ComponentMode() == SelectionSystem::eFace) {
+			GlobalSelectionSystem().setSelectedAllComponents(false);
+			Scene_BrushSelectByShader_Component(GlobalSceneGraph(),
+			                                    TextureBrowser_GetSelectedShader(GlobalTextureBrowser()));
+		}
+	} else {
+		PropertyValues propertyvalues;
+		const char *prop = EntityInspector_getCurrentKey();
+		if (!prop || !*prop) {
+			prop = "model";
+		}
+		Scene_EntityGetPropertyValues(GlobalSceneGraph(), prop, propertyvalues);
+		GlobalSelectionSystem().setSelectedAll(false);
+		if (!propertyvalues.empty()) {
+			Scene_EntitySelectByPropertyValues(GlobalSceneGraph(), prop, propertyvalues);
+		}
+	}
+}
+
 void Select_Inside(void)
 {
 	SelectByBounds<SelectionPolicy_Inside>::DoSelection();
