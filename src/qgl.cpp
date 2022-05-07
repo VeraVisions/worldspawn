@@ -175,7 +175,10 @@ typedef int ( QGL_DLLEXPORT *QGLFunctionPointer )();
 
 QGLFunctionPointer QGL_getExtensionFunc(const char *symbol)
 {
-#if defined( XWINDOWS )
+#if GDEF_OS_WINDOWS
+	ASSERT_NOTNULL( qwglGetProcAddress );
+	return (QGLFunctionPointer) qwglGetProcAddress( symbol );
+#elif defined( XWINDOWS )
 	//ASSERT_NOTNULL(qglXGetProcAddressARB);
 	if (qglXGetProcAddressARB == 0) {
 		return reinterpret_cast<QGLFunctionPointer>( glInvalidFunction );
@@ -191,10 +194,6 @@ QGLFunctionPointer QGL_getExtensionFunc(const char *symbol)
 	if (NSIsSymbolNameDefined(symbolName)) nssymbol = NSLookupAndBindSymbol(symbolName);
 	free(symbolName);
 	return nssymbol ? reinterpret_cast<QGLFunctionPointer>(NSAddressOfSymbol(nssymbol)) : reinterpret_cast<QGLFunctionPointer>(glInvalidFunction);
-#elif GDEF_OS_WINDOWS
-	ASSERT_NOTNULL( qwglGetProcAddress );
-	return (QGLFunctionPointer) qwglGetProcAddress( symbol );
-#else
 #error "unsupported platform"
 #endif
 }

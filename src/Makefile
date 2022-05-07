@@ -1,5 +1,9 @@
 # WorldSpawn Makefile 
 
+# may be needed under msys2
+GLIB_CFLAGS=$(shell pkg-config --cflags glib-2.0)
+GLIB_LDFLAGS=$(shell pkg-config --libs glib-2.0)
+
 GTK_CFLAGS=$(shell pkg-config --cflags gtk+-2.0)
 GTK_LDFLAGS=$(shell pkg-config --libs gtk+-2.0)
 
@@ -31,8 +35,8 @@ WS_LIBS= ../libs/libcmdlib.a \
 	../libs/libuilib.a \
 	../libs/libxmllib.a
 
-WS_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) $(XML_CFLAGS) $(GLEXT_CFLAGS) -I../include -I../libs -DGTK_TARGET=2 $(WS_VERSION)
-WS_LDFLAGS=$(LDFLAGS) -lm $(GTK_LDFLAGS) $(XML_LDFLAGS) $(GLEXT_LDFLAGS) -L../lib $(WS_LIBS)
+WS_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) $(GTK_CFLAGS) $(XML_CFLAGS) $(GLEXT_CFLAGS) -I../include -I../libs -DGTK_TARGET=2 $(WS_VERSION)
+WS_LDFLAGS=$(LDFLAGS) -lm $(GLIB_LDFLAGS) $(GTK_LDFLAGS) $(XML_LDFLAGS) $(GLEXT_LDFLAGS) -L../lib $(WS_LIBS)
 
 DO_CXX=$(CXX) $(WS_CFLAGS) -o $@ -c $<
 

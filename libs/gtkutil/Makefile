@@ -2,8 +2,9 @@
 
 GTK_CFLAGS=$(shell pkg-config --cflags gtk+-2.0)
 GLEXT_CFLAGS=$(shell pkg-config --cflags gtkglext-1.0)
+GLIB_CFLAGS=$(shell pkg-config --cflags glib-2.0)
 
-LIB_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) $(GLEXT_CFLAGS) -I../../include -I../../libs -DGTK_TARGET=2
+LIB_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) $(GTK_CFLAGS) $(GLEXT_CFLAGS) -I../../include -I../../libs -DGTK_TARGET=2
 DO_CXX=$(CXX) -static -fPIC $(LIB_CFLAGS) -o $@ -c $<
 
 .cpp.o:
