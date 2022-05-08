@@ -1,7 +1,9 @@
 # WorldSpawn Plugin Makefile 
 
+ZLIB_LDFLAGS=$(shell pkg-config --libs zlib)
+
 PLUGIN_CFLAGS=$(CFLAGS) -I../../include -I../../libs -fPIC -fvisibility=hidden
-PLUGIN_LDFLAGS=$(LDFLAGS) -shared
+PLUGIN_LDFLAGS=$(LDFLAGS) -shared $(ZLIB_LDFLAGS)
 
 DO_CXX=$(CXX) $(PLUGIN_CFLAGS) -o $@ -c $<
 
