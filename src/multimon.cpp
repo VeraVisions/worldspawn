@@ -19,13 +19,12 @@
    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#if defined(GDEF_OS_WINDOWS)
+
 #include "multimon.h"
-
 #include "debugging/debugging.h"
-
 #include "gtkutil/window.h"
 #include "preferences.h"
-
 
 multimon_globals_t g_multimon_globals;
 
@@ -102,3 +101,4 @@ void MultiMon_Construct()
 void MultiMon_Destroy()
 {
 }
+#endif

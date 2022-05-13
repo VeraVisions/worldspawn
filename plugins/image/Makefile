@@ -8,6 +8,7 @@ JPEG_LDFLAGS=$(shell pkg-config --libs libjpeg)
 
 PLUGIN_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) $(JPEG_CFLAGS) -I../../include -I../../libs -fPIC -fvisibility=hidden
 PLUGIN_LDFLAGS=$(LDFLAGS) $(GLIB_LDFLAGS) $(JPEG_LDFLAGS) -shared
+LIB_EXT=so
 
 DO_CXX=$(CXX) $(PLUGIN_CFLAGS) -o $@ -c $<
 
@@ -18,7 +19,7 @@ WS_OBJS = \
 	bmp.o dds.o image.o jpeg.o ktx.o pcx.o tga.o
 
 # binary target
-../../build/plugins/libimage.so: $(WS_OBJS)
+../../build/plugins/libimage.$(LIB_EXT): $(WS_OBJS)
 	$(CXX) -o $@ $(WS_OBJS) ../../libs/libddslib.a ../../libs/libetclib.a $(PLUGIN_LDFLAGS)
 
 # object files
@@ -31,4 +32,4 @@ pcx.o: pcx.cpp pcx.h
 tga.o: tga.cpp tga.h
 
 clean:
-	-rm -f *.o ../../build/plugins/libimage.so
+	-rm -f *.o ../../build/plugins/libimage.$(LIB_EXT)

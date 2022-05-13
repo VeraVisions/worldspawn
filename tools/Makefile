@@ -24,7 +24,7 @@ PNG_CFLAGS=$(shell pkg-config --cflags libpng)
 PNG_LDFLAGS=$(shell pkg-config --libs libpng)
 
 VMAP_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) $(MINIZIP_CFLAGS) $(JPEG_CFLAGS) $(PNG_CFLAGS) -I../include  -I./common -I../libs
-VMAP_LDFLAGS=$(LDFLAGS) $(GLIB_LDFLAGS) $(XML_LDFLAGS) $(MINIZIP_LDFLAGS) $(JPEG_LDFLAGS) $(PNG_LDFLAGS) -lm -lpthread -L../lib $(LIBOBJS)
+VMAP_LDFLAGS=$(LDFLAGS) -lm -lpthread -L../lib $(GLIB_LDFLAGS) $(XML_LDFLAGS) $(MINIZIP_LDFLAGS) $(JPEG_LDFLAGS) $(PNG_LDFLAGS)
 
 DO_CC=$(CC) $(VMAP_CFLAGS) -o $@ -c $<
 
@@ -91,7 +91,7 @@ VMAP_OBJS = \
 
 # binary target
 ../build/vmap: $(VMAP_OBJS)
-	$(CXX) -o $@ $(VMAP_OBJS) $(VMAP_LDFLAGS)
+	$(CXX) -o $@ $(VMAP_OBJS) $(LIBOBJS) $(VMAP_LDFLAGS)
 
 clean:
 	-rm -f ./common/*.o

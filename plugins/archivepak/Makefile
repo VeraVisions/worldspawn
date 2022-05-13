@@ -1,5 +1,6 @@
 # WorldSpawn Plugin Makefile 
 
+LIB_EXT=so
 PLUGIN_CFLAGS=$(CFLAGS) -I../../include -I../../libs -fPIC -fvisibility=hidden
 PLUGIN_LDFLAGS=$(LDFLAGS) -shared
 
@@ -12,7 +13,7 @@ WS_OBJS = \
 	archive.o plugin.o
 
 # binary target
-../../build/plugins/libarchivepak.so: $(WS_OBJS)
+../../build/plugins/libarchivepak.$(LIB_EXT): $(WS_OBJS)
 	$(CXX) -o $@ $(WS_OBJS) $(PLUGIN_LDFLAGS)
 
 # object files
@@ -20,4 +21,4 @@ archive.o: archive.cpp archive.h
 plugin.o: plugin.cpp
 
 clean:
-	-rm -f *.o ../../build/plugins/libarchivepak.so
+	-rm -f *.o ../../build/plugins/libarchivepak.$(LIB_EXT)

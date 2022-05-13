@@ -1,17 +1,22 @@
 # WorldSpawn Makefile 
 
-# may be needed under msys2
-GLIB_CFLAGS=$(shell pkg-config --cflags glib-2.0)
-GLIB_LDFLAGS=$(shell pkg-config --libs glib-2.0)
-
 GTK_CFLAGS=$(shell pkg-config --cflags gtk+-2.0)
 GTK_LDFLAGS=$(shell pkg-config --libs gtk+-2.0)
+
+GLIB_CFLAGS=$(shell pkg-config --cflags glib-2.0)
+GLIB_LDLAGS=$(shell pkg-config --libs glib-2.0)
 
 XML_CFLAGS=$(shell pkg-config --cflags libxml-2.0)
 XML_LDFLAGS=$(shell pkg-config --libs libxml-2.0)
 
 GLEXT_CFLAGS=$(shell pkg-config --cflags gtkglext-1.0)
 GLEXT_LDFLAGS=$(shell pkg-config --libs gtkglext-1.0)
+
+PANGO_CFLAGS=$(shell pkg-config --cflags pango)
+PANGO_LDFLAGS=$(shell pkg-config --libs pango)
+
+PANGOFT2_CFLAGS=$(shell pkg-config --cflags pangoft2)
+PANGOFT2_LDFLAGS=$(shell pkg-config --libs pangoft2)
 
 WS_LIBS= ../libs/libcmdlib.a \
 	../libs/libcontainer.a \
@@ -35,8 +40,8 @@ WS_LIBS= ../libs/libcmdlib.a \
 	../libs/libuilib.a \
 	../libs/libxmllib.a
 
-WS_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) $(GTK_CFLAGS) $(XML_CFLAGS) $(GLEXT_CFLAGS) -I../include -I../libs -DGTK_TARGET=2 $(WS_VERSION)
-WS_LDFLAGS=$(LDFLAGS) -lm $(GLIB_LDFLAGS) $(GTK_LDFLAGS) $(XML_LDFLAGS) $(GLEXT_LDFLAGS) -L../lib $(WS_LIBS)
+WS_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) $(XML_CFLAGS) $(GLEXT_CFLAGS) -I../include -I../libs -DGTK_TARGET=2 $(WS_VERSION)
+WS_LDFLAGS=$(LDFLAGS) -lm $(GTK_LDFLAGS) $(GLIB_LDFLAGS) $(XML_LDFLAGS) $(PANGO_LDFLAGS) $(PANGOFT2_LDFLAGS) $(GLEXT_LDFLAGS) -L../lib
 
 DO_CXX=$(CXX) $(WS_CFLAGS) -o $@ -c $<
 
@@ -81,6 +86,7 @@ WS_OBJS = \
 	image.o \
 	main.o \
 	mainframe.o \
+	multimon.o \
 	map.o \
 	mru.o \
 	nullmodel.o \
@@ -127,7 +133,7 @@ WS_OBJS = \
 
 # binary target
 ../build/worldspawn: $(WS_OBJS)
-	$(CXX) -o $@ $(WS_OBJS) $(WS_LDFLAGS)
+	$(CXX) -o $@ $(WS_OBJS) $(WS_LIBS) $(WS_LDFLAGS)
 
 clean:
 	-rm -f *.o ../build/worldspawn
