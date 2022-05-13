@@ -5,6 +5,7 @@ GLIB_LDFLAGS=$(shell pkg-config --libs gtk+-2.0)
 
 PLUGIN_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) -I../../include -I../../libs -fPIC -fvisibility=hidden
 PLUGIN_LDFLAGS=$(LDFLAGS) $(GLIB_LDFLAGS) -shared
+LIB_EXT=so
 
 DO_CXX=$(CXX) $(PLUGIN_CFLAGS) -o $@ -c $<
 
@@ -15,7 +16,7 @@ WS_OBJS = \
 	iqm.o plugin.o
 
 # binary target
-../../build/plugins/libiqmmodel.so: $(WS_OBJS)
+../../build/plugins/libiqmmodel.$(LIB_EXT): $(WS_OBJS)
 	$(CXX) -o $@ $(WS_OBJS) $(PLUGIN_LDFLAGS)
 
 # object files
@@ -23,4 +24,4 @@ iqm.o: iqm.cpp iqm.h
 plugin.o: plugin.cpp plugin.h
 
 clean:
-	-rm -f *.o ../../build/plugins/libiqmmodel.so
+	-rm -f *.o ../../build/plugins/libiqmmodel.$(LIB_EXT)

@@ -5,6 +5,7 @@ GLIB_LDFLAGS=$(shell pkg-config --libs gtk+-2.0)
 
 PLUGIN_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) -I../../include -I../../libs -fPIC -fvisibility=hidden
 PLUGIN_LDFLAGS=$(LDFLAGS) $(GLIB_LDFLAGS) -shared
+LIB_EXT=so
 
 DO_CXX=$(CXX) $(PLUGIN_CFLAGS) -o $@ -c $<
 
@@ -15,7 +16,7 @@ WS_OBJS = \
 	AboutDialog.o ConfigDialog.o LoadPortalFileDialog.o portals.o prtview.o
 
 # binary target
-../../build/plugins/libprtview.so: $(WS_OBJS)
+../../build/plugins/libprtview.$(LIB_EXT): $(WS_OBJS)
 	$(CXX) -o $@ $(WS_OBJS) ../../libs/libuilib.a ../../libs/libgtkutil.a ../../libs/libprofile.a $(PLUGIN_LDFLAGS)
 
 # object files
@@ -26,4 +27,4 @@ portals.o: portals.cpp portals.h
 prtview.o: prtview.cpp prtview.h
 
 clean:
-	-rm -f *.o ../../build/plugins/libprtview.so
+	-rm -f *.o ../../build/plugins/libprtview.$(LIB_EXT)

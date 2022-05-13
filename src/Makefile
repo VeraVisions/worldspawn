@@ -40,8 +40,8 @@ WS_LIBS= ../libs/libcmdlib.a \
 	../libs/libuilib.a \
 	../libs/libxmllib.a
 
-WS_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) $(XML_CFLAGS) $(GLEXT_CFLAGS) -I../include -I../libs -DGTK_TARGET=2 -static-libgcc -static-libstdc++ $(WS_VERSION)
-WS_LDFLAGS=$(LDFLAGS) -lm -lws2_32 $(GTK_LDFLAGS) $(GLIB_LDFLAGS) $(XML_LDFLAGS) $(PANGO_LDFLAGS) $(PANGOFT2_LDFLAGS) $(GLEXT_LDFLAGS) -static-libgcc -static-libstdc++ -L../lib
+WS_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) $(XML_CFLAGS) $(GLEXT_CFLAGS) -I../include -I../libs -DGTK_TARGET=2 $(WS_VERSION)
+WS_LDFLAGS=$(LDFLAGS) -lm $(GTK_LDFLAGS) $(GLIB_LDFLAGS) $(XML_LDFLAGS) $(PANGO_LDFLAGS) $(PANGOFT2_LDFLAGS) $(GLEXT_LDFLAGS) -L../lib
 
 DO_CXX=$(CXX) $(WS_CFLAGS) -o $@ -c $<
 

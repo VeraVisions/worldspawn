@@ -5,6 +5,7 @@ GLIB_LDFLAGS=$(shell pkg-config --libs gtk+-2.0)
 
 PLUGIN_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) -I../../include -I../../libs -fPIC -fvisibility=hidden
 PLUGIN_LDFLAGS=$(LDFLAGS) $(GLIB_LDFLAGS) -shared
+LIB_EXT=so
 
 DO_CXX=$(CXX) $(PLUGIN_CFLAGS) -o $@ -c $<
 
@@ -25,7 +26,7 @@ WS_OBJS = \
 	targetable.o
 
 # binary target
-../../build/plugins/libentity.so: $(WS_OBJS)
+../../build/plugins/libentity.$(LIB_EXT): $(WS_OBJS)
 	$(CXX) -o $@ $(WS_OBJS) $(PLUGIN_LDFLAGS)
 
 # object files
@@ -42,4 +43,4 @@ skincache.o: skincache.cpp skincache.h
 targetable.o: targetable.cpp targetable.h
 
 clean:
-	-rm -f *.o ../../build/plugins/libentity.so
+	-rm -f *.o ../../build/plugins/libentity.$(LIB_EXT)

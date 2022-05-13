@@ -5,6 +5,7 @@ GLIB_LDFLAGS=$(shell pkg-config --libs gtk+-2.0)
 
 PLUGIN_CFLAGS=$(CFLAGS) $(GLIB_CFLAGS) -I../../include -I../../libs -fPIC -fvisibility=hidden
 PLUGIN_LDFLAGS=$(LDFLAGS) $(GLIB_LDFLAGS) -shared
+LIB_EXT=so
 
 DO_CXX=$(CXX) $(PLUGIN_CFLAGS) $(SHLIBCFLAGS) -o $@ -c $<
 
@@ -15,7 +16,7 @@ WS_OBJS = \
 	hlw.o imagehl.o mip.o sprite.o
 
 # binary target
-../../build/plugins/libimagehl.so: $(WS_OBJS)
+../../build/plugins/libimagehl.$(LIB_EXT): $(WS_OBJS)
 	$(CXX) -o $@ $(WS_OBJS) ../../libs/libuilib.a ../../libs/libgtkutil.a $(PLUGIN_LDFLAGS)
 
 # object files
@@ -25,4 +26,4 @@ mip.o: mip.cpp mip.h
 sprite.o: sprite.cpp sprite.h
 
 clean:
-	-rm -f *.o ../../build/plugins/libimagehl.so
+	-rm -f *.o ../../build/plugins/libimagehl.$(LIB_EXT)
