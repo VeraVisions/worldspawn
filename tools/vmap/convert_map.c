@@ -269,7 +269,7 @@ static void ConvertBrush( FILE *f, int num, bspBrush_t *brush, vec3_t origin, qb
 		buildBrush->numsides++;
 
 		/* tag it */
-		buildSide->shaderInfo = ShaderInfoForShader( shader->shader );
+		buildSide->shaderInfo = ShaderInfoForShader( shader->shader, 0 );
 		buildSide->planenum = side->planeNum;
 		buildSide->winding = NULL;
 	}

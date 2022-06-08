@@ -380,7 +380,7 @@ void LoadSurfaceExtraFile( const char *surfaceFilePath ){
 			/* shader */
 			if ( !Q_stricmp( token, "shader" ) ) {
 				GetToken( qfalse );
-				se->si = ShaderInfoForShader( token );
+				se->si = ShaderInfoForShader( token, 0 );
 			}
 
 			/* parent surface number */

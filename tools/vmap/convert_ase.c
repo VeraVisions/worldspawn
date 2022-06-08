@@ -251,7 +251,7 @@ static void ConvertShader( FILE *f, bspShader_t *shader, int shaderNum ){
 
 
 	/* get shader */
-	si = ShaderInfoForShader( shader->shader );
+	si = ShaderInfoForShader( shader->shader, 0 );
 	if ( si == NULL ) {
 		Sys_FPrintf( SYS_WRN, "WARNING: NULL shader in BSP\n" );
 		return;

@@ -782,6 +782,7 @@ typedef struct shaderInfo_s
 	char                *shaderText;                    /* ydnar */
 	qb_t custom;
 	qb_t finished;
+	qb_t remapped;
 }
 shaderInfo_t;
 
@@ -1886,7 +1887,7 @@ shaderInfo_t                *CustomShader( shaderInfo_t *si, char *find, char *r
 void                        EmitVertexRemapShader( char *from, char *to );
 
 void                        LoadShaderInfo( void );
-shaderInfo_t                *ShaderInfoForShader( const char *shader );
+shaderInfo_t                *ShaderInfoForShader( const char *shader, int force );
 shaderInfo_t                *ShaderInfoForShaderNull( const char *shader );
 
 

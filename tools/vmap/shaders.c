@@ -439,7 +439,7 @@ shaderInfo_t *CustomShader( shaderInfo_t *si, char *find, char *replace ){
 
 	/* dummy check */
 	if ( si == NULL ) {
-		return ShaderInfoForShader( "default" );
+		return ShaderInfoForShader( "default", 0 );
 	}
 
 	/* default shader text source */
@@ -561,7 +561,7 @@ shaderInfo_t *CustomShader( shaderInfo_t *si, char *find, char *replace ){
 	         digest[ 8 ], digest[ 9 ], digest[ 10 ], digest[ 11 ], digest[ 12 ], digest[ 13 ], digest[ 14 ], digest[ 15 ] );
 
 	/* get shader */
-	csi = ShaderInfoForShader( shader );
+	csi = ShaderInfoForShader( shader, 0 );
 
 	/* might be a preexisting shader */
 	if ( csi->custom ) {
@@ -662,6 +662,7 @@ static shaderInfo_t *AllocShaderInfo( void ){
 	si->forceSunlight = qfalse;
 	si->vertexScale = 1.0;
 	si->notjunc = qfalse;
+	si->remapped = qfalse;
 
 	/* ydnar: set texture coordinate transform matrix to identity */
 	TCModIdentity( si->mod );
@@ -820,7 +821,7 @@ shaderInfo_t *ShaderInfoForShaderNull( const char *shaderName ){
 	if ( !strcmp( shaderName, "noshader" ) ) {
 		return NULL;
 	}
-	return ShaderInfoForShader( shaderName );
+	return ShaderInfoForShader( shaderName, 0 );
 }
 
 /*
@@ -887,7 +888,64 @@ void Parse1DMatMatrixAppend( char *buffer, int x, vec_t *m ){
 	}
 }
 
-shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
+int
+ShaderInfoExists(const char *shaderName)
+{
+	int i;
+	shaderInfo_t    *si;
+	char shader[ MAX_QPATH ];
+	char filename[ MAX_QPATH ];
+	char shaderText[ 8192 ], temp[ 1024 ];
+	int val;
+	qboolean parsedContent;
+
+
+	/* init */
+	si = NULL;
+
+	/* dummy check */
+	if ( shaderName == NULL || shaderName[ 0 ] == '\0' ) {
+		Sys_FPrintf( SYS_WRN, "WARNING: Null or empty shader name\n" );
+		shaderName = "missing";
+	}
+
+	/* strip off extension */
+	strcpy( shader, shaderName );
+	StripExtension( shader );
+
+	int deprecationDepth = 0;
+	for ( i = 0; i < numShaderInfo; i++ )
+	{
+		si = &shaderInfo[ i ];
+		if ( !Q_stricmp( shader, si->shader ) ) {
+			/* check if shader is deprecated */
+			if ( deprecationDepth < MAX_SHADER_DEPRECATION_DEPTH && si->deprecateShader && si->deprecateShader[ 0 ] ) {
+				/* override name */
+				strcpy( shader, si->deprecateShader );
+				StripExtension( shader );
+				/* increase deprecation depth */
+				deprecationDepth++;
+				if ( deprecationDepth == MAX_SHADER_DEPRECATION_DEPTH ) {
+					Sys_FPrintf( SYS_WRN, "WARNING: Max deprecation depth of %i is reached on shader '%s'\n", MAX_SHADER_DEPRECATION_DEPTH, shader );
+				}
+				/* search again from beginning */
+				i = -1;
+				continue;
+			}
+
+			/* load image if necessary */
+			if ( si->finished == qfalse ) {
+				return 0;
+			}
+
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+shaderInfo_t *ShaderInfoForShader( const char *shaderName, int force ){
 	int i;
 	int deprecationDepth;
 	shaderInfo_t    *si;
@@ -911,7 +969,8 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 	strcpy( shader, shaderName );
 	StripExtension( shader );
 
-#if 1
+	/* force new allocation */
+	if (force == 0) {
 	deprecationDepth = 0;
 	for ( i = 0; i < numShaderInfo; i++ )
 	{
@@ -938,11 +997,16 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 				FinishShader( si );
 			}
 
+			/* this is a remapped shader, continue */
+			if (si->remapped == qtrue) {
+				continue;
+			}
+
 			/* return it */
 			return si;
 		}
 	}
-#endif
+	}
 
 	/* allocate a default shader */
 	si = AllocShaderInfo();
@@ -1174,7 +1238,7 @@ shaderInfo_t *ShaderInfoForShader( const char *shaderName ){
 				//%	Sys_FPrintf( SYS_VRB, "Shader %s has base shader %s\n", si->shader, mattoken );
 				oldWarnImage = warnImage;
 				warnImage = qfalse;
-				si2 = ShaderInfoForShader( mattoken );
+				si2 = ShaderInfoForShader( mattoken, 0 );
 				warnImage = oldWarnImage;
 
 				/* subclass it */
@@ -2245,7 +2309,7 @@ static void ParseShaderFile( const char *filename ){
 					//%	Sys_FPrintf( SYS_VRB, "Shader %s has base shader %s\n", si->shader, token );
 					oldWarnImage = warnImage;
 					warnImage = qfalse;
-					si2 = ShaderInfoForShader( token );
+					si2 = ShaderInfoForShader( token, 0 );
 					warnImage = oldWarnImage;
 
 					/* subclass it */

@@ -71,7 +71,7 @@ int EmitShader( const char *shader, int *contentFlags, int *surfaceFlags ){
 	}
 
 	/* get shaderinfo */
-	si = ShaderInfoForShader( shader );
+	si = ShaderInfoForShader( shader, 0 );
 
 	/* emit a new shader */
 	AUTOEXPAND_BY_REALLOC_BSP( Shaders, 1024 );

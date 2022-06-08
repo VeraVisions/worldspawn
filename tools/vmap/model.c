@@ -392,10 +392,10 @@ void InsertModel( const char *name, int skin, int frame, m4x4_t transform, remap
 			else{
 				strcat( shaderName, "_BSP" );
 			}
-			si = ShaderInfoForShader( shaderName );
+			si = ShaderInfoForShader( shaderName, 0 );
 		}
 		else{
-			si = ShaderInfoForShader( picoShaderName );
+			si = ShaderInfoForShader( picoShaderName, 0 );
 		}
 
 		/* allocate a surface (ydnar: gs mods) */
@@ -860,10 +860,10 @@ void AddTriangleModels( entity_t *e ){
 		}
 		if ( value[ 0 ] != '\0' ) {
 			sprintf( shader, "textures/%s", value );
-			celShader = ShaderInfoForShader( shader );
+			celShader = ShaderInfoForShader( shader, 0 );
 		}
 		else{
-			celShader = *globalCelShader ? ShaderInfoForShader( globalCelShader ) : NULL;
+			celShader = *globalCelShader ? ShaderInfoForShader( globalCelShader, 0 ) : NULL;
 		}
 
 		/* jal : entity based _samplesize */

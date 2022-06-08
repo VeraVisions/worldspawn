@@ -406,7 +406,7 @@ void ParsePatch( qboolean onlyLights, qboolean fixedtess, qboolean extended ){
 
 	/* set shader */
 	sprintf( shader, "textures/%s", texture );
-	pm->shaderInfo = ShaderInfoForShader( shader );
+	pm->shaderInfo = ShaderInfoForShader( shader, 0 );
 
 	/* set mesh */
 	pm->mesh = m;

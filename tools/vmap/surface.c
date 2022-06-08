@@ -99,12 +99,12 @@ void FinishSurface( mapDrawSurface_t *ds ){
 
 	/* ydnar: rocking surface cloning (fur baby yeah!) */
 	if ( ds->shaderInfo->cloneShader != NULL && ds->shaderInfo->cloneShader[ 0 ] != '\0' ) {
-		CloneSurface( ds, ShaderInfoForShader( ds->shaderInfo->cloneShader ) );
+		CloneSurface( ds, ShaderInfoForShader( ds->shaderInfo->cloneShader, 0 ) );
 	}
 
 	/* ydnar: q3map_backShader support */
 	if ( ds->shaderInfo->backShader != NULL && ds->shaderInfo->backShader[ 0 ] != '\0' ) {
-		ds2 = CloneSurface( ds, ShaderInfoForShader( ds->shaderInfo->backShader ) );
+		ds2 = CloneSurface( ds, ShaderInfoForShader( ds->shaderInfo->backShader, 0 ) );
 		ds2->backSide = qtrue;
 	}
 }
@@ -1038,7 +1038,7 @@ mapDrawSurface_t *DrawSurfaceForShader( char *shader ){
 
 
 	/* get shader */
-	si = ShaderInfoForShader( shader );
+	si = ShaderInfoForShader( shader, 0 );
 
 	/* find existing surface */
 	for ( i = 0; i < numMapDrawSurfs; i++ )
@@ -1055,7 +1055,7 @@ mapDrawSurface_t *DrawSurfaceForShader( char *shader ){
 	/* create a new surface */
 	ds = AllocDrawSurface( SURFACE_SHADER );
 	ds->entityNum = 0;
-	ds->shaderInfo = ShaderInfoForShader( shader );
+	ds->shaderInfo = ShaderInfoForShader( shader, 0 );
 
 	/* return to sender */
 	return ds;
@@ -2788,7 +2788,7 @@ void MakeDebugPortalSurfs( tree_t *tree ){
 	Sys_FPrintf( SYS_VRB, "--- MakeDebugPortalSurfs ---\n" );
 
 	/* get portal debug shader */
-	si = ShaderInfoForShader( "debugportals" );
+	si = ShaderInfoForShader( "debugportals", 0 );
 
 	/* walk the tree */
 	MakeDebugPortalSurfs_r( tree->headnode, si );
@@ -2834,7 +2834,7 @@ void MakeFogHullSurfs( entity_t *e, tree_t *tree, char *shader ){
 	}
 
 	/* get foghull shader */
-	si = ShaderInfoForShader( shader );
+	si = ShaderInfoForShader( shader, 0 );
 
 	/* allocate a drawsurface */
 	ds = AllocDrawSurface( SURFACE_FOGHULL );
@@ -3377,8 +3377,9 @@ void FilterDrawsurfsIntoTree( entity_t *e, tree_t *tree ){
 		/* ydnar: remap shader */
 		if ( ds->shaderInfo->remapShader && ds->shaderInfo->remapShader[ 0 ] ) {
 			int surfaceflags = ds->shaderInfo->surfaceFlags;
-			ds->shaderInfo = ShaderInfoForShader( ds->shaderInfo->remapShader );
+			ds->shaderInfo = ShaderInfoForShader( ds->shaderInfo->remapShader, 1 );
 			ds->shaderInfo->surfaceFlags = surfaceflags;
+			ds->shaderInfo->remapped = qtrue;
 		}
 
 		/* ydnar: gs mods: handle the various types of surfaces */

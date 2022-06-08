@@ -1190,7 +1190,7 @@ void SetupSurfaceLightmaps( void ){
 			/* get extra data */
 			info->si = GetSurfaceExtraShaderInfo( num );
 			if ( info->si == NULL ) {
-				info->si = ShaderInfoForShader( bspShaders[ ds->shaderNum ].shader );
+				info->si = ShaderInfoForShader( bspShaders[ ds->shaderNum ].shader, 0 );
 			}
 			info->parentSurfaceNum = GetSurfaceExtraParentSurfaceNum( num );
 			info->entityNum = GetSurfaceExtraEntityNum( num );

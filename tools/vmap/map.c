@@ -1128,7 +1128,7 @@ static void ParseRawBrush( qboolean onlyLights ){
 			si = &shaderInfo[ 0 ];
 		}
 		else{
-			si = ShaderInfoForShader( shader );
+			si = ShaderInfoForShader( shader, 0 );
 		}
 		side->shaderInfo = si;
 		side->surfaceFlags = si->surfaceFlags;
@@ -1847,7 +1847,7 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 	if ( value[ 0 ] != '\0' ) {
 		if ( strcmp( value, "none" ) ) {
 			sprintf( shader, "textures/%s", value );
-			celShader = ShaderInfoForShader( shader );
+			celShader = ShaderInfoForShader( shader, 0 );
 			Sys_Printf( "Entity %d (%s) has cel shader %s\n", mapEnt->mapEntityNum, classname, celShader->shader );
 		}
 		else
@@ -1856,7 +1856,7 @@ static qboolean ParseMapEntity( qboolean onlyLights, qboolean noCollapseGroups )
 		}
 	}
 	else{
-		celShader = ( *globalCelShader ? ShaderInfoForShader( globalCelShader ) : NULL );
+		celShader = ( *globalCelShader ? ShaderInfoForShader( globalCelShader, 0 ) : NULL );
 	}
 
 	/* jal : entity based _shadeangle */
