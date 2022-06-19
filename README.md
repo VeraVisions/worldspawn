@@ -10,6 +10,9 @@ Use it if you actually want to use the features listed below - note that they re
 You will not be able to make levels compatible with other games and engines.
 
 There's plenty of other editors for the first-party id Tech games.
+**Please use those instead if you want to use a level editor with actual support, submission for feature requests, etc. - we are only sharing this because that's the best way of preserving software.**
+
+**Please respect this notice, thank you.**
 
 ![Screenshot](docs/screen.jpg)
 
@@ -50,9 +53,14 @@ To compile on a standard GNU/Linux system:
 On BSD you should probably use GNU make right now. The Makefiles are simple enough however.
 Clang should also be supported, pass `CC=clang and CXX=clang++` if you want to use it.
 
-On NT you'll probably have a build command-line likes this:
-`CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ PKG_CONFIG_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig make`
-Not all works yet, but stay tuned.
+On NT you'll have to jump through a lot more hoops, here's the gist:
+
+1. MSYS2: https://www.msys2.org/
+2. in the msys2 shell, enter `pacman -S --needed base-devel git unzip mingw-w64-$(uname -m)-{toolchain,make,gtk2,gtkglext,minizip-git}`
+3. boot into the Mingw64 shell, don't use the stock MSYS2 shell
+4. run make and it should build everything, in theory
+
+**Please don't contact us about helping you build it on Windows. This is a development tool. This is provided AS-IS.**
 
 It'll compile everything into a subdirectory 'build'. At the end it'll copy files from ./resources into it too.
 
@@ -70,6 +78,6 @@ move it into Nuclide's ./bin directory.
 * minizip-devel
 
 ## Support
-As mentioned before, if you need help with this: you're on your own.
+**As mentioned before, if you need help with this: you're on your own.**
 
 Please use [GtkRadiant](https://github.com/TTimo/GtkRadiant) if you want to make levels for existing games.
