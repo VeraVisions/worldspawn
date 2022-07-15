@@ -14,7 +14,7 @@
 	unknowngamename="Game dir"
 	shaderpath="textures"
 	archivetypes="pk3"
-	texturetypes="tga"
+	texturetypes="tga ktx"
 	modeltypes="vvm"
 	maptypes="worldspawn"
 	shaders="mat"
